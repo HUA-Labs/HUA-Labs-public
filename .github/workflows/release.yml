@@ -19,13 +19,12 @@ jobs:
         with:
           fetch-depth: 0 # Changesets는 전체 Git 히스토리가 필요할 수 있습니다.
 
-      - name: Setup Node.js # Node.js 환경 설정 (pnpm도 포함)
-        uses: actions/setup-node@v4 # Node.js 18 이상 권장
+      - name: Setup Node.js # Node.js 환경 설정
+        uses: actions/setup-node@v4
         with:
           node-version: '18' # 프로젝트에 맞는 Node.js 버전
-          cache: 'pnpm' # pnpm 캐시 사용 설정
 
-      - name: Setup PNPM # PNPM 자체를 설치하는 스텝
+      - name: Setup PNPM # PNPM 설치
         uses: pnpm/action-setup@v2
         with:
           version: 8 # 사용하려는 pnpm 버전
@@ -50,4 +49,4 @@ jobs:
           publish: pnpm release # package.json의 "release" 스크립트 실행
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub API 접근을 위한 기본 토큰
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Changesets 액션에 npm 토큰 명시적으로 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Changesets 액션에 npm 토큰 명시적으로
