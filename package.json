@@ -18,7 +18,8 @@
     "release:dry": "changeset publish --dry-run"
   },
   "devDependencies": {
-    "turbo": "^1.10.0"
+    "turbo": "^1.10.0",
+    "changesets": "^1.0.2"
   },
   "packageManager": "pnpm@8.0.0",
   "engines": {
@@ -38,8 +39,5 @@
     "typescript"
   ],
   "author": "HUA Labs Team",
-  "license": "MIT",
-  "dependencies": {
-    "changesets": "^1.0.2"
-  }
+  "license": "MIT"
 }
