@@ -1,0 +1,45 @@
+{
+  "name": "hua-labs-public",
+  "version": "1.0.0",
+  "description": "HUA Labs Public SDKs and Libraries",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "publish": "turbo run publish",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "release:dry": "changeset publish --dry-run"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0"
+  },
+  "packageManager": "pnpm@8.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HUA-Labs/HUA-Labs-public.git"
+  },
+  "keywords": [
+    "hua-labs",
+    "sdk",
+    "i18n",
+    "ui",
+    "animation",
+    "react",
+    "typescript"
+  ],
+  "author": "HUA Labs Team",
+  "license": "MIT",
+  "dependencies": {
+    "changesets": "^1.0.2"
+  }
+}
