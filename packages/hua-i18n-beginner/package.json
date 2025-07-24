@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/i18n-beginner",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "HUA Labs - Internationalization SDK for Beginners (Simple Setup) - Korean/English support out of the box, easy to add other languages",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -34,18 +34,18 @@
     "react": ">=16.8.0"
   },
   "keywords": [
-    "i18n", 
-    "internationalization", 
-    "localization", 
-    "beginner", 
-    "easy", 
-    "simple", 
-    "react", 
-    "nextjs", 
-    "typescript", 
-    "korean", 
-    "english", 
-    "multilingual", 
+    "i18n",
+    "internationalization",
+    "localization",
+    "beginner",
+    "easy",
+    "simple",
+    "react",
+    "nextjs",
+    "typescript",
+    "korean",
+    "english",
+    "multilingual",
     "translation"
   ],
   "author": "HUA Labs",
@@ -58,4 +58,4 @@
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
   "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
-} 
+}
