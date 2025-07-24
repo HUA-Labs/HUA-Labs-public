@@ -1,0 +1,5 @@
+{
+  "welcome": "Welcome (from JSON file)",
+  "hello": "Hello (from JSON file)",
+  "custom_message": "Custom message (from JSON file)"
+} 

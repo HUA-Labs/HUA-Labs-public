@@ -1,0 +1,5 @@
+{
+  "welcome": "환영합니다 (JSON 파일에서)",
+  "hello": "안녕하세요 (JSON 파일에서)",
+  "custom_message": "커스텀 메시지 (JSON 파일에서)"
+} 
