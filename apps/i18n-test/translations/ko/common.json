@@ -1,5 +1,20 @@
 {
-  "welcome": "환영합니다 (JSON 파일에서)",
-  "hello": "안녕하세요 (JSON 파일에서)",
-  "custom_message": "커스텀 메시지 (JSON 파일에서)"
+  "welcome": "환영합니다",
+  "hello": "안녕하세요",
+  "goodbye": "안녕히 가세요",
+  "thank_you": "감사합니다",
+  "yes": "예",
+  "no": "아니오",
+  "loading": "로딩 중...",
+  "error": "오류",
+  "success": "성공",
+  "cancel": "취소",
+  "save": "저장",
+  "delete": "삭제",
+  "today": "오늘",
+  "yesterday": "어제",
+  "tomorrow": "내일",
+  "morning": "아침",
+  "afternoon": "오후",
+  "evening": "저녁"
 } 

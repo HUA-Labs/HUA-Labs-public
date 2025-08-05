@@ -22,12 +22,28 @@ export default function MinimalExample() {
   }
 
   return (
-    <div>
-      <h1>{t('welcome')}</h1>
-      <p>{t('hello')}</p>
-      <p>{t('welcome_message')}</p> {/* TypeScript 파일에서 로드된 번역 */}
-      <p>{t('test_message')}</p> {/* TypeScript 파일에서 로드된 번역 */}
-      <button onClick={toggleLanguage}>{languageButtonText}</button>
+    <div className="space-y-4">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">{t('welcome')}</h1>
+        <p className="text-gray-600">{t('hello')}</p>
+      </div>
+      
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <h3 className="font-semibold text-blue-800 mb-2">TypeScript 파일에서 로드된 번역:</h3>
+        <div className="space-y-2">
+          <p><span className="text-sm text-gray-500">welcome_message:</span> {t('welcome_message')}</p>
+          <p><span className="text-sm text-gray-500">test_message:</span> {t('test_message')}</p>
+        </div>
+      </div>
+      
+      <div className="text-center">
+        <button 
+          onClick={toggleLanguage}
+          className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-md font-medium"
+        >
+          🔄 {languageButtonText}
+        </button>
+      </div>
     </div>
   );
 } 

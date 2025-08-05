@@ -1,5 +1,20 @@
 {
-  "welcome": "Welcome (from JSON file)",
-  "hello": "Hello (from JSON file)",
-  "custom_message": "Custom message (from JSON file)"
+  "welcome": "Welcome",
+  "hello": "Hello",
+  "goodbye": "Goodbye",
+  "thank_you": "Thank you",
+  "yes": "Yes",
+  "no": "No",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "tomorrow": "Tomorrow",
+  "morning": "Morning",
+  "afternoon": "Afternoon",
+  "evening": "Evening"
 } 
