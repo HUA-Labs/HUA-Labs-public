@@ -1,6 +1,6 @@
 # HUA Motion Core
 
-The foundation of React motion ✨
+The foundation of React motion
 
 [![npm version](https://badge.fury.io/js/@hua-labs%2Fmotion-core.svg)](https://badge.fury.io/js/@hua-labs%2Fmotion-core)
 [![npm downloads](https://img.shields.io/npm/dm/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
@@ -230,15 +230,15 @@ const fadeIn: BaseMotionReturn<HTMLDivElement> = useFadeIn({
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](../../LICENSE) file for details.
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for release history.
+See [CHANGELOG.md](../../CHANGELOG.md) for release history.
 
 ---
 

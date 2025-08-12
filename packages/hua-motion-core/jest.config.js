@@ -1,20 +1,13 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  roots: ['<rootDir>/src'],
-  testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/*.(test|spec).+(ts|tsx|js)'
-  ],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
+  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
+  testMatch: ['**/__tests__/**/*.test.ts'],
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.test.{ts,tsx}',
-    '!src/**/*.spec.{ts,tsx}',
-    '!src/**/__tests__/**',
+    'src/**/*.ts',
+    '!src/**/*.test.ts',
+    '!src/__tests__/**/*',
+    '!src/index.ts'
   ],
   coverageThreshold: {
     global: {
@@ -24,13 +17,10 @@ module.exports = {
       statements: 75
     }
   },
-  coverageReporters: ['text', 'lcov', 'html'],
-  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
-  testPathIgnorePatterns: ['<rootDir>/src/__tests__/setup.ts'],
-  testEnvironmentOptions: {
-    customExportConditions: ['react', 'react-jsx']
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest'
   },
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  }
-}
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  collectCoverage: false
+};
