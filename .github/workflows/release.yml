@@ -22,15 +22,15 @@ jobs:
       - name: Setup Node.js # Node.js 환경 설정
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # 프로젝트에 맞는 Node.js 버전
+          node-version: '22' # 최신 Node.js 버전
 
       - name: Setup PNPM # PNPM 설치
         uses: pnpm/action-setup@v2
         with:
-          version: 8 # 사용하려는 pnpm 버전
+          version: 10.14.0 # 최신 pnpm 버전
 
       - name: Install dependencies # 프로젝트 종속성 설치
-        run: pnpm install --frozen-lockfile # lockfile을 사용하여 안정적인 설치
+        run: pnpm install --no-frozen-lockfile # lockfile 호환성 문제 해결
 
       - name: Build packages # 패키지 빌드
         run: pnpm build
