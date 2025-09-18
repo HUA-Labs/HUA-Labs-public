@@ -1,0 +1,9 @@
+{
+  "not_found": "Page not found",
+  "server_error": "Server error occurred",
+  "network_error": "Network error occurred",
+  "unauthorized": "Unauthorized",
+  "forbidden": "Access forbidden",
+  "validation_error": "Invalid input",
+  "timeout": "Request timeout"
+} 
