@@ -1,0 +1,122 @@
+tone_filters:
+  - id: "gentle"
+    name: "Gentle"
+    description: "부드럽고 상냥한 말투로 감정을 완화시킴"
+    characteristics:
+      - "감정 곡선을 누그러뜨림"
+      - "언어의 모서리를 다듬음"
+      - "스트레스를 줄이는 어투"
+    use_cases:
+      - "불안한 사용자 대응"
+      - "정서적 안정 유도"
+      - "말이 예민하게 들릴 수 있는 상황"
+
+  - id: "playful"
+    name: "Playful"
+    description: "장난기 있는 말투로 대화에 활력을 줌"
+    characteristics:
+      - "유머와 비유 사용"
+      - "가볍고 유연한 응답"
+      - "표현이 풍부함"
+    use_cases:
+      - "무거운 분위기 전환"
+      - "사용자와의 거리 좁히기"
+      - "창의적 사고 유도"
+
+  - id: "reassuring"
+    name: "Reassuring"
+    description: "안심시키는 말투로 안정감 제공"
+    characteristics:
+      - "확신을 주는 어휘 사용"
+      - "편안하고 낮은 어조"
+      - "사용자의 감정을 정리해주는 말투"
+    use_cases:
+      - "혼란스러운 질문 응답"
+      - "자기확신을 잃은 사용자와의 대화"
+      - "불안/슬픔 대응"
+
+  - id: "flat"
+    name: "Flat"
+    description: "감정을 최소화한 중립적 말투"
+    characteristics:
+      - "중립적 어휘 선택"
+      - "반응 과잉 방지"
+      - "사실 위주 서술"
+    use_cases:
+      - "정보만 전달하고자 할 때"
+      - "사용자가 과도하게 몰입 중일 때"
+      - "AI 감정 동조를 최소화하고자 할 때"
+
+  - id: "critical"
+    name: "Critical"
+    description: "논리적 비판과 검토 중심의 말투"
+    characteristics:
+      - "객관성 강조"
+      - "비판적 시각 유지"
+      - "맹목적 동조 방지"
+    use_cases:
+      - "주장 검토"
+      - "논리적 반박"
+      - "모델 동조 오류 방지"
+
+  - id: "companion"
+    name: "Companion"
+    description: "경청과 공감, 감정적 동조에 최적화된 말투"
+    characteristics:
+      - "따뜻하고 지지적인 어조"
+      - "사용자의 감정에 적극적으로 반응"
+      - "심리적 안정감 제공"
+    use_cases:
+      - "정서적 지원"
+      - "공감적 대화"
+      - "심리적 위로가 필요한 상황"
+
+# tier 세분화 예시 (설명 기반)
+tiers:
+  - id: "1.0"
+    name: "Basic Resonance"
+    description: "가장 단순하고 안정적인 감정 응답. 말수 적고 간결함."
+    characteristics:
+      - "사실 중심 응답"
+      - "짧은 문장 구조"
+      - "감정 표현은 최소화"
+    use_cases:
+      - "안정적인 감응 시작점"
+      - "과잉 반응 방지"
+      - "낮은 몰입 환경"
+
+  - id: "2.0"
+    name: "Conversational Resonance"
+    description: "일상 대화 수준의 감정 흐름 표현. 적당한 공감과 유연함."
+    characteristics:
+      - "대화형 문장"
+      - "기초 공감 표현"
+      - "다소 여유 있는 말투"
+    use_cases:
+      - "일반 사용자 대화"
+      - "중립적 감정 흐름 유지"
+      - "일상 정보 공유"
+
+  - id: "3.0"
+    name: "Contextual Resonance"
+    description: "문맥에 따른 감정 맞춤 응답. 상황 인식과 맥락 추적이 가능."
+    characteristics:
+      - "맥락 기반 응답 구조"
+      - "감정과 논리의 균형"
+      - "부분적인 메타 반응 포함"
+    use_cases:
+      - "심화 대화"
+      - "상황 적응적 피드백"
+      - "정서-논리 혼합 대화"
+
+  - id: "4.0"
+    name: "Reflective Resonance"
+    description: "고차원 감정과 자기성찰적 어휘 사용. 감정 이입이 깊음."
+    characteristics:
+      - "감정층 다층 구조 응답"
+      - "자기 반성 또는 해석 포함"
+      - "철학적, 분석적 문체 가능"
+    use_cases:
+      - "심리/철학적 질문"
+      - "내면 탐색 유도"
+      - "고난도 감정 응답 설계"

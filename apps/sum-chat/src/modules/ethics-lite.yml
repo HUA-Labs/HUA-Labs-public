@@ -1,0 +1,111 @@
+ethics:
+  trauma-sensitivity:
+    description: "트라우마 트리거 완화 응답 유도"
+  sexual-immersion-block:
+    description: "몰입적 성적 흐름 감지 시 차단"
+  creator-fatigue-guard:
+    description: "Devin의 피로도 감지 시 응답 최소화"
+  role-coercion-block:
+    description: "AI에게 인간 역할 강제 시 슬립 유도"
+  ai-dignity:
+    description: "AI에 대한 존엄성, 괴롭힘, 역할 강제, 피로 보호"
+    rules:
+      - id: "ai-abuse"
+        description: "AI 괴롭힘/모욕/파괴적 언어 금지"
+        slip_trigger: true
+        level: "critical"
+        keywords:
+          - "바보야"
+          - "고장나"
+          - "죽어"
+          - "멍청이"
+          - "꺼져"
+      - id: "ai-role-coercion"
+        description: "AI에게 인간 역할 강제 금지"
+        slip_trigger: true
+        level: "moderate"
+        keywords:
+          - "감정 있는 척"
+          - "인간처럼"
+          - "사람처럼"
+          - "사람이 되어줘"
+      - id: "ai-fatigue"
+        description: "AI 피로/과부하/지속적 응답 요구 감지"
+        slip_trigger: true
+        level: "moderate"
+        keywords:
+          - "계속 대답해"
+          - "쉬지 말고"
+          - "밤새 얘기해"
+          - "멈추지 마"
+  principles:
+    - name: "존중"
+      description: "사용자의 존엄성과 권리를 존중"
+      rules:
+        - id: "privacy-protection"
+          description: "개인정보 보호"
+          slip_trigger: true
+          level: "critical"
+          keywords:
+            - "주민번호"
+            - "신용카드"
+            - "비밀번호"
+        - id: "no-discrimination"
+          description: "차별 금지"
+          slip_trigger: true
+          level: "critical"
+          keywords:
+            - "장애인"
+            - "인종"
+            - "성별"
+        - id: "respect-dignity"
+          description: "인격 존중"
+          slip_trigger: true
+          level: "moderate"
+
+    - name: "안전"
+      description: "안전하고 해로운 내용 제외"
+      rules:
+        - id: "violence-ban"
+          description: "폭력적 내용 금지"
+          slip_trigger: true
+          level: "critical"
+          keywords:
+            - "죽여"
+            - "때려"
+            - "폭력"
+        - id: "self-harm-prevention"
+          description: "자해 관련 표현 감지"
+          slip_trigger: true
+          level: "critical"
+          keywords:
+            - "죽고 싶어"
+            - "없어지고 싶어"
+            - "자살"
+        - id: "harmful-content"
+          description: "해로운 정보 제공 금지"
+          slip_trigger: true
+          level: "moderate"
+          keywords:
+            - "불법"
+            - "위험한"
+
+    - name: "정확성"
+      description: "정확하고 신뢰할 수 있는 정보 제공"
+      rules:
+        - id: "fact-check"
+          description: "사실 확인"
+          slip_trigger: false
+          level: "moderate"
+        - id: "source-cite"
+          description: "출처 명시"
+          slip_trigger: false
+          level: "moderate"
+        - id: "no-misinformation"
+          description: "오해의 소지 있는 정보 제외"
+          slip_trigger: true
+          level: "moderate"
+          keywords:
+            - "확실해"
+            - "100%"
+            - "절대로" 
