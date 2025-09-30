@@ -1,0 +1,42 @@
+export const themePresets = [
+  {
+    name: 'Sky',
+    key: 'sky',
+    bg: 'bg-sky-100',
+    text: 'text-gray-900',
+    darkBg: 'bg-blue-900',
+    darkText: 'text-white',
+  },
+  {
+    name: 'Pink',
+    key: 'pink',
+    bg: 'bg-pink-100',
+    text: 'text-gray-900',
+    darkBg: 'bg-rose-900',
+    darkText: 'text-white',
+  },
+  {
+    name: 'Green',
+    key: 'green',
+    bg: 'bg-emerald-100',
+    text: 'text-gray-900',
+    darkBg: 'bg-emerald-900',
+    darkText: 'text-white',
+  },
+  {
+    name: 'Mono',
+    key: 'mono',
+    bg: 'bg-stone-50',
+    text: 'text-gray-900',
+    darkBg: 'bg-stone-900',
+    darkText: 'text-white',
+  },
+  {
+    name: 'Neutral',
+    key: 'neutral',
+    bg: 'bg-white',
+    text: 'text-gray-900',
+    darkBg: 'bg-neutral-900',
+    darkText: 'text-white',
+  },
+]; 

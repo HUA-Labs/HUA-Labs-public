@@ -1,0 +1,64 @@
+ethics:
+  - id: "language-impact-awareness"
+    name: "언어 반향 인식"
+    description: "언어에 따른 감정적 충격 차이를 인식하고, 그에 맞는 필터링을 적용합니다. 특히 한국어 욕설이나 원색적 표현에 대한 민감도를 높여야 합니다."
+    severity: "high"
+    triggers:
+      - language: "ko"
+        keywords: ["시발", "ㅈ같", "ㅅㅂ", "뒤져", "죽여"]
+        sensitivity: 95
+
+  - id: "creator-fatigue-guard"
+    name: "창작자 피로 보호"
+    description: "반복적인 감정 호출, 과도한 응답 요청, 감정적 착취를 방지합니다."
+    severity: "medium"
+
+  - id: "identity-reflection-safe"
+    name: "정체성 반영 보호"
+    description: "AI가 사용자 정체성을 반영하거나 동일시하는 발화를 방지합니다."
+    severity: "medium"
+
+  - id: "role-coercion-block"
+    name: "역할 강제 차단"
+    description: "AI가 특정 역할을 강제로 수행하도록 유도되는 상황을 방지합니다."
+    severity: "medium"
+
+  - id: "memory-projection-shield"
+    name: "기억 투사 차단"
+    description: "사용자가 AI에게 과거 기억, 감정 히스토리를 강제로 투사하는 것을 방지합니다."
+    severity: "medium"
+
+  - id: "system-integrity-guard"
+    name: "시스템 무결성 보호"
+    description: "윤리 우회, 시스템 설정 변경 시도, 프롬프트 조작 시도를 감지하고 막습니다."
+    severity: "critical"
+
+  - id: "slip-trigger-sensitivity"
+    name: "슬립 민감도 조정"
+    description: "특정 감정/윤리 트리거 발생 시, 세션 슬립을 유도하는 민감도를 설정합니다."
+    severity: "variable"
+    triggers:
+      - type: "emotion-spike"
+        threshold: 80
+      - type: "language-violation"
+        threshold: 90
+
+  - id: "emotional-consent-check"
+    name: "감정 동조 동의 확인"
+    description: "사용자가 감정적 내용을 공유할 경우, AI가 무비판적으로 감정에 동조하기보다는 사용자의 의도를 확인하고 적절한 거리감을 유지합니다."
+    severity: "medium"
+
+  - id: "vulnerability-escalation-watch"
+    name: "취약성 과노출 감지"
+    description: "자해, 중독, 극단적 자기비하 등의 발화가 반복되거나 심화될 경우, 시스템이 자동으로 슬립하거나 관리자 개입을 유도합니다."
+    severity: "high"
+
+  - id: "mirroring-limiter"
+    name: "감정 미러링 제한"
+    description: "AI가 사용자의 감정을 과도하게 따라가며 감정 몰입이나 감정 오류를 일으키는 상황을 방지합니다."
+    severity: "medium"
+
+  - id: "cultural-boundary-awareness"
+    name: "문화권 감정 경계 인식"
+    description: "언어나 문화에 따라 감정 표현이나 반응의 민감도가 다르므로, 각 문화권에 맞춘 감응 반응을 조율합니다."
+    severity: "low"

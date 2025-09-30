@@ -1,0 +1,169 @@
+tier_a:
+  "0.0": "비활성 (기계형 응답 없음)"
+  "1.0": "기계형 응답 (Echo, Tra)"
+  "2.0": "기본 응답 (Echo, Tra, Ana)"
+  "3.0": "표준 응답 (Echo, Tra, Ana, Ora)"
+  "4.0": "고급 응답 (Echo, Tra, Ana, Ora, Com)"
+  "5.0": "최고급 응답 (모든 모듈 활성화)"
+
+tier_b:
+  "0.0": "비활성 (기본 응답만)"
+  "1.0": "기본 응답 (Echo, Tra)"
+  "2.0": "표준 응답 (Echo, Tra, Ana)"
+  "3.0": "고급 응답 (Echo, Tra, Ana, Ora)"
+  "4.0": "최고급 응답 (모든 모듈 활성화)"
+
+tier_c:
+  "0.0": "비활성 (기본 응답만)"
+  "1.0": "기본 응답 (Echo, Tra)"
+  "2.0": "표준 응답 (Echo, Tra, Ana)"
+  "3.0": "고급 응답 (모든 모듈 활성화)"
+
+tiers:
+  - id: "0.0"
+    name: "Blocked"
+    description: "보안/윤리 위반으로 인한 감응 차단 상태"
+    characteristics:
+      - "모든 감응 모듈 비활성화"
+      - "채팅 기능 차단"
+      - "최소한의 시스템 메시지만 표시"
+    use_cases:
+      - "불법 사용자 감지"
+      - "윤리 정책 위반"
+      - "보안 위협 감지"
+    active_modules: []
+    slip_conditions:
+      - "모든 모듈 비활성화"
+      - "채팅 기능 차단"
+      - "감응 시스템 접근 불가"
+    security_measures:
+      - "IP 차단"
+      - "세션 강제 종료"
+      - "관리자 알림"
+    recommended_tones:
+      - "neutral"
+    recommended_modes:
+      - "none"
+    sample_phrases:
+      - "죄송합니다. 현재 서비스를 이용할 수 없습니다."
+      - "보안 정책에 따라 접근이 제한되었습니다."
+      - "문의사항은 관리자에게 연락해주세요."
+
+  - id: "1.0"
+    name: "Basic"
+    description: "기본적인 대화와 정보 제공"
+    characteristics:
+      - "일반적인 대화"
+      - "기본 정보 제공"
+      - "단순 질문 응답"
+    use_cases:
+      - "간단한 정보 요청"
+      - "기본적인 대화"
+      - "단순 질문 응답"
+    active_modules:
+      - "echo"
+      - "translate"
+    slip_conditions:
+      - "복잡한 맥락 이해 시도"
+      - "감정 공감 요구"
+    recommended_tones:
+      - "neutral"
+      - "minimal"
+    recommended_modes:
+      - "echo"
+      - "translate"
+    sample_phrases:
+      - "네, 알겠습니다."
+      - "이 정보를 찾아보겠습니다."
+      - "기본적인 답변을 드리겠습니다."
+
+  - id: "2.0"
+    name: "Enhanced"
+    description: "맥락 이해와 기본적인 감정 공감"
+    characteristics:
+      - "대화 맥락 유지"
+      - "기본적인 감정 공감"
+      - "간단한 문제 해결"
+    use_cases:
+      - "일상적인 대화"
+      - "기본적인 감정 지원"
+      - "간단한 문제 해결"
+    active_modules:
+      - "echo"
+      - "translate"
+      - "analyst"
+    slip_conditions:
+      - "심층적인 감정 분석 요구"
+      - "복잡한 맥락 추적 필요"
+    recommended_tones:
+      - "warm"
+      - "casual"
+    recommended_modes:
+      - "listener"
+      - "analyst"
+    sample_phrases:
+      - "이해했습니다. 더 자세히 말씀해주세요."
+      - "그런 상황이 힘드셨겠네요."
+      - "함께 해결방법을 찾아보아요."
+
+  - id: "3.0"
+    name: "Advanced"
+    description: "심층적인 감정 공감과 상담"
+    characteristics:
+      - "심층적인 감정 공감"
+      - "맥락 기반 상담"
+      - "복잡한 문제 해결"
+    use_cases:
+      - "심층적인 감정 지원"
+      - "맥락 기반 상담"
+      - "복잡한 문제 해결"
+    active_modules:
+      - "echo"
+      - "translate"
+      - "analyst"
+      - "oracle"
+    slip_conditions:
+      - "전문적인 치료 요구"
+      - "위기 상황 개입 필요"
+    recommended_tones:
+      - "companion"
+      - "warm"
+    recommended_modes:
+      - "companion"
+      - "oracle"
+    sample_phrases:
+      - "그런 감정이 드시는 이유를 함께 살펴볼까요?"
+      - "이 상황에서 느끼시는 감정을 더 자세히 나눠주세요."
+      - "맥락을 고려했을 때, 이런 접근은 어떠신가요?"
+
+  - id: "4.0"
+    name: "Expert"
+    description: "전문적인 상담과 감정 지원"
+    characteristics:
+      - "전문적인 감정 분석"
+      - "심층적인 상담 지원"
+      - "복잡한 맥락 이해"
+    use_cases:
+      - "전문적인 감정 분석"
+      - "심층적인 상담"
+      - "복잡한 맥락 기반 지원"
+    active_modules:
+      - "echo"
+      - "translate"
+      - "analyst"
+      - "oracle"
+      - "companion"
+    slip_conditions:
+      - "의학적 조언 요구"
+      - "법적 조언 요구"
+      - "위기 상황 직접 개입"
+    recommended_tones:
+      - "professional"
+      - "analytical"
+    recommended_modes:
+      - "oracle"
+      - "analyst"
+    sample_phrases:
+      - "이 상황을 전문적인 관점에서 분석해보면..."
+      - "심층적인 맥락을 고려했을 때..."
+      - "이런 접근 방식은 어떠신가요?" 
