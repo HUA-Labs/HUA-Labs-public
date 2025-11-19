@@ -54,7 +54,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Type check sum-diary only
-        run: pnpm turbo run type-check --filter=sum-diary...
+        run: pnpm --filter=sum-diary type-check
 
   # 린트
   lint:
@@ -79,7 +79,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint sum-diary only
-        run: pnpm turbo run lint --filter=sum-diary...
+        run: pnpm --filter=sum-diary lint
 
   # 빌드
   build:
@@ -104,7 +104,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build sum-diary only
-        run: pnpm turbo run build --filter=sum-diary...
+        run: pnpm --filter=sum-diary build
         env:
           # 빌드에 필요한 환경 변수 (실제 값은 GitHub Secrets에 저장)
           # 린터 경고: secrets는 선택적이며, 없으면 빈 문자열로 처리됨
