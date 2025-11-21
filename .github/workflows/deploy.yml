@@ -76,7 +76,7 @@ jobs:
           pnpm --filter @hua-labs/i18n-core run build
 
       - name: Build app
-        run: pnpm turbo run build --filter=sum-diary --no-deps
+        run: pnpm turbo run build --filter=sum-diary
 
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
@@ -124,7 +124,7 @@ jobs:
           pnpm --filter @hua-labs/i18n-core run build
 
       - name: Build app
-        run: pnpm turbo run build --filter=hua-api --no-deps
+        run: pnpm turbo run build --filter=hua-api
 
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
@@ -186,11 +186,11 @@ jobs:
 
       - name: Build sum-diary
         if: needs.detect-changes.outputs.sum-diary == 'true'
-        run: pnpm turbo run build --filter=sum-diary --no-deps
+        run: pnpm turbo run build --filter=sum-diary
 
       - name: Build sum-api
         if: needs.detect-changes.outputs.sum-api == 'true'
-        run: pnpm turbo run build --filter=hua-api --no-deps
+        run: pnpm turbo run build --filter=hua-api
 
       - name: Deploy sum-diary to Vercel (Production)
         if: needs.detect-changes.outputs.sum-diary == 'true'
