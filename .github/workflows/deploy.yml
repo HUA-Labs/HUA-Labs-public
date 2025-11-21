@@ -68,8 +68,13 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Build shared packages
+        run: |
+          pnpm --filter @hua-labs/ui run build
+          pnpm --filter @hua-labs/i18n-core run build
+
       - name: Build app
-        run: pnpm turbo run build --filter=sum-diary
+        run: pnpm turbo run build --filter=sum-diary --no-deps
 
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
@@ -111,8 +116,13 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         continue-on-error: true
 
+      - name: Build shared packages
+        run: |
+          pnpm --filter @hua-labs/ui run build
+          pnpm --filter @hua-labs/i18n-core run build
+
       - name: Build app
-        run: pnpm turbo run build --filter=hua-api
+        run: pnpm turbo run build --filter=hua-api --no-deps
 
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
@@ -167,13 +177,18 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         continue-on-error: true
 
+      - name: Build shared packages
+        run: |
+          pnpm --filter @hua-labs/ui run build
+          pnpm --filter @hua-labs/i18n-core run build
+
       - name: Build sum-diary
         if: needs.detect-changes.outputs.sum-diary == 'true'
-        run: pnpm turbo run build --filter=sum-diary
+        run: pnpm turbo run build --filter=sum-diary --no-deps
 
       - name: Build sum-api
         if: needs.detect-changes.outputs.sum-api == 'true'
-        run: pnpm turbo run build --filter=hua-api
+        run: pnpm turbo run build --filter=hua-api --no-deps
 
       - name: Deploy sum-diary to Vercel (Production)
         if: needs.detect-changes.outputs.sum-diary == 'true'
