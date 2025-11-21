@@ -70,21 +70,13 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Build shared packages
-        run: |
-          pnpm --filter @hua-labs/ui run build
-          pnpm --filter @hua-labs/i18n-core run build
-
-      - name: Build app
-        run: pnpm --filter=sum-diary run build
-
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_SUM_DIARY }}
-          vercel-args: '--prod=false --prebuilt'
+          vercel-args: '--prod=false'
           working-directory: ./apps/sum-diary
 
   # Vercel 배포 (sum-api)
@@ -122,15 +114,6 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Build shared packages
-        run: |
-          pnpm --filter @hua-labs/ui run build
-          pnpm --filter @hua-labs/i18n-core run build
-
-      - name: Build sum-diary
-        if: needs.detect-changes.outputs.sum-diary == 'true'
-        run: pnpm --filter=sum-diary run build
-
       - name: Deploy sum-diary to Vercel (Production)
         if: needs.detect-changes.outputs.sum-diary == 'true'
         uses: amondnet/vercel-action@v25
@@ -138,6 +121,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_SUM_DIARY }}
-          vercel-args: '--prod --prebuilt'
+          vercel-args: '--prod'
           working-directory: ./apps/sum-diary
 
