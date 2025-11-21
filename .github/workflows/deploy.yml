@@ -27,8 +27,10 @@ jobs:
             sum-diary:
               - 'apps/sum-diary/**'
               - 'packages/hua-ui/**'  # sum-diary가 의존하는 패키지
+              - '.github/workflows/deploy.yml'  # 배포 파이프라인 변경 시 강제 실행
             sum-api:
               - 'apps/sum-api/**'
+              - '.github/workflows/deploy.yml'
             sum-chat:
               - 'apps/sum-chat/**'
             hua-labs:
