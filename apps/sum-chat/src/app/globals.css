@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@tailwindcss/typography";
+@import '@hua-labs/ui/styles/toast.css';
 
 @layer base {
   :root {
