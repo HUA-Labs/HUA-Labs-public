@@ -81,33 +81,11 @@ module.exports = {
       },
     },
   },
+  // Tailwind 4: Plugins and theme variables are now in CSS files
+  // Use @import "tailwindcss-animate" in globals.css
+  // Use @theme { ... } for theme variables
   plugins: [
-    require("tailwindcss-animate"),
-    function ({ addBase }) {
-      addBase({
-        ':root': {
-          '--primary': '#6366f1',
-          '--primary-foreground': '#ffffff',
-          '--ring': '#6366f1',
-          '--background': '#ffffff',
-          '--foreground': '#18181b',
-          '--muted': '#f4f4f5',
-          '--muted-foreground': '#71717a',
-          '--accent': '#f1f5f9',
-          '--accent-foreground': '#18181b',
-        },
-        '.theme-sum-prism': {
-          '--primary': '#f472b6',
-          '--primary-foreground': '#fff1f5',
-          '--ring': '#be185d',
-          '--background': '#fff1f5',
-          '--foreground': '#be185d',
-          '--muted': '#fce7f3',
-          '--muted-foreground': '#be185d',
-          '--accent': '#f9a8d4',
-          '--accent-foreground': '#be185d',
-        },
-      });
-    },
+    // Note: tailwindcss-animate should be imported in CSS
+    // Custom theme variables should be moved to @theme in globals.css
   ],
 } 
