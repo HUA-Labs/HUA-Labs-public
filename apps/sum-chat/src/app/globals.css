@@ -75,11 +75,13 @@
   }
 
   * {
-    @apply border-border outline-ring/50;
+    border-color: oklch(var(--border));
+    outline-color: oklch(var(--ring) / 0.5);
   }
-  
+
   body {
-    @apply bg-background text-foreground;
+    background-color: oklch(var(--background));
+    color: oklch(var(--foreground));
   }
 }
 
@@ -87,9 +89,11 @@
 body.theme-sum-prism .chat-session::-webkit-scrollbar-thumb {
   background: #f472b6;
 }
+
 body.theme-sum-prism .chat-session::-webkit-scrollbar-track {
   background: #fff1f5;
 }
+
 body.theme-sum-prism .chat-session {
   scrollbar-color: #f472b6 #fff1f5;
 }
@@ -97,9 +101,11 @@ body.theme-sum-prism .chat-session {
 body.theme-hyper-tomato .chat-session::-webkit-scrollbar-thumb {
   background: #FD4120;
 }
+
 body.theme-hyper-tomato .chat-session::-webkit-scrollbar-track {
   background: #FFE941;
 }
+
 body.theme-hyper-tomato .chat-session {
   scrollbar-color: #FD4120 #FFE941;
 }
@@ -107,9 +113,11 @@ body.theme-hyper-tomato .chat-session {
 body.dark .chat-session::-webkit-scrollbar-thumb {
   background: #52525b;
 }
+
 body.dark .chat-session::-webkit-scrollbar-track {
   background: #18181b;
 }
+
 body.dark .chat-session {
   scrollbar-color: #52525b #18181b;
 }
@@ -117,9 +125,11 @@ body.dark .chat-session {
 body.light .chat-session::-webkit-scrollbar-thumb {
   background: #d4d4d8;
 }
+
 body.light .chat-session::-webkit-scrollbar-track {
   background: #f4f4f5;
 }
+
 body.light .chat-session {
   scrollbar-color: #d4d4d8 #f4f4f5;
 }
@@ -131,12 +141,14 @@ body.theme-sum-prism {
   --popover-fg: #be185d;
   --popover-border: #f472b6;
 }
+
 body.dark {
   scrollbar-color: #52525b #18181b;
   --popover-bg: #23232b;
   --popover-fg: #f3f4f6;
   --popover-border: #23232b;
 }
+
 body.light {
   scrollbar-color: #d4d4d8 #f4f4f5;
   --popover-bg: #fff;
@@ -153,6 +165,7 @@ body.light {
   border-radius: 0.5rem;
   padding: 1em;
 }
+
 .prose code {
   word-break: break-all;
   white-space: pre-wrap;
@@ -165,11 +178,14 @@ body.light {
   background: #23232b;
   color: #f3f4f6;
 }
-.prose th, .prose td {
+
+.prose th,
+.prose td {
   border: 1px solid #444;
   padding: 0.5em 1em;
   text-align: left;
 }
+
 .prose th {
   background: #18181b;
   font-weight: bold;
@@ -180,11 +196,14 @@ body.light {
     background: #fff;
     color: #222;
   }
+
   .prose th {
     background: #f3f4f6;
     color: #222;
   }
-  .prose th, .prose td {
+
+  .prose th,
+  .prose td {
     border: 1px solid #ccc;
   }
 }
@@ -214,9 +233,11 @@ body.theme-hyper-tomato.dark {
 body.theme-hyper-tomato ::-webkit-scrollbar-thumb {
   background: #FD4120;
 }
+
 body.theme-hyper-tomato ::-webkit-scrollbar-track {
   background: #FFE941;
 }
+
 body.theme-hyper-tomato {
   scrollbar-color: #FD4120 #FFE941;
 }
