@@ -5,13 +5,5 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-  },
-  plugins: [],
+  // Tailwind 4: Theme variables should be moved to @theme in globals.css
 } 
