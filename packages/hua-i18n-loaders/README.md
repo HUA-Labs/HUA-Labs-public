@@ -122,6 +122,10 @@ interface ApiLoaderOptions {
   
   // Logger (default: console)
   logger?: Pick<typeof console, 'log' | 'warn' | 'error'>;
+  
+  // Retry configuration for network errors
+  retryCount?: number; // Number of retry attempts (default: 0, no retry)
+  retryDelay?: number; // Base delay in milliseconds (default: 1000), uses exponential backoff
 }
 ```
 
@@ -136,6 +140,8 @@ const loader = createApiTranslationLoader({
   translationApiPath: '/api/v2/translations',
   cacheTtlMs: 10 * 60 * 1000, // 10 minutes
   disableCache: false,
+  retryCount: 3,              // Retry 3 times on network errors
+  retryDelay: 1000,            // 1 second base delay (exponential backoff)
   requestInit: {
     headers: {
       'Authorization': 'Bearer token'
@@ -365,9 +371,29 @@ export default async function RootLayout({ children }) {
 
 ## Error Handling
 
-- Throws error on API request failure
+- **Automatic retry**: Network errors are automatically retried with exponential backoff (configurable via `retryCount` and `retryDelay`)
+- Throws error on API request failure after all retries are exhausted
 - Falls back to default translations when using `withDefaultTranslations`
 - `preloadNamespaces` uses `Promise.allSettled` to continue even if some fail
+
+### Retry Configuration
+
+```ts
+const loader = createApiTranslationLoader({
+  translationApiPath: '/api/translations',
+  retryCount: 3,        // Retry up to 3 times on network errors (default: 0, no retry)
+  retryDelay: 1000,    // Start with 1 second delay, doubles on each retry (exponential backoff)
+});
+```
+
+The retry mechanism uses exponential backoff:
+- 1st retry: waits `retryDelay` ms (e.g., 1000ms)
+- 2nd retry: waits `retryDelay * 2` ms (e.g., 2000ms)
+- 3rd retry: waits `retryDelay * 4` ms (e.g., 4000ms)
+
+## Examples
+
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete example using API loader with caching
 
 ## Documentation
 

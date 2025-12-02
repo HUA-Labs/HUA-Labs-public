@@ -129,75 +129,94 @@ export function createZustandI18n(
   // 언어 동기화 래퍼 컴포넌트 (Provider 내부에서만 사용)
   // BaseI18nProvider가 I18nProvider를 렌더링하므로, 그 자식으로 들어가면 useTranslation 사용 가능
   function LanguageSyncWrapper({ children: innerChildren }: { children: React.ReactNode }) {
+    const debug = config?.debug ?? false;
     // useTranslation은 I18nProvider 내부에서만 사용 가능
     // BaseI18nProvider가 I18nProvider를 렌더링하므로 여기서 사용 가능
     const { setLanguage: setI18nLanguage, currentLanguage, isInitialized } = useTranslation();
-    const prevStoreLanguageRef = React.useRef<string | null>(null);
-    const initializedRef = React.useRef<boolean>(false);
-    const hydratedRef = React.useRef<boolean>(false);
-    const currentLanguageRef = React.useRef<string>(currentLanguage);
     
-    // currentLanguage가 변경되면 ref 업데이트
+    // 하이드레이션 상태를 하나의 객체로 관리
+    interface HydrationState {
+      isComplete: boolean;
+      isInitialized: boolean;
+      previousStoreLanguage: string | null;
+      currentI18nLanguage: string;
+    }
+    
+    const hydrationStateRef = React.useRef<HydrationState>({
+      isComplete: false,
+      isInitialized: false,
+      previousStoreLanguage: null,
+      currentI18nLanguage: currentLanguage,
+    });
+    
+    // currentLanguage가 변경되면 상태 업데이트
     React.useEffect(() => {
-      currentLanguageRef.current = currentLanguage;
+      hydrationStateRef.current.currentI18nLanguage = currentLanguage;
     }, [currentLanguage]);
     
-    // 하이드레이션 완료 감지 (클라이언트에서만, 한 번만 실행)
+    // 하이드레이션 완료 감지 및 언어 동기화
     React.useEffect(() => {
-      if (typeof window === 'undefined') {
+      if (typeof window === 'undefined' || hydrationStateRef.current.isComplete) {
         return;
       }
       
-      // 이미 하이드레이션 완료 체크를 했다면 스킵
-      if (hydratedRef.current) {
-        return;
-      }
-      
-      // 하이드레이션이 완료되면 true로 설정
-      // requestAnimationFrame을 사용하여 하이드레이션 완료 후 실행
       const checkHydration = () => {
-        if (hydratedRef.current) {
-          return; // 이미 실행됨
+        if (hydrationStateRef.current.isComplete) {
+          return;
         }
-        hydratedRef.current = true;
-        console.log(`✅ [ZUSTAND-I18N] Hydration complete`);
+        
+        hydrationStateRef.current.isComplete = true;
+        hydrationStateRef.current.isInitialized = isInitialized;
+        
+        if (debug) {
+          console.log(`✅ [ZUSTAND-I18N] Hydration complete`);
+        }
         
         // 하이드레이션 완료 후 저장된 언어로 동기화
-        // 단, 초기 언어(initialLanguage)와 다를 때만 동기화
-        // (초기 언어와 같으면 SSR과 일치하므로 동기화 불필요)
         if (isInitialized) {
           const storeLanguage = store.getState().language;
+          const state = hydrationStateRef.current;
+          
           // initialLanguage와 다르고, 현재 i18n 언어와도 다를 때만 동기화
-          if (storeLanguage !== initialLanguage && storeLanguage !== currentLanguageRef.current) {
-            console.log(`🔄 [ZUSTAND-I18N] Hydration complete, syncing language: ${currentLanguageRef.current} -> ${storeLanguage}`);
+          if (storeLanguage !== initialLanguage && storeLanguage !== state.currentI18nLanguage) {
+            if (debug) {
+              console.log(`🔄 [ZUSTAND-I18N] Hydration complete, syncing language: ${state.currentI18nLanguage} -> ${storeLanguage}`);
+            }
             setI18nLanguage(storeLanguage);
+            state.previousStoreLanguage = storeLanguage;
           } else {
-            console.log(`⏭️ [ZUSTAND-I18N] Hydration complete, no sync needed (store: ${storeLanguage}, initial: ${initialLanguage}, current: ${currentLanguageRef.current})`);
+            if (debug) {
+              console.log(`⏭️ [ZUSTAND-I18N] Hydration complete, no sync needed (store: ${storeLanguage}, initial: ${initialLanguage}, current: ${state.currentI18nLanguage})`);
+            }
+            state.previousStoreLanguage = storeLanguage;
           }
         }
       };
       
       // 브라우저가 준비되면 하이드레이션 완료로 간주
-      // setTimeout을 사용하여 하이드레이션 완료 후 실행
       const timeoutId = setTimeout(() => {
         requestAnimationFrame(checkHydration);
       }, 0);
       
       return () => clearTimeout(timeoutId);
-    }, [isInitialized]); // currentLanguage를 의존성에서 제거하여 무한 루프 방지
+    }, [isInitialized, setI18nLanguage, initialLanguage, debug]);
     
     // 언어 동기화 함수 (재사용)
     const syncLanguageFromStore = React.useCallback(() => {
-      if (!isInitialized || !hydratedRef.current) {
+      const state = hydrationStateRef.current;
+      if (!state.isInitialized || !state.isComplete) {
         return;
       }
       
       const storeLanguage = store.getState().language;
-      if (storeLanguage !== currentLanguageRef.current && storeLanguage !== initialLanguage) {
-        console.log(`🔄 [ZUSTAND-I18N] Syncing language from store: ${currentLanguageRef.current} -> ${storeLanguage}`);
+      if (storeLanguage !== state.currentI18nLanguage && storeLanguage !== initialLanguage) {
+        if (debug) {
+          console.log(`🔄 [ZUSTAND-I18N] Syncing language from store: ${state.currentI18nLanguage} -> ${storeLanguage}`);
+        }
         setI18nLanguage(storeLanguage);
+        state.previousStoreLanguage = storeLanguage;
       }
-    }, [isInitialized, setI18nLanguage, initialLanguage]);
+    }, [setI18nLanguage, initialLanguage, debug]);
     
     // 언어 변경 구독 설정
     React.useEffect(() => {
@@ -206,51 +225,61 @@ export function createZustandI18n(
         return;
       }
       
-      // 초기 동기화 플래그 설정 (한 번만)
-      if (!initializedRef.current) {
-        initializedRef.current = true;
-        const storeLanguage = store.getState().language;
-        prevStoreLanguageRef.current = storeLanguage;
+      const state = hydrationStateRef.current;
+      state.isInitialized = true;
+      
+      // 초기 스토어 언어 설정
+      if (state.previousStoreLanguage === null) {
+        state.previousStoreLanguage = store.getState().language;
       }
       
-      // Zustand 스토어 변경 감지 (subscribe는 한 번만 설정)
+      // Zustand 스토어 변경 감지
       const unsubscribe = adapter.subscribe((newLanguage) => {
-        // Zustand 스토어의 언어가 변경되면 i18n에 직접 동기화
-        // 이벤트를 사용하지 않고 직접 setLanguage 호출 (순환 참조 방지)
-        if (newLanguage !== prevStoreLanguageRef.current) {
-          prevStoreLanguageRef.current = newLanguage;
+        // 이전 언어와 다를 때만 처리
+        if (newLanguage !== state.previousStoreLanguage) {
+          state.previousStoreLanguage = newLanguage;
           
           // 하이드레이션 완료 후에만 동기화
-          if (hydratedRef.current) {
-            // currentLanguageRef를 사용하여 최신 값 확인 (무한 루프 방지)
-            if (newLanguage !== currentLanguageRef.current) {
-              console.log(`🔄 [ZUSTAND-I18N] Store language changed, syncing to i18n: ${currentLanguageRef.current} -> ${newLanguage}`);
+          if (state.isComplete) {
+            // 현재 i18n 언어와 다를 때만 동기화 (무한 루프 방지)
+            if (newLanguage !== state.currentI18nLanguage) {
+              if (debug) {
+                console.log(`🔄 [ZUSTAND-I18N] Store language changed, syncing to i18n: ${state.currentI18nLanguage} -> ${newLanguage}`);
+              }
               setI18nLanguage(newLanguage);
             } else {
-              console.log(`⏭️ [ZUSTAND-I18N] Store language changed but i18n already synced: ${newLanguage}`);
+              if (debug) {
+                console.log(`⏭️ [ZUSTAND-I18N] Store language changed but i18n already synced: ${newLanguage}`);
+              }
             }
           } else {
-            // 하이드레이션 완료 전에는 나중에 동기화하기 위해 저장
-            console.log(`⏳ [ZUSTAND-I18N] Store language changed but hydration not complete yet: ${newLanguage}`);
+            // 하이드레이션 완료 전에는 로그만 출력
+            if (debug) {
+              console.log(`⏳ [ZUSTAND-I18N] Store language changed but hydration not complete yet: ${newLanguage}`);
+            }
           }
         }
       });
       
       // 하이드레이션이 이미 완료되었다면 즉시 동기화
-      // 단, 초기 언어와 다를 때만 동기화 (초기 언어와 같으면 SSR과 일치하므로 동기화 불필요)
-      if (hydratedRef.current) {
+      if (state.isComplete) {
         const storeLanguage = store.getState().language;
         // initialLanguage와 다르고, 현재 i18n 언어와도 다를 때만 동기화
-        if (storeLanguage !== initialLanguage && storeLanguage !== currentLanguageRef.current) {
-          console.log(`🔄 [ZUSTAND-I18N] Already hydrated, syncing language: ${currentLanguageRef.current} -> ${storeLanguage}`);
+        if (storeLanguage !== initialLanguage && storeLanguage !== state.currentI18nLanguage) {
+          if (debug) {
+            console.log(`🔄 [ZUSTAND-I18N] Already hydrated, syncing language: ${state.currentI18nLanguage} -> ${storeLanguage}`);
+          }
           setI18nLanguage(storeLanguage);
+          state.previousStoreLanguage = storeLanguage;
         } else {
-          console.log(`⏭️ [ZUSTAND-I18N] Already hydrated, no sync needed (store: ${storeLanguage}, initial: ${initialLanguage}, current: ${currentLanguageRef.current})`);
+          if (debug) {
+            console.log(`⏭️ [ZUSTAND-I18N] Already hydrated, no sync needed (store: ${storeLanguage}, initial: ${initialLanguage}, current: ${state.currentI18nLanguage})`);
+          }
         }
       }
 
       return unsubscribe;
-    }, [isInitialized, setI18nLanguage]); // store와 adapter는 클로저로 캡처되므로 의존성 불필요
+    }, [isInitialized, setI18nLanguage, initialLanguage, debug]);
     
     // 하이드레이션 완료 후 언어 동기화를 위한 별도 useEffect
     // hydratedRef는 ref이므로 의존성으로 사용할 수 없음

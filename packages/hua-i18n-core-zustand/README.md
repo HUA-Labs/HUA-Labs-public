@@ -234,6 +234,9 @@ function MyComponent() {
 
 See the [examples](../../examples) directory for full examples.
 
+- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start with Zustand integration
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example with Zustand
+
 ## Related Packages
 
 - `@hua-labs/i18n-core`: Core i18n library

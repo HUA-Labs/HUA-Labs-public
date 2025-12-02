@@ -7,7 +7,9 @@ Public SDKs and libraries provided by HUA Labs.
 ### Internationalization (i18n)
 - **[@hua-labs/i18n-beginner](./packages/hua-i18n-beginner)** - Simple i18n SDK for React beginners
   - [English](./packages/hua-i18n-beginner/README.md) | [한국어](./packages/hua-i18n-beginner/README_EN.md)
-- **@hua-labs/i18n-core** - Core i18n functionality (coming soon)
+- **[@hua-labs/i18n-core](./packages/hua-i18n-core)** - Core i18n functionality with SSR/CSR support
+- **[@hua-labs/i18n-core-zustand](./packages/hua-i18n-core-zustand)** - Zustand adapter for i18n-core
+- **[@hua-labs/i18n-loaders](./packages/hua-i18n-loaders)** - Production-ready translation loaders
 - **@hua-labs/i18n-sdk** - Advanced i18n SDK (coming soon)
 - **@hua-labs/i18n-advanced** - Enterprise-grade i18n solution (coming soon)
 
@@ -99,11 +101,25 @@ function AnimatedComponent() {
 
 For detailed documentation of each package, please refer to the README in the respective package directory.
 
-## Demo Sites
+## Examples
 
+### i18n Examples
+
+- **[CodeSandbox Template](./examples/codesandbox-template/)** - Quick start template for CodeSandbox
+  - 📝 [Setup Guide](./examples/codesandbox-template/SETUP_BEFORE_NPM.md) - Setup instructions before npm package release
+  - 🚀 [Deployment Guide](./examples/codesandbox-template/DEPLOYMENT.md) - How to deploy to CodeSandbox
+- **[Next.js App Router Example](./examples/next-app-router-example/)** - Complete Next.js example with SSR, Zustand, and multiple namespaces
+  - 🚀 [Deployment Guide](./examples/next-app-router-example/DEPLOYMENT.md) - How to deploy to Vercel
+  - ⚡ [Quick Start](./examples/next-app-router-example/QUICK_START.md) - Quick start guide
+
+### Demo Sites
+
+- **[i18n Core Live Demo](https://i18n-core-demo.vercel.app)** - Next.js example with 6 languages, animations, and SSR support (coming soon)
 - **[i18n Beginner Demo](https://i18n-demo.hua-labs.com)** - i18n Beginner SDK demo
 - **[Motion Core Demo](https://motion-core.hua-labs.com)** - Motion Core hooks demo (coming soon)
 - **[UI Components Demo](https://ui.hua-labs.com)** - UI components demo (coming soon)
+
+> **Note**: Live demos will be available after deployment. See deployment guides for each example.
 
 ## Contributing
 

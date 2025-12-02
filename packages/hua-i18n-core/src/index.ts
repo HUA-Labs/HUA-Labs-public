@@ -252,75 +252,8 @@ export function createCoreI18n(options?: {
   };
 }
 
-// 기본 번역 데이터
-function getDefaultTranslations(language: string, namespace: string): Record<string, string> {
-  const defaultTranslations: Record<string, Record<string, Record<string, string>>> = {
-    ko: {
-      common: {
-        welcome: "환영합니다",
-        greeting: "안녕하세요",
-        goodbye: "안녕히 가세요",
-        loading: "로딩 중...",
-        error: "오류가 발생했습니다",
-        success: "성공했습니다",
-        cancel: "취소",
-        confirm: "확인",
-        save: "저장",
-        delete: "삭제",
-        edit: "편집",
-        add: "추가",
-        search: "검색",
-        filter: "필터",
-        sort: "정렬",
-        refresh: "새로고침",
-        back: "뒤로",
-        next: "다음",
-        previous: "이전",
-        home: "홈",
-        about: "소개",
-        contact: "연락처",
-        settings: "설정",
-        profile: "프로필",
-        logout: "로그아웃",
-        login: "로그인",
-        register: "회원가입"
-      }
-    },
-    en: {
-      common: {
-        welcome: "Welcome",
-        greeting: "Hello",
-        goodbye: "Goodbye",
-        loading: "Loading...",
-        error: "An error occurred",
-        success: "Success",
-        cancel: "Cancel",
-        confirm: "Confirm",
-        save: "Save",
-        delete: "Delete",
-        edit: "Edit",
-        add: "Add",
-        search: "Search",
-        filter: "Filter",
-        sort: "Sort",
-        refresh: "Refresh",
-        back: "Back",
-        next: "Next",
-        previous: "Previous",
-        home: "Home",
-        about: "About",
-        contact: "Contact",
-        settings: "Settings",
-        profile: "Profile",
-        logout: "Logout",
-        login: "Login",
-        register: "Register"
-      }
-    }
-  };
-
-  return defaultTranslations[language]?.[namespace] || {};
-}
+// 기본 번역 데이터는 공통 유틸리티에서 가져옴
+import { getDefaultTranslations } from './utils/default-translations';
 
 /**
  * 가장 기본적인 Provider (최소한의 설정)

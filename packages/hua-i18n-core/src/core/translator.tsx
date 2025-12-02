@@ -234,31 +234,37 @@ export class Translator implements TranslatorInterface {
 
             this.logError(translationError);
 
-            // 폴백 언어로 시도
-            if (language !== this.config.fallbackLanguage) {
-              try {
-                const fallbackData = await this.safeLoadTranslations(this.config.fallbackLanguage || 'en', namespace);
-                this.allTranslations[language][namespace] = fallbackData;
-                this.loadedNamespaces.add(`${language}:${namespace}`);
+            // 복구 가능한 에러인지 확인
+            if (isRecoverableError(translationError)) {
+              // 폴백 언어로 시도
+              if (language !== this.config.fallbackLanguage) {
+                try {
+                  const fallbackData = await this.safeLoadTranslations(this.config.fallbackLanguage || 'en', namespace);
+                  this.allTranslations[language][namespace] = fallbackData;
+                  this.loadedNamespaces.add(`${language}:${namespace}`);
 
-                if (this.config.debug) {
-                  console.log('Using fallback data for', language, namespace);
+                  if (this.config.debug) {
+                    console.log('Using fallback data for', language, namespace);
+                  }
+                } catch (fallbackError) {
+                  const fallbackTranslationError = this.createTranslationError(
+                    'FALLBACK_LOAD_FAILED',
+                    fallbackError as Error,
+                    this.config.fallbackLanguage,
+                    namespace
+                  );
+
+                  this.logError(fallbackTranslationError);
+
+                  // 기본 번역 데이터 사용
+                  this.allTranslations[language][namespace] = {};
                 }
-              } catch (fallbackError) {
-                const fallbackTranslationError = this.createTranslationError(
-                  'FALLBACK_LOAD_FAILED',
-                  fallbackError as Error,
-                  this.config.fallbackLanguage,
-                  namespace
-                );
-
-                this.logError(fallbackTranslationError);
-
+              } else {
                 // 기본 번역 데이터 사용
                 this.allTranslations[language][namespace] = {};
               }
             } else {
-              // 기본 번역 데이터 사용
+              // 복구 불가능한 에러는 기본 번역 데이터 사용
               this.allTranslations[language][namespace] = {};
             }
           }
@@ -430,21 +436,13 @@ export class Translator implements TranslatorInterface {
 
     // 직접 키 매칭
     const directValue = translations[key];
-    if (typeof directValue === 'string') {
-      // 성공한 번역은 디버그 로그 안 찍음 (너무 많음)
-      // if (this.config.debug) {
-      //   console.log(`✅ [TRANSLATOR] Found direct match: ${key} = ${directValue}`);
-      // }
+    if (this.isStringValue(directValue)) {
       return directValue;
     }
 
     // 중첩 키 매칭 (예: "user.profile.name")
     const nestedValue = this.getNestedValue(translations, key);
-    if (typeof nestedValue === 'string') {
-      // 성공한 번역은 디버그 로그 안 찍음 (너무 많음)
-      // if (this.config.debug) {
-      //   console.log(`✅ [TRANSLATOR] Found nested match: ${key} = ${nestedValue}`);
-      // }
+    if (this.isStringValue(nestedValue)) {
       return nestedValue;
     }
 
@@ -458,16 +456,23 @@ export class Translator implements TranslatorInterface {
    * 중첩된 객체에서 값을 가져오기
    */
   private getNestedValue(obj: unknown, path: string): unknown {
-    if (typeof obj !== 'object' || obj === null) {
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
       return undefined;
     }
 
     return path.split('.').reduce((current: unknown, key: string) => {
-      if (current && typeof current === 'object' && key in current) {
+      if (current && typeof current === 'object' && !Array.isArray(current) && key in current) {
         return (current as Record<string, unknown>)[key];
       }
       return undefined;
     }, obj);
+  }
+  
+  /**
+   * 문자열 값인지 확인하는 타입 가드
+   */
+  private isStringValue(value: unknown): value is string {
+    return typeof value === 'string' && value.length > 0;
   }
 
   /**
@@ -586,10 +591,23 @@ export class Translator implements TranslatorInterface {
         // 언어 변경 시 번역 로드 완료 알림
         this.notifyTranslationLoaded(language, namespace);
       } catch (error) {
-        if (this.config.debug) {
-          console.warn(`Failed to load ${language}:${namespace}:`, error);
+        const translationError = this.createTranslationError(
+          'LOAD_FAILED',
+          error as Error,
+          language,
+          namespace
+        );
+
+        this.logError(translationError);
+
+        // 복구 가능한 에러인지 확인
+        if (isRecoverableError(translationError)) {
+          // 재시도는 safeLoadTranslations 내부에서 처리되므로 여기서는 기본값 사용
+          this.allTranslations[language][namespace] = {};
+        } else {
+          // 복구 불가능한 에러는 기본 번역 데이터 사용
+          this.allTranslations[language][namespace] = {};
         }
-        this.allTranslations[language][namespace] = {};
       }
     }
   }
@@ -1009,13 +1027,13 @@ function ssrFindInNamespace(
 
   // 직접 키 매칭
   const directValue = namespaceData[key];
-  if (typeof directValue === 'string') {
+  if (isStringValue(directValue)) {
     return directValue;
   }
 
   // 중첩 키 매칭
   const nestedValue = getNestedValue(namespaceData, key);
-  if (typeof nestedValue === 'string') {
+  if (isStringValue(nestedValue)) {
     return nestedValue;
   }
 
@@ -1023,16 +1041,23 @@ function ssrFindInNamespace(
 }
 
 function getNestedValue(obj: unknown, path: string): unknown {
-  if (typeof obj !== 'object' || obj === null) {
+  if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
     return undefined;
   }
 
   return path.split('.').reduce((current: unknown, key: string) => {
-    if (current && typeof current === 'object' && key in current) {
+    if (current && typeof current === 'object' && !Array.isArray(current) && key in current) {
       return (current as Record<string, unknown>)[key];
     }
     return undefined;
   }, obj);
+}
+
+/**
+ * 문자열 값인지 확인하는 타입 가드
+ */
+function isStringValue(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
 }
 
 function parseKey(key: string): { namespace: string; key: string } {
@@ -1125,7 +1150,9 @@ function findInTranslations(
   }
 
   return '';
-} function findInNamespace(
+}
+
+function findInNamespace(
   translations: Record<string, unknown>,
   namespace: string,
   key: string,

@@ -19,6 +19,12 @@ Struggling with flickering on language changes or hydration mismatches? @hua-lab
 
 [📊 Compare with other libraries](./docs/COMPARISON_I18N_LIBRARIES.md)
 
+## 🚀 Try It
+
+- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start template for CodeSandbox
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example (Vercel-ready)
+- **[Live Demo](https://i18n-core-demo.vercel.app)** - Live demo with 6 languages and smooth animations (coming soon)
+
 ## Installation
 
 ```bash
@@ -42,6 +48,10 @@ pnpm add @hua-labs/i18n-core
 - ✅ Debug mode for development
 - ✅ **Language change flickering prevention**: Automatically shows previous language translation during language switch
 - ✅ **State management integration**: Works seamlessly with Zustand via `@hua-labs/i18n-core-zustand`
+- ✅ **Raw value access**: Get arrays, objects, or any non-string values from translations via `getRawValue`
+- ✅ **Automatic retry**: Network errors are automatically retried with exponential backoff (when using API loader)
+- ✅ **Memory leak prevention**: LRU cache for Translator instances to prevent memory accumulation
+- ✅ **Production-optimized**: Console logs are automatically suppressed in production mode
 
 ## Quick Start
 
@@ -254,6 +264,49 @@ Translation file:
 ```json
 {
   "greeting": "Hello, {{name}}!"
+}
+```
+
+### Getting Raw Values (Arrays and Objects)
+
+Use `getRawValue` to access arrays, objects, or any non-string values from translation files:
+
+```tsx
+import { useTranslation } from '@hua-labs/i18n-core';
+
+function MyComponent() {
+  const { getRawValue } = useTranslation();
+  
+  // Get an array
+  const features = getRawValue('common:features') as string[];
+  
+  // Get an object
+  const metadata = getRawValue('common:metadata') as Record<string, string>;
+  
+  return (
+    <div>
+      <ul>
+        {features?.map((feature, index) => (
+          <li key={index}>{feature}</li>
+        ))}
+      </ul>
+      <div>
+        <p>Version: {metadata?.version}</p>
+        <p>Author: {metadata?.author}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+Translation file:
+```json
+{
+  "features": ["Fast", "Lightweight", "Type-safe"],
+  "metadata": {
+    "version": "1.0.0",
+    "author": "HUA Labs"
+  }
 }
 ```
 
@@ -491,6 +544,8 @@ createCoreI18n({
 })
 ```
 
+**Note**: In production (`debug: false`), console logs are automatically suppressed to improve performance and prevent information leakage.
+
 ### Missing Key Overlay (Development)
 
 Display missing translation keys in development:
@@ -509,10 +564,12 @@ function DebugBar() {
 
 The library includes built-in error handling:
 
-- Automatic fallback to default language
-- Missing key handling
-- Network error recovery
-- Cache invalidation on errors
+- **Automatic fallback**: Falls back to default language when translations are missing
+- **Missing key handling**: Returns key in debug mode, empty string in production
+- **Network error recovery**: Automatic retry with exponential backoff (when using API loader)
+- **Cache invalidation**: Automatically clears cache on errors
+- **Error classification**: Distinguishes between recoverable and non-recoverable errors
+- **Memory leak prevention**: LRU cache for Translator instances (max 10 instances)
 
 ## API Reference
 
@@ -541,7 +598,8 @@ Hook for accessing translations and language state.
 ```tsx
 function useTranslation(): {
   t: (key: string, language?: string) => string;
-  tWithParams: (key: string, params: Record<string, string>) => string;
+  tWithParams: (key: string, params?: Record<string, string | number>, language?: string) => string;
+  getRawValue: (key: string, language?: string) => unknown; // Get arrays, objects, or any raw values
   currentLanguage: string;
   setLanguage: (language: string) => Promise<void>;
   isLoading: boolean;
@@ -549,8 +607,15 @@ function useTranslation(): {
   supportedLanguages: LanguageConfig[];
   isInitialized: boolean;
   debug: {
+    getCurrentLanguage: () => string;
+    getSupportedLanguages: () => string[];
     getLoadedNamespaces: () => string[];
-    getCacheStats: () => { hits: number; misses: number };
+    getAllTranslations: () => Record<string, Record<string, unknown>>;
+    isReady: () => boolean;
+    getInitializationError: () => TranslationError | null;
+    clearCache: () => void;
+    reloadTranslations: () => Promise<void>;
+    getCacheStats: () => { size: number; hits: number; misses: number };
   };
 }
 ```
@@ -574,6 +639,7 @@ Core translation class (for SSR or advanced use cases).
 ```tsx
 class Translator {
   translate(key: string, language?: string): string;
+  getRawValue(key: string, language?: string): unknown; // Get arrays, objects, or any raw values
   setLanguage(lang: string): void;
   getCurrentLanguage(): string;
   initialize(): Promise<void>;
