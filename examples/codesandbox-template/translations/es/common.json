@@ -1,0 +1,12 @@
+{
+	"welcome": "Bienvenido",
+	"language": "Idioma",
+	"switchLanguage": "Cambiar idioma",
+	"description": "Esta demostración usa @hua-labs/i18n-core para mostrar traducciones sin parpadeo al cambiar de idioma.",
+	"features": "Características principales",
+	"feature1": "Cambio de idioma sin parpadeo",
+	"feature2": "Soporte completo SSR/CSR",
+	"feature3": "Integración con Zustand",
+	"feature4": "Tamaño de paquete pequeño (~2.8KB)"
+}
+

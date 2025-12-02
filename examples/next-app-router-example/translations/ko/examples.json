@@ -1,0 +1,9 @@
+{
+  "arrayExample": ["항목 1", "항목 2", "항목 3"],
+  "objectExample": {
+    "name": "이름",
+    "email": "이메일",
+    "age": "나이"
+  }
+}
+

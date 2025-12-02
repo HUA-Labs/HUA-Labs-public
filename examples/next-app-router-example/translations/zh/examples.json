@@ -1,0 +1,9 @@
+{
+  "arrayExample": ["项目1", "项目2", "项目3"],
+  "objectExample": {
+    "name": "姓名",
+    "email": "邮箱",
+    "age": "年龄"
+  }
+}
+

@@ -1,0 +1,9 @@
+{
+  "arrayExample": ["Elemento 1", "Elemento 2", "Elemento 3"],
+  "objectExample": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "age": "Edad"
+  }
+}
+

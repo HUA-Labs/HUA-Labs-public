@@ -1,0 +1,12 @@
+{
+  "welcome": "ようこそ",
+  "language": "言語",
+  "switchLanguage": "言語切り替え",
+  "description": "このデモは、@hua-labs/i18n-coreを使用して言語切り替え時にフリッカーなしで翻訳を表示します。",
+  "features": "主な機能",
+  "feature1": "フリッカーなしの言語切り替え",
+  "feature2": "SSR/CSR完全サポート",
+  "feature3": "Zustand統合",
+  "feature4": "小さなバンドルサイズ（~2.8KB）"
+}
+
