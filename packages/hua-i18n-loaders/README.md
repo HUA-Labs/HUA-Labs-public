@@ -1,15 +1,15 @@
 # @hua-labs/i18n-loaders
 
-Production-ready translation loaders, caching, and preloading utilities. Use with `@hua-labs/i18n-core` to reuse proven loading strategies from PaysByPays and SUM API.
+Production-ready translation loaders, caching, and preloading utilities. Use with `@hua-labs/i18n-core` to reuse proven loading strategies from SUM API.
 
 ## Key Features
 
-- ✅ API-based translation loader (`createApiTranslationLoader`)
-- ✅ Built-in TTL/global cache/duplicate request prevention
-- ✅ Namespace preloading & fallback language warming
-- ✅ Default translation (JSON) merging (SUM API style)
-- ✅ Works on both server and client
-- ✅ **Production tested**: Currently used in PaysByPays and SUM API
+- API-based translation loader (`createApiTranslationLoader`)
+- Built-in TTL/global cache/duplicate request prevention
+- Namespace preloading & fallback language warming
+- Default translation (JSON) merging (SUM API style)
+- Works on both server and client
+- **Production tested**: Currently used in SUM API
 
 ## Installation
 
@@ -395,12 +395,20 @@ The retry mechanism uses exponential backoff:
 
 - **[Next.js Example](../../examples/next-app-router-example/)** - Complete example using API loader with caching
 
+## Error Handling Improvements
+
+The API loader now includes enhanced error detection:
+
+- **Network error detection**: Improved detection of network failures
+- **HTTP status code handling**: Automatic retry for 5xx errors and 408 timeouts
+- **Exponential backoff**: Smart retry strategy with configurable delays
+- **Error type classification**: Better distinction between retryable and non-retryable errors
+
+See [API Loader Guide](./docs/API_LOADER.md) for detailed error handling documentation.
+
 ## Documentation
 
-- [API Reference](../../docs/I18N_CORE_API_REFERENCE.md)
-- [Loader Guide](../../docs/I18N_CORE_LOADERS.md)
-- [Performance Optimization Guide](../../docs/I18N_CORE_PERFORMANCE_GUIDE.md)
-- [PaysByPays Use Case](../../docs/I18N_CORE_PAYSBYPAYS_DOCUMENTATION.md)
+- [API Loader Guide](./docs/API_LOADER.md) - Detailed API loader documentation and error handling
 
 ## License
 

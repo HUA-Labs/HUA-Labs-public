@@ -13,5 +13,5 @@
   - Fallback language warming
   - Default translation merging
   - Works on both server and client
-  - Production tested in PaysByPays and SUM API
+  - Production tested in SUM API
 

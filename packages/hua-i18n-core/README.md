@@ -6,24 +6,22 @@ HUA Labs - Core Internationalization Library
 
 Lightweight i18n library for React applications with essential translation features only.
 
-## 🎯 Why @hua-labs/i18n-core?
+## Why @hua-labs/i18n-core?
 
 Struggling with flickering on language changes or hydration mismatches? @hua-labs/i18n-core provides a pragmatic, production-ready solution for React i18n.
 
 **Key advantages:**
-- ✅ **Zero flickering**: Automatically shows previous language translation during switch
-- ✅ **SSR-first**: Built-in hydration handling, no mismatch issues
-- ✅ **State management integration**: First-class Zustand support
-- ✅ **Small bundle**: ~2.8KB gzipped, zero dependencies (React only)
-- ✅ **Framework agnostic**: Works with Next.js, Remix, Vite, and more
+- **Zero flickering**: Automatically shows previous language translation during switch
+- **SSR-first**: Built-in hydration handling, no mismatch issues
+- **State management integration**: First-class Zustand support
+- **Small bundle**: ~2.8KB gzipped, zero dependencies (React only)
+- **Framework agnostic**: Works with Next.js, Remix, Vite, and more
 
-[📊 Compare with other libraries](./docs/COMPARISON_I18N_LIBRARIES.md)
 
-## 🚀 Try It
+## Examples
 
-- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start template for CodeSandbox
-- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example (Vercel-ready)
-- **[Live Demo](https://i18n-core-demo.vercel.app)** - Live demo with 6 languages and smooth animations (coming soon)
+- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start template
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example
 
 ## Installation
 
@@ -37,21 +35,21 @@ pnpm add @hua-labs/i18n-core
 
 ## Features
 
-- ✅ Lightweight core translation functionality
-- ✅ Multiple translation loader strategies (API, static files, custom)
-- ✅ Lazy loading support for namespaces
-- ✅ SSR/SSG support with initial translations
-- ✅ TypeScript support
-- ✅ Zero external dependencies (except React)
-- ✅ Built-in caching
-- ✅ Error handling and fallback support
-- ✅ Debug mode for development
-- ✅ **Language change flickering prevention**: Automatically shows previous language translation during language switch
-- ✅ **State management integration**: Works seamlessly with Zustand via `@hua-labs/i18n-core-zustand`
-- ✅ **Raw value access**: Get arrays, objects, or any non-string values from translations via `getRawValue`
-- ✅ **Automatic retry**: Network errors are automatically retried with exponential backoff (when using API loader)
-- ✅ **Memory leak prevention**: LRU cache for Translator instances to prevent memory accumulation
-- ✅ **Production-optimized**: Console logs are automatically suppressed in production mode
+- Lightweight core translation functionality
+- Multiple translation loader strategies (API, static files, custom)
+- Lazy loading support for namespaces
+- SSR/SSG support with initial translations
+- TypeScript support
+- Zero external dependencies (except React)
+- Built-in caching
+- Error handling and fallback support
+- Debug mode for development
+- **Language change flickering prevention**: Automatically shows previous language translation during language switch
+- **State management integration**: Works seamlessly with Zustand via `@hua-labs/i18n-core-zustand`
+- **Raw value access**: Get arrays, objects, or any non-string values from translations via `getRawValue`
+- **Automatic retry**: Network errors are automatically retried with exponential backoff (when using API loader)
+- **Memory leak prevention**: LRU cache for Translator instances to prevent memory accumulation
+- **Production-optimized**: Console logs are automatically suppressed in production mode
 
 ## Quick Start
 
@@ -573,136 +571,23 @@ The library includes built-in error handling:
 
 ## API Reference
 
-### createCoreI18n
+### Main Exports
 
-Creates an i18n Provider component.
-
-```tsx
-function createCoreI18n(options?: {
-  defaultLanguage?: string;
-  fallbackLanguage?: string;
-  namespaces?: string[];
-  debug?: boolean;
-  loadTranslations?: (language: string, namespace: string) => Promise<Record<string, string>>;
-  translationLoader?: 'api' | 'static' | 'custom';
-  translationApiPath?: string;
-  initialTranslations?: Record<string, Record<string, Record<string, string>>>;
-  autoLanguageSync?: boolean;
-}): React.ComponentType<{ children: React.ReactNode }>
-```
-
-### useTranslation
-
-Hook for accessing translations and language state.
-
-```tsx
-function useTranslation(): {
-  t: (key: string, language?: string) => string;
-  tWithParams: (key: string, params?: Record<string, string | number>, language?: string) => string;
-  getRawValue: (key: string, language?: string) => unknown; // Get arrays, objects, or any raw values
-  currentLanguage: string;
-  setLanguage: (language: string) => Promise<void>;
-  isLoading: boolean;
-  error: TranslationError | null;
-  supportedLanguages: LanguageConfig[];
-  isInitialized: boolean;
-  debug: {
-    getCurrentLanguage: () => string;
-    getSupportedLanguages: () => string[];
-    getLoadedNamespaces: () => string[];
-    getAllTranslations: () => Record<string, Record<string, unknown>>;
-    isReady: () => boolean;
-    getInitializationError: () => TranslationError | null;
-    clearCache: () => void;
-    reloadTranslations: () => Promise<void>;
-    getCacheStats: () => { size: number; hits: number; misses: number };
-  };
-}
-```
-
-### useLanguageChange
-
-Hook for language switching.
-
-```tsx
-function useLanguageChange(): {
-  currentLanguage: string;
-  changeLanguage: (language: string) => void;
-  supportedLanguages: LanguageConfig[];
-}
-```
-
-### Translator
-
-Core translation class (for SSR or advanced use cases).
-
-```tsx
-class Translator {
-  translate(key: string, language?: string): string;
-  getRawValue(key: string, language?: string): unknown; // Get arrays, objects, or any raw values
-  setLanguage(lang: string): void;
-  getCurrentLanguage(): string;
-  initialize(): Promise<void>;
-  isReady(): boolean;
-  onTranslationLoaded(callback: () => void): () => void;
-  onLanguageChanged(callback: (language: string) => void): () => void;
-  debug(): unknown;
-}
-```
-
-### ssrTranslate
-
-Server-side translation helper function.
-
-```tsx
-function ssrTranslate(options: {
-  translations: Record<string, string>;
-  key: string;
-  language: string;
-}): string
-```
-
-### serverTranslate
-
-Alias for `ssrTranslate`.
-
-## Bundle Size
-
-- Main entry (index.js): **9.5 KB** (uncompressed)
-- Estimated gzip: **~2.8 KB**
-- Total JS files: ~106 KB (with tree shaking, only used modules are included)
-- Zero dependencies (React only as peer dependency)
+- `createCoreI18n(options?)` - Creates i18n Provider component
+- `useTranslation()` - Hook for translations and language state
+- `useLanguageChange()` - Hook for language switching
+- `Translator` - Core translation class (for SSR)
+- `ssrTranslate()` / `serverTranslate()` - Server-side translation helpers
 
 ## Requirements
 
 - React >= 16.8.0
 - TypeScript (recommended)
 
-## Development
+## Bundle Size
 
-### Build
-
-```bash
-pnpm build
-```
-
-### Development Mode
-
-```bash
-pnpm dev
-```
-
-### Type Check
-
-```bash
-pnpm type-check
-```
-
-### Test
-
-```bash
-pnpm test
-```
+- **~2.8 KB** gzipped
+- Zero dependencies (React only as peer dependency)
 
 ## Troubleshooting
 
@@ -725,6 +610,19 @@ pnpm test
 2. Check API route returns valid JSON
 3. Ensure API route handles 404 errors gracefully
 4. Check CORS settings if loading from different domain
+
+## Documentation
+
+- [Architecture Guide](./docs/ARCHITECTURE.md) - Core architecture and design patterns
+
+## Code Quality
+
+This package has been refactored for better maintainability:
+
+- **Modular functions**: Translation logic split into focused helper methods
+- **Type safety**: Improved type guards and error handling
+- **Performance**: Optimized translation lookup with proper memoization
+- **Code clarity**: Removed commented code and improved function organization
 
 ## Related Packages
 

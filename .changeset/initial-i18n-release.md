@@ -1,7 +1,7 @@
 ---
 "@hua-labs/i18n-core": major
 "@hua-labs/i18n-core-zustand": major
-"@hua-labs/i18n-loaders": minor
+"@hua-labs/i18n-loaders": major
 ---
 
 Initial release of i18n packages:

@@ -128,7 +128,9 @@ export class Translator implements TranslatorInterface {
       namespaces: ['common'],
       debug: false,
       missingKeyHandler: (key: string) => key,
-      errorHandler: (error: Error) => console.warn('Translation error:', error),
+      errorHandler: (error: Error) => {
+        // Silent by default, user can override
+      },
       ...config
     };
     this.currentLang = config.defaultLanguage;
@@ -296,96 +298,112 @@ export class Translator implements TranslatorInterface {
   }
 
   /**
-   * 번역 키를 번역된 텍스트로 변환
+   * 초기화되지 않은 상태에서 번역 시도
    */
-  translate(key: string, language?: string): string {
-    // language 파라미터가 없으면 현재 언어 사용
-    // 하지만 언어 변경 중일 때는 이전 언어의 번역을 찾기 위해 별도 처리
-    const targetLang = language || this.currentLang;
+  private translateBeforeInitialized(key: string, targetLang: string): string {
+    if (this.config.debug) {
+      console.warn('Translator not initialized. Call initialize() first.');
+    }
+    
+    const { namespace, key: actualKey } = this.parseKey(key);
+    const translations = this.allTranslations[targetLang]?.[namespace];
 
-    // 디버그 로그는 missing key일 때만 출력 (성공한 번역은 로그 안 찍음)
-    // if (this.config.debug) {
-    //   console.log(`🔍 [TRANSLATOR] translate called:`, {
-    //     key,
-    //     targetLang,
-    //     isInitialized: this.isInitialized,
-    //     currentLang: this.currentLang,
-    //     hasAllTranslations: !!this.allTranslations,
-    //     allTranslationsKeys: Object.keys(this.allTranslations || {}),
-    //     targetLangData: this.allTranslations[targetLang] ? Object.keys(this.allTranslations[targetLang]) : 'no data'
-    //   });
-    // }
-
-    if (!this.isInitialized) {
-      if (this.config.debug) {
-        console.warn('Translator not initialized. Call initialize() first.');
-      }
-      // 초기화되지 않았을 때도 기본 번역 시도
-      const { namespace, key: actualKey } = this.parseKey(key);
-      const translations = this.allTranslations[targetLang]?.[namespace];
-
-      if (this.config.debug) {
-        console.log(`🔍 [TRANSLATOR] Not initialized, trying fallback:`, {
-          namespace,
-          actualKey,
-          translations,
-          hasTranslation: translations && translations[actualKey]
-        });
-      }
-
-      if (translations && translations[actualKey]) {
-        const value = translations[actualKey];
-        if (typeof value === 'string') {
-          if (this.config.debug) {
-            console.log(`✅ [TRANSLATOR] Found fallback translation:`, value);
-          }
-          return value;
-        }
-      }
-      return this.config.missingKeyHandler?.(key, targetLang, 'default') || key;
+    if (this.config.debug) {
+      console.log(`🔍 [TRANSLATOR] Not initialized, trying fallback:`, {
+        namespace,
+        actualKey,
+        translations,
+        hasTranslation: translations && translations[actualKey]
+      });
     }
 
-    // 네임스페이스:키 형식 파싱
-    const { namespace, key: actualKey } = this.parseKey(key);
+    if (translations && translations[actualKey]) {
+      const value = translations[actualKey];
+      if (typeof value === 'string') {
+        if (this.config.debug) {
+          console.log(`✅ [TRANSLATOR] Found fallback translation:`, value);
+        }
+        return value;
+      }
+    }
+    
+    return this.config.missingKeyHandler?.(key, targetLang, 'default') || key;
+  }
 
-    // 현재 언어에서 찾기
-    let result = this.findInNamespace(namespace, actualKey, targetLang);
+  /**
+   * 다른 로드된 언어에서 번역 찾기 (언어 변경 중 깜빡임 방지)
+   */
+  private findInOtherLanguages(namespace: string, key: string, targetLang: string): string | null {
+    if (!this.allTranslations || Object.keys(this.allTranslations).length === 0) {
+      return null;
+    }
 
+    const loadedLanguages = Object.keys(this.allTranslations);
+    for (const lang of loadedLanguages) {
+      if (lang !== targetLang) {
+        const result = this.findInNamespace(namespace, key, lang);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * 폴백 언어에서 번역 찾기
+   */
+  private findInFallbackLanguage(namespace: string, key: string, targetLang: string): string | null {
+    const fallbackLang = this.config.fallbackLanguage || 'en';
+    if (targetLang === fallbackLang) {
+      return null;
+    }
+
+    const result = this.findInNamespace(namespace, key, fallbackLang);
     if (result) {
       this.cacheStats.hits++;
       return result;
     }
     
-    // 언어 변경 중일 때: 이전 언어의 번역을 임시로 반환 (깜빡임 방지)
-    // 새로운 언어의 번역이 아직 로드되지 않았을 수 있으므로
-    // 모든 로드된 언어에서 이전 번역 찾기 (ko <-> en 전환 시)
-    if (this.allTranslations && Object.keys(this.allTranslations).length > 0) {
-      const loadedLanguages = Object.keys(this.allTranslations);
-      for (const lang of loadedLanguages) {
-        if (lang !== targetLang) {
-          const previousLangResult = this.findInNamespace(namespace, actualKey, lang);
-          if (previousLangResult) {
-            // 이전 언어의 번역을 임시로 반환 (언어 변경 중 깜빡임 방지)
-            return previousLangResult;
-          }
-        }
-      }
+    return null;
+  }
+
+  /**
+   * 번역 키를 번역된 텍스트로 변환
+   */
+  translate(key: string, language?: string): string {
+    const targetLang = language || this.currentLang;
+
+    // 초기화되지 않은 경우 처리
+    if (!this.isInitialized) {
+      return this.translateBeforeInitialized(key, targetLang);
     }
 
-    // 폴백 언어에서 찾기
-    if (targetLang !== this.config.fallbackLanguage) {
-      result = this.findInNamespace(namespace, actualKey, this.config.fallbackLanguage || 'en');
-      if (result) {
-        this.cacheStats.hits++;
-        return result;
-      }
+    const { namespace, key: actualKey } = this.parseKey(key);
+
+    // 1단계: 현재 언어에서 찾기
+    let result: string | null = this.findInNamespace(namespace, actualKey, targetLang);
+    if (result) {
+      this.cacheStats.hits++;
+      return result;
+    }
+    
+    // 2단계: 다른 로드된 언어에서 찾기 (언어 변경 중 깜빡임 방지)
+    result = this.findInOtherLanguages(namespace, actualKey, targetLang);
+    if (result) {
+      return result;
     }
 
+    // 3단계: 폴백 언어에서 찾기
+    result = this.findInFallbackLanguage(namespace, actualKey, targetLang);
+    if (result) {
+      return result;
+    }
+
+    // 모든 단계에서 찾지 못한 경우
     this.cacheStats.misses++;
     
-    // SSR 초기 로딩 중이면 빈 문자열 반환 (미싱 키 노출 방지)
-    // 초기화가 완료되면 자동으로 리렌더링되어 올바른 번역이 표시됨
-    // 단, 디버그 모드에서는 미싱 키를 표시하여 개발자가 확인할 수 있도록 함
     if (this.config.debug) {
       return this.config.missingKeyHandler?.(key, targetLang, namespace) || key;
     }
@@ -399,21 +417,6 @@ export class Translator implements TranslatorInterface {
    */
   private findInNamespace(namespace: string, key: string, language: string): string {
     const translations = this.allTranslations[language]?.[namespace];
-
-    // 디버그 로그는 missing key일 때만 출력
-    // if (this.config.debug && !translations) {
-    //   console.log(`🔍 [TRANSLATOR] findInNamespace:`, {
-    //     namespace,
-    //     key,
-    //     language,
-    //     hasTranslations: !!translations,
-    //     translationsKeys: translations ? Object.keys(translations) : [],
-    //     allTranslationsStructure: {
-    //       languages: Object.keys(this.allTranslations),
-    //       namespaces: language in this.allTranslations ? Object.keys(this.allTranslations[language]) : []
-    //     }
-    //   });
-    // }
 
     if (!translations) {
       // 네임스페이스가 없으면 자동으로 로드 시도 (비동기, 백그라운드)

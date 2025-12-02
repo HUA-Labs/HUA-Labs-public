@@ -10,6 +10,43 @@ const FIVE_MINUTES = 5 * 60 * 1000;
 const defaultFetcher = (input: RequestInfo | URL, init?: RequestInit) =>
   fetch(input, init);
 
+/**
+ * 재시도 가능한 에러인지 확인
+ */
+function isRetryableError(error: unknown): boolean {
+  // 네트워크 에러 (TypeError)
+  if (error instanceof TypeError) {
+    return true;
+  }
+
+  // Fetch API 에러 메시지 확인
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    if (
+      message.includes('failed to fetch') ||
+      message.includes('networkerror') ||
+      message.includes('network request failed')
+    ) {
+      return true;
+    }
+  }
+
+  // Response 객체가 있는 경우 HTTP 상태 코드 확인
+  if (error && typeof error === 'object' && 'status' in error) {
+    const status = (error as { status: number }).status;
+    // 5xx 서버 에러는 재시도 가능
+    if (status >= 500 && status < 600) {
+      return true;
+    }
+    // 408 Request Timeout도 재시도 가능
+    if (status === 408) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export function createApiTranslationLoader(
   options: ApiLoaderOptions = {}
 ): TranslationLoader {
@@ -119,11 +156,8 @@ export function createApiTranslationLoader(
         setCached(cacheKey, data);
         return data;
       } catch (error) {
-        // 재시도 가능한 에러인지 확인 (네트워크 에러, 5xx 에러 등)
-        const isRetryable = 
-          error instanceof TypeError || // 네트워크 에러
-          (error instanceof Error && error.message.includes('Failed to fetch')) ||
-          (error instanceof Error && error.message.includes('NetworkError'));
+        // 재시도 가능한 에러인지 확인
+        const isRetryable = isRetryableError(error);
 
         if (isRetryable && attempt < retryCount) {
           logger.warn?.(

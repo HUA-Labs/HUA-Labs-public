@@ -226,77 +226,89 @@ export function I18nProvider({
     return { namespace: 'common', key };
   }, []);
 
+  // SSR 번역에서 찾기
+  const findInSSRTranslations = useCallback((key: string, targetLang: string): string | null => {
+    if (!config.initialTranslations) {
+      return null;
+    }
+
+    const { namespace, key: actualKey } = parseKey(key);
+    
+    // 현재 언어의 SSR 번역 확인
+    const ssrTranslations = config.initialTranslations[targetLang]?.[namespace];
+    if (ssrTranslations && ssrTranslations[actualKey]) {
+      const value = ssrTranslations[actualKey];
+      if (typeof value === 'string') {
+        return value;
+      }
+    }
+    
+    // 폴백 언어의 SSR 번역 확인
+    const fallbackLang = config.fallbackLanguage || 'en';
+    if (targetLang !== fallbackLang) {
+      const fallbackTranslations = config.initialTranslations[fallbackLang]?.[namespace];
+      if (fallbackTranslations && fallbackTranslations[actualKey]) {
+        const value = fallbackTranslations[actualKey];
+        if (typeof value === 'string') {
+          return value;
+        }
+      }
+    }
+    
+    return null;
+  }, [config.initialTranslations, config.fallbackLanguage, parseKey]);
+
+  // 기본 번역에서 찾기
+  const findInDefaultTranslations = useCallback((key: string, targetLang: string): string | null => {
+    const { namespace, key: actualKey } = parseKey(key);
+    const defaultTranslations = getDefaultTranslations(targetLang, namespace);
+    const fallbackTranslations = getDefaultTranslations(config.fallbackLanguage || 'en', namespace);
+    
+    return defaultTranslations[actualKey] || fallbackTranslations[actualKey] || null;
+  }, [config.fallbackLanguage, parseKey]);
+
   // hua-api 스타일의 간단한 번역 함수 (메모이제이션)
   // translationVersion과 currentLanguage에 의존하여 번역 로드 및 언어 변경 시 리렌더링 트리거
   const t = useCallback((key: string, language?: string) => {
     // translationVersion과 currentLanguage를 참조하여 번역 로드 및 언어 변경 시 리렌더링 트리거
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _ = translationVersion;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const __ = currentLanguage;
+    // 의존성 배열에 포함되어 있어서 값이 변경되면 함수가 재생성됨
+    void translationVersion;
+    void currentLanguage;
     
     if (!translator) {
       return key;
     }
     
-    // 통일된 번역 조회 로직 (초기화 전/후 동일)
-    // 1. translator.translate() 시도 (초기화 완료 후 또는 초기화 중에도 시도)
-    // 2. 결과가 없으면 SSR 번역 확인
-    // 3. 그래도 없으면 기본 번역 확인
-    
     const targetLang = language || currentLanguage;
     
-    // 1단계: translator.translate() 시도 (초기화 완료 여부와 관계없이 시도)
-    let result: string | undefined;
+    // 1단계: translator.translate() 시도
     try {
-      result = translator.translate(key, language);
-      
-      // 번역 결과가 유효한 경우 반환
+      const result = translator.translate(key, language);
       if (result && result !== key && result !== '') {
         return result;
       }
     } catch (error) {
-      // translator.translate() 실패 시 다음 단계로
-      result = undefined;
+      // translator.translate() 실패 시 다음 단계로 진행
     }
     
-    // 2단계: SSR 번역 데이터에서 찾기 (언어 변경 중 깜빡임 방지)
-    if (config.initialTranslations) {
-      const { namespace, key: actualKey } = parseKey(key);
-      
-      // 현재 언어의 SSR 번역 확인
-      const ssrTranslations = config.initialTranslations[targetLang]?.[namespace];
-      if (ssrTranslations && ssrTranslations[actualKey]) {
-        return ssrTranslations[actualKey];
-      }
-      
-      // 폴백 언어의 SSR 번역 확인
-      const fallbackLang = config.fallbackLanguage || 'en';
-      if (targetLang !== fallbackLang) {
-        const fallbackTranslations = config.initialTranslations[fallbackLang]?.[namespace];
-        if (fallbackTranslations && fallbackTranslations[actualKey]) {
-          return fallbackTranslations[actualKey];
-        }
-      }
+    // 2단계: SSR 번역 데이터에서 찾기
+    const ssrResult = findInSSRTranslations(key, targetLang);
+    if (ssrResult) {
+      return ssrResult;
     }
     
     // 3단계: 기본 번역 데이터에서 찾기
-    const { namespace, key: actualKey } = parseKey(key);
-    const defaultTranslations = getDefaultTranslations(targetLang, namespace);
-    const fallbackTranslations = getDefaultTranslations(config.fallbackLanguage || 'en', namespace);
-    
-    const defaultResult = defaultTranslations[actualKey] || fallbackTranslations[actualKey];
+    const defaultResult = findInDefaultTranslations(key, targetLang);
     if (defaultResult) {
       return defaultResult;
     }
     
     // 모든 단계에서 번역을 찾지 못한 경우
-    // 디버그 모드에서는 키를 반환하고, 프로덕션에서는 빈 문자열 반환 (미싱 키 노출 방지)
     if (config.debug) {
       return key; // 개발 환경에서는 키를 표시하여 디버깅 가능
     }
     return ''; // 프로덕션에서는 빈 문자열 반환하여 미싱 키 노출 방지
-  }, [translator, config.debug, currentLanguage, config.fallbackLanguage, translationVersion, config.initialTranslations, parseKey]) as (key: string, language?: string) => string;
+  }, [translator, config.debug, currentLanguage, config.fallbackLanguage, translationVersion, findInSSRTranslations, findInDefaultTranslations]) as (key: string, language?: string) => string;
 
   // 파라미터가 있는 번역 함수 (메모이제이션)
   const tWithParams = useCallback((key: string, params?: TranslationParams, language?: string) => {

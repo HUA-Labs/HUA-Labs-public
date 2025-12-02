@@ -208,12 +208,12 @@ function MyComponent() {
 
 ## Features
 
-- ✅ **Type-safe**: Full TypeScript support
-- ✅ **Minimal dependencies**: Only Zustand as peer dependency
-- ✅ **Auto synchronization**: Automatically syncs Zustand store changes to i18n
-- ✅ **Unidirectional data flow**: Zustand store is the source of truth
-- ✅ **SSR compatible**: Language syncs after hydration completes (prevents hydration errors)
-- ✅ **Circular reference prevention**: Safe language synchronization mechanism
+- **Type-safe**: Full TypeScript support
+- **Minimal dependencies**: Only Zustand as peer dependency
+- **Auto synchronization**: Automatically syncs Zustand store changes to i18n
+- **Unidirectional data flow**: Zustand store is the source of truth
+- **SSR compatible**: Language syncs after hydration completes (prevents hydration errors)
+- **Circular reference prevention**: Safe language synchronization mechanism
 
 ## How It Works
 
@@ -232,10 +232,12 @@ function MyComponent() {
 
 ## Examples
 
-See the [examples](../../examples) directory for full examples.
+- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start with Zustand
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js example
 
-- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start with Zustand integration
-- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example with Zustand
+## Documentation
+
+- [Hydration Guide](./docs/HYDRATION.md) - Hydration process and troubleshooting
 
 ## Related Packages
 
