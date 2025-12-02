@@ -9,7 +9,7 @@
  * Note: I18nProvider is a client component to comply with Next.js 15
  * Server/Client Component separation requirements.
  */
-import { loadSSRTranslations } from '@/lib/i18n-config';
+import { loadSSRTranslations } from '@/lib/i18n-server';
 import { I18nProvider } from '@/components/I18nProvider';
 import type { Metadata } from 'next';
 import './globals.css';

@@ -2,50 +2,16 @@
  * i18n Configuration for Next.js App Router
  * 
  * This file demonstrates:
- * - SSR translation loading
  * - API-based translation loader
  * - Zustand integration
  * - Multiple namespaces support
+ * 
+ * Note: Server-side translation loading is in i18n-server.ts
  */
 import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
 import { createApiTranslationLoader } from '@hua-labs/i18n-loaders';
 import type { UseBoundStore, StoreApi } from 'zustand';
-import { useAppStore, type SupportedLanguage } from './store';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
-
-/**
- * Load translations from JSON files
- * This function loads all namespaces for a given language
- */
-async function loadTranslationsFromFiles(language: SupportedLanguage) {
-  const namespaces = ['common', 'pages', 'examples'];
-  const translations: Record<string, any> = {};
-
-  for (const namespace of namespaces) {
-    try {
-      const filePath = join(process.cwd(), 'translations', language, `${namespace}.json`);
-      const fileContent = await readFile(filePath, 'utf-8');
-      translations[namespace] = JSON.parse(fileContent);
-    } catch (error) {
-      console.warn(`Failed to load ${namespace} for ${language}:`, error);
-      translations[namespace] = {};
-    }
-  }
-
-  return translations;
-}
-
-/**
- * Load translations from server-side (SSR)
- * Loads from JSON files in translations directory
- */
-export async function loadSSRTranslations(language: SupportedLanguage = 'ko') {
-  const translations = await loadTranslationsFromFiles(language);
-  return {
-    [language]: translations,
-  };
-}
+import { useAppStore } from './store';
 
 /**
  * Create API-based translation loader
