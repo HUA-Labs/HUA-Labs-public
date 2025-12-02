@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   description: 'Complete example of @hua-labs/i18n-core with Next.js App Router',
 };
 
+/**
+ * Root App Router layout that loads Korean server-side translations and supplies them to the application.
+ *
+ * @param children - The layout's child nodes rendered inside the `I18nProvider`
+ * @returns The HTML root element that wraps `children` with an `I18nProvider` initialized with Korean SSR translations
+ */
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -38,4 +44,3 @@ export default async function RootLayout({
     </html>
   );
 }
-

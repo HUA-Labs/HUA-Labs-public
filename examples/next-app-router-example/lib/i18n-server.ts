@@ -9,8 +9,12 @@ import { join } from 'path';
 import type { SupportedLanguage } from './store';
 
 /**
- * Load translations from JSON files
- * This function loads all namespaces for a given language
+ * Load translation namespaces for a given language from JSON files.
+ *
+ * If a namespace file is missing or invalid, a warning is logged and that namespace is returned as an empty object.
+ *
+ * @param language - Language code to load translations for
+ * @returns An object mapping each namespace (`common`, `pages`, `examples`) to its translations (or an empty object on error)
  */
 async function loadTranslationsFromFiles(language: SupportedLanguage) {
   const namespaces = ['common', 'pages', 'examples'];
@@ -31,10 +35,10 @@ async function loadTranslationsFromFiles(language: SupportedLanguage) {
 }
 
 /**
- * Load translations from server-side (SSR)
- * Loads from JSON files in translations directory
- * 
- * This function should only be used in Server Components or API routes.
+ * Load translations for server-side rendering and return them keyed by the requested language.
+ *
+ * @param language - Language code to load translations for (defaults to `'ko'`)
+ * @returns An object whose key is the provided language and whose value is a translations object mapping namespaces (`common`, `pages`, `examples`) to their translation data
  */
 export async function loadSSRTranslations(language: SupportedLanguage = 'ko') {
   const translations = await loadTranslationsFromFiles(language);
@@ -42,4 +46,3 @@ export async function loadSSRTranslations(language: SupportedLanguage = 'ko') {
     [language]: translations,
   };
 }
-

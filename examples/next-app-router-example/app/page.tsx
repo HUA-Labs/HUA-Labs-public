@@ -13,6 +13,12 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { RawValueExample } from '@/components/RawValueExample';
 import { MultipleNamespacesExample } from '@/components/MultipleNamespacesExample';
 
+/**
+ * Client-side Home page component that displays translated UI, a language switcher, example sections, and debug information.
+ *
+ * Renders a centered loading view while translations are being loaded.
+ *
+ * @returns The page's JSX element containing translated header and description, a language switcher, feature list, example components, and a debug/info block.
 export default function Home() {
   const { t, currentLanguage, isLoading } = useTranslation();
 
@@ -89,4 +95,3 @@ export default function Home() {
     </main>
   );
 }
-

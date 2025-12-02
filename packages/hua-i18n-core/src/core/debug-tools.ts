@@ -32,7 +32,11 @@ export interface DebugTools {
 }
 
 /**
- * 디버깅 도구 팩토리 - 조건부 로딩
+ * Create a conditional in-browser debugging tools instance for i18n.
+ *
+ * In development this returns an object implementing debugging helpers; in production it returns `null`.
+ *
+ * @returns `DebugTools` instance in development, `null` in production
  */
 export function createDebugTools(): DebugTools | null {
   // 프로덕션에서는 디버깅 도구 비활성화
@@ -166,7 +170,13 @@ export function createDebugTools(): DebugTools | null {
 }
 
 /**
- * 개발자 도구 패널 생성
+ * Create a floating developer tools panel for HUA i18n.
+ *
+ * The panel displays performance metrics, current language information, and action buttons
+ * to highlight missing translations and show translation keys; it includes UI controls
+ * for closing the panel and dispatches the corresponding debug tool actions when buttons are clicked.
+ *
+ * @returns The root HTMLElement for the constructed dev tools panel
  */
 function createDevToolsPanel(): HTMLElement {
   const panel = document.createElement('div');
@@ -266,7 +276,9 @@ function createDevToolsPanel(): HTMLElement {
 }
 
 /**
- * 디버깅 도구 활성화 (전역 함수)
+ * Enables the in-browser i18n debug tools in development, registers them on `window.__HUA_I18N_DEBUG__`, and opens the dev tools panel.
+ *
+ * In production this function logs a warning and has no effect.
  */
 export function enableDebugTools(): void {
   if (process.env.NODE_ENV === 'production') {
@@ -287,7 +299,9 @@ export function enableDebugTools(): void {
 }
 
 /**
- * 디버깅 도구 비활성화
+ * Disables and removes the global i18n debug tools instance if present.
+ *
+ * Closes the open dev tools panel and deletes the global `window.__HUA_I18N_DEBUG__` reference when a `DebugTools` instance exists.
  */
 export function disableDebugTools(): void {
   const debugTools = (window as Window & { __HUA_I18N_DEBUG__?: DebugTools }).__HUA_I18N_DEBUG__;

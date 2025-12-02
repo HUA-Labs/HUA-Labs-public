@@ -216,11 +216,21 @@ export const createTranslationKey = <T extends TranslationData, N extends keyof 
   key: K
 ): `${N & string}.${K & string}` => `${String(namespace)}.${String(key)}` as `${N & string}.${K & string}`; 
 
-// 타입 가드 함수들
+/**
+ * Checks whether a value is a plain object suitable for use as a translation namespace.
+ *
+ * @param value - The value to test.
+ * @returns `true` if `value` is a non-null object and not an array (a TranslationNamespace), `false` otherwise.
+ */
 export function isTranslationNamespace(value: unknown): value is TranslationNamespace {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/**
+ * Determines whether a value is a language configuration object with the required string fields.
+ *
+ * @returns `true` if `value` has string `code`, `name`, and `nativeName` properties (i.e., conforms to `LanguageConfig`), `false` otherwise.
+ */
 export function isLanguageConfig(value: unknown): value is LanguageConfig {
   return (
     typeof value === 'object' &&
@@ -231,6 +241,12 @@ export function isLanguageConfig(value: unknown): value is LanguageConfig {
   );
 }
 
+/**
+ * Type guard that determines whether a value is a TranslationError with a recognized error code.
+ *
+ * @param value - The value to test
+ * @returns `true` if `value` is a `TranslationError` whose `code` is one of `"MISSING_KEY"`, `"LOAD_FAILED"`, `"INVALID_KEY"`, `"NETWORK_ERROR"`, or `"INITIALIZATION_ERROR"`, `false` otherwise.
+ */
 export function isTranslationError(value: unknown): value is TranslationError {
   return (
     value instanceof Error &&
@@ -241,7 +257,12 @@ export function isTranslationError(value: unknown): value is TranslationError {
   );
 }
 
-// 설정 검증 함수
+/**
+ * Runtime type guard that validates whether a value conforms to the `I18nConfig` shape.
+ *
+ * @param config - The value to validate as an `I18nConfig`
+ * @returns `true` if `config` conforms to `I18nConfig`, `false` otherwise
+ */
 export function validateI18nConfig(config: unknown): config is I18nConfig {
   if (!config || typeof config !== 'object') {
     return false;
@@ -257,7 +278,20 @@ export function validateI18nConfig(config: unknown): config is I18nConfig {
   );
 }
 
-// 에러 처리 유틸리티 함수들
+/**
+ * Creates a TranslationError object populated with standard i18n error metadata.
+ *
+ * @param code - One of the predefined translation error codes
+ * @param message - Human-readable error message
+ * @param originalError - Optional original Error that caused this translation error
+ * @param context - Optional contextual fields
+ * @param context.language - ISO code of the language involved
+ * @param context.namespace - Translation namespace involved
+ * @param context.key - Specific translation key involved
+ * @param context.retryCount - Number of retry attempts already performed (defaults to 0)
+ * @param context.maxRetries - Maximum retry attempts allowed (defaults to 3)
+ * @returns A TranslationError with the provided information, a `timestamp`, `name` set to "TranslationError", and defaults for `retryCount` and `maxRetries` when not supplied
+ */
 export function createTranslationError(
   code: TranslationError['code'],
   message: string,
@@ -283,7 +317,12 @@ export function createTranslationError(
   return error;
 }
 
-// 사용자 친화적 에러 메시지 생성
+/**
+ * Map a TranslationError to a user-facing error object containing a readable message, suggestion, action, and severity.
+ *
+ * @param error - The TranslationError to convert into a user-facing representation.
+ * @returns A `UserFriendlyError` whose fields (`code`, `message`, optional `suggestion`, `action`, `severity`) are selected based on `error.code`.
+ */
 export function createUserFriendlyError(error: TranslationError): UserFriendlyError {
   const errorMessages: Record<TranslationError['code'], UserFriendlyError> = {
     MISSING_KEY: {
@@ -361,7 +400,12 @@ export function createUserFriendlyError(error: TranslationError): UserFriendlyEr
   return errorMessages[error.code];
 }
 
-// 에러 복구 가능 여부 확인
+/**
+ * Determine whether a translation error is eligible for retry according to recoverability rules.
+ *
+ * @param error - The TranslationError to evaluate
+ * @returns `true` if the error's code is one of `LOAD_FAILED`, `NETWORK_ERROR`, or `CACHE_ERROR` and its retryCount is less than its maxRetries (default 3), `false` otherwise.
+ */
 export function isRecoverableError(error: TranslationError): boolean {
   const recoverableCodes: TranslationError['code'][] = [
     'LOAD_FAILED',
@@ -396,7 +440,16 @@ export const defaultErrorLoggingConfig: ErrorLoggingConfig = {
   customLogger: undefined
 };
 
-// 에러 로깅 함수
+/**
+ * Log a TranslationError according to the provided ErrorLoggingConfig.
+ *
+ * Respects `config.enabled`; when enabled it records the error code, message, timestamp and retry metadata,
+ * optionally includes language/namespace/key/context and the stack trace, and either forwards the error to
+ * `config.customLogger` or emits it to the console at the configured log level.
+ *
+ * @param error - The TranslationError to be logged
+ * @param config - Logging configuration that controls inclusion of context/stack, log level, and a custom logger; defaults to `defaultErrorLoggingConfig`
+ */
 export function logTranslationError(
   error: TranslationError, 
   config: ErrorLoggingConfig = defaultErrorLoggingConfig

@@ -20,13 +20,13 @@ const getInitialTranslations = () => {
 };
 
 /**
- * i18n Provider 컴포넌트
- * 
- * 클라이언트 컴포넌트에서 사용하며, Zustand store와 i18n을 통합합니다.
- * 모든 언어의 번역을 초기에 로드하여 깜빡임을 방지합니다.
- * 
- * @param children - 자식 컴포넌트
- * @param initialLanguage - 초기 언어 (기본값: 'ko')
+ * Provides a client-side internationalization context bound to the app store and preloaded translations.
+ *
+ * Creates a provider that integrates i18n with the Zustand app store and ensures translations for all supported
+ * languages are loaded upfront to avoid UI flicker during client render.
+ *
+ * @param children - React nodes to be wrapped by the i18n provider
+ * @param initialLanguage - Optional initial language code (default: `'ko'`). Note: this prop is accepted but not used by the provider implementation
  */
 export function I18nProvider({ children, initialLanguage = 'ko' }: I18nProviderProps) {
   // useMemo를 사용하여 Provider 컴포넌트를 한 번만 생성
@@ -38,4 +38,3 @@ export function I18nProvider({ children, initialLanguage = 'ko' }: I18nProviderP
 
   return <I18nProviderComponent>{children}</I18nProviderComponent>;
 }
-

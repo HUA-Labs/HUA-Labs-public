@@ -2,6 +2,15 @@ import { PreloadOptions, TranslationLoader } from './types';
 
 const defaultLogger = console;
 
+/**
+ * Preloads a set of namespaces for a given language using the provided loader.
+ *
+ * @param language - Target language code to load namespaces for
+ * @param namespaces - Array of namespace names to preload
+ * @param loader - Asynchronous function that loads a specific language/namespace pair
+ * @param options - Optional settings; may include `logger` for messages and `suppressErrors` to suppress warning logs
+ * @returns An object with `fulfilled` — array of namespace strings that loaded successfully — and `rejected` — array of error reasons for failed loads
+ */
 export async function preloadNamespaces(
   language: string,
   namespaces: string[],
@@ -43,6 +52,16 @@ export async function preloadNamespaces(
   };
 }
 
+/**
+ * Preloads the given namespaces for every language in `languages` except `currentLanguage`.
+ *
+ * @param currentLanguage - Language code to exclude from preloading
+ * @param languages - Candidate language codes to warm as fallbacks
+ * @param namespaces - Namespaces to preload for each fallback language
+ * @param loader - Function that loads a specific language/namespace pair
+ * @param options - Optional preload settings (e.g., logger, suppressErrors)
+ * @returns An array of results, one per target fallback language, where each result contains `fulfilled` (loaded namespace names) and `rejected` (error reasons) arrays; returns an empty array if no fallback languages are targeted
+ */
 export async function warmFallbackLanguages(
   currentLanguage: string,
   languages: string[],
@@ -61,4 +80,3 @@ export async function warmFallbackLanguages(
     )
   );
 }
-

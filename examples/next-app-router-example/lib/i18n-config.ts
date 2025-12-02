@@ -23,8 +23,13 @@ const apiLoader = createApiTranslationLoader({
 });
 
 /**
- * Create i18n Provider with Zustand integration
- * This provider handles both SSR and CSR translations
+ * Create a Zustand-backed i18n provider configured for client use.
+ *
+ * Integrates a Zustand language store with the app's translation loading and accepts optional
+ * server-provided initial translations to bootstrap the client.
+ *
+ * @param ssrTranslations - Optional initial translations keyed by language then namespace
+ * @returns The configured i18n provider instance
  */
 export function createClientI18nProvider(
   ssrTranslations?: Record<string, Record<string, any>>
@@ -42,4 +47,3 @@ export function createClientI18nProvider(
     debug: process.env.NODE_ENV === 'development',
   });
 }
-

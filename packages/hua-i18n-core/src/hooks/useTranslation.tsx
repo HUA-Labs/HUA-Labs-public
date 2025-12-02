@@ -40,7 +40,14 @@ export function useTranslation() {
 }
 
 /**
- * 언어 변경 전용 훅
+ * Hook that exposes the current language, supported languages, and a validated language-change function.
+ *
+ * The `changeLanguage` function attempts to switch the active language to the provided language code; if the code matches a supported language it applies the change, otherwise it logs a warning.
+ *
+ * @returns An object with:
+ * - `currentLanguage` — the currently active language code.
+ * - `changeLanguage` — a function `(language: string) => void` that attempts to change the language as described above.
+ * - `supportedLanguages` — the list of supported language descriptors.
  */
 export function useLanguageChange() {
   const { currentLanguage, setLanguage, supportedLanguages } = useI18n();

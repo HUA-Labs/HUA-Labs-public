@@ -17,11 +17,11 @@ const languages: Array<{ code: SupportedLanguage; label: string; nativeName: str
 ];
 
 /**
- * 언어 전환 컴포넌트
- * 
- * Zustand store의 setLanguage를 사용하여 언어를 변경합니다.
- * i18n-core-zustand 어댑터가 자동으로 언어 변경을 동기화합니다.
- * 6개 언어를 지원합니다.
+ * Renders a language selector and updates the application's language when a choice is made.
+ *
+ * Displays buttons for the supported languages and updates the app store's language when a button is clicked.
+ *
+ * @returns A JSX element containing the language switcher UI
  */
 export function LanguageSwitcher() {
   const { language, setLanguage } = useAppStore();
@@ -51,4 +51,3 @@ export function LanguageSwitcher() {
     </div>
   );
 }
-

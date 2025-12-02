@@ -105,11 +105,11 @@ const DEFAULT_TRANSLATIONS: Record<string, Record<string, Record<string, string>
 };
 
 /**
- * 기본 번역 데이터 가져오기
- * 
- * @param language - 언어 코드 (예: 'ko', 'en')
- * @param namespace - 네임스페이스 (예: 'common', 'auth')
- * @returns 해당 언어와 네임스페이스의 기본 번역 데이터
+ * Retrieve the default translation map for the specified language and namespace.
+ *
+ * @param language - Language code, e.g., "ko" or "en"
+ * @param namespace - Namespace name, e.g., "common" or "auth"
+ * @returns The translation key → string map for the given language and namespace, or an empty object if none exists
  */
 export function getDefaultTranslations(
   language: string,
@@ -119,11 +119,10 @@ export function getDefaultTranslations(
 }
 
 /**
- * 모든 기본 번역 데이터 가져오기
- * 
- * @returns 모든 언어와 네임스페이스의 기본 번역 데이터
+ * Retrieve the full set of default translations for all languages and namespaces.
+ *
+ * @returns The complete nested translations object keyed first by language, then by namespace, then by translation key with string values.
  */
 export function getAllDefaultTranslations(): Record<string, Record<string, Record<string, string>>> {
   return DEFAULT_TRANSLATIONS;
 }
-

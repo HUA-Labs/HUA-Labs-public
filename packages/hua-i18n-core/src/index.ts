@@ -63,27 +63,19 @@ const defaultLanguages = [
 ];
 
 /**
- * 핵심 기능용 설정 함수
- * 
- * @example
- * ```tsx
- * // app/layout.tsx (Next.js App Router)
- * import { createCoreI18n } from '@hua-labs/i18n-core';
- * 
- * export default function RootLayout({ children }) {
- *   return (
- *     <html>
- *       <body>
- *         {createCoreI18n({
- *           defaultLanguage: 'ko',
- *           fallbackLanguage: 'en',
- *           namespaces: ['common', 'auth']
- *         })({ children })}
- *       </body>
- *     </html>
- *   );
- * }
- * ```
+ * Create a Core I18n provider component configured for common translation loading and debug workflows.
+ *
+ * @param options - Configuration for the provider.
+ * @param options.defaultLanguage - Language code used as the default (used when no language is selected).
+ * @param options.fallbackLanguage - Language code used as a fallback when a translation is missing.
+ * @param options.namespaces - List of translation namespaces to load by default.
+ * @param options.debug - Enable debug behavior (logs, missing-key markers, and global missing-key collection).
+ * @param options.loadTranslations - Custom loader function for translations when `translationLoader` is `'custom'`.
+ * @param options.translationLoader - Strategy for loading translations: `'api'` (API route), `'static'` (static JSON files), or `'custom'`.
+ * @param options.translationApiPath - Base API path for translation routes (used when `translationLoader` is `'api'`).
+ * @param options.initialTranslations - SSR-provided translations in the shape { [language]: { [namespace]: { [key]: value } } }.
+ * @param options.autoLanguageSync - When true, enables automatic language synchronization; default is false.
+ * @returns A React provider component (CoreI18nProvider) that accepts `{ children }` and renders `I18nProvider` with the composed configuration.
  */
 export function createCoreI18n(options?: {
   defaultLanguage?: string;
@@ -256,28 +248,40 @@ export function createCoreI18n(options?: {
 import { getDefaultTranslations } from './utils/default-translations';
 
 /**
- * 가장 기본적인 Provider (최소한의 설정)
+ * Provides a minimal core i18n provider that wraps and renders the given children using default core configuration.
+ *
+ * @param children - React nodes to be rendered inside the provider
+ * @returns A React element that supplies the core i18n context and renders `children`
  */
 export function CoreProvider({ children }: { children: React.ReactNode }) {
   return createCoreI18n()({ children });
 }
 
 /**
- * 언어별 Provider (언어만 지정)
+ * Creates a Core I18n provider preconfigured with a specific default language.
+ *
+ * @param language - The language code to use as the provider's default language (e.g., "en", "ko")
+ * @returns A React component that renders an I18nProvider configured with `language` as the default language
  */
 export function createLanguageProvider(language: string) {
   return createCoreI18n({ defaultLanguage: language });
 }
 
 /**
- * 네임스페이스별 Provider (네임스페이스만 지정)
+ * Create a Core I18n provider preconfigured with the given namespaces.
+ *
+ * @param namespaces - Array of namespace keys to load and expose through the provider
+ * @returns A React component that wraps children with a Core I18n provider using the specified `namespaces`
  */
 export function createNamespaceProvider(namespaces: string[]) {
   return createCoreI18n({ namespaces });
 }
 
 /**
- * 커스텀 로더 Provider (사용자 정의 번역 로더 사용)
+ * Create a Core I18n provider configured to use a custom translation loader.
+ *
+ * @param loadTranslations - Function that loads translations for a given `language` and `namespace`, returning a map of translation keys to strings.
+ * @returns A React provider component configured to use the supplied `loadTranslations` function for loading translations.
  */
 export function createCustomLoaderProvider(
   loadTranslations: (language: string, namespace: string) => Promise<Record<string, string>>

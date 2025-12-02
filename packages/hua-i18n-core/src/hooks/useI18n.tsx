@@ -15,7 +15,12 @@ import { getDefaultTranslations } from '../utils/default-translations';
 const I18nContext = createContext<I18nContextType | null>(null);
 
 /**
- * I18n Provider 컴포넌트
+ * Provides i18n context to descendants and manages translator lifecycle and language state.
+ *
+ * Initializes a Translator from the given config, synchronizes and switches languages, loads translations, and exposes translation helpers and diagnostic utilities through context.
+ *
+ * @param config - I18n configuration including translator options, supported languages, defaultLanguage, fallbackLanguage, initialTranslations and optional `autoLanguageSync` and `debug` flags.
+ * @param children - React children rendered within the provider.
  */
 export function I18nProvider({ 
   config, 
@@ -485,7 +490,12 @@ export function I18nProvider({
 }
 
 /**
- * I18n 훅
+ * Provides the i18n context for components, returning the current i18n API and state.
+ *
+ * When called inside an I18nProvider, returns the provider's context value (language, translators, loaders, and diagnostics).
+ * When called outside a provider, returns a safe fallback context with no-op setters and minimal default translations to avoid runtime errors.
+ *
+ * @returns The current I18nContextType value or a fallback context when no provider is present.
  */
 export function useI18n(): I18nContextType {
   const context = useContext(I18nContext);
@@ -523,7 +533,16 @@ export function useI18n(): I18nContextType {
 }
 
 /**
- * 간단한 번역 훅 (hua-api 스타일)
+ * Exposes hua-style translation helpers and language controls for components.
+ *
+ * @returns An object with the following properties:
+ * - `t` — Function that returns the translated string for a given key (uses current language and fallbacks).
+ * - `tWithParams` — Function that returns a translated string for a key with interpolation parameters.
+ * - `currentLanguage` — The active language code.
+ * - `setLanguage` — Function to request a language change.
+ * - `isLoading` — `true` when translations are being loaded, `false` otherwise.
+ * - `error` — Initialization or loading error object, or `null` if none.
+ * - `supportedLanguages` — Array of available language codes.
  */
 export function useTranslation() {
   const { t, tWithParams, currentLanguage, setLanguage, isLoading, error, supportedLanguages } = useI18n();
@@ -540,7 +559,16 @@ export function useTranslation() {
 }
 
 /**
- * 언어 변경 훅
+ * Provides the current language, a safe language-switching function, and the list of supported languages.
+ *
+ * The returned `changeLanguage` will call the provider's `setLanguage` when the requested language is in
+ * `supportedLanguages`; if not supported it logs a warning and does nothing. When used outside of a provider
+ * the hook returns harmless default values and a no-op `changeLanguage`.
+ *
+ * @returns An object with:
+ *  - `currentLanguage`: the active language code
+ *  - `changeLanguage`: a function that switches to a supported language (logs a warning for unsupported ones)
+ *  - `supportedLanguages`: an array of available language descriptors `{ code, name, nativeName }`
  */
 export function useLanguageChange() {
   const context = useContext(I18nContext);
@@ -575,7 +603,15 @@ export function useLanguageChange() {
   };
 }
 
-// 기존 훅들 (하위 호환성을 위해 유지)
+/**
+ * Provides a deprecated preload API that no longer performs loading and only emits a warning.
+ *
+ * The returned `preload` function accepts an array of namespace names but is a no-op because
+ * translations are loaded automatically. Calling it will log a deprecation warning and do nothing.
+ *
+ * @deprecated Translations are preloaded automatically; call sites should be removed.
+ * @returns An object with `preload(namespaces: string[])` — a no-op function that logs a deprecation warning.
+ */
 export function usePreloadTranslations() {
   const context = useContext(I18nContext);
   
@@ -589,6 +625,15 @@ export function usePreloadTranslations() {
   return { preload };
 }
 
+/**
+ * Deprecated no-op hook that previously triggered loading of a translation namespace.
+ *
+ * This hook now performs no action because namespaces are loaded automatically.
+ *
+ * @param namespace - The namespace that would have been loaded; this parameter is ignored.
+ *
+ * @deprecated Namespaces are loaded automatically — calling this hook has no effect.
+ */
 export function useAutoLoadNamespace(namespace: string) {
   // 이미 초기화되어 있으므로 별도 로딩 불필요
   console.warn('useAutoLoadNamespace is deprecated. All namespaces are now loaded automatically.');

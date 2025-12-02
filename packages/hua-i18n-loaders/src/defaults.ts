@@ -4,6 +4,16 @@ import {
   TranslationRecord
 } from './types';
 
+/**
+ * Wraps a TranslationLoader to provide per-language/namespace default translations and merge them with remote results.
+ *
+ * Uses the entry from `defaults[language]?.[namespace]` as a fallback when the remote loader returns null/undefined/empty object or when the loader throws; when both fallback and remote translations exist, returns a deep-merged translation record where remote values override defaults.
+ *
+ * @param loader - The original TranslationLoader to wrap
+ * @param defaults - Mapping of language -> namespace -> default translations
+ * @returns A TranslationLoader that applies the described fallback and merge behavior
+ * @throws Re-throws the original loader error if the loader fails and no fallback is available
+ */
 export function withDefaultTranslations(
   loader: TranslationLoader,
   defaults: DefaultTranslations
@@ -36,6 +46,16 @@ export function withDefaultTranslations(
   };
 }
 
+/**
+ * Produces a merged TranslationRecord by applying keys from `override` onto `base`.
+ *
+ * When a key exists in both records and both values are plain objects, those objects
+ * are merged recursively; otherwise the value from `override` replaces the base value.
+ *
+ * @param base - The base translations to start from
+ * @param override - Translations that override or extend `base`
+ * @returns A new TranslationRecord containing the merged result
+ */
 function mergeTranslations(
   base: TranslationRecord,
   override: TranslationRecord
@@ -57,7 +77,12 @@ function mergeTranslations(
   return result;
 }
 
+/**
+ * Determines whether a value is a plain object (a non-null object that is not an array).
+ *
+ * @param value - The value to test
+ * @returns `true` if `value` is a non-null object and not an array, `false` otherwise.
+ */
 function isPlainObject(value: unknown): value is TranslationRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
-

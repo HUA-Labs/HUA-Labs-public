@@ -980,7 +980,16 @@ export class Translator implements TranslatorInterface {
   }
 }
 
-// SSR 번역 함수들
+/**
+ * Resolve a translation for a given key from SSR-provided translation data using the requested language and fallback.
+ *
+ * @param translations - Mapping of language codes to namespace objects containing translation keys and values
+ * @param key - Translation key, optionally prefixed with a namespace (e.g., "ns:some.key" or "some.key")
+ * @param language - Primary language code to look up (default: "ko")
+ * @param fallbackLanguage - Fallback language code to try if the primary language does not contain the key (default: "en")
+ * @param missingKeyHandler - Function invoked when a translation cannot be found; receives the original key and returns a fallback string
+ * @returns The resolved translated string if found in the specified language or the fallback language, otherwise the result of `missingKeyHandler(key)`
+ */
 export function ssrTranslate({
   translations,
   key,
@@ -1014,6 +1023,17 @@ export function ssrTranslate({
   return missingKeyHandler(key);
 }
 
+/**
+ * Look up a translation string for a given namespace and key in SSR-provided translations for a specific language.
+ *
+ * @param translations - Map of language codes to namespace dictionaries containing translation entries
+ * @param namespace - Namespace to search within
+ * @param key - Translation key (supports nested paths using dot notation)
+ * @param language - Primary language code to search
+ * @param fallbackLanguage - Fallback language code (accepted for API compatibility; not used by this helper)
+ * @param missingKeyHandler - Handler to produce a value for missing keys (accepted for API compatibility; not used by this helper)
+ * @returns The matched translation string from the specified language and namespace, or an empty string if not found
+ */
 function ssrFindInNamespace(
   translations: Record<string, Record<string, TranslationNamespace>>,
   namespace: string,
@@ -1043,6 +1063,16 @@ function ssrFindInNamespace(
   return '';
 }
 
+/**
+ * Resolve a dot-separated property path against a plain object.
+ *
+ * Traverses `obj` following keys in `path` (e.g. "a.b.c") and returns the found value.
+ * If `obj` is not a plain object, any intermediate value is missing, or an array is encountered, the function returns `undefined`.
+ *
+ * @param obj - The object to traverse
+ * @param path - Dot-separated property path
+ * @returns The value at the specified path, or `undefined` if not found
+ */
 function getNestedValue(obj: unknown, path: string): unknown {
   if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
     return undefined;
@@ -1057,12 +1087,22 @@ function getNestedValue(obj: unknown, path: string): unknown {
 }
 
 /**
- * 문자열 값인지 확인하는 타입 가드
+ * Determines whether a value is a non-empty string.
+ *
+ * @returns `true` if `value` is a string with length greater than zero, `false` otherwise.
  */
 function isStringValue(value: unknown): value is string {
   return typeof value === 'string' && value.length > 0;
 }
 
+/**
+ * Parse a translation identifier into its namespace and key parts.
+ *
+ * Recognizes either `namespace:key` or `namespace.key` formats; when no namespace delimiter is present, the namespace defaults to `"common"`.
+ *
+ * @param key - Translation identifier in the form `namespace:key`, `namespace.key`, or a bare key
+ * @returns An object with `namespace` set to the resolved namespace and `key` set to the remaining lookup key
+ */
 function parseKey(key: string): { namespace: string; key: string } {
   // : 구분자 우선 확인
   const colonIndex = key.indexOf(':');
@@ -1080,7 +1120,21 @@ function parseKey(key: string): { namespace: string; key: string } {
   return { namespace: 'common', key };
 }
 
-// 서버 번역 함수 (고급 기능 포함)
+/**
+ * Resolve a translation for a key using the provided server-side translations, applying fallback language lookup and optional caching, metrics, and debug logging.
+ *
+ * @param params - Function options.
+ * @param params.translations - Translation data organized by language (language -> namespaces -> keys/values).
+ * @param params.key - Translation key (may include namespace via colon or dot notation).
+ * @param params.language - Primary language code to use for lookup (default 'ko').
+ * @param params.fallbackLanguage - Fallback language code to use if the primary lookup fails (default 'en').
+ * @param params.missingKeyHandler - Function invoked when a key is missing; its return value is used as the translation.
+ * @param params.options - Optional runtime controls.
+ * @param params.options.cache - Optional Map<string, string> used to cache resolved translations keyed by `language:key`.
+ * @param params.options.metrics - Optional metrics object updated with `hits` and `misses`.
+ * @param params.options.debug - If true, enable simple console debug output.
+ * @returns The resolved translation string for the given key, or the value returned by `missingKeyHandler` when no translation is found.
+ */
 export function serverTranslate({
   translations,
   key,
@@ -1128,6 +1182,18 @@ export function serverTranslate({
   return result;
 }
 
+/**
+ * Lookup a translation string by key from the provided translations using the requested language, falling back to the fallback language.
+ *
+ * Searches the parsed namespace/key in `translations[language]` first and then in `translations[fallbackLanguage]` if not found.
+ *
+ * @param translations - Mapping of language codes to their namespace translation objects
+ * @param key - Translation key, which may include a namespace (e.g., "ns:some.key" or "some.key")
+ * @param language - Primary language code to search
+ * @param fallbackLanguage - Fallback language code to search if the primary language does not contain the key
+ * @param missingKeyHandler - Handler provided by caller (currently unused by this function)
+ * @returns The found translation string, or an empty string if no translation is found in either language
+ */
 function findInTranslations(
   translations: Record<string, unknown>,
   key: string,
@@ -1155,6 +1221,17 @@ function findInTranslations(
   return '';
 }
 
+/**
+ * Lookup a string translation for a given key inside a specific language namespace.
+ *
+ * Attempts a direct key match first, then resolves dot-separated nested paths within the namespace.
+ *
+ * @param translations - Translation data organized by language code to namespace objects.
+ * @param namespace - The namespace name to search within.
+ * @param key - The translation key or dot-separated path to a nested value.
+ * @param language - The language code to look up.
+ * @returns The translation string if found, or an empty string when the namespace, language, or key is missing or invalid.
+ */
 function findInNamespace(
   translations: Record<string, unknown>,
   namespace: string,

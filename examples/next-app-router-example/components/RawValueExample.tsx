@@ -9,6 +9,13 @@
 
 import { useTranslation } from '@hua-labs/i18n-core';
 
+/**
+ * Display array and object translation raw values returned by `getRawValue` in a simple example UI.
+ *
+ * Renders two sections ("Array Example" and "Object Example") that each show a list when the corresponding raw value is present; uses `currentLanguage` as the root element key.
+ *
+ * @returns A JSX element containing sections for the array and object examples; each section renders a list when its value exists.
+ */
 export function RawValueExample() {
   const { getRawValue, currentLanguage } = useTranslation();
 
@@ -48,4 +55,3 @@ export function RawValueExample() {
     </div>
   );
 }
-

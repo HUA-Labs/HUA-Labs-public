@@ -9,13 +9,11 @@ interface I18nProviderProps {
 }
 
 /**
- * i18n Provider 컴포넌트 (클라이언트 컴포넌트)
- * 
- * Next.js 15의 Server/Client Component 분리를 위해 클라이언트 컴포넌트로 분리되었습니다.
- * SSR에서 로드한 번역 데이터를 받아서 i18n Provider를 생성합니다.
- * 
- * @param children - 자식 컴포넌트
- * @param ssrTranslations - SSR에서 로드한 초기 번역 데이터
+ * Wraps `children` with a client-side i18n provider initialized from optional SSR translations.
+ *
+ * @param children - The React nodes to render inside the provider.
+ * @param ssrTranslations - Optional initial translations loaded during server-side rendering; keyed by locale and then by namespace.
+ * @returns A React element that renders the i18n provider around `children`.
  */
 export function I18nProvider({ children, ssrTranslations }: I18nProviderProps) {
   // useMemo를 사용하여 Provider 컴포넌트를 한 번만 생성
@@ -26,4 +24,3 @@ export function I18nProvider({ children, ssrTranslations }: I18nProviderProps) {
 
   return <I18nProviderComponent>{children}</I18nProviderComponent>;
 }
-

@@ -9,6 +9,13 @@
 
 import { useTranslation } from '@hua-labs/i18n-core';
 
+/**
+ * Renders a demo UI that displays translations from multiple namespaces.
+ *
+ * The root element uses the current language as its `key` so the component re-renders when the active language changes.
+ *
+ * @returns A React element containing sections that show translated strings from the `common` and `pages` namespaces
+ */
 export function MultipleNamespacesExample() {
   const { t, currentLanguage } = useTranslation();
 
@@ -33,4 +40,3 @@ export function MultipleNamespacesExample() {
     </div>
   );
 }
-

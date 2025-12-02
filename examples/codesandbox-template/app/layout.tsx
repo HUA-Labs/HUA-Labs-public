@@ -8,11 +8,13 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout component
- * 
- * Wraps the application with I18nProvider to enable translations.
- * suppressHydrationWarning is used to prevent hydration mismatches
- * when Zustand persist middleware loads language from localStorage.
+ * Root layout that sets the document language to Korean and wraps the app with I18nProvider.
+ *
+ * The layout applies `suppressHydrationWarning` to avoid hydration mismatches when a persisted
+ * language is loaded (for example from localStorage) and initializes the i18n provider with `"ko"`.
+ *
+ * @param children - The application content to render inside the i18n provider
+ * @returns The root HTML structure containing the I18nProvider-wrapped children
  */
 export default function RootLayout({
   children,
@@ -29,4 +31,3 @@ export default function RootLayout({
     </html>
   );
 }
-

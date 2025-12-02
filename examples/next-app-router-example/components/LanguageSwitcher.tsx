@@ -21,6 +21,13 @@ const languages: Array<{ code: SupportedLanguage; label: string; nativeName: str
   { code: 'fr', label: 'French', nativeName: 'Français' },
 ];
 
+/**
+ * Render a responsive language selector UI that updates the application's current language in the store.
+ *
+ * Renders a group of language buttons showing each language's native name; clicking a button updates the app language and highlights the active selection.
+ *
+ * @returns The JSX element for the language switcher component
+ */
 export function LanguageSwitcher() {
   const { language, setLanguage } = useAppStore();
   const { t } = useTranslation();
@@ -49,4 +56,3 @@ export function LanguageSwitcher() {
     </div>
   );
 }
-

@@ -42,7 +42,9 @@ export interface ZustandI18nAdapter {
 }
 
 /**
- * Zustand 스토어에서 어댑터 생성
+ * Create an adapter that exposes language access and change subscriptions from a Zustand language store.
+ *
+ * @returns An object with `getLanguage`, `setLanguage`, and `subscribe` methods for synchronizing language state with an i18n consumer.
  */
 function createZustandAdapter(
   store: UseBoundStore<StoreApi<ZustandLanguageStore>>
@@ -106,6 +108,15 @@ export interface ZustandI18nConfig {
   autoLanguageSync?: boolean;
 }
 
+/**
+ * Create a React provider component that integrates a Zustand language store with the i18n core and performs hydration-safe synchronization of language state.
+ *
+ * The returned provider renders the core i18n provider and keeps the i18n language in sync with the provided Zustand store after hydration, avoiding redundant updates and infinite loops.
+ *
+ * @param store - A Zustand store implementing the language state shape (ZustandLanguageStore).
+ * @param config - Optional configuration for the i18n provider and synchronization behavior.
+ * @returns A React component that accepts `{ children: React.ReactNode }` and provides i18n context synchronized with the Zustand store.
+ */
 export function createZustandI18n(
   store: UseBoundStore<StoreApi<ZustandLanguageStore>>,
   config?: ZustandI18nConfig
@@ -297,27 +308,10 @@ export function createZustandI18n(
 }
 
 /**
- * Zustand 스토어와 i18n-core를 통합하는 Hook
- * 
- * @param store - Zustand 스토어
- * @returns { language, setLanguage, t } - i18n 훅과 동일한 인터페이스
- * 
- * @example
- * ```tsx
- * import { useZustandI18n } from '@hua-labs/i18n-core-zustand';
- * import { useAppStore } from './store/useAppStore';
- * 
- * function MyComponent() {
- *   const { language, setLanguage, t } = useZustandI18n(useAppStore);
- *   
- *   return (
- *     <div>
- *       <p>{t('common:welcome')}</p>
- *       <button onClick={() => setLanguage('en')}>English</button>
- *     </div>
- *   );
- * }
- * ```
+ * Connects a Zustand language store to a React component, exposing the current language and a setter.
+ *
+ * @param store - A bound Zustand store implementing the `ZustandLanguageStore` shape (provides `language` and `setLanguage`)
+ * @returns An object with `language` (current language string) and `setLanguage` (function to change the language)
  */
 export function useZustandI18n(
   store: UseBoundStore<StoreApi<ZustandLanguageStore>>
@@ -344,4 +338,3 @@ export function useZustandI18n(
 }
 
 // 타입은 이미 위에서 export되었으므로 중복 export 제거
-

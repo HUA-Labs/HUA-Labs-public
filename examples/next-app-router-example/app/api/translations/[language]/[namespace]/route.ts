@@ -10,6 +10,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
+/**
+ * Serve translation JSON for a requested language and namespace.
+ *
+ * Validates `language` and `namespace`, loads the corresponding translation file
+ * from the repository's translations directory, and returns it with caching headers.
+ *
+ * @param params - Promise resolving to an object with `language` and `namespace`.
+ *                 `language` must be one of: `ko`, `en`, `ja`, `zh`, `es`, `fr`.
+ *                 `namespace` must be one of: `common`, `pages`, `examples`.
+ * @returns The JSON response containing the translation object on success; on error
+ *          returns a JSON object with an `error` message and an appropriate HTTP
+ *          status: 400 for unsupported language/namespace, 404 if the file is missing,
+ *          or 500 for other internal errors.
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ language: string; namespace: string }> }
@@ -71,4 +85,3 @@ export async function GET(
     );
   }
 }
-

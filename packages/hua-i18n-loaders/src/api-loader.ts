@@ -11,7 +11,12 @@ const defaultFetcher = (input: RequestInfo | URL, init?: RequestInit) =>
   fetch(input, init);
 
 /**
- * 재시도 가능한 에러인지 확인
+ * Determines whether an error should be considered retryable.
+ *
+ * Considers network-level failures and server/timeouts as retryable.
+ *
+ * @param error - The thrown value to evaluate; may be an Error, a response-like object with a `status` number, or any other value.
+ * @returns `true` if the error is likely transient and a retry may succeed (network errors, common fetch failure messages, HTTP 5xx, or 408), `false` otherwise.
  */
 function isRetryableError(error: unknown): boolean {
   // 네트워크 에러 (TypeError)
@@ -47,6 +52,21 @@ function isRetryableError(error: unknown): boolean {
   return false;
 }
 
+/**
+ * Creates a TranslationLoader that fetches translations from an HTTP API with optional caching, request deduplication, and retry behavior.
+ *
+ * @param options - Configuration for the loader. Recognized fields:
+ *   - translationApiPath: base path for the translations API (default "/api/translations")
+ *   - baseUrl: absolute URL prefix used on the server when building request URLs
+ *   - localFallbackBaseUrl: fallback server base URL when no env/baseUrl is provided (default "http://localhost:3000")
+ *   - cacheTtlMs: milliseconds to keep cached translations (default 5 minutes)
+ *   - disableCache: if true, disables in-memory caching
+ *   - fetcher: custom fetch-like function to perform requests
+ *   - requestInit: RequestInit object or a function (language, namespace) => RequestInit for per-call init
+ *   - logger: logger with optional warn method (defaults to console)
+ *   - retryCount: number of retry attempts for retryable errors (default 0)
+ *   - retryDelay: base delay in milliseconds for exponential backoff between retries (default 1000)
+ * @returns A TranslationLoader function that retrieves translation records for a given language and namespace; successful results are cached per language/namespace and concurrent requests for the same key are deduplicated.
 export function createApiTranslationLoader(
   options: ApiLoaderOptions = {}
 ): TranslationLoader {
@@ -196,4 +216,3 @@ export function createApiTranslationLoader(
 
   return loadTranslations;
 }
-

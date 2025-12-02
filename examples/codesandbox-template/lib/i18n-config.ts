@@ -37,16 +37,11 @@ const getSSRTranslations = async (language: SupportedLanguage) => {
 };
 
 /**
- * 클라이언트용 i18n Provider를 생성합니다.
- * 
- * @param store - Zustand store (language와 setLanguage 메서드 필요)
- * @param ssrTranslations - SSR에서 로드한 초기 번역 데이터 (선택사항)
- * @returns React Provider 컴포넌트
- * 
- * @example
- * ```tsx
- * const I18nProvider = createClientI18nProvider(useAppStore, ssrTranslations);
- * ```
+ * Create a client-side i18n React Provider bound to the given Zustand language store.
+ *
+ * @param store - Zustand store that exposes the current `language` and a `setLanguage` method
+ * @param ssrTranslations - Optional initial translations keyed by language and namespace (e.g. { [lang]: { [namespace]: { key: value } } })
+ * @returns A React Provider component that supplies translations and language controls using the provided store
  */
 export function createClientI18nProvider(
   store: typeof useAppStore,
@@ -72,13 +67,13 @@ export function createClientI18nProvider(
 }
 
 /**
- * SSR에서 번역 데이터를 로드합니다.
- * Next.js App Router의 서버 컴포넌트에서 사용합니다.
- * 
- * @param language - 로드할 언어 코드
- * @returns 번역 데이터 객체
+ * Load translation data for server-side rendering.
+ *
+ * Intended for use in Next.js App Router server components.
+ *
+ * @param language - Language code to load translations for
+ * @returns An object mapping the requested language to its namespace translations, e.g. `{ [language]: { common: Record<string, string> } }`
  */
 export async function loadSSRTranslations(language: SupportedLanguage = 'ko') {
   return await getSSRTranslations(language);
 }
-
