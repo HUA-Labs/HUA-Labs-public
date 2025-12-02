@@ -153,6 +153,48 @@ When changes are merged to main, the GitHub Action will automatically:
 - `pnpm release` - Publish packages to npm
 - `pnpm release:dry` - Dry run of the release process
 
+### Repository Synchronization
+
+This repository is synchronized with the main HUA Platform repository. Use the provided scripts to sync i18n packages:
+
+#### Sync to Main Repository
+
+Sync i18n packages from this public repository to the main private repository:
+
+**PowerShell (Windows):**
+```powershell
+.\scripts\sync-to-main-repo.ps1
+```
+
+**Bash (Linux/Mac):**
+```bash
+./scripts/sync-to-main-repo.sh
+```
+
+**Dry Run (preview changes without applying):**
+```powershell
+.\scripts\sync-to-main-repo.ps1 -DryRun
+```
+
+The script will:
+- Copy `hua-i18n-core`, `hua-i18n-core-zustand`, and `hua-i18n-loaders` packages
+- Sync source files, configuration, and documentation
+- Exclude build artifacts (`dist` folder)
+
+#### Branch Cleanup
+
+Clean up branches, keeping only `main` and `develop`:
+
+**PowerShell (Windows):**
+```powershell
+.\scripts\cleanup-branches.ps1
+```
+
+**Force mode (skip confirmation):**
+```powershell
+.\scripts\cleanup-branches.ps1 -Force
+```
+
 ## License
 
 MIT License - see [LICENSE](./LICENSE) file for details.
