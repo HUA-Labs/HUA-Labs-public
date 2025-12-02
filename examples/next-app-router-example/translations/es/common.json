@@ -1,0 +1,13 @@
+{
+  "welcome": "Bienvenido",
+  "language": "Idioma",
+  "switchLanguage": "Cambiar idioma",
+  "description": "Este ejemplo demuestra la implementación de traducción SSR/CSR en Next.js App Router usando @hua-labs/i18n-core.",
+  "features": "Características principales",
+  "feature1": "Carga de traducción SSR",
+  "feature2": "Cambio de idioma del cliente",
+  "feature3": "Integración con Zustand",
+  "feature4": "Soporte de múltiples espacios de nombres",
+  "feature5": "Uso de getRawValue (matrices/objetos)"
+}
+

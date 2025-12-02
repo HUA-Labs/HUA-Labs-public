@@ -1,0 +1,13 @@
+{
+  "welcome": "欢迎",
+  "language": "语言",
+  "switchLanguage": "切换语言",
+  "description": "此示例演示了使用@hua-labs/i18n-core在Next.js App Router中实现SSR/CSR翻译。",
+  "features": "主要功能",
+  "feature1": "SSR翻译加载",
+  "feature2": "客户端语言切换",
+  "feature3": "Zustand集成",
+  "feature4": "多命名空间支持",
+  "feature5": "getRawValue使用（数组/对象）"
+}
+

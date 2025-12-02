@@ -130,8 +130,14 @@ temp/
 **/.local/
 
 # Documentation (internal use only)
+# Note: packages/*/docs/ are public and should be committed
 docs/
-**/docs/
+# Exclude root docs/ but allow packages/*/docs/
+!/packages/*/docs/
+
+# Internal deployment and checklist files
+DEPLOYMENT_FINAL_CHECKLIST.md
+**/DEPLOYMENT_FINAL_CHECKLIST.md
 
 # npm configuration
 *.npmrc

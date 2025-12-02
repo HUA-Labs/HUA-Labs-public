@@ -1,0 +1,58 @@
+{
+  "name": "@hua-labs/i18n-loaders",
+  "version": "0.1.0",
+  "description": "Production-ready loaders, caching, and preloading helpers for @hua-labs/i18n-core.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "echo \"No tests defined\"",
+    "lint": "echo 'Skipping lint for hua-i18n-loaders (TypeScript only, linted by tsc)'",
+    "type-check": "tsc --noEmit"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@hua-labs/i18n-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.2.7",
+    "eslint": "^8.0.0",
+    "react": "^19.2.0",
+    "typescript": "^5.8.3"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "loader",
+    "preload",
+    "cache"
+  ],
+  "author": "HUA Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HUA-Labs/HUA-Labs-public.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
+  },
+  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
+}
+

@@ -1,0 +1,12 @@
+{
+  "welcome": "Welcome",
+  "language": "Language",
+  "switchLanguage": "Switch Language",
+  "description": "This demo uses @hua-labs/i18n-core to display translations without flickering when switching languages.",
+  "features": "Key Features",
+  "feature1": "Zero flickering on language change",
+  "feature2": "Full SSR/CSR support",
+  "feature3": "Zustand integration",
+  "feature4": "Small bundle size (~2.8KB)"
+    }
+

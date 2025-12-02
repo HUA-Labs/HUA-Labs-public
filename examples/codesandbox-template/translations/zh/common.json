@@ -1,0 +1,12 @@
+{
+  "welcome": "欢迎",
+  "language": "语言",
+  "switchLanguage": "切换语言",
+  "description": "此演示使用@hua-labs/i18n-core在切换语言时无闪烁地显示翻译。",
+  "features": "主要功能",
+  "feature1": "无闪烁的语言切换",
+  "feature2": "完整的SSR/CSR支持",
+  "feature3": "Zustand集成",
+  "feature4": "小包大小（~2.8KB）"
+}
+

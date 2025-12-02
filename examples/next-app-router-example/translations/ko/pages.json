@@ -1,0 +1,11 @@
+{
+  "home": {
+    "title": "홈",
+    "description": "홈 페이지입니다"
+  },
+  "about": {
+    "title": "소개",
+    "description": "소개 페이지입니다"
+  }
+}
+
