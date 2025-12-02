@@ -11,6 +11,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "type-check": "turbo run type-check",
     "clean": "turbo run clean",
     "publish": "turbo run publish",
     "version": "changeset version",
@@ -19,10 +20,11 @@
   },
   "devDependencies": {
     "changesets": "^1.0.2",
-    "turbo": "^1.10.0",
-    "@changesets/cli": "^2.29.5"
+    "turbo": "^2.5.8",
+    "@changesets/cli": "^2.29.5",
+    "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=18.0.0"
   },

@@ -27,7 +27,7 @@ jobs:
       - name: Setup PNPM # PNPM 설치
         uses: pnpm/action-setup@v2
         with:
-          version: 10.14.0 # 최신 pnpm 버전
+          version: 10.24.0 # 최신 pnpm 버전
 
       - name: Install dependencies # 프로젝트 종속성 설치
         run: pnpm install --no-frozen-lockfile # lockfile 호환성 문제 해결
