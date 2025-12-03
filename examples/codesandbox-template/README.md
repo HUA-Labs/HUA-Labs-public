@@ -2,46 +2,52 @@
 
 This is a live demo of [@hua-labs/i18n-core](https://github.com/HUA-Labs/HUA-Labs-public) showing zero-flickering language switching with SSR/CSR support.
 
-> **Note**: This template uses `workspace:*` protocol for local monorepo testing. For npm usage, see [SETUP_BEFORE_NPM.md](./SETUP_BEFORE_NPM.md).
+> **Note**: This template uses npm packages `@hua-labs/i18n-core@^1.0.0` and `@hua-labs/i18n-core-zustand@^1.0.0`.
 
 ## Features Demonstrated
 
-- ✅ **Zero flickering**: Translations update instantly without flickering
-- ✅ **SSR/CSR support**: Works seamlessly with Next.js App Router
-- ✅ **Zustand integration**: Automatic language synchronization via `@hua-labs/i18n-core-zustand`
-- ✅ **6 Languages**: Support for Korean, English, Japanese, Chinese, Spanish, and French
-- ✅ **Smooth animations**: Beautiful fade-in transitions when switching languages
-- ✅ **JSON-based translations**: Easy to add new languages by adding JSON files
-- ✅ **Type-safe**: Full TypeScript support
-- ✅ **Persistent storage**: Language preference saved in localStorage
+- **Zero flickering**: Translations update instantly without flickering
+- **SSR/CSR support**: Works seamlessly with Next.js App Router
+- **Zustand integration**: Automatic language synchronization via `@hua-labs/i18n-core-zustand`
+- **6 Languages**: Support for Korean, English, Japanese, Chinese, Spanish, and French
+- **Smooth animations**: Beautiful fade-in transitions when switching languages
+- **JSON-based translations**: Easy to add new languages by adding JSON files
+- **Type-safe**: Full TypeScript support
+- **Persistent storage**: Language preference saved in localStorage
 
 ## Quick Start
 
-### Local Development (Monorepo)
+### Local Development
 
 ```bash
 # Install dependencies
+npm install
+# or
 pnpm install
+# or
+yarn install
 
 # Run development server
+npm run dev
+# or
 pnpm run dev
+# or
+yarn dev
 ```
 
 Visit `http://localhost:3000` and try switching languages!
 
-### After npm Publication
+### CodeSandbox
 
-Once packages are published to npm, update `package.json`:
+This template is ready for CodeSandbox deployment:
 
-```json
-{
-  "dependencies": {
-    "@hua-labs/i18n-core": "^1.0.0",
-    "@hua-labs/i18n-core-zustand": "^1.0.0",
-    "zustand": "^4.5.0"
-  }
-}
-```
+1. Go to [CodeSandbox](https://codesandbox.io)
+2. Click **"Import from GitHub"**
+3. Repository: `HUA-Labs/HUA-Labs-public`
+4. Directory: `examples/codesandbox-template`
+5. Click **"Import"**
+
+The template will automatically install npm packages and start the development server.
 
 ## How It Works
 
@@ -160,27 +166,30 @@ Example for German (de):
 }
 ```
 
-## 🚢 Deployment
+## Deployment
 
-This template can be deployed to CodeSandbox after npm packages are published. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+This template is ready for CodeSandbox deployment.
+
+### CodeSandbox Deployment
+
+1. Go to [CodeSandbox](https://codesandbox.io)
+2. Click **"Import from GitHub"**
+3. Repository: `HUA-Labs/HUA-Labs-public`
+4. Directory: `examples/codesandbox-template`
+5. Click **"Import"**
+
+The template will automatically install npm packages and start the development server.
 
 ### Current Status
 
-- ✅ Template structure complete
-- ✅ 6 languages supported
-- ✅ Animations implemented
-- ⏳ Waiting for npm package release
-
-### After npm Release
-
-1. Update `package.json` with npm package versions
-2. Upload to CodeSandbox
-3. Share the public link
+- Template structure complete
+- 6 languages supported
+- Animations implemented
+- npm packages published and ready
 
 ## Learn More
 
 - [Core Package Documentation](../../packages/hua-i18n-core/README.md)
 - [Zustand Adapter Documentation](../../packages/hua-i18n-core-zustand/README.md)
 - [GitHub Repository](https://github.com/HUA-Labs/HUA-Labs-public)
-- [Deployment Guide](./DEPLOYMENT.md)
 

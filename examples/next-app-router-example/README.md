@@ -2,19 +2,19 @@
 
 Complete example project demonstrating `@hua-labs/i18n-core` integration with Next.js 15 App Router.
 
-## 🚀 Features
+## Features
 
 This example demonstrates:
 
-- ✅ **SSR Translation Loading**: Server-side translation loading for optimal performance
-- ✅ **Client Language Switching**: Seamless language switching without flickering
-- ✅ **Zustand Integration**: State management integration with `@hua-labs/i18n-core-zustand`
-- ✅ **Multiple Languages**: Support for 6 languages (Korean, English, Japanese, Chinese, Spanish, French)
-- ✅ **Multiple Namespaces**: Using multiple translation namespaces (common, pages, examples)
-- ✅ **getRawValue Usage**: Accessing arrays and objects from translation files
-- ✅ **API Loader**: Production-ready API-based translation loading with caching
+- **SSR Translation Loading**: Server-side translation loading for optimal performance
+- **Client Language Switching**: Seamless language switching without flickering
+- **Zustand Integration**: State management integration with `@hua-labs/i18n-core-zustand`
+- **Multiple Languages**: Support for 6 languages (Korean, English, Japanese, Chinese, Spanish, French)
+- **Multiple Namespaces**: Using multiple translation namespaces (common, pages, examples)
+- **getRawValue Usage**: Accessing arrays and objects from translation files
+- **API Loader**: Production-ready API-based translation loading with caching
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Install dependencies
@@ -25,16 +25,11 @@ npm install
 yarn install
 ```
 
-## 🏃 Running the Example
+## Running the Example
 
 ### Prerequisites
 
-This example uses `workspace:*` protocol for local monorepo development. Make sure you're in the monorepo root and have installed all dependencies:
-
-```bash
-# From monorepo root
-pnpm install
-```
+This example uses npm packages `@hua-labs/i18n-core@^1.0.0`, `@hua-labs/i18n-core-zustand@^1.0.0`, and `@hua-labs/i18n-loaders@^1.0.0`.
 
 ### Start Development Server
 
@@ -53,12 +48,12 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 Try switching between different languages using the language switcher:
-- 🇰🇷 한국어 (Korean)
-- 🇺🇸 English
-- 🇯🇵 日本語 (Japanese)
-- 🇨🇳 中文 (Chinese)
-- 🇪🇸 Español (Spanish)
-- 🇫🇷 Français (French)
+- 한국어 (Korean)
+- English
+- 日本語 (Japanese)
+- 中文 (Chinese)
+- Español (Spanish)
+- Français (French)
 
 ### Build for Production
 
@@ -106,7 +101,7 @@ next-app-router-example/
 └── package.json
 ```
 
-## 🎯 Key Implementation Details
+## Key Implementation Details
 
 ### 1. SSR Translation Loading
 
@@ -204,7 +199,7 @@ const arrayExample = getRawValue('examples:arrayExample') as string[];
 const objectExample = getRawValue('examples:objectExample') as Record<string, string>;
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Translation Files
 
@@ -225,15 +220,15 @@ The translation API route is at `app/api/translations/[language]/[namespace]/rou
 - Loads translations from file system
 - Returns cached responses with proper headers
 
-## 📚 Learn More
+## Learn More
 
 - [@hua-labs/i18n-core Documentation](../../packages/hua-i18n-core/README.md)
 - [@hua-labs/i18n-core-zustand Documentation](../../packages/hua-i18n-core-zustand/README.md)
 - [@hua-labs/i18n-loaders Documentation](../../packages/hua-i18n-loaders/README.md)
 
-## 🚢 Deployment
+## Deployment
 
-This example is ready for deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+This example is ready for deployment on Vercel.
 
 ### Quick Deploy
 
@@ -242,7 +237,7 @@ This example is ready for deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT
 3. Set Root Directory to `examples/next-app-router-example`
 4. Deploy!
 
-The example includes all necessary configuration for production deployment.
+The example includes all necessary configuration for production deployment (`vercel.json` is already configured).
 
 ### Live Demo
 
@@ -253,7 +248,7 @@ Once deployed, the demo will be available at your Vercel URL. The demo showcases
 - Multiple namespaces
 - API-based translation loading
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Type Errors
 
@@ -302,7 +297,7 @@ If port 3000 is in use, Next.js will automatically use the next available port (
 - Check the terminal output for the actual port number
 - Or specify a custom port: `pnpm dev -- -p 3002`
 
-## 📝 License
+## License
 
 MIT
 
