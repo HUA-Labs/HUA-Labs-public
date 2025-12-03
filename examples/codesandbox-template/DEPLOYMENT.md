@@ -34,9 +34,10 @@
 
 ## 현재 상태
 
-현재는 `workspace:*` 프로토콜을 사용하므로:
-- 모노레포 내에서만 작동
-- CodeSandbox 배포는 npm 패키지 배포 후 가능
+✅ **npm 패키지 배포 완료**
+- `@hua-labs/i18n-core@^1.0.0`
+- `@hua-labs/i18n-core-zustand@^1.0.0`
+- CodeSandbox에서 바로 사용 가능
 
 ## 배포 후 확인
 

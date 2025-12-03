@@ -2,7 +2,7 @@
 
 This is a live demo of [@hua-labs/i18n-core](https://github.com/HUA-Labs/HUA-Labs-public) showing zero-flickering language switching with SSR/CSR support.
 
-> **Note**: This template uses `workspace:*` protocol for local monorepo testing. For npm usage, see [SETUP_BEFORE_NPM.md](./SETUP_BEFORE_NPM.md).
+> **Note**: This template uses npm packages `@hua-labs/i18n-core@^1.0.0` and `@hua-labs/i18n-core-zustand@^1.0.0`.
 
 ## Features Demonstrated
 
@@ -17,31 +17,37 @@ This is a live demo of [@hua-labs/i18n-core](https://github.com/HUA-Labs/HUA-Lab
 
 ## Quick Start
 
-### Local Development (Monorepo)
+### Local Development
 
 ```bash
 # Install dependencies
+npm install
+# or
 pnpm install
+# or
+yarn install
 
 # Run development server
+npm run dev
+# or
 pnpm run dev
+# or
+yarn dev
 ```
 
 Visit `http://localhost:3000` and try switching languages!
 
-### After npm Publication
+### CodeSandbox
 
-Once packages are published to npm, update `package.json`:
+This template is ready for CodeSandbox deployment:
 
-```json
-{
-  "dependencies": {
-    "@hua-labs/i18n-core": "^1.0.0",
-    "@hua-labs/i18n-core-zustand": "^1.0.0",
-    "zustand": "^4.5.0"
-  }
-}
-```
+1. Go to [CodeSandbox](https://codesandbox.io)
+2. Click **"Import from GitHub"**
+3. Repository: `HUA-Labs/HUA-Labs-public`
+4. Directory: `examples/codesandbox-template`
+5. Click **"Import"**
+
+The template will automatically install npm packages and start the development server.
 
 ## How It Works
 
