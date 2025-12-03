@@ -166,8 +166,11 @@ Sync i18n packages from this public repository to the main private repository:
 # Main repository path is required
 .\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo"
 
+# Example: Sync to HUA-platform repository
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform"
+
 # Dry run (preview changes without applying)
-.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo" -DryRun
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform" -DryRun
 ```
 
 **Bash (Linux/Mac):**
@@ -175,8 +178,15 @@ Sync i18n packages from this public repository to the main private repository:
 # Main repository path is required
 MAIN_REPO_PATH="/path/to/main/repo" ./scripts/sync-to-main-repo.sh
 
+# Example: Sync to HUA-platform repository
+MAIN_REPO_PATH="$HOME/projects/HUA-platform" ./scripts/sync-to-main-repo.sh
+
 # Dry run
-MAIN_REPO_PATH="/path/to/main/repo" DRY_RUN=true ./scripts/sync-to-main-repo.sh
+MAIN_REPO_PATH="$HOME/projects/HUA-platform" DRY_RUN=true ./scripts/sync-to-main-repo.sh
+
+# Using environment variables
+export MAIN_REPO_PATH="$HOME/projects/HUA-platform"
+./scripts/sync-to-main-repo.sh
 ```
 
 The script will:

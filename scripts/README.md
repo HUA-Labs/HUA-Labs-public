@@ -37,6 +37,37 @@ MAIN_REPO_PATH="/path/to/main/repo" DRY_RUN=true ./scripts/sync-to-main-repo.sh
 MAIN_REPO_PATH="/path/to/main/repo" PUBLIC_REPO_PATH="/path/to/public/repo" ./scripts/sync-to-main-repo.sh
 ```
 
+**실제 사용 예시:**
+
+**PowerShell (Windows):**
+```powershell
+# 예시 1: 기본 사용 (메인 레포 경로만 지정)
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform"
+
+# 예시 2: Dry run으로 미리 확인
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform" -DryRun
+
+# 예시 3: 두 레포 경로 모두 지정
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform" -PublicRepoPath "C:\dev\HUA-Labs-public"
+```
+
+**Bash (Linux/Mac):**
+```bash
+# 예시 1: 기본 사용
+MAIN_REPO_PATH="$HOME/projects/HUA-platform" ./scripts/sync-to-main-repo.sh
+
+# 예시 2: Dry run으로 미리 확인
+MAIN_REPO_PATH="$HOME/projects/HUA-platform" DRY_RUN=true ./scripts/sync-to-main-repo.sh
+
+# 예시 3: 두 레포 경로 모두 지정
+MAIN_REPO_PATH="$HOME/projects/HUA-platform" PUBLIC_REPO_PATH="$HOME/projects/HUA-Labs-public" ./scripts/sync-to-main-repo.sh
+
+# 예시 4: 환경 변수로 설정 후 사용
+export MAIN_REPO_PATH="$HOME/projects/HUA-platform"
+export PUBLIC_REPO_PATH="$HOME/projects/HUA-Labs-public"
+./scripts/sync-to-main-repo.sh
+```
+
 **동기화 대상:**
 - `packages/hua-i18n-core`
 - `packages/hua-i18n-core-zustand`
