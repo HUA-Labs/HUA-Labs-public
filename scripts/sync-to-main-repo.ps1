@@ -2,8 +2,9 @@
 # 사용법: .\scripts\sync-to-main-repo.ps1
 
 param(
-    [string]$MainRepoPath = "C:\hua",
-    [string]$PublicRepoPath = "C:\HUA-Labs-public",
+    [Parameter(Mandatory=$true)]
+    [string]$MainRepoPath,
+    [string]$PublicRepoPath = $PSScriptRoot + "\..",
     [switch]$DryRun = $false
 )
 

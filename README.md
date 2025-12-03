@@ -163,17 +163,20 @@ Sync i18n packages from this public repository to the main private repository:
 
 **PowerShell (Windows):**
 ```powershell
-.\scripts\sync-to-main-repo.ps1
+# Main repository path is required
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo"
+
+# Dry run (preview changes without applying)
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo" -DryRun
 ```
 
 **Bash (Linux/Mac):**
 ```bash
-./scripts/sync-to-main-repo.sh
-```
+# Main repository path is required
+MAIN_REPO_PATH="/path/to/main/repo" ./scripts/sync-to-main-repo.sh
 
-**Dry Run (preview changes without applying):**
-```powershell
-.\scripts\sync-to-main-repo.ps1 -DryRun
+# Dry run
+MAIN_REPO_PATH="/path/to/main/repo" DRY_RUN=true ./scripts/sync-to-main-repo.sh
 ```
 
 The script will:

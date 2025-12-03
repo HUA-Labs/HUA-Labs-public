@@ -4,8 +4,14 @@
 
 set -e
 
-MAIN_REPO_PATH="${MAIN_REPO_PATH:-$HOME/hua}"
-PUBLIC_REPO_PATH="${PUBLIC_REPO_PATH:-$(pwd)}"
+# 필수 파라미터 확인
+if [ -z "$MAIN_REPO_PATH" ]; then
+    echo "Error: MAIN_REPO_PATH environment variable is required"
+    echo "Usage: MAIN_REPO_PATH=/path/to/main/repo ./scripts/sync-to-main-repo.sh"
+    exit 1
+fi
+
+PUBLIC_REPO_PATH="${PUBLIC_REPO_PATH:-$(cd "$(dirname "$0")/.." && pwd)}"
 DRY_RUN="${DRY_RUN:-false}"
 
 # 색상 출력

@@ -12,14 +12,14 @@
 
 **PowerShell (Windows):**
 ```powershell
-# 기본 실행
-.\scripts\sync-to-main-repo.ps1
+# 메인 레포 경로 필수 지정
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo"
 
 # Dry run (변경사항 미리보기)
-.\scripts\sync-to-main-repo.ps1 -DryRun
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo" -DryRun
 
-# 메인 레포 경로 지정
-.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\custom\path"
+# 퍼블릭 레포 경로도 지정 (기본값: 스크립트 상위 디렉토리)
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\path\to\main\repo" -PublicRepoPath "C:\path\to\public\repo"
 ```
 
 **Bash (Linux/Mac):**
@@ -27,14 +27,14 @@
 # 실행 권한 부여 (최초 1회)
 chmod +x scripts/sync-to-main-repo.sh
 
-# 기본 실행
-./scripts/sync-to-main-repo.sh
+# 메인 레포 경로 필수 지정
+MAIN_REPO_PATH="/path/to/main/repo" ./scripts/sync-to-main-repo.sh
 
 # Dry run
-DRY_RUN=true ./scripts/sync-to-main-repo.sh
+MAIN_REPO_PATH="/path/to/main/repo" DRY_RUN=true ./scripts/sync-to-main-repo.sh
 
-# 메인 레포 경로 지정
-MAIN_REPO_PATH="/path/to/hua" ./scripts/sync-to-main-repo.sh
+# 퍼블릭 레포 경로도 지정 (기본값: 스크립트 상위 디렉토리)
+MAIN_REPO_PATH="/path/to/main/repo" PUBLIC_REPO_PATH="/path/to/public/repo" ./scripts/sync-to-main-repo.sh
 ```
 
 **동기화 대상:**
