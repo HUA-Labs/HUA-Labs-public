@@ -138,6 +138,16 @@ docs/
 # Internal deployment and checklist files
 DEPLOYMENT_FINAL_CHECKLIST.md
 **/DEPLOYMENT_FINAL_CHECKLIST.md
+**/DEPLOYMENT.md
+**/SETUP_BEFORE_NPM.md
+**/HOW_TO_USE.md
+**/CODESANDBOX_GUIDE.md
+**/CODESANDBOX_QUICK_START.md
+**/QUICK_START.md
+
+# Temporary package.json files
+**/package.json.with-npm
+**/*.with-npm
 
 # npm configuration
 *.npmrc

@@ -6,14 +6,14 @@ This is a live demo of [@hua-labs/i18n-core](https://github.com/HUA-Labs/HUA-Lab
 
 ## Features Demonstrated
 
-- ✅ **Zero flickering**: Translations update instantly without flickering
-- ✅ **SSR/CSR support**: Works seamlessly with Next.js App Router
-- ✅ **Zustand integration**: Automatic language synchronization via `@hua-labs/i18n-core-zustand`
-- ✅ **6 Languages**: Support for Korean, English, Japanese, Chinese, Spanish, and French
-- ✅ **Smooth animations**: Beautiful fade-in transitions when switching languages
-- ✅ **JSON-based translations**: Easy to add new languages by adding JSON files
-- ✅ **Type-safe**: Full TypeScript support
-- ✅ **Persistent storage**: Language preference saved in localStorage
+- **Zero flickering**: Translations update instantly without flickering
+- **SSR/CSR support**: Works seamlessly with Next.js App Router
+- **Zustand integration**: Automatic language synchronization via `@hua-labs/i18n-core-zustand`
+- **6 Languages**: Support for Korean, English, Japanese, Chinese, Spanish, and French
+- **Smooth animations**: Beautiful fade-in transitions when switching languages
+- **JSON-based translations**: Easy to add new languages by adding JSON files
+- **Type-safe**: Full TypeScript support
+- **Persistent storage**: Language preference saved in localStorage
 
 ## Quick Start
 
@@ -166,16 +166,16 @@ Example for German (de):
 }
 ```
 
-## 🚢 Deployment
+## Deployment
 
 This template can be deployed to CodeSandbox after npm packages are published. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 
 ### Current Status
 
-- ✅ Template structure complete
-- ✅ 6 languages supported
-- ✅ Animations implemented
-- ⏳ Waiting for npm package release
+- Template structure complete
+- 6 languages supported
+- Animations implemented
+- npm packages published and ready
 
 ### After npm Release
 
