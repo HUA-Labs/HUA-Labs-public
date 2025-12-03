@@ -37,6 +37,43 @@ MAIN_REPO_PATH="/path/to/main/repo" DRY_RUN=true ./scripts/sync-to-main-repo.sh
 MAIN_REPO_PATH="/path/to/main/repo" PUBLIC_REPO_PATH="/path/to/public/repo" ./scripts/sync-to-main-repo.sh
 ```
 
+**변수 샘플 (복사해서 사용):**
+
+**PowerShell (Windows):**
+```powershell
+# 변수 설정
+$MainRepoPath = "C:\dev\HUA-platform"
+$PublicRepoPath = "C:\dev\HUA-Labs-public"  # 선택사항
+
+# 실행
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath $MainRepoPath
+.\scripts\sync-to-main-repo.ps1 -MainRepoPath $MainRepoPath -DryRun
+```
+
+또는 예시 파일 사용:
+```powershell
+# scripts/sync-to-main-repo.example.ps1 파일을 복사해서 경로 수정 후 사용
+```
+
+**Bash (Linux/Mac):**
+```bash
+# 변수 설정
+export MAIN_REPO_PATH="$HOME/projects/HUA-platform"
+export PUBLIC_REPO_PATH="$HOME/projects/HUA-Labs-public"  # 선택사항
+export DRY_RUN="false"  # 또는 "true" (미리보기)
+
+# 실행
+./scripts/sync-to-main-repo.sh
+```
+
+또는 예시 파일 사용:
+```bash
+# scripts/sync-to-main-repo.example.sh 파일을 복사해서 경로 수정 후 사용
+chmod +x sync-to-main-repo.example.sh
+source sync-to-main-repo.example.sh
+./scripts/sync-to-main-repo.sh
+```
+
 **실제 사용 예시:**
 
 **PowerShell (Windows):**

@@ -1,6 +1,15 @@
 #!/bin/bash
 # HUA-Labs-public에서 HUA-platform으로 i18n 패키지 동기화 스크립트
 # 사용법: ./scripts/sync-to-main-repo.sh
+#
+# 변수 샘플 (아래 주석을 해제하고 경로를 수정하세요):
+# export MAIN_REPO_PATH="$HOME/projects/HUA-platform"
+# export PUBLIC_REPO_PATH="$HOME/projects/HUA-Labs-public"
+# export DRY_RUN="false"
+#
+# 사용 예시:
+# MAIN_REPO_PATH="$HOME/projects/HUA-platform" ./scripts/sync-to-main-repo.sh
+# MAIN_REPO_PATH="$HOME/projects/HUA-platform" DRY_RUN=true ./scripts/sync-to-main-repo.sh
 
 set -e
 
@@ -8,6 +17,9 @@ set -e
 if [ -z "$MAIN_REPO_PATH" ]; then
     echo "Error: MAIN_REPO_PATH environment variable is required"
     echo "Usage: MAIN_REPO_PATH=/path/to/main/repo ./scripts/sync-to-main-repo.sh"
+    echo ""
+    echo "Example:"
+    echo "  MAIN_REPO_PATH=\"\$HOME/projects/HUA-platform\" ./scripts/sync-to-main-repo.sh"
     exit 1
 fi
 

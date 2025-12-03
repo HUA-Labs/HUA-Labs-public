@@ -1,5 +1,13 @@
 # HUA-Labs-public에서 HUA-platform으로 i18n 패키지 동기화 스크립트
 # 사용법: .\scripts\sync-to-main-repo.ps1
+#
+# 변수 샘플 (아래 주석을 해제하고 경로를 수정하세요):
+# $MainRepoPath = "C:\dev\HUA-platform"
+# $PublicRepoPath = "C:\dev\HUA-Labs-public"
+#
+# 사용 예시:
+# .\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform"
+# .\scripts\sync-to-main-repo.ps1 -MainRepoPath "C:\dev\HUA-platform" -DryRun
 
 param(
     [Parameter(Mandatory=$true)]
