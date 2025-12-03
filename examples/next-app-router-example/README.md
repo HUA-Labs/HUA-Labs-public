@@ -29,12 +29,7 @@ yarn install
 
 ### Prerequisites
 
-This example uses `workspace:*` protocol for local monorepo development. Make sure you're in the monorepo root and have installed all dependencies:
-
-```bash
-# From monorepo root
-pnpm install
-```
+This example uses npm packages `@hua-labs/i18n-core@^1.0.0`, `@hua-labs/i18n-core-zustand@^1.0.0`, and `@hua-labs/i18n-loaders@^1.0.0`.
 
 ### Start Development Server
 

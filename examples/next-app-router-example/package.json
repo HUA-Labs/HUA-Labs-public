@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hua-labs/i18n-core": "workspace:*",
-    "@hua-labs/i18n-core-zustand": "workspace:*",
-    "@hua-labs/i18n-loaders": "workspace:*",
+    "@hua-labs/i18n-core": "^1.0.0",
+    "@hua-labs/i18n-core-zustand": "^1.0.0",
+    "@hua-labs/i18n-loaders": "^1.0.0",
     "next": "^15.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
