@@ -228,7 +228,7 @@ The translation API route is at `app/api/translations/[language]/[namespace]/rou
 
 ## Deployment
 
-This example is ready for deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+This example is ready for deployment on Vercel.
 
 ### Quick Deploy
 
@@ -237,7 +237,7 @@ This example is ready for deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT
 3. Set Root Directory to `examples/next-app-router-example`
 4. Deploy!
 
-The example includes all necessary configuration for production deployment.
+The example includes all necessary configuration for production deployment (`vercel.json` is already configured).
 
 ### Live Demo
 

@@ -168,7 +168,17 @@ Example for German (de):
 
 ## Deployment
 
-This template can be deployed to CodeSandbox after npm packages are published. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+This template is ready for CodeSandbox deployment.
+
+### CodeSandbox Deployment
+
+1. Go to [CodeSandbox](https://codesandbox.io)
+2. Click **"Import from GitHub"**
+3. Repository: `HUA-Labs/HUA-Labs-public`
+4. Directory: `examples/codesandbox-template`
+5. Click **"Import"**
+
+The template will automatically install npm packages and start the development server.
 
 ### Current Status
 
@@ -177,16 +187,9 @@ This template can be deployed to CodeSandbox after npm packages are published. S
 - Animations implemented
 - npm packages published and ready
 
-### After npm Release
-
-1. Update `package.json` with npm package versions
-2. Upload to CodeSandbox
-3. Share the public link
-
 ## Learn More
 
 - [Core Package Documentation](../../packages/hua-i18n-core/README.md)
 - [Zustand Adapter Documentation](../../packages/hua-i18n-core-zustand/README.md)
 - [GitHub Repository](https://github.com/HUA-Labs/HUA-Labs-public)
-- [Deployment Guide](./DEPLOYMENT.md)
 
