@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import yaml from 'yaml';
 import fs from 'fs';
 
 export interface EmotionWords {
@@ -10,6 +10,6 @@ export interface EmotionWords {
 
 export function loadEmotionWords(): EmotionWords {
   const file = fs.readFileSync('src/config/emotion-words.yml', 'utf8');
-  const data = yaml.load(file) as { emotion_words: EmotionWords };
+  const data = yaml.parse(file) as { emotion_words: EmotionWords };
   return data.emotion_words;
 } 
