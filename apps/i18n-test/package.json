@@ -13,7 +13,7 @@
     "@hua-labs/i18n-beginner": "workspace:*",
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-debug": "workspace:*",
-    "next": "16.0.7",
+    "next": "16.0.10",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },
