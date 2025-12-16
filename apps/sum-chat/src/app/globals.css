@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "@tailwindcss/typography";
-@import '@hua-labs/ui/styles/toast.css';
+@plugin "@tailwindcss/typography";
+@import '../../../../packages/hua-ui/src/styles/toast.css';
 
 @layer base {
   :root {
