@@ -13,6 +13,7 @@
 4. [환경 설정 패턴](./environment-setup.md)
 5. [코드 품질 패턴](./code-quality.md)
 6. [배포 패턴](./deployment.md)
+7. [Next.js 15 런타임 에러 패턴](./nextjs-runtime-errors.md)
 
 ---
 
@@ -40,5 +41,5 @@
 ---
 
 **작성자**: Auto (AI Assistant)  
-**최종 업데이트**: 2025-12-06
+**최종 업데이트**: 2025-12-23
 
