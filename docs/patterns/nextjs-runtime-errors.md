@@ -1,7 +1,9 @@
-# Next.js 15 런타임 에러 패턴
+# Next.js 16 런타임 에러 패턴
 
 **작성일**: 2025-12-23  
-**목적**: Next.js 15에서 발생하는 런타임 에러 패턴을 정리하여 개발 효율성 향상
+**최종 업데이트**: 2025-12-23  
+**목적**: Next.js 16에서 발생하는 런타임 에러 패턴을 정리하여 개발 효율성 향상  
+**프로젝트 버전**: Next.js 16.0.10
 
 ---
 
@@ -44,7 +46,7 @@ Attempted to call useTranslation() from the server but useTranslation is on the 
 
 ### 1. 함수 전달 문제
 
-- **Next.js 15의 제한**: Server Component에서 Client Component로 함수를 직접 전달할 수 없음
+- **Next.js 16의 제한**: Server Component에서 Client Component로 함수를 직접 전달할 수 없음
 - **예외**: Server Action은 `"use server"`로 표시하면 전달 가능
 - **일반 함수**: 설정 옵션으로 전달하거나 내부적으로 처리해야 함
 
@@ -271,7 +273,13 @@ export default async function RootLayout({ children }) {
 
 ## 참고 자료
 
-- [Next.js 15 Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
-- [Next.js 15 Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
+- [Next.js 16 Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
+- [Next.js 16 Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
 - [React Server Components](https://react.dev/reference/rsc/server-components)
+
+---
+
+**프로젝트 버전**: Next.js 16.0.10  
+**작성자**: AI Assistant  
+**최종 업데이트**: 2025-12-23
 
