@@ -13,7 +13,7 @@
 4. [환경 설정 패턴](./environment-setup.md)
 5. [코드 품질 패턴](./code-quality.md)
 6. [배포 패턴](./deployment.md)
-7. [Next.js 15 런타임 에러 패턴](./nextjs-runtime-errors.md)
+7. [Next.js 16 런타임 에러 패턴](./nextjs-runtime-errors.md)
 8. [인증/인가 보안 패턴](./auth-security-patterns.md)
 
 ---
