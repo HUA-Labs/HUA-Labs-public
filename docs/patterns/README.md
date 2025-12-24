@@ -7,6 +7,7 @@
 
 ## 목차
 
+### 기본 패턴
 1. [빌드 오류 패턴](./build-errors.md)
 2. [타입 오류 패턴](./type-errors.md)
 3. [의존성 관리 패턴](./dependency-management.md)
@@ -15,6 +16,17 @@
 6. [배포 패턴](./deployment.md)
 7. [Next.js 16 런타임 에러 패턴](./nextjs-runtime-errors.md)
 8. [인증/인가 보안 패턴](./auth-security-patterns.md)
+
+### 도메인별 패턴
+9. [검증 패턴](./validation-patterns.md) - Zod 검증 패턴
+10. [데이터베이스 패턴](./database-patterns.md) - DB 관련 패턴 (Race Condition, UUIDv7, Prisma 등)
+11. [성능 최적화 패턴](./performance-patterns.md) - 성능 최적화 패턴 (Client-Side Search, 캐싱 등)
+12. [보안 패턴](./security-patterns.md) - 보안 관련 패턴 (Sanitization, Rate Limiting 등)
+13. [코드 구조 패턴](./code-organization-patterns.md) - 코드 구조 및 재사용성 패턴
+
+### 컨셉 문서
+14. [TypeScript 모듈 확장 컨셉](./concepts/typescript-module-augmentation.md) - 모듈 확장 개념
+15. [NextAuth 타입 확장 컨셉](./concepts/nextauth-type-augmentation.md) - NextAuth 타입 확장 패턴
 
 ---
 
