@@ -280,6 +280,148 @@ const { unused, ...rest } = data;
 
 ---
 
+## 6. NextAuth 타입 확장 모듈 해석 충돌
+
+### 문제 상황
+
+`next-auth.d.ts` 파일명으로 인해 TypeScript가 모듈 자체로 인식하여 `NextAuth()` 함수가 호출 불가능
+
+```
+Type error: This expression is not callable.
+  Type 'typeof import("D:/HUA/hua-platform/apps/sum-diary/next-auth")' has no call signatures.
+```
+
+### 원인 분석
+
+- `next-auth.d.ts` 파일명이 모듈 이름과 동일하여 TypeScript가 실제 패키지 대신 이 파일을 모듈로 인식
+- `declare module "next-auth"`가 모듈 전체를 확장하는 것으로 해석될 수 있음
+
+### 해결 방법
+
+#### 파일명 변경
+
+```typescript
+// ❌ 위험: next-auth.d.ts
+declare module "next-auth" { ... }
+
+// ✅ 안전: auth.d.ts
+declare module "next-auth" { ... }
+```
+
+#### Interface만 확장 확인
+
+```typescript
+// ✅ 올바른 확장 (Interface만 확장)
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+  
+  interface User {
+    id?: string;
+  }
+}
+```
+
+### 예방 방법
+
+- 타입 확장 파일은 모듈 이름과 다른 이름 사용 (`auth.d.ts`, `types.d.ts` 등)
+- Interface만 확장하고 함수/변수 타입은 변경하지 않음
+- 타입 확장 후 실제 사용 코드에서 타입 추론 확인
+
+### 관련 데브로그
+
+- [DEVLOG_2025-12-24_NEXTAUTH_TYPE_AUGMENTATION_ISSUE.md](../../apps/sum-diary/docs/DEVLOG_2025-12-24_NEXTAUTH_TYPE_AUGMENTATION_ISSUE.md)
+
+---
+
+## 7. NextAuth Session 타입 확장 충돌
+
+### 문제 상황
+
+Session 타입 확장 시 `AdapterUser`와 호환되지 않는 타입 오류
+
+```
+Type '{ id: string; provider?: AuthProvider; name?: string | null; email: string | null; ... }' is not assignable to type 'AdapterUser & { id: string; provider?: AuthProvider; } & User'.
+  Types of property 'email' are incompatible. Type 'string | null' is not assignable to type 'string'.
+```
+
+### 원인 분석
+
+- `AdapterUser`의 `email`은 `string`이지만, 확장된 타입은 `string | null`
+- 타입 호환성 문제 발생
+
+### 해결 방법
+
+#### 타입 단언 사용
+
+```typescript
+// ✅ 타입 단언으로 해결
+if (token.user) {
+  session.user = {
+    ...session.user,
+    ...token.user,
+  } as typeof session.user;
+}
+```
+
+### 예방 방법
+
+- 타입 확장 시 기존 타입과의 호환성 확인
+- 필요한 경우 타입 단언 사용
+- `AdapterUser` 타입과의 호환성 고려
+
+### 관련 데브로그
+
+- [DEVLOG_2025-12-24_NEXTAUTH_TYPE_AUGMENTATION_ISSUE.md](../../apps/sum-diary/docs/DEVLOG_2025-12-24_NEXTAUTH_TYPE_AUGMENTATION_ISSUE.md)
+
+---
+
+## 8. any 타입 제거 및 unknown 타입 가드 패턴
+
+### 문제 상황
+
+`any` 타입 사용으로 타입 안전성 손실
+
+```typescript
+// ❌ 타입 안전하지 않음
+const NextAuth = NextAuthLib as any;
+```
+
+### 해결 방법
+
+#### unknown 타입 + 타입 가드
+
+```typescript
+// ✅ unknown 타입 + 타입 가드
+function isValidConfig(config: unknown): config is NextAuthConfig {
+  return (
+    typeof config === 'object' &&
+    config !== null &&
+    'providers' in config
+  );
+}
+
+const config: unknown = getConfig();
+if (isValidConfig(config)) {
+  // config는 NextAuthConfig 타입으로 보장됨
+}
+```
+
+### 핵심 포인트
+
+1. **any 제거**: `any` 대신 `unknown` 사용
+2. **타입 가드**: 타입 가드로 안전하게 타입 좁히기
+3. **런타임 검증**: Zod 등으로 런타임 검증
+
+### 관련 데브로그
+
+- [DEVLOG_2025-12-24_NEXTAUTH_V5_TYPE_SAFETY_IMPROVEMENTS.md](../devlogs/DEVLOG_2025-12-24_NEXTAUTH_V5_TYPE_SAFETY_IMPROVEMENTS.md)
+
+---
+
 **작성자**: Auto (AI Assistant)  
-**최종 업데이트**: 2025-12-06
+**최종 업데이트**: 2025-12-24
 
