@@ -40,7 +40,8 @@
     "@hua-labs/ui": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
     "@hua-labs/i18n-core": "workspace:*",
-    "@hua-labs/i18n-core-zustand": "workspace:*"
+    "@hua-labs/i18n-core-zustand": "workspace:*",
+    "@hua-labs/state": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
