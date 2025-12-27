@@ -143,9 +143,14 @@ const posts = await fetchData<Post[]>('/api/posts');
 
 Create i18n middleware for Next.js.
 
+**⚠️ Edge Runtime Required**: Next.js middleware runs on Edge Runtime. Make sure to export the runtime config:
+
 ```tsx
 // middleware.ts
 import { createI18nMiddleware } from '@hua-labs/hua-ux/framework';
+
+// Edge Runtime 명시 (Vercel 자동 감지 방지)
+export const runtime = 'edge';
 
 export default createI18nMiddleware({
   defaultLanguage: 'ko',
@@ -153,6 +158,13 @@ export default createI18nMiddleware({
   detectionStrategy: 'header',
 });
 ```
+
+**Edge Runtime 제약사항**:
+- Node.js API 사용 불가 (fs, path 등)
+- 일부 npm 패키지가 Edge Runtime과 호환되지 않을 수 있음
+- Vercel은 자동으로 Edge Runtime으로 감지하므로 명시적으로 설정 권장
+
+**대안**: Edge Runtime을 사용하지 않으려면 API Route나 클라이언트 컴포넌트에서 언어 감지를 처리할 수 있습니다.
 
 ### File Structure
 
