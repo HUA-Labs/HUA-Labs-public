@@ -30,16 +30,29 @@ export interface I18nMiddlewareConfig {
 /**
  * Create i18n middleware for Next.js
  * 
+ * **⚠️ Edge Runtime Note**: This middleware runs on Edge Runtime.
+ * Make sure your middleware.ts file exports the runtime config:
+ * 
+ * ```ts
+ * export const runtime = 'edge';
+ * ```
+ * 
  * @example
  * ```ts
  * // middleware.ts
  * import { createI18nMiddleware } from '@hua-labs/hua-ux/framework';
+ * 
+ * // Edge Runtime 명시 (Vercel 자동 감지 방지)
+ * export const runtime = 'edge';
  * 
  * export default createI18nMiddleware({
  *   defaultLanguage: 'ko',
  *   supportedLanguages: ['ko', 'en'],
  * });
  * ```
+ * 
+ * **Alternative**: If you don't want to use Edge Runtime, you can handle
+ * language detection in your API routes or client components instead.
  */
 export function createI18nMiddleware(config: I18nMiddlewareConfig) {
   return function i18nMiddleware(request: NextRequest) {

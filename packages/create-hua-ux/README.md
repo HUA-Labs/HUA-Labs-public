@@ -64,6 +64,7 @@ my-app/
 2. **Add translations**: Add more keys to `translations/ko/common.json` and `translations/en/common.json`
 3. **Create pages**: Add new pages in `app/` directory
 4. **Add components**: Create reusable components in `components/` directory
+5. **Optional: Add middleware**: If you need automatic language detection, rename `middleware.ts.example` to `middleware.ts` and uncomment the code (⚠️ Note: Runs on Edge Runtime)
 
 ## License
 
