@@ -117,7 +117,26 @@ pnpm install
 pnpm dev
 ```
 
+**Showcase 페이지**:
+- `/` - 홈 (3개 Showcase 링크)
+- `/ui` - UI 컴포넌트 데모
+- `/motion` - Motion 훅 데모
+- `/i18n` - 다국어 지원 데모
+
 또는 [Showcase App 소스 코드](../../apps/hua-ux-showcase)를 참고하세요.
+
+## 프로젝트 생성
+
+스캐폴딩 도구를 사용하여 새 프로젝트를 생성할 수 있습니다:
+
+```bash
+pnpm create hua-ux my-app
+cd my-app
+pnpm install
+pnpm dev
+```
+
+자세한 내용은 [create-hua-ux README](../create-hua-ux/README.md)를 참고하세요.
 
 ## 패키지 구조
 
@@ -142,6 +161,101 @@ pnpm dev
   - Zustand와 완벽한 통합
   - 하이드레이션 에러 방지
   - 언어 상태 자동 동기화
+
+- **`@hua-labs/state`** - 통합 상태관리 (프레임워크 전용)
+  - Zustand 기반 상태관리
+  - SSR/Persistence 지원
+  - i18n 통합 스토어 제공
+
+## 서브패키지
+
+### `@hua-labs/hua-ux/framework`
+
+프레임워크 레이어 - Next.js를 감싸서 구조와 규칙을 강제하는 레이어
+
+**주요 기능**:
+- `HuaUxLayout`: 자동 프로바이더 설정
+- `HuaUxPage`: 페이지 래퍼 (자동 모션)
+- `defineConfig`: 타입 안전한 설정 시스템
+- `useData`, `fetchData`: 데이터 페칭 유틸리티
+- `createI18nMiddleware`: i18n 미들웨어 (Edge Runtime)
+
+자세한 내용은 [프레임워크 레이어 문서](./src/framework/README.md)를 참고하세요.
+
+### `@hua-labs/hua-ux/presets`
+
+사전 구성된 Presets
+
+**제공되는 Presets**:
+- `productPreset`: 제품 페이지용 (빠른 전환, 최소 딜레이)
+- `marketingPreset`: 랜딩 페이지용 (드라마틱한 모션, 긴 딜레이)
+
+```tsx
+import { productPreset, marketingPreset } from '@hua-labs/hua-ux/presets';
+```
+
+## 프레임워크 레이어 사용하기
+
+프레임워크 레이어를 사용하면 더 간단하게 설정할 수 있습니다:
+
+### 1. 설정 파일 생성
+
+```tsx
+// hua-ux.config.ts
+import { defineConfig } from '@hua-labs/hua-ux/framework';
+
+export default defineConfig({
+  i18n: {
+    defaultLanguage: 'ko',
+    supportedLanguages: ['ko', 'en'],
+    namespaces: ['common'],
+    translationLoader: 'api',
+    translationApiPath: '/api/translations',
+  },
+  motion: {
+    defaultPreset: 'product',
+    enableAnimations: true,
+  },
+  state: {
+    persist: true,
+    ssr: true,
+  },
+});
+```
+
+### 2. Layout 설정
+
+```tsx
+// app/layout.tsx
+import { HuaUxLayout } from '@hua-labs/hua-ux/framework';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="ko">
+      <body>
+        <HuaUxLayout>{children}</HuaUxLayout>
+      </body>
+    </html>
+  );
+}
+```
+
+### 3. 페이지 사용
+
+```tsx
+// app/page.tsx
+import { HuaUxPage } from '@hua-labs/hua-ux/framework';
+
+export default function HomePage() {
+  return (
+    <HuaUxPage title="Home" description="Welcome page">
+      <h1>Welcome</h1>
+    </HuaUxPage>
+  );
+}
+```
+
+자세한 내용은 [프레임워크 레이어 문서](./src/framework/README.md)를 참고하세요.
 
 ## Use Cases
 
@@ -172,6 +286,22 @@ function MyComponent() {
   const { t } = useTranslation();
   return <h1>{t('common:welcome')}</h1>;
 }
+```
+
+### 4. 상태관리 (State Package)
+
+```tsx
+import { createHuaStore } from '@hua-labs/hua-ux';
+// 또는
+import { createHuaStore } from '@hua-labs/state';
+
+const useAppStore = createHuaStore((set) => ({
+  theme: 'light',
+  setTheme: (theme) => set({ theme }),
+}), {
+  persist: true,
+  ssr: true,
+});
 ```
 
 ## 버전
