@@ -1,0 +1,69 @@
+{
+  "name": "@hua-labs/hua-ux",
+  "version": "0.1.0",
+  "description": "HUA UX - Ship UX faster: UI + motion + i18n, pre-wired. A framework for React product teams.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./framework": {
+      "types": "./dist/framework/index.d.ts",
+      "import": "./src/framework/index.ts",
+      "require": "./src/framework/index.ts",
+      "default": "./dist/framework/index.js"
+    },
+    "./presets": {
+      "types": "./dist/presets/index.d.ts",
+      "import": "./src/presets/index.ts",
+      "require": "./src/presets/index.ts",
+      "default": "./dist/presets/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "node ../../node_modules/typescript/lib/tsc.js",
+    "dev": "node ../../node_modules/typescript/lib/tsc.js --watch",
+    "clean": "rm -rf dist",
+    "lint": "echo 'Skipping lint for hua-ux (ESLint 8, needs separate config)'",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hua-labs/ui": "workspace:*",
+    "@hua-labs/motion-core": "workspace:*",
+    "@hua-labs/i18n-core": "workspace:*",
+    "@hua-labs/i18n-core-zustand": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "keywords": [
+    "hua-ux",
+    "framework",
+    "react",
+    "ui",
+    "motion",
+    "i18n",
+    "typescript",
+    "nextjs"
+  ],
+  "author": "HUA Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HUA-Labs/HUA-Labs-public.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
+  },
+  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
+}
