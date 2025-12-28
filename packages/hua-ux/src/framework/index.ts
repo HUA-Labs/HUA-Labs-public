@@ -24,8 +24,11 @@ export { createI18nMiddleware } from './middleware/i18n';
 export type { I18nMiddlewareConfig } from './middleware/i18n';
 
 // File Structure
-export { validateFileStructure } from './utils/file-structure';
-export type { FileStructureResult } from './utils/file-structure';
+// 서버 전용 유틸리티 (클라이언트 번들에서 제외)
+// Server-only utilities (excluded from client bundle)
+// export { validateFileStructure } from './utils/file-structure';
+// export type { FileStructureResult } from './utils/file-structure';
+// Note: validateFileStructure는 서버 전용이므로 필요시 직접 import
 
 // Metadata Utilities
 export { generatePageMetadata } from './utils/metadata';

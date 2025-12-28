@@ -2,10 +2,28 @@
  * @hua-labs/hua-ux/framework - File Structure Validation
  * 
  * Validates project file structure according to framework conventions
+ * 
+ * **서버 전용**: 이 모듈은 Node.js 환경에서만 사용 가능합니다.
+ * **Server Only**: This module is only available in Node.js environment.
  */
 
-import { existsSync } from 'fs';
-import { join } from 'path';
+// 서버 환경에서만 fs 사용
+let existsSync: typeof import('fs')['existsSync'];
+let join: typeof import('path')['join'];
+
+if (typeof window === 'undefined' && typeof require !== 'undefined') {
+  // Node.js 환경
+  const fs = require('fs');
+  const path = require('path');
+  existsSync = fs.existsSync;
+  join = path.join;
+} else {
+  // 클라이언트 환경: 더미 함수 (사용 시 에러)
+  existsSync = () => {
+    throw new Error('validateFileStructure is only available in Node.js environment');
+  };
+  join = (...args: string[]) => args.join('/');
+}
 
 /**
  * Expected directory structure
