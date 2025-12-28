@@ -52,7 +52,8 @@ export async function copyTemplate(projectPath: string): Promise<void> {
  * 1. 환경 변수 (HUA_UX_WORKSPACE_VERSION)
  * 2. pnpm-workspace.yaml 파일 존재 여부 (더 견고한 방법)
  * 3. 폴더 이름 기반 감지 (하위 호환성)
- * 4. npm 버전 (기본값)
+ * 4. hua-ux 패키지의 package.json에서 버전 읽기 (자동화)
+ * 5. npm 버전 (기본값)
  */
 function getHuaUxVersion(): string {
   // 1. 환경 변수 우선 확인
@@ -86,9 +87,34 @@ function getHuaUxVersion(): string {
     return 'workspace:*';
   }
   
-  // 4. npm 배포 후에는 실제 버전 사용
-  // TODO: npm에서 최신 버전을 가져오는 로직 추가 가능
-  // 현재는 고정 버전 사용 (향후 업데이트 필요)
+  // 4. hua-ux 패키지의 package.json에서 버전 읽기 (자동화)
+  // create-hua-ux 패키지에서 hua-ux 패키지의 package.json을 읽어서 버전 추출
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    
+    // create-hua-ux의 위치에서 hua-ux 패키지 찾기
+    // __dirname은 dist/utils.js 또는 src/utils.ts의 위치
+    // dist/utils.js인 경우: packages/create-hua-ux/dist/utils.js
+    // src/utils.ts인 경우: packages/create-hua-ux/src/utils.ts
+    const currentFile = __dirname;
+    const createHuaUxRoot = path.resolve(currentFile, '../..');
+    const huaUxPackageJson = path.join(createHuaUxRoot, '../hua-ux/package.json');
+    
+    if (fs.existsSync(huaUxPackageJson)) {
+      const huaUxPackage = JSON.parse(fs.readFileSync(huaUxPackageJson, 'utf-8'));
+      const version = huaUxPackage.version;
+      if (version) {
+        // 버전 앞에 ^ 추가 (예: 0.1.0 -> ^0.1.0)
+        return `^${version}`;
+      }
+    }
+  } catch (error) {
+    // 파일을 읽을 수 없는 경우 무시하고 다음 단계로
+  }
+  
+  // 5. npm 배포 후에는 실제 버전 사용 (기본값)
+  // 빌드 시 hua-ux 패키지의 package.json을 읽지 못한 경우 폴백
   return '^0.1.0';
 }
 

@@ -119,12 +119,16 @@ cat package.json | grep -E '"name"|"version"|"files"'
 cd packages/create-hua-ux
 
 # 배포 (공개 패키지)
-npm publish --access public
+# --provenance 옵션: 빌드 출처 증명 (GitHub Actions 사용 시 권장)
+npm publish --access public --provenance
 ```
 
-**주의**: 
-- 첫 배포는 `--access public` 필수
-- 이후 배포는 버전만 올리면 됨
+**주의 / Notes**: 
+- 첫 배포는 `--access public` 필수 / `--access public` required for first release
+- `--provenance` 옵션은 최근 npm에서 보안 강화를 위해 권장하는 옵션입니다 / `--provenance` option is recommended by npm for security enhancement
+- GitHub Actions로 배포할 경우 특히 유용합니다 / Especially useful when deploying via GitHub Actions
+- 로컬에서 배포할 경우 `--provenance` 생략 가능합니다 / `--provenance` can be omitted for local deployment
+- 이후 배포는 버전만 올리면 됨 / Subsequent releases only need version bump
 
 ### 4. 배포 후 확인
 
@@ -164,7 +168,10 @@ async function getHuaUxVersion(): Promise<string> {
 }
 ```
 
-**현재 구현**: 고정 버전 `^0.1.0` 사용 (수동 업데이트 필요)
+**현재 구현 / Current Implementation:**
+- `getHuaUxVersion()` 함수가 자동으로 `hua-ux` 패키지의 `package.json`에서 버전을 읽어옴 / `getHuaUxVersion()` function automatically reads version from `hua-ux` package's `package.json`
+- 모노레포 내부에서는 `workspace:*` 사용, 외부에서는 `^[version]` 형식 사용 / Uses `workspace:*` inside monorepo, `^[version]` format outside
+- 빌드 시 자동으로 버전 동기화됨 (수동 업데이트 불필요) / Version automatically synchronized at build time (no manual update needed)
 
 ## 문제 해결
 
