@@ -11,7 +11,7 @@ import type { ReactNode } from 'react';
 import type { HuaUxConfig } from '../types';
 import { getConfig } from '../config';
 import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
-import { createI18nStore } from '@hua-labs/state/integrations/i18n';
+import { createI18nStore } from '@hua-labs/state/dist/integrations/i18n';
 import { BrandingProvider } from '../branding/context';
 
 /**

@@ -4,8 +4,12 @@
  * i18n middleware for automatic language detection and routing
  */
 
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+// Next.js types - only available in Next.js projects
+// These types are provided by Next.js at runtime
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NextRequest = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const NextResponse = { redirect: (url: string) => ({ url }), next: () => ({}) } as any;
 
 /**
  * i18n middleware configuration

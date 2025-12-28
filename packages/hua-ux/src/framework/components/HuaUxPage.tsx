@@ -47,7 +47,7 @@ import { useFadeIn } from '@hua-labs/motion-core';
  * // 바이브 코더용: vibe만으로 스타일 결정
  * // For vibe coders: decide style with just vibe
  * <HuaUxPage vibe="fancy">
- *   {/* 화려한 인터랙션이 자동 적용됩니다 */}
+ *   <div>화려한 인터랙션이 자동 적용됩니다</div>
  * </HuaUxPage>
  * ```
  */

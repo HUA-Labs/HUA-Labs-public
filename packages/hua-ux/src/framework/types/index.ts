@@ -255,7 +255,7 @@ export interface HuaUxPageProps {
    * @example
    * ```tsx
    * <HuaUxPage vibe="clean">
-   *   {/* 여백 중심의 깔끔한 페이지 */}
+   *   <div>여백 중심의 깔끔한 페이지</div>
    * </HuaUxPage>
    * ```
    */
@@ -273,7 +273,7 @@ export interface HuaUxPageProps {
    * @example
    * ```tsx
    * <HuaUxPage i18nKey="home">
-   *   {/* translations/ko/home.json, translations/en/home.json 사용 */}
+   *   <div>translations/ko/home.json, translations/en/home.json 사용</div>
    * </HuaUxPage>
    * ```
    */
@@ -282,8 +282,8 @@ export interface HuaUxPageProps {
   /**
    * 페이지 전환 애니메이션 활성화 / Enable page transition animations
    * 
-   * 기본값: `true` (설정에서 `motion.enableAnimations`가 `true`인 경우)
-   * Default: `true` (when `motion.enableAnimations` is `true` in config)
+   * 기본값: true (설정에서 motion.enableAnimations가 true인 경우)
+   * Default: true (when motion.enableAnimations is true in config)
    */
   enableMotion?: boolean;
 }

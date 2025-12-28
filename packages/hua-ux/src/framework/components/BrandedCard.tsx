@@ -11,7 +11,8 @@
 'use client';
 
 import React from 'react';
-import { Card, type CardProps, merge } from '@hua-labs/ui';
+import { Card, merge } from '@hua-labs/ui';
+import type { CardProps } from '@hua-labs/ui/src/components/Card';
 import { useBranding } from '../branding/context';
 
 /**
