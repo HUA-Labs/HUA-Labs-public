@@ -68,11 +68,55 @@ export default function RootLayout({ children }) {
 
 ### 3. Pages
 
+#### Basic Page (Client Component)
+
 ```tsx
 // app/page.tsx
+'use client';
+
 import { HuaUxPage } from '@hua-labs/hua-ux/framework';
 
 export default function HomePage() {
+  return (
+    <HuaUxPage title="Home" description="Welcome page">
+      <h1>Welcome</h1>
+    </HuaUxPage>
+  );
+}
+```
+
+#### Page with SEO Metadata (Server Component + Client Component)
+
+For better SEO, use Next.js `metadata` export in Server Components:
+
+```tsx
+// app/page.tsx
+import { generatePageMetadata } from '@hua-labs/hua-ux/framework';
+import { HomePageContent } from './HomePageContent';
+
+export const metadata = generatePageMetadata({
+  title: '홈',
+  description: '환영합니다',
+  seo: {
+    keywords: ['키워드1', '키워드2'],
+    ogImage: '/og-image.png',
+    ogTitle: '홈 | 우리 회사',
+    ogDescription: '우리 회사에 오신 것을 환영합니다',
+  },
+});
+
+export default function HomePage() {
+  return <HomePageContent />;
+}
+```
+
+```tsx
+// app/HomePageContent.tsx (Client Component)
+'use client';
+
+import { HuaUxPage } from '@hua-labs/hua-ux/framework';
+
+export function HomePageContent() {
   return (
     <HuaUxPage title="Home" description="Welcome page">
       <h1>Welcome</h1>
@@ -194,12 +238,25 @@ export default createI18nMiddleware({
 });
 ```
 
-**Edge Runtime 제약사항**:
-- Node.js API 사용 불가 (fs, path 등)
-- 일부 npm 패키지가 Edge Runtime과 호환되지 않을 수 있음
-- Vercel은 자동으로 Edge Runtime으로 감지하므로 명시적으로 설정 권장
+**Edge Runtime 제약사항 / Edge Runtime Limitations**:
+- Node.js API 사용 불가 (fs, path 등) / Cannot use Node.js APIs (fs, path, etc.)
+- 일부 npm 패키지가 Edge Runtime과 호환되지 않을 수 있음 / Some npm packages may not be compatible with Edge Runtime
+- Vercel은 자동으로 Edge Runtime으로 감지하므로 명시적으로 설정 권장 / Vercel auto-detects Edge Runtime, so explicit configuration is recommended
 
-**대안**: Edge Runtime을 사용하지 않으려면 API Route나 클라이언트 컴포넌트에서 언어 감지를 처리할 수 있습니다.
+**대안 / Alternatives**: 
+- Edge Runtime을 사용하지 않으려면 API Route나 클라이언트 컴포넌트에서 언어 감지를 처리할 수 있습니다.  
+- If you don't want to use Edge Runtime, you can handle language detection in API routes or client components.
+
+**Edge Runtime에서 사용 불가능한 기능 / Features Not Available in Edge Runtime**:
+- `loadConfig()`: 설정 파일 동적 로드 (서버 전용) / Dynamic config file loading (server-only)
+- `validateFileStructure()`: 파일 구조 검증 (서버 전용) / File structure validation (server-only)
+- Node.js 모듈 사용 (`fs`, `path` 등) / Using Node.js modules (`fs`, `path`, etc.)
+
+**권장 사항 / Recommendations**:
+- 미들웨어는 선택적 기능입니다. 사용하지 않아도 프레임워크는 정상 작동합니다.  
+- Middleware is optional. The framework works fine without it.
+- 언어 감지는 클라이언트 컴포넌트나 API Route에서 처리할 수 있습니다.  
+- Language detection can be handled in client components or API routes.
 
 ### File Structure
 
