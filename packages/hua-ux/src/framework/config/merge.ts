@@ -71,7 +71,7 @@ function presetToConfig(preset: typeof productPreset | typeof marketingPreset): 
     },
     i18n: {
       defaultLanguage: preset.i18n.defaultLanguage,
-      supportedLanguages: preset.i18n.supportedLanguages,
+      supportedLanguages: [...preset.i18n.supportedLanguages],
     },
     // Preset의 spacing은 나중에 컴포넌트에서 사용
     // Config에는 직접 포함하지 않음 (컴포넌트가 PresetContext에서 가져옴)
