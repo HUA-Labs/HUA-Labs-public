@@ -4,7 +4,7 @@
  * Configuration schema and validation
  */
 
-import type { HuaUxConfig } from '../types';
+import type { HuaUxConfig, Preset } from '../types';
 
 /**
  * Default configuration
@@ -43,19 +43,47 @@ export const defaultConfig: Required<Omit<HuaUxConfig, 'branding'>> & { branding
  */
 export function validateConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
   // Preset 검증
-  if (config.preset && !['product', 'marketing'].includes(config.preset)) {
-    throw new Error(
-      `[hua-ux] ❌ 잘못된 Preset입니다: "${config.preset}"\n` +
-      `[hua-ux] ❌ Invalid preset: "${config.preset}"\n\n` +
-      `사용 가능한 Preset: 'product', 'marketing'\n` +
-      `Available presets: 'product', 'marketing'\n\n` +
-      `💡 해결 방법 / Solution:\n` +
-      `   - 'product' 또는 'marketing' 중 하나를 선택하세요.\n` +
-      `   - Select either 'product' or 'marketing'.\n` +
-      `   - 커스텀 설정이 필요하면 preset 필드를 생략하고 모든 설정을 직접 지정하세요.\n` +
-      `   - For custom configuration, omit the preset field and specify all settings manually.\n\n` +
-      `📖 가이드 / Guide: https://github.com/HUA-Labs/hua-platform/tree/main/packages/hua-ux/docs`
-    );
+  if (config.preset) {
+    if (typeof config.preset === 'string') {
+      // 바이브 모드: 문자열 Preset
+      if (!['product', 'marketing'].includes(config.preset)) {
+        throw new Error(
+          `[hua-ux] ❌ 잘못된 Preset입니다: "${config.preset}"\n` +
+          `[hua-ux] ❌ Invalid preset: "${config.preset}"\n\n` +
+          `사용 가능한 Preset: 'product', 'marketing'\n` +
+          `Available presets: 'product', 'marketing'\n\n` +
+          `💡 해결 방법 / Solution:\n` +
+          `   - 'product' 또는 'marketing' 중 하나를 선택하세요.\n` +
+          `   - Select either 'product' or 'marketing'.\n\n` +
+          `📖 가이드 / Guide: https://github.com/HUA-Labs/hua-platform/tree/main/packages/hua-ux/docs`
+        );
+      }
+    } else {
+      // 개발자 모드: 객체 Preset
+      if (!['product', 'marketing'].includes(config.preset.type)) {
+        throw new Error(
+          `[hua-ux] ❌ 잘못된 Preset 타입입니다: "${config.preset.type}"\n` +
+          `[hua-ux] ❌ Invalid preset type: "${config.preset.type}"\n\n` +
+          `사용 가능한 Preset 타입: 'product', 'marketing'\n` +
+          `Available preset types: 'product', 'marketing'\n\n` +
+          `💡 해결 방법 / Solution:\n` +
+          `   - preset.type을 'product' 또는 'marketing'으로 설정하세요.\n` +
+          `   - Set preset.type to either 'product' or 'marketing'.\n\n` +
+          `📖 가이드 / Guide: https://github.com/HUA-Labs/hua-platform/tree/main/packages/hua-ux/docs`
+        );
+      }
+    }
+  }
+  
+  // motion.style을 defaultPreset으로 매핑 (바이브 코더용)
+  if (config.motion?.style && !config.motion.defaultPreset) {
+    const styleToPreset: Record<string, 'product' | 'marketing'> = {
+      smooth: 'product',
+      minimal: 'product',
+      dramatic: 'marketing',
+    };
+    
+    config.motion.defaultPreset = styleToPreset[config.motion.style];
   }
 
   // 기본값과 병합

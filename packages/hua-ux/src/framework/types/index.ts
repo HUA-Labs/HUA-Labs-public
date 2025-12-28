@@ -12,6 +12,58 @@ import type { ReactNode } from 'react';
 export type PresetName = 'product' | 'marketing';
 
 /**
+ * Preset configuration (개발자 모드 / Developer mode)
+ * 
+ * 세부 설정을 포함한 Preset 객체 형태
+ * Preset object with detailed settings
+ */
+export interface PresetConfig {
+  /**
+   * Preset type / Preset 타입
+   */
+  type: PresetName;
+  
+  /**
+   * Motion overrides / 모션 설정 오버라이드
+   * 
+   * Preset의 기본 모션 설정을 세부적으로 조정
+   * Fine-tune preset's default motion settings
+   */
+  motion?: {
+    /**
+     * Animation duration in milliseconds / 애니메이션 지속 시간 (밀리초)
+     */
+    duration?: number;
+    
+    /**
+     * Animation easing function / 애니메이션 이징 함수
+     */
+    easing?: string;
+  };
+  
+  /**
+   * Spacing overrides / 간격 설정 오버라이드
+   * 
+   * Preset의 기본 간격 설정을 세부적으로 조정
+   * Fine-tune preset's default spacing settings
+   */
+  spacing?: {
+    /**
+     * Default spacing size / 기본 간격 크기
+     */
+    default?: 'sm' | 'md' | 'lg' | 'xl';
+  };
+}
+
+/**
+ * Preset (바이브 모드 또는 개발자 모드)
+ * 
+ * - 문자열: 바이브 모드 (간단) / String: Vibe mode (simple)
+ * - 객체: 개발자 모드 (세부 설정) / Object: Developer mode (detailed)
+ */
+export type Preset = PresetName | PresetConfig;
+
+/**
  * Framework configuration
  */
 export interface HuaUxConfig {
@@ -21,17 +73,43 @@ export interface HuaUxConfig {
    * Preset을 선택하면 대부분의 설정이 자동으로 적용됩니다.
    * Selecting a preset automatically applies most settings.
    * 
+   * **바이브 모드 (간단) / Vibe mode (simple)**:
+   * ```ts
+   * preset: 'product'  // 이것만으로도 대부분 설정 완료
+   * ```
+   * 
+   * **개발자 모드 (세부 설정) / Developer mode (detailed)**:
+   * ```ts
+   * preset: {
+   *   type: 'product',
+   *   motion: { duration: 300 },
+   *   spacing: { default: 'md' },
+   * }
+   * ```
+   * 
    * - 'product': Professional, efficient (default) / 제품 페이지용 (전문적, 효율적, 기본값)
    * - 'marketing': Dramatic, eye-catching / 마케팅 페이지용 (화려함, 눈에 띄는)
    * 
    * @example
    * ```ts
+   * // 바이브 코더용 (간단)
    * export default defineConfig({
-   *   preset: 'product',  // 이것만으로도 대부분 설정 완료 / Most settings auto-configured
+   *   preset: 'product',  // 끝!
+   * });
+   * ```
+   * 
+   * @example
+   * ```ts
+   * // 전통 개발자용 (세부 설정)
+   * export default defineConfig({
+   *   preset: {
+   *     type: 'product',
+   *     motion: { duration: 300 },
+   *   },
    * });
    * ```
    */
-  preset?: PresetName;
+  preset?: Preset;
 
   /**
    * i18n configuration / 다국어 설정
@@ -93,10 +171,32 @@ export interface HuaUxConfig {
    */
   motion?: {
     /**
-     * Default motion preset / 기본 모션 프리셋
+     * Motion style (바이브 코더용) / 모션 스타일 (바이브 코더용)
+     * 
+     * 명사 중심의 비즈니스 의도 표현
+     * Noun-centered business intent expression
+     * 
+     * - 'smooth': 부드러운 전환 / Smooth transitions
+     * - 'dramatic': 드라마틱한 전환 / Dramatic transitions
+     * - 'minimal': 최소한의 전환 / Minimal transitions
+     * 
+     * @example
+     * ```ts
+     * motion: {
+     *   style: 'smooth',  // 바이브 코더가 이해하기 쉬움
+     * }
+     * ```
+     */
+    style?: 'smooth' | 'dramatic' | 'minimal';
+    
+    /**
+     * Default motion preset (개발자용) / 기본 모션 프리셋 (개발자용)
      * 
      * - 'product': 빠른 전환, 최소 딜레이 / Fast transitions, minimal delay
      * - 'marketing': 느린 전환, 긴 딜레이 / Slow transitions, long delay
+     * 
+     * @note `style`이 설정되면 자동으로 매핑됩니다.
+     * @note Automatically mapped when `style` is set.
      */
     defaultPreset?: 'product' | 'marketing';
     
@@ -106,6 +206,16 @@ export interface HuaUxConfig {
      * false로 설정하면 모든 애니메이션 비활성화 / Set to false to disable all animations
      */
     enableAnimations?: boolean;
+    
+    /**
+     * Animation duration in milliseconds (개발자용) / 애니메이션 지속 시간 (밀리초, 개발자용)
+     */
+    duration?: number;
+    
+    /**
+     * Animation easing function (개발자용) / 애니메이션 이징 함수 (개발자용)
+     */
+    easing?: string;
   };
 
   /**
