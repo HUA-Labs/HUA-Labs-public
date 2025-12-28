@@ -37,11 +37,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@hua-labs/ui": "workspace:*",
-    "@hua-labs/motion-core": "workspace:*",
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-core-zustand": "workspace:*",
-    "@hua-labs/state": "workspace:*"
+    "@hua-labs/motion-core": "workspace:*",
+    "@hua-labs/state": "workspace:*",
+    "@hua-labs/ui": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -66,5 +66,9 @@
   "bugs": {
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
-  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
+  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3"
+  }
 }
