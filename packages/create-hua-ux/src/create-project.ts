@@ -7,7 +7,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import chalk from 'chalk';
-import { copyTemplate, generatePackageJson, generateConfig } from './utils';
+import { copyTemplate, generatePackageJson, generateConfig, generateAiContextFiles } from './utils';
 
 export async function createProject(projectName: string): Promise<void> {
   const projectPath = path.resolve(process.cwd(), projectName);
@@ -32,6 +32,9 @@ export async function createProject(projectName: string): Promise<void> {
 
     // Generate hua-ux.config.ts
     await generateConfig(projectPath);
+
+    // Generate AI context files
+    await generateAiContextFiles(projectPath);
 
     console.log(chalk.green(`\n✅ Project created successfully!`));
     console.log(chalk.cyan(`\nNext steps:`));
