@@ -139,7 +139,6 @@ export function HuaUxPage({
       motionResult.start?.();
     }
   }, [shouldEnableMotion, motionResult]);
-
   const pageRef = motionResult.ref;
 
   // SEO 메타데이터는 Next.js App Router에서 page.tsx의 export const metadata로 처리하는 것이 권장됩니다.
