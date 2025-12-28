@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /**
  * Data fetching result
@@ -40,7 +40,7 @@ export function useData<T>(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = React.useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -55,11 +55,11 @@ export function useData<T>(
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [url, options]);
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  }, [fetchData]);
 
   return {
     data,
