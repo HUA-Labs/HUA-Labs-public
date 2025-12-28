@@ -46,6 +46,15 @@ export type {
   LicenseCheckResult 
 } from './license/types';
 
+// Plugin System
+export { 
+  pluginRegistry, 
+  registerPlugin, 
+  getPlugin, 
+  getAllPlugins 
+} from './plugins';
+export type { HuaUxPlugin } from './plugins/types';
+
 // Branding
 export { BrandingProvider, useBranding, useBrandingColor } from './branding/context';
 export { generateCSSVariables, generateCSSVariablesObject } from './branding/css-vars';
