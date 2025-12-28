@@ -125,16 +125,51 @@ export default defineConfig({
 
 Client-side data fetching hook.
 
+**Usage in Client Components**:
+
 ```tsx
-const { data, isLoading, error, refetch } = useData<Post[]>('/api/posts');
+'use client';
+
+import { useData } from '@hua-labs/hua-ux/framework';
+
+export default function PostsPage() {
+  const { data, isLoading, error, refetch } = useData<Post[]>('/api/posts');
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return (
+    <div>
+      {data?.map(post => (
+        <div key={post.id}>{post.title}</div>
+      ))}
+      <button onClick={() => refetch()}>Refresh</button>
+    </div>
+  );
+}
 ```
 
 #### `fetchData<T>(url, options?)`
 
 Server-side data fetching utility.
 
+**Usage in Server Components**:
+
 ```tsx
-const posts = await fetchData<Post[]>('/api/posts');
+// app/posts/page.tsx (Server Component)
+import { fetchData } from '@hua-labs/hua-ux/framework';
+
+export default async function PostsPage() {
+  const posts = await fetchData<Post[]>('/api/posts');
+  
+  return (
+    <div>
+      {posts.map(post => (
+        <div key={post.id}>{post.title}</div>
+      ))}
+    </div>
+  );
+}
 ```
 
 ### Middleware
