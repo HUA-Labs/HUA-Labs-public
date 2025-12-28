@@ -234,6 +234,63 @@ export interface HuaUxConfig {
   };
 
   /**
+   * License configuration / 라이선스 설정
+   * 
+   * Pro/Enterprise 기능을 사용하기 위한 라이선스 설정입니다.
+   * License settings for Pro/Enterprise features.
+   * 
+   * **로드 순서**:
+   * 1. 환경 변수 (`HUA_UX_LICENSE_KEY`)
+   * 2. 설정 파일 (`license.apiKey` 또는 `license.type`)
+   * 3. 기본값 (Free)
+   * 
+   * **Load order**:
+   * 1. Environment variable (`HUA_UX_LICENSE_KEY`)
+   * 2. Config file (`license.apiKey` or `license.type`)
+   * 3. Default (Free)
+   * 
+   * @example
+   * ```ts
+   * // 환경 변수 사용 (권장)
+   * // HUA_UX_LICENSE_KEY=pro_xxx pnpm dev
+   * 
+   * // 또는 설정 파일에서
+   * export default defineConfig({
+   *   license: {
+   *     apiKey: 'pro_xxx',  // 실제 API 키
+   *   },
+   * });
+   * ```
+   * 
+   * @example
+   * ```ts
+   * // 개발용 (타입만 지정)
+   * export default defineConfig({
+   *   license: {
+   *     type: 'pro',  // 개발 환경에서만 사용
+   *   },
+   * });
+   * ```
+   */
+  license?: {
+    /**
+     * API 키 / API key
+     * 
+     * Pro/Enterprise 라이선스의 API 키
+     * API key for Pro/Enterprise license
+     */
+    apiKey?: string;
+    
+    /**
+     * 라이선스 타입 (개발용) / License type (for development)
+     * 
+     * 개발 환경에서만 사용하세요. 프로덕션에서는 `apiKey`를 사용하세요.
+     * Use only in development. Use `apiKey` in production.
+     */
+    type?: 'free' | 'pro' | 'enterprise';
+  };
+
+  /**
    * Branding configuration (White Labeling) / 브랜딩 설정 (화이트 라벨링)
    * 
    * 브랜드 커스터마이징을 위한 설정입니다.
