@@ -7,6 +7,8 @@
 import type { HuaUxConfig, Preset } from '../types';
 import { defaultConfig, validateConfig } from './schema';
 import { mergePresetWithConfig, createConfigFromUserConfig } from './merge';
+import { initLicense } from '../license';
+import { pluginRegistry } from '../plugins';
 
 /**
  * Global config cache
@@ -138,13 +140,11 @@ let cachedConfig: HuaUxConfig | null = null;
 export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
   // 라이선스 초기화
   if (config.license) {
-    const { initLicense } = require('./license');
     initLicense(config.license);
   }
   
   // 플러그인 등록 및 초기화
   if (config.plugins && config.plugins.length > 0) {
-    const { pluginRegistry } = require('./plugins/registry');
     config.plugins.forEach(plugin => {
       pluginRegistry.register(plugin);
     });
@@ -158,7 +158,6 @@ export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
     
     // 플러그인 초기화 (설정이 완료된 후)
     if (config.plugins && config.plugins.length > 0) {
-      const { pluginRegistry } = require('./plugins/registry');
       pluginRegistry.initializeAll(validated).catch((error: Error) => {
         console.error('[hua-ux] Plugin initialization error:', error);
       });
@@ -173,7 +172,6 @@ export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
   
   // 플러그인 초기화 (설정이 완료된 후)
   if (config.plugins && config.plugins.length > 0) {
-    const { pluginRegistry } = require('./plugins/registry');
     pluginRegistry.initializeAll(validated).catch((error: Error) => {
       console.error('[hua-ux] Plugin initialization error:', error);
     });
@@ -202,8 +200,16 @@ export function loadConfig(): HuaUxConfig {
     return cachedConfig;
   }
 
+  // Node.js 환경에서만 동적 로드 시도 (서버 사이드에서만)
+  // 클라이언트에서는 기본 설정 반환
+  if (typeof window !== 'undefined') {
+    // 브라우저 환경: 기본 설정 반환
+    cachedConfig = mergePresetWithConfig('product', {});
+    return cachedConfig;
+  }
+
   // Node.js 환경에서만 동적 로드 시도
-  if (typeof process !== 'undefined' && process.cwd) {
+  if (typeof process !== 'undefined' && process.cwd && typeof require !== 'undefined') {
     try {
       const fs = require('fs');
       const path = require('path');
@@ -220,27 +226,35 @@ export function loadConfig(): HuaUxConfig {
       for (const configPath of configPaths) {
         if (fs.existsSync(configPath)) {
           try {
-            // 동적 require (TypeScript는 컴파일된 .js 파일 필요)
-            // 실제로는 Next.js 빌드 과정에서 처리됨
-            const configModule = require(configPath);
-            const userConfig = configModule.default || configModule;
-            
-            // Preset 병합 처리
-            if (userConfig && typeof userConfig === 'object') {
-              if (userConfig.preset) {
-                const { preset, ...rest } = userConfig;
-                cachedConfig = mergePresetWithConfig(preset, rest);
-              } else {
-                cachedConfig = createConfigFromUserConfig(userConfig);
+            // 동적 require는 Next.js 빌드 시 문제가 될 수 있으므로
+            // 런타임에서만 사용하고, 빌드 시에는 기본값 사용
+            // 실제 설정은 Next.js가 자동으로 처리
+            if (typeof require !== 'undefined' && require.resolve) {
+              try {
+                const configModule = require(configPath);
+                const userConfig = configModule.default || configModule;
+                
+                // Preset 병합 처리
+                if (userConfig && typeof userConfig === 'object') {
+                  if (userConfig.preset) {
+                    const { preset, ...rest } = userConfig;
+                    cachedConfig = mergePresetWithConfig(preset, rest);
+                  } else {
+                    cachedConfig = createConfigFromUserConfig(userConfig);
+                  }
+                  
+                  cachedConfig = validateConfig(cachedConfig);
+                  return cachedConfig;
+                }
+              } catch (requireError) {
+                // require 실패 (TypeScript 파일 등)
+                // 기본값 사용
+                break;
               }
-              
-              cachedConfig = validateConfig(cachedConfig);
-              return cachedConfig;
             }
-          } catch (requireError) {
-            // require 실패 (TypeScript 파일 등)
-            // 기본값 사용
-            break;
+          } catch (fileError) {
+            // 파일 읽기 실패
+            continue;
           }
         }
       }
