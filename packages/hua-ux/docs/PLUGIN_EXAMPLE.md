@@ -163,29 +163,88 @@ export const ecommercePresetPlugin: HuaUxPlugin = {
 
 Pro/Enterprise 플러그인은 라이선스 검증이 필요합니다:
 
+**플러그인 등록 시 자동 검증**:
+- `plugin.checkLicense()` 함수가 있으면 먼저 호출
+- 없으면 기본 라이선스 검증 수행 (개발 환경에서는 경고만 표시)
+- 라이선스가 없으면 등록 시 에러 발생
+
 ```typescript
 export const proPlugin: HuaUxPlugin = {
   name: 'pro-plugin',
   version: '1.0.0',
   license: 'pro',
   
+  // 라이선스 검증 함수 (선택적)
+  // 없으면 기본 라이선스 검증 사용
   checkLicense() {
     const { hasLicense } = require('@hua-labs/hua-ux/framework');
-    return hasLicense('pro-plugin-feature');
+    return hasLicense('motion-pro');  // 실제 기능 이름 사용
   },
   
   init(config) {
-    // 라이선스가 없으면 에러 발생
-    if (!this.checkLicense?.()) {
-      throw new Error('Pro license required');
-    }
-    
-    // Pro 기능 초기화
+    // 플러그인 등록 시 이미 라이선스 검증 완료
+    // 여기서는 Pro 기능 초기화만 수행
+    console.log('Pro plugin initialized with config:', config);
   },
 };
 ```
 
+**주의사항**:
+- `checkLicense()` 함수는 플러그인 등록 시 자동 호출됩니다
+- `init()` 함수 내에서 다시 검증할 필요는 없습니다
+- 라이선스가 없으면 등록 단계에서 에러가 발생하므로 `init()`은 호출되지 않습니다
+
+## 플러그인 초기화 순서
+
+플러그인은 다음 순서로 초기화됩니다:
+
+1. **플러그인 등록** (`defineConfig` 또는 `registerPlugin`)
+   - 라이선스 검증 수행
+   - 플러그인 레지스트리에 등록
+
+2. **설정 검증 완료 후**
+   - `defineConfig`에서 설정이 완료된 후
+   - 모든 플러그인의 `init()` 함수가 병렬로 호출됨
+
+3. **초기화 완료**
+   - 각 플러그인은 한 번만 초기화됨 (중복 방지)
+   - 초기화된 플러그인은 `initialized` Set에 저장됨
+
+**예시**:
+```typescript
+// hua-ux.config.ts
+export default defineConfig({
+  preset: 'product',
+  plugins: [motionProPlugin, i18nProPlugin],
+  // 플러그인 등록 → 설정 검증 → 플러그인 초기화 (자동)
+});
+```
+
+## 플러그인 타입 및 Export
+
+플러그인 시스템은 `@hua-labs/hua-ux/framework`에서 export됩니다:
+
+```typescript
+import { 
+  pluginRegistry,      // 플러그인 레지스트리 인스턴스
+  registerPlugin,     // 플러그인 등록 함수
+  getPlugin,          // 플러그인 가져오기
+  getAllPlugins       // 모든 플러그인 가져오기
+} from '@hua-labs/hua-ux/framework';
+
+import type { HuaUxPlugin } from '@hua-labs/hua-ux/framework';
+```
+
+## 실제 구현 확인
+
+플러그인 시스템의 실제 구현은 다음 파일에서 확인할 수 있습니다:
+
+- `packages/hua-ux/src/framework/plugins/types.ts` - 플러그인 인터페이스
+- `packages/hua-ux/src/framework/plugins/registry.ts` - 플러그인 레지스트리
+- `packages/hua-ux/src/framework/plugins/index.ts` - Export
+
 ## 참고 자료
 
 - [플러그인 시스템 설계](./PLUGIN_SYSTEM_DESIGN.md)
-- [라이선스 시스템](../src/framework/license/README.md)
+- [라이선스 시스템](../src/framework/license/types.ts)
+- [라이선스 검증 함수](../src/framework/license/index.ts)
