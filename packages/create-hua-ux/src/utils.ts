@@ -6,7 +6,7 @@
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as inquirer from 'inquirer';
+import inquirer from 'inquirer';
 
 const TEMPLATE_DIR = path.join(__dirname, '../templates/nextjs');
 
@@ -44,6 +44,23 @@ export async function copyTemplate(projectPath: string): Promise<void> {
 }
 
 /**
+ * Get hua-ux package version
+ * 
+ * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용
+ */
+function getHuaUxVersion(): string {
+  // 모노레포 내부 테스트를 위한 환경 변수 확인
+  if (process.env.HUA_UX_WORKSPACE_VERSION === 'workspace') {
+    return 'workspace:*';
+  }
+  
+  // npm 배포 후에는 실제 버전 사용
+  // TODO: npm에서 최신 버전을 가져오는 로직 추가 가능
+  // 현재는 고정 버전 사용 (향후 업데이트 필요)
+  return '^0.1.0';
+}
+
+/**
  * Generate package.json
  */
 export async function generatePackageJson(
@@ -61,7 +78,7 @@ export async function generatePackageJson(
       lint: "echo 'Skipping lint'",
     },
     dependencies: {
-      '@hua-labs/hua-ux': 'workspace:*',
+      '@hua-labs/hua-ux': getHuaUxVersion(),
       next: '16.0.10',
       react: '19.2.1',
       'react-dom': '19.2.1',
@@ -98,12 +115,24 @@ export async function generateConfig(projectPath: string): Promise<void> {
  * Preset을 선택하면 대부분의 설정이 자동으로 적용됩니다.
  * - 'product': 제품 페이지용 (전문적, 효율적)
  * - 'marketing': 마케팅 페이지용 (화려함, 눈에 띄는)
+ * 
+ * **바이브 모드 (간단)**: \`preset: 'product'\`
+ * **개발자 모드 (세부 설정)**: \`preset: { type: 'product', motion: {...} }\`
  */
 export default defineConfig({
   /**
    * 프리셋 선택
    * 
    * Preset을 선택하면 motion, spacing, i18n 등이 자동 설정됩니다.
+   * 
+   * 바이브 모드 (간단):
+   *   preset: 'product'
+   * 
+   * 개발자 모드 (세부 설정):
+   *   preset: {
+   *     type: 'product',
+   *     motion: { duration: 300 },
+   *   }
    */
   preset: 'product',
   
@@ -120,10 +149,21 @@ export default defineConfig({
   
   /**
    * 모션/애니메이션 설정
+   * 
+   * 바이브 코더용 (명사 중심):
+   *   motion: { style: 'smooth' }  // 'smooth' | 'dramatic' | 'minimal'
+   * 
+   * 개발자용 (기술적):
+   *   motion: {
+   *     defaultPreset: 'product',
+   *     enableAnimations: true,
+   *     duration: 300,
+   *   }
    */
   motion: {
     defaultPreset: 'product',
     enableAnimations: true,
+    // style: 'smooth',  // 바이브 코더용: 'smooth' | 'dramatic' | 'minimal'
   },
   
   /**
@@ -133,6 +173,45 @@ export default defineConfig({
     persist: true,
     ssr: true,
   },
+  
+  /**
+   * 브랜딩 설정 (화이트 라벨링)
+   * 
+   * 색상, 타이포그래피 등을 설정하면 모든 컴포넌트에 자동 적용됩니다.
+   * 
+   * branding: {
+   *   colors: {
+   *     primary: '#3B82F6',
+   *     secondary: '#8B5CF6',
+   *   },
+   * }
+   */
+  // branding: {
+  //   colors: {
+  //     primary: '#3B82F6',
+  //   },
+  // },
+  
+  /**
+   * 라이선스 설정 (Pro/Enterprise 플러그인 사용 시)
+   * 
+   * license: {
+   *   apiKey: process.env.HUA_UX_LICENSE_KEY,
+   * }
+   */
+  // license: {
+  //   apiKey: process.env.HUA_UX_LICENSE_KEY,
+  // },
+  
+  /**
+   * 플러그인 설정 (Pro/Enterprise 기능)
+   * 
+   * plugins: [
+   *   motionProPlugin,
+   *   i18nProPlugin,
+   * ]
+   */
+  // plugins: [],
 });
 `;
 
