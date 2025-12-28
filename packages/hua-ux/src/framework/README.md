@@ -23,6 +23,16 @@ pnpm add @hua-labs/hua-ux zustand
 
 ## Quick Start
 
+### 사용 방법 선택
+
+**프레임워크 레이어를 사용하는 방법 (권장)**:
+- `HuaUxLayout`을 사용하면 모든 Provider가 자동으로 설정됩니다
+- 설정 파일만으로 간단하게 시작할 수 있습니다
+
+**직접 사용하는 방법**:
+- 더 세밀한 제어가 필요한 경우 `createI18nStore` + `createZustandI18n` 조합 사용
+- 자세한 내용은 [메인 README](../../README.md)의 "방법 2: 직접 사용" 섹션 참고
+
 ### 1. Configuration
 
 Create `hua-ux.config.ts` in your project root:
