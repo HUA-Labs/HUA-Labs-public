@@ -12,6 +12,7 @@ import type { HuaUxConfig } from '../types';
 import { getConfig } from '../config';
 import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore } from '@hua-labs/state/integrations/i18n';
+import { BrandingProvider } from '../branding/context';
 
 /**
  * Create providers based on configuration
@@ -41,10 +42,13 @@ function createProviders(config: HuaUxConfig) {
 
   // Return a combined provider
   return function CombinedProvider({ children }: { children: ReactNode }) {
-    return providers.reduceRight(
+    // Branding provider는 가장 바깥쪽에 위치 (다른 Provider들이 사용 가능)
+    const wrapped = providers.reduceRight(
       (acc, Provider) => <Provider>{acc}</Provider>,
       children
     );
+    
+    return wrapped;
   };
 }
 
@@ -67,5 +71,10 @@ export function UnifiedProviders({
 
   const Provider = React.useMemo(() => createProviders(config), [config]);
 
-  return <Provider>{children}</Provider>;
+  // Branding provider를 가장 바깥쪽에 추가
+  return (
+    <BrandingProvider branding={config.branding || null}>
+      <Provider>{children}</Provider>
+    </BrandingProvider>
+  );
 }

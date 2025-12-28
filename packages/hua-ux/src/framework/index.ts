@@ -8,10 +8,12 @@
 export { HuaUxLayout } from './components/HuaUxLayout';
 export { HuaUxPage } from './components/HuaUxPage';
 export { UnifiedProviders } from './components/Providers';
+export { BrandedButton } from './components/BrandedButton';
+export { BrandedCard } from './components/BrandedCard';
 
 // Configuration
-export { defineConfig, loadConfig, getConfig, setConfig } from './config';
-export type { HuaUxConfig } from './types';
+export { defineConfig, loadConfig, getConfig, setConfig, resetConfig } from './config';
+export type { HuaUxConfig, PresetName } from './types';
 
 // Data Fetching
 export { useData, fetchData } from './utils/data-fetching';
@@ -24,6 +26,11 @@ export type { I18nMiddlewareConfig } from './middleware/i18n';
 // File Structure
 export { validateFileStructure } from './utils/file-structure';
 export type { FileStructureResult } from './utils/file-structure';
+
+// Branding
+export { BrandingProvider, useBranding, useBrandingColor } from './branding/context';
+export { generateCSSVariables, generateCSSVariablesObject } from './branding/css-vars';
+export { generateTailwindConfig } from './branding/tailwind-config';
 
 // Types
 export type { HuaUxLayoutProps, HuaUxPageProps } from './types';

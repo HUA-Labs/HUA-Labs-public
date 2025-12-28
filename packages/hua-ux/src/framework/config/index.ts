@@ -4,8 +4,9 @@
  * Configuration loading and management
  */
 
-import type { HuaUxConfig } from '../types';
+import type { HuaUxConfig, PresetName } from '../types';
 import { defaultConfig, validateConfig } from './schema';
+import { mergePresetWithConfig, createConfigFromUserConfig } from './merge';
 
 /**
  * Global config cache
@@ -13,32 +14,74 @@ import { defaultConfig, validateConfig } from './schema';
 let cachedConfig: HuaUxConfig | null = null;
 
 /**
- * Define framework configuration
+ * 프레임워크 설정 정의 / Define framework configuration
  * 
+ * IntelliSense를 완벽히 지원하는 설정 함수입니다.
  * Provides full IntelliSense support for configuration options.
- * All options are optional and will be merged with defaults.
  * 
- * @param config - Configuration object
- * @param config.i18n - Internationalization settings
- * @param config.i18n.defaultLanguage - Default language code (e.g., 'ko', 'en')
- * @param config.i18n.supportedLanguages - Array of supported language codes
- * @param config.i18n.namespaces - Translation namespaces to load
- * @param config.i18n.translationLoader - Translation loading strategy ('static' | 'api')
- * @param config.i18n.translationApiPath - API path for translations (if using 'api' loader)
- * @param config.motion - Motion/animation settings
- * @param config.motion.defaultPreset - Default motion preset ('product' | 'marketing')
- * @param config.motion.enableAnimations - Enable animations globally
- * @param config.state - State management settings
- * @param config.state.persist - Enable localStorage persistence
- * @param config.state.ssr - Enable SSR support
+ * 모든 옵션은 선택사항이며 기본값 또는 Preset과 병합됩니다.
+ * All options are optional and will be merged with defaults or Preset.
  * 
- * @returns Validated configuration object
+ * **Zero-Config**: 설정 파일이 없어도 기본값으로 동작합니다.
+ * **Zero-Config**: Works with defaults even without a config file.
+ * 
+ * **Preset 우선**: `preset: 'product'`만 지정해도 대부분의 설정이 자동 적용됩니다.
+ * **Preset First**: Just specify `preset: 'product'` and most settings are auto-applied.
+ * 
+ * **바이브 코딩 친화적**: AI가 이해하기 쉬운 한글 주석과 명사 중심 설정
+ * **Vibe Coding Friendly**: Korean comments and noun-centered settings for AI understanding
+ * 
+ * @param config - 설정 객체 / Configuration object
+ * @param config.preset - 사용할 프리셋 ('product' | 'marketing') / Preset to use
+ *   - 'product': 제품 페이지용 (전문적, 효율적, 기본값) / Product pages (professional, efficient, default)
+ *   - 'marketing': 마케팅 페이지용 (화려함, 눈에 띄는) / Marketing pages (dramatic, eye-catching)
+ *   - Preset을 선택하면 motion, spacing, i18n 등이 자동 설정됩니다.
+ *   - Selecting a preset automatically configures motion, spacing, i18n, etc.
+ * @param config.i18n - 다국어 설정 / Internationalization settings
+ * @param config.i18n.defaultLanguage - 기본 언어 코드 (예: 'ko', 'en') / Default language code (e.g., 'ko', 'en')
+ * @param config.i18n.supportedLanguages - 지원하는 언어 코드 배열 / Array of supported language codes
+ * @param config.i18n.namespaces - 로드할 번역 네임스페이스 / Translation namespaces to load
+ * @param config.i18n.translationLoader - 번역 로딩 전략 ('static' | 'api') / Translation loading strategy
+ * @param config.i18n.translationApiPath - 번역 API 경로 ('api' 로더 사용 시) / API path for translations
+ * @param config.motion - 모션/애니메이션 설정 / Motion/animation settings
+ * @param config.motion.defaultPreset - 기본 모션 프리셋 ('product' | 'marketing') / Default motion preset
+ * @param config.motion.enableAnimations - 전역 애니메이션 활성화 여부 / Enable animations globally
+ * @param config.state - 상태 관리 설정 / State management settings
+ * @param config.state.persist - localStorage 영속성 활성화 여부 / Enable localStorage persistence
+ * @param config.state.ssr - SSR 지원 활성화 여부 / Enable SSR support
+ * @param config.branding - 브랜딩 설정 (화이트 라벨링) / Branding settings (white labeling)
+ * @param config.branding.name - 회사/서비스 이름 / Company/service name
+ * @param config.branding.logo - 로고 경로 / Logo path
+ * @param config.branding.colors - 색상 팔레트 (primary, secondary, accent 등) / Color palette
+ * @param config.branding.typography - 타이포그래피 설정 (fontFamily, fontSize 등) / Typography settings
+ * 
+ * @returns 검증된 설정 객체 / Validated configuration object
  * 
  * @example
  * ```ts
+ * // 최소 설정 (Preset만) - 바이브 코더용
  * // hua-ux.config.ts
  * import { defineConfig } from '@hua-labs/hua-ux/framework';
  * 
+ * export default defineConfig({
+ *   preset: 'product',  // 끝! 나머지는 자동 설정
+ * });
+ * ```
+ * 
+ * @example
+ * ```ts
+ * // Preset + 일부 커스터마이징
+ * export default defineConfig({
+ *   preset: 'product',
+ *   i18n: {
+ *     supportedLanguages: ['ko', 'en', 'ja'],  // 언어만 추가
+ *   },
+ * });
+ * ```
+ * 
+ * @example
+ * ```ts
+ * // 완전 커스터마이징 (Preset 없이) - 전통 개발자용
  * export default defineConfig({
  *   i18n: {
  *     defaultLanguage: 'ko',
@@ -59,34 +102,96 @@ let cachedConfig: HuaUxConfig | null = null;
  * ```
  */
 export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
-  return validateConfig(config);
+  // Preset이 지정된 경우 Preset과 병합
+  if (config.preset) {
+    const { preset, ...userConfig } = config;
+    const merged = mergePresetWithConfig(preset, userConfig);
+    return validateConfig(merged);
+  }
+
+  // Preset이 없는 경우 사용자 설정만 사용
+  const merged = createConfigFromUserConfig(config);
+  return validateConfig(merged);
 }
 
 /**
  * Load configuration from file
  * 
- * Attempts to load from hua-ux.config.ts or hua-ux.config.js
+ * 동적으로 설정 파일을 로드합니다.
+ * 
+ * **로드 순서**:
+ * 1. `hua-ux.config.ts` 시도 (TypeScript)
+ * 2. `hua-ux.config.js` 시도 (JavaScript)
+ * 3. 없으면 기본값 (product preset)
+ * 
+ * **Zero-Config**: 설정 파일이 없어도 기본값으로 동작합니다.
+ * 
+ * **주의**: 이 함수는 Node.js 환경(빌드 타임)에서만 동작합니다.
+ * 런타임에서는 캐시된 설정을 사용합니다.
  */
 export function loadConfig(): HuaUxConfig {
   if (cachedConfig) {
     return cachedConfig;
   }
 
-  try {
-    // Try to load from config file
-    // In a real implementation, this would use dynamic import
-    // For now, return default config
-    cachedConfig = defaultConfig;
-    return cachedConfig;
-  } catch (error) {
-    console.warn('Failed to load hua-ux.config.ts, using defaults:', error);
-    cachedConfig = defaultConfig;
-    return cachedConfig;
+  // Node.js 환경에서만 동적 로드 시도
+  if (typeof process !== 'undefined' && process.cwd) {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const projectRoot = process.cwd();
+
+      // 설정 파일 경로 후보
+      const configPaths = [
+        path.join(projectRoot, 'hua-ux.config.ts'),
+        path.join(projectRoot, 'hua-ux.config.js'),
+        path.join(projectRoot, 'hua-ux.config.mjs'),
+      ];
+
+      // 첫 번째로 발견된 설정 파일 사용
+      for (const configPath of configPaths) {
+        if (fs.existsSync(configPath)) {
+          try {
+            // 동적 require (TypeScript는 컴파일된 .js 파일 필요)
+            // 실제로는 Next.js 빌드 과정에서 처리됨
+            const configModule = require(configPath);
+            const userConfig = configModule.default || configModule;
+            
+            // Preset 병합 처리
+            if (userConfig && typeof userConfig === 'object') {
+              if (userConfig.preset) {
+                const { preset, ...rest } = userConfig;
+                cachedConfig = mergePresetWithConfig(preset, rest);
+              } else {
+                cachedConfig = createConfigFromUserConfig(userConfig);
+              }
+              
+              cachedConfig = validateConfig(cachedConfig);
+              return cachedConfig;
+            }
+          } catch (requireError) {
+            // require 실패 (TypeScript 파일 등)
+            // 기본값 사용
+            break;
+          }
+        }
+      }
+    } catch (error) {
+      // fs, path 등이 없는 환경 (브라우저, Edge Runtime 등)
+      // 기본값 사용
+    }
   }
+
+  // 기본값 (product preset)
+  // 설정 파일이 없거나 로드 실패 시
+  cachedConfig = mergePresetWithConfig('product', {});
+  return cachedConfig;
 }
 
 /**
  * Get current configuration
+ * 
+ * 캐시된 설정을 반환하거나, 없으면 로드합니다.
  */
 export function getConfig(): HuaUxConfig {
   return cachedConfig || loadConfig();
@@ -94,7 +199,18 @@ export function getConfig(): HuaUxConfig {
 
 /**
  * Set configuration (for testing or manual override)
+ * 
+ * 테스트나 수동 오버라이드를 위한 설정 설정 함수
  */
 export function setConfig(config: HuaUxConfig): void {
   cachedConfig = validateConfig(config);
+}
+
+/**
+ * Reset configuration cache
+ * 
+ * 설정 캐시를 초기화합니다. (주로 테스트용)
+ */
+export function resetConfig(): void {
+  cachedConfig = null;
 }
