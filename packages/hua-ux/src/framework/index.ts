@@ -27,6 +27,10 @@ export type { I18nMiddlewareConfig } from './middleware/i18n';
 export { validateFileStructure } from './utils/file-structure';
 export type { FileStructureResult } from './utils/file-structure';
 
+// Metadata Utilities
+export { generatePageMetadata } from './utils/metadata';
+export type { SEOConfig } from './utils/metadata';
+
 // Branding
 export { BrandingProvider, useBranding, useBrandingColor } from './branding/context';
 export { generateCSSVariables, generateCSSVariablesObject } from './branding/css-vars';

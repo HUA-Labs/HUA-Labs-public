@@ -9,7 +9,14 @@
 import React from 'react';
 import type { HuaUxPageProps } from '../types';
 import { getConfig } from '../config';
-import { useFadeIn } from '@hua-labs/motion-core';
+import { 
+  useFadeIn, 
+  useSlideUp, 
+  useSlideLeft, 
+  useSlideRight, 
+  useScaleIn, 
+  useBounceIn 
+} from '@hua-labs/motion-core';
 
 /**
  * HuaUxPage Component
@@ -58,6 +65,8 @@ export function HuaUxPage({
   vibe,
   i18nKey,
   enableMotion = true,
+  seo,
+  motion,
 }: HuaUxPageProps) {
   const config = getConfig();
 
@@ -66,17 +75,80 @@ export function HuaUxPage({
   const motionDuration = vibe === 'fancy' ? 800 : vibe === 'minimal' ? 300 : 600;
   const shouldEnableMotion = enableMotion && config.motion?.enableAnimations !== false;
 
-  // Always call hook (React rules)
-  const motionResult = useFadeIn<HTMLDivElement>({ 
-    duration: motionDuration,
-    autoStart: shouldEnableMotion,
-  });
+  // motion prop 또는 vibe에 따라 모션 타입 결정
+  // Determine motion type based on motion prop or vibe
+  const motionType = motion || (vibe === 'fancy' ? 'slideUp' : vibe === 'minimal' ? 'fadeIn' : 'fadeIn');
+
+  // 모션 타입에 따라 적절한 hook 사용
+  // Use appropriate hook based on motion type
+  let motionResult: ReturnType<typeof useFadeIn<HTMLDivElement>>;
+  
+  switch (motionType) {
+    case 'slideUp':
+      motionResult = useSlideUp<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+    case 'slideLeft':
+      motionResult = useSlideLeft<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+    case 'slideRight':
+      motionResult = useSlideRight<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+    case 'scaleIn':
+      motionResult = useScaleIn<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+    case 'bounceIn':
+      motionResult = useBounceIn<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+    case 'fadeIn':
+    default:
+      motionResult = useFadeIn<HTMLDivElement>({ 
+        duration: motionDuration,
+        autoStart: shouldEnableMotion,
+      });
+      break;
+  }
+
   const pageRef = motionResult.ref;
+
+  // SEO 메타데이터는 Next.js App Router에서 page.tsx의 export const metadata로 처리하는 것이 권장됩니다.
+  // 이 컴포넌트는 Client Component이므로 메타데이터를 직접 설정할 수 없습니다.
+  // SEO 설정이 있으면 개발자에게 경고 메시지 표시 (개발 모드에서만)
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && seo) {
+      console.warn(
+        '[HuaUxPage] SEO metadata should be set using `export const metadata` in page.tsx.\n' +
+        'Use `generatePageMetadata()` helper function from @hua-labs/hua-ux/framework'
+      );
+    }
+  }, [seo]);
+
+  // i18nKey가 있으면 해당 네임스페이스를 자동으로 로드하도록 안내
+  // (실제 로드는 I18nProvider에서 자동 처리됨)
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && i18nKey) {
+      // i18nKey가 설정되어 있으면 해당 네임스페이스가 자동으로 로드됩니다.
+      // 번역 키는 `${i18nKey}:title`, `${i18nKey}:description` 형식으로 사용할 수 있습니다.
+      // Translation keys can be used in the format `${i18nKey}:title`, `${i18nKey}:description`
+    }
+  }, [i18nKey]);
 
   return (
     <div ref={pageRef}>
-      {title && <title>{title}</title>}
-      {description && <meta name="description" content={description} />}
       {children}
     </div>
   );

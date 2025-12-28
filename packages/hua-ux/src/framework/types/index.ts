@@ -262,17 +262,30 @@ export interface HuaUxPageProps {
   vibe?: 'clean' | 'fancy' | 'minimal';
   
   /**
-   * i18n 네임스페이스 / i18n namespace
+   * i18n 네임스페이스 키 / i18n namespace key
    * 
    * 번역 파일의 네임스페이스를 지정합니다.
-   * 설정하지 않으면 파일명을 따릅니다.
+   * 설정하면 해당 네임스페이스가 자동으로 로드되고,
+   * `title`과 `description`을 번역 키로 사용할 수 있습니다.
    * 
    * Specifies the translation namespace.
-   * If not specified, uses the file name.
+   * If specified, the namespace is automatically loaded,
+   * and `title` and `description` can be used as translation keys.
+   * 
+   * **자동 번역 키 형식 / Auto translation key format**:
+   * - `title` → `${i18nKey}:title` 또는 `${i18nKey}.title`
+   * - `description` → `${i18nKey}:description` 또는 `${i18nKey}.description`
    * 
    * @example
    * ```tsx
-   * <HuaUxPage i18nKey="home">
+   * // translations/ko/home.json
+   * {
+   *   "title": "홈",
+   *   "description": "환영합니다"
+   * }
+   * 
+   * // app/page.tsx
+   * <HuaUxPage i18nKey="home" title="home:title" description="home:description">
    *   <div>translations/ko/home.json, translations/en/home.json 사용</div>
    * </HuaUxPage>
    * ```
@@ -286,4 +299,90 @@ export interface HuaUxPageProps {
    * Default: true (when motion.enableAnimations is true in config)
    */
   enableMotion?: boolean;
+
+  /**
+   * 모션 타입 / Motion type
+   * 
+   * 페이지 진입 시 사용할 모션 애니메이션 타입을 지정합니다.
+   * 지정하지 않으면 `vibe`에 따라 자동 선택됩니다.
+   * 
+   * Specifies the motion animation type to use when the page enters.
+   * If not specified, automatically selected based on `vibe`.
+   * 
+   * - 'fadeIn': 페이드 인 (기본값) / Fade in (default)
+   * - 'slideUp': 아래에서 위로 슬라이드 / Slide up from bottom
+   * - 'slideLeft': 오른쪽에서 왼쪽으로 슬라이드 / Slide from right to left
+   * - 'slideRight': 왼쪽에서 오른쪽으로 슬라이드 / Slide from left to right
+   * - 'scaleIn': 크기 확대 / Scale in
+   * - 'bounceIn': 바운스 효과 / Bounce in
+   * 
+   * @example
+   * ```tsx
+   * <HuaUxPage motion="slideUp" vibe="fancy">
+   *   <div>아래에서 위로 슬라이드되며 나타납니다</div>
+   * </HuaUxPage>
+   * ```
+   */
+  motion?: 'fadeIn' | 'slideUp' | 'slideLeft' | 'slideRight' | 'scaleIn' | 'bounceIn';
+
+  /**
+   * SEO 메타데이터 설정 / SEO metadata settings
+   * 
+   * Next.js App Router에서는 page.tsx에서 `export const metadata`를 사용하는 것이 권장됩니다.
+   * 이 prop은 문서화 및 타입 안전성을 위한 것입니다.
+   * 
+   * In Next.js App Router, using `export const metadata` in page.tsx is recommended.
+   * This prop is for documentation and type safety.
+   * 
+   * @example
+   * ```tsx
+   * // page.tsx
+   * import { generatePageMetadata } from '@hua-labs/hua-ux/framework';
+   * 
+   * export const metadata = generatePageMetadata({
+   *   title: '홈',
+   *   description: '환영합니다',
+   *   seo: {
+   *     keywords: ['키워드1', '키워드2'],
+   *     ogImage: '/og-image.png',
+   *   },
+   * });
+   * 
+   * export default function HomePage() {
+   *   return <HuaUxPage title="홈" seo={{ keywords: ['키워드1'] }}>...</HuaUxPage>;
+   * }
+   * ```
+   */
+  seo?: {
+    /**
+     * 검색 엔진 키워드 / Search engine keywords
+     */
+    keywords?: string[];
+    
+    /**
+     * Open Graph 이미지 / Open Graph image
+     */
+    ogImage?: string;
+    
+    /**
+     * Open Graph 제목 / Open Graph title
+     * 
+     * 지정하지 않으면 `title` prop 사용
+     * If not specified, uses `title` prop
+     */
+    ogTitle?: string;
+    
+    /**
+     * Open Graph 설명 / Open Graph description
+     * 
+     * 지정하지 않으면 `description` prop 사용
+     * If not specified, uses `description` prop
+     */
+    ogDescription?: string;
+    
+    /**
+     * Open Graph 타입 / Open Graph type
+     */
+    ogType?: 'website' | 'article' | 'product';
+  };
 }
