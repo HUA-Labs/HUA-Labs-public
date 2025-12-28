@@ -79,49 +79,66 @@ export function HuaUxPage({
   // Determine motion type based on motion prop or vibe
   const motionType = motion || (vibe === 'fancy' ? 'slideUp' : vibe === 'minimal' ? 'fadeIn' : 'fadeIn');
 
-  // 모션 타입에 따라 적절한 hook 사용
-  // Use appropriate hook based on motion type
-  let motionResult: ReturnType<typeof useFadeIn<HTMLDivElement>>;
+  // Call all hooks unconditionally (React Rules of Hooks)
+  // 모든 hook을 조건 없이 호출 (React Rules of Hooks 준수)
+  const fadeInResult = useFadeIn<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+  const slideUpResult = useSlideUp<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+  const slideLeftResult = useSlideLeft<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+  const slideRightResult = useSlideRight<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+  const scaleInResult = useScaleIn<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+  const bounceInResult = useBounceIn<HTMLDivElement>({ 
+    duration: motionDuration, 
+    autoStart: false 
+  });
+
+  // Select the appropriate result based on motion type
+  // motionType에 따라 적절한 결과 선택
+  let motionResult: typeof fadeInResult;
   
   switch (motionType) {
     case 'slideUp':
-      motionResult = useSlideUp<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = slideUpResult;
       break;
     case 'slideLeft':
-      motionResult = useSlideLeft<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = slideLeftResult;
       break;
     case 'slideRight':
-      motionResult = useSlideRight<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = slideRightResult;
       break;
     case 'scaleIn':
-      motionResult = useScaleIn<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = scaleInResult;
       break;
     case 'bounceIn':
-      motionResult = useBounceIn<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = bounceInResult;
       break;
     case 'fadeIn':
     default:
-      motionResult = useFadeIn<HTMLDivElement>({ 
-        duration: motionDuration,
-        autoStart: shouldEnableMotion,
-      });
+      motionResult = fadeInResult;
       break;
   }
+
+  // Start the selected motion if enabled
+  // 모션이 활성화된 경우 선택된 모션 시작
+  React.useEffect(() => {
+    if (shouldEnableMotion) {
+      motionResult.start?.();
+    }
+  }, [shouldEnableMotion, motionResult]);
 
   const pageRef = motionResult.ref;
 
