@@ -234,6 +234,35 @@ export interface HuaUxConfig {
   };
 
   /**
+   * Plugins / 플러그인
+   * 
+   * 프레임워크에 등록할 플러그인 목록
+   * List of plugins to register with the framework
+   * 
+   * **플러그인 타입**:
+   * - 기능 플러그인: 고급 기능 추가 (예: motion-pro, i18n-pro)
+   * - 프리셋 플러그인: 새로운 프리셋 추가 (예: ecommerce, dashboard)
+   * - 브랜딩 플러그인: 화이트 라벨링 지원
+   * 
+   * **Plugin types**:
+   * - Feature plugins: Add advanced features (e.g., motion-pro, i18n-pro)
+   * - Preset plugins: Add new presets (e.g., ecommerce, dashboard)
+   * - Branding plugins: White labeling support
+   * 
+   * @example
+   * ```ts
+   * import { defineConfig } from '@hua-labs/hua-ux/framework';
+   * import { motionProPlugin } from '@hua-labs/motion-core/pro';
+   * 
+   * export default defineConfig({
+   *   preset: 'product',
+   *   plugins: [motionProPlugin],
+   * });
+   * ```
+   */
+  plugins?: import('./plugins/types').HuaUxPlugin[];
+
+  /**
    * License configuration / 라이선스 설정
    * 
    * Pro/Enterprise 기능을 사용하기 위한 라이선스 설정입니다.

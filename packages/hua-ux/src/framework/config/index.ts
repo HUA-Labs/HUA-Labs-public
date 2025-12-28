@@ -142,16 +142,44 @@ export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
     initLicense(config.license);
   }
   
+  // 플러그인 등록 및 초기화
+  if (config.plugins && config.plugins.length > 0) {
+    const { pluginRegistry } = require('./plugins/registry');
+    config.plugins.forEach(plugin => {
+      pluginRegistry.register(plugin);
+    });
+  }
+  
   // Preset이 지정된 경우 Preset과 병합
   if (config.preset) {
     const { preset, ...userConfig } = config;
     const merged = mergePresetWithConfig(preset, userConfig);
-    return validateConfig(merged);
+    const validated = validateConfig(merged);
+    
+    // 플러그인 초기화 (설정이 완료된 후)
+    if (config.plugins && config.plugins.length > 0) {
+      const { pluginRegistry } = require('./plugins/registry');
+      pluginRegistry.initializeAll(validated).catch((error: Error) => {
+        console.error('[hua-ux] Plugin initialization error:', error);
+      });
+    }
+    
+    return validated;
   }
 
   // Preset이 없는 경우 사용자 설정만 사용
   const merged = createConfigFromUserConfig(config);
-  return validateConfig(merged);
+  const validated = validateConfig(merged);
+  
+  // 플러그인 초기화 (설정이 완료된 후)
+  if (config.plugins && config.plugins.length > 0) {
+    const { pluginRegistry } = require('./plugins/registry');
+    pluginRegistry.initializeAll(validated).catch((error: Error) => {
+      console.error('[hua-ux] Plugin initialization error:', error);
+    });
+  }
+  
+  return validated;
 }
 
 /**
