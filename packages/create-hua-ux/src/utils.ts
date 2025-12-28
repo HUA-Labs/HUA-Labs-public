@@ -47,22 +47,46 @@ export async function copyTemplate(projectPath: string): Promise<void> {
  * Get hua-ux package version
  * 
  * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용
+ * 
+ * 감지 우선순위:
+ * 1. 환경 변수 (HUA_UX_WORKSPACE_VERSION)
+ * 2. pnpm-workspace.yaml 파일 존재 여부 (더 견고한 방법)
+ * 3. 폴더 이름 기반 감지 (하위 호환성)
+ * 4. npm 버전 (기본값)
  */
 function getHuaUxVersion(): string {
-  // 모노레포 내부 테스트를 위한 환경 변수 확인
+  // 1. 환경 변수 우선 확인
   if (process.env.HUA_UX_WORKSPACE_VERSION === 'workspace') {
     return 'workspace:*';
   }
   
-  // 로컬 테스트 모드: 현재 디렉토리가 모노레포 내부인지 확인
-  // (test-cli 같은 폴더에서 생성된 경우 workspace 사용)
+  // 2. pnpm-workspace.yaml 파일 존재 여부로 모노레포 감지 (더 견고한 방법)
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    let currentDir = process.cwd();
+    const maxDepth = 10; // 최대 10단계 상위 디렉토리까지 확인
+    
+    for (let i = 0; i < maxDepth; i++) {
+      const workspaceFile = path.join(currentDir, 'pnpm-workspace.yaml');
+      if (fs.existsSync(workspaceFile)) {
+        return 'workspace:*';
+      }
+      const parentDir = path.dirname(currentDir);
+      if (parentDir === currentDir) break; // 루트 도달
+      currentDir = parentDir;
+    }
+  } catch (error) {
+    // fs 모듈을 사용할 수 없는 경우 (Edge Runtime 등) 무시
+  }
+  
+  // 3. 하위 호환성: 폴더 이름 기반 감지 (기존 방식)
   const cwd = process.cwd();
   if (cwd.includes('hua-platform') && !cwd.includes('node_modules')) {
-    // 모노레포 내부에서 생성된 경우 workspace 사용
     return 'workspace:*';
   }
   
-  // npm 배포 후에는 실제 버전 사용
+  // 4. npm 배포 후에는 실제 버전 사용
   // TODO: npm에서 최신 버전을 가져오는 로직 추가 가능
   // 현재는 고정 버전 사용 (향후 업데이트 필요)
   return '^0.1.0';

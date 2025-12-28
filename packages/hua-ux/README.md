@@ -28,6 +28,49 @@ yarn add @hua-labs/hua-ux zustand
 
 ### 2. 기본 설정
 
+**두 가지 사용 방법이 있습니다:**
+
+#### 방법 1: 프레임워크 레이어 사용 (권장) ⭐
+
+프레임워크 레이어를 사용하면 자동으로 모든 Provider가 설정됩니다:
+
+```tsx
+// hua-ux.config.ts
+import { defineConfig } from '@hua-labs/hua-ux/framework';
+
+export default defineConfig({
+  preset: 'product',
+  i18n: {
+    defaultLanguage: 'ko',
+    supportedLanguages: ['ko', 'en'],
+    namespaces: ['common'],
+    translationLoader: 'api',
+    translationApiPath: '/api/translations',
+  },
+});
+```
+
+```tsx
+// app/layout.tsx
+import { HuaUxLayout } from '@hua-labs/hua-ux/framework';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="ko">
+      <body>
+        <HuaUxLayout>{children}</HuaUxLayout>
+      </body>
+    </html>
+  );
+}
+```
+
+**장점**: 설정 파일만으로 모든 Provider 자동 설정, 간단함
+
+#### 방법 2: 직접 사용 (세밀한 제어)
+
+더 세밀한 제어가 필요한 경우 직접 설정할 수 있습니다:
+
 ```tsx
 // store/useAppStore.ts
 import { create } from 'zustand';
@@ -55,9 +98,19 @@ export const useAppStore = create<AppState>()(
 ```tsx
 // lib/i18n-setup.ts
 import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
+import { createI18nStore } from '@hua-labs/state';
 import { useAppStore } from '../store/useAppStore';
 
-export const I18nProvider = createZustandI18n(useAppStore, {
+// createI18nStore로 언어 상태 관리 스토어 생성
+const i18nStore = createI18nStore({
+  defaultLanguage: 'ko',
+  supportedLanguages: ['ko', 'en'],
+  persist: true,
+  ssr: true,
+});
+
+// createZustandI18n으로 i18n Provider 생성
+export const I18nProvider = createZustandI18n(i18nStore, {
   fallbackLanguage: 'en',
   namespaces: ['common'],
   translationLoader: 'api',
@@ -80,6 +133,12 @@ export default function RootLayout({ children }) {
   );
 }
 ```
+
+**장점**: 세밀한 제어 가능, 커스텀 설정 용이
+
+**언제 사용하나요?**
+- **프레임워크 레이어**: 빠른 시작, 표준 설정으로 충분한 경우
+- **직접 사용**: 커스텀 Provider 조합, 특수한 요구사항이 있는 경우
 
 ### 3. 사용하기
 

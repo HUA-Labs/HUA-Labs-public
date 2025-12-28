@@ -199,17 +199,77 @@ chmod +x dist/bin/create-hua-ux.js
 
 ## 배포 순서
 
-1. **@hua-labs/hua-ux 배포** (먼저 필요)
-   ```bash
-   cd packages/hua-ux
-   npm publish --access public
-   ```
+**중요**: 반드시 순서대로 배포해야 합니다. `create-hua-ux`가 `@hua-labs/hua-ux`에 의존하므로 먼저 배포해야 합니다.
 
-2. **create-hua-ux 배포**
-   ```bash
-   cd packages/create-hua-ux
-   npm publish --access public
-   ```
+### Step 1: @hua-labs/hua-ux 배포 (먼저 필요)
+
+```bash
+cd packages/hua-ux
+
+# 빌드 확인
+pnpm run build
+
+# 배포할 파일 확인
+npm pack --dry-run
+
+# 배포 실행
+npm publish --access public
+```
+
+**확인 사항**:
+- [ ] 빌드 성공
+- [ ] `dist/` 폴더 생성 확인
+- [ ] `npm view @hua-labs/hua-ux`로 배포 확인
+- [ ] npm 레지스트리에서 패키지 페이지 확인
+
+### Step 2: create-hua-ux 배포
+
+`@hua-labs/hua-ux` 배포 완료 후 진행합니다.
+
+```bash
+cd packages/create-hua-ux
+
+# 빌드 확인
+pnpm run build
+
+# 배포할 파일 확인
+npm pack --dry-run
+
+# 배포 실행
+npm publish --access public
+```
+
+**확인 사항**:
+- [ ] 빌드 성공
+- [ ] `dist/` 폴더 생성 확인
+- [ ] `dist/bin/create-hua-ux.js` 파일 존재 확인
+- [ ] `npm view create-hua-ux`로 배포 확인
+- [ ] npm 레지스트리에서 패키지 페이지 확인
+- [ ] `pnpm create hua-ux test-project` 명령어 테스트
+
+### Step 3: 배포 후 확인
+
+```bash
+# 다른 위치에서 테스트
+cd /tmp
+rm -rf test-create-hua-ux
+pnpm create hua-ux test-create-hua-ux
+cd test-create-hua-ux
+
+# 의존성 확인
+cat package.json | grep '@hua-labs/hua-ux'
+# 예상: "@hua-labs/hua-ux": "^0.1.0" (workspace:* 아님)
+
+# 설치 및 빌드 테스트
+pnpm install
+pnpm run build
+```
+
+**확인 사항**:
+- [ ] 생성된 프로젝트의 `package.json`에 `@hua-labs/hua-ux: ^0.1.0` 포함
+- [ ] `workspace:*` 없음 (npm 버전 사용)
+- [ ] `pnpm install` 성공
+- [ ] `pnpm run build` 성공
 
 ## 참고 자료
 
@@ -218,5 +278,57 @@ chmod +x dist/bin/create-hua-ux.js
 
 ---
 
-**작성일**: 2025-12-28  
+## 0.1.0 버전 배포 특별 가이드
+
+### 배포 전 필수 확인
+
+1. **@hua-labs/hua-ux 배포 완료 확인**
+   ```bash
+   npm view @hua-labs/hua-ux
+   ```
+   - 패키지가 npm 레지스트리에 존재하는지 확인
+   - 버전이 0.1.0인지 확인
+
+2. **버전 확인**
+   ```bash
+   cat packages/create-hua-ux/package.json | grep '"version"'
+   cat packages/create-hua-ux/src/utils.ts | grep '^0.1.0'
+   ```
+   - `package.json`의 버전이 `0.1.0`인지 확인
+   - `getHuaUxVersion()` 함수가 `^0.1.0`을 반환하는지 확인
+
+3. **빌드 확인**
+   ```bash
+   cd packages/create-hua-ux
+   pnpm run build
+   ls -la dist/
+   ```
+   - 빌드 성공 확인
+   - `dist/bin/create-hua-ux.js` 파일 존재 확인
+
+### 배포 후 확인
+
+1. **npm 레지스트리 확인**
+   - https://www.npmjs.com/package/create-hua-ux
+   - README 표시 확인
+   - 버전 정보 확인
+
+2. **CLI 테스트**
+   ```bash
+   cd /tmp
+   pnpm create hua-ux test-project
+   cd test-project
+   cat package.json | grep '@hua-labs/hua-ux'
+   ```
+   - `@hua-labs/hua-ux: ^0.1.0` 포함 확인
+   - `workspace:*` 없음 확인
+
+## 관련 문서
+
+- [배포 종합 가이드](../../../docs/packages/RELEASE_GUIDE_0.1.0.md)
+- [배포 체크리스트](../../../docs/packages/DEPLOYMENT_CHECKLIST_0.1.0.md)
+
+---
+
+**작성일**: 2025-12-29 (0.1.0 배포 가이드 추가)  
 **작성자**: HUA Platform 개발팀
