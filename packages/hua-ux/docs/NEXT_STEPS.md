@@ -13,6 +13,24 @@
 
 ## 🚀 다음 단계 계획
 
+### Phase 0: 개발자 결정 최소화 (최우선)
+
+**목표**: Preset을 컴포넌트에 자동 연결하여 "그냥 쓰면 되는" 수준 달성
+
+**구현 계획**:
+- [ ] Preset에 colors, typography, components 추가
+- [ ] PresetContext 구현 및 컴포넌트 자동 연결
+- [ ] Button, Card 등 주요 컴포넌트가 Preset 자동 사용
+- [ ] Typography 컴포넌트 추가
+- [ ] Layout 컴포넌트가 Preset spacing 자동 사용
+
+**예상 효과**:
+- 개발자 결정 80% 감소
+- "그냥 쓰면 되는" 수준 달성
+- 일관성 자동 보장
+
+**참고**: [개발자 결정 최소화 전략](./DEVELOPER_DECISION_MINIMIZATION.md)
+
 ### Phase 1: Alpha → Beta (우선순위 높음)
 
 #### 1. Edge Runtime 최적화
