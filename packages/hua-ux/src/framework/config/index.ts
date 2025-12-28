@@ -4,7 +4,7 @@
  * Configuration loading and management
  */
 
-import type { HuaUxConfig, PresetName } from '../types';
+import type { HuaUxConfig, Preset } from '../types';
 import { defaultConfig, validateConfig } from './schema';
 import { mergePresetWithConfig, createConfigFromUserConfig } from './merge';
 
@@ -32,9 +32,12 @@ let cachedConfig: HuaUxConfig | null = null;
  * **Vibe Coding Friendly**: Korean comments and noun-centered settings for AI understanding
  * 
  * @param config - 설정 객체 / Configuration object
- * @param config.preset - 사용할 프리셋 ('product' | 'marketing') / Preset to use
- *   - 'product': 제품 페이지용 (전문적, 효율적, 기본값) / Product pages (professional, efficient, default)
- *   - 'marketing': 마케팅 페이지용 (화려함, 눈에 띄는) / Marketing pages (dramatic, eye-catching)
+ * @param config.preset - 사용할 프리셋 / Preset to use
+ *   - **바이브 모드 (간단) / Vibe mode (simple)**: `'product' | 'marketing'`
+ *     - 'product': 제품 페이지용 (전문적, 효율적, 기본값) / Product pages (professional, efficient, default)
+ *     - 'marketing': 마케팅 페이지용 (화려함, 눈에 띄는) / Marketing pages (dramatic, eye-catching)
+ *   - **개발자 모드 (세부 설정) / Developer mode (detailed)**: `{ type: 'product' | 'marketing', motion?: {...}, spacing?: {...} }`
+ *     - 세부 설정을 포함한 Preset 객체 / Preset object with detailed settings
  *   - Preset을 선택하면 motion, spacing, i18n 등이 자동 설정됩니다.
  *   - Selecting a preset automatically configures motion, spacing, i18n, etc.
  * @param config.i18n - 다국어 설정 / Internationalization settings
@@ -44,8 +47,16 @@ let cachedConfig: HuaUxConfig | null = null;
  * @param config.i18n.translationLoader - 번역 로딩 전략 ('static' | 'api') / Translation loading strategy
  * @param config.i18n.translationApiPath - 번역 API 경로 ('api' 로더 사용 시) / API path for translations
  * @param config.motion - 모션/애니메이션 설정 / Motion/animation settings
- * @param config.motion.defaultPreset - 기본 모션 프리셋 ('product' | 'marketing') / Default motion preset
+ * @param config.motion.style - 모션 스타일 (바이브 코더용) / Motion style (for vibe coders)
+ *   - 'smooth': 부드러운 전환 / Smooth transitions
+ *   - 'dramatic': 드라마틱한 전환 / Dramatic transitions
+ *   - 'minimal': 최소한의 전환 / Minimal transitions
+ * @param config.motion.defaultPreset - 기본 모션 프리셋 (개발자용) / Default motion preset (for developers)
+ *   - 'product': 빠른 전환, 최소 딜레이 / Fast transitions, minimal delay
+ *   - 'marketing': 느린 전환, 긴 딜레이 / Slow transitions, long delay
  * @param config.motion.enableAnimations - 전역 애니메이션 활성화 여부 / Enable animations globally
+ * @param config.motion.duration - 애니메이션 지속 시간 (밀리초, 개발자용) / Animation duration in milliseconds (for developers)
+ * @param config.motion.easing - 애니메이션 이징 함수 (개발자용) / Animation easing function (for developers)
  * @param config.state - 상태 관리 설정 / State management settings
  * @param config.state.persist - localStorage 영속성 활성화 여부 / Enable localStorage persistence
  * @param config.state.ssr - SSR 지원 활성화 여부 / Enable SSR support
@@ -75,6 +86,29 @@ let cachedConfig: HuaUxConfig | null = null;
  *   preset: 'product',
  *   i18n: {
  *     supportedLanguages: ['ko', 'en', 'ja'],  // 언어만 추가
+ *   },
+ * });
+ * ```
+ * 
+ * @example
+ * ```ts
+ * // 개발자 모드: Preset 객체 형태 (세부 설정)
+ * export default defineConfig({
+ *   preset: {
+ *     type: 'product',
+ *     motion: { duration: 300 },
+ *     spacing: { default: 'md' },
+ *   },
+ * });
+ * ```
+ * 
+ * @example
+ * ```ts
+ * // 바이브 코더용: motion.style 사용
+ * export default defineConfig({
+ *   preset: 'product',
+ *   motion: {
+ *     style: 'smooth',  // 명사 중심, 이해하기 쉬움
  *   },
  * });
  * ```

@@ -4,14 +4,9 @@
  * Preset 병합 및 깊은 병합 로직
  */
 
-import type { HuaUxConfig } from '../types';
+import type { HuaUxConfig, Preset, PresetName, PresetConfig } from '../types';
 import { productPreset } from '../../presets/product';
 import { marketingPreset } from '../../presets/marketing';
-
-/**
- * Preset 타입
- */
-export type PresetName = 'product' | 'marketing';
 
 /**
  * Preset 맵
@@ -82,32 +77,60 @@ function presetToConfig(preset: typeof productPreset | typeof marketingPreset): 
  * Preset과 사용자 설정 병합
  * 
  * 1. Preset 기본값 로드
- * 2. 사용자 설정으로 병합 (사용자 설정 우선)
- * 3. 최종 검증
+ * 2. Preset 설정 오버라이드 (개발자 모드인 경우)
+ * 3. 사용자 설정으로 병합 (사용자 설정 우선)
+ * 4. 최종 검증
  * 
- * @param presetName - 사용할 Preset 이름
+ * @param preset - 사용할 Preset (문자열 또는 객체)
  * @param userConfig - 사용자 설정 (선택적)
  * @returns 병합된 설정
  */
 export function mergePresetWithConfig(
-  presetName: PresetName,
+  preset: Preset,
   userConfig?: Partial<HuaUxConfig>
 ): HuaUxConfig {
-  // 1. Preset 로드
-  const preset = PRESET_MAP[presetName];
-  if (!preset) {
+  // 1. Preset 타입 추출
+  let presetName: PresetName;
+  let presetOverrides: Partial<HuaUxConfig> = {};
+  
+  if (typeof preset === 'string') {
+    // 바이브 모드: 문자열 Preset
+    presetName = preset;
+  } else {
+    // 개발자 모드: 객체 Preset
+    presetName = preset.type;
+    
+    // Preset 설정 오버라이드
+    if (preset.motion) {
+      presetOverrides.motion = {
+        ...presetOverrides.motion,
+        duration: preset.motion.duration,
+        easing: preset.motion.easing,
+      };
+    }
+    
+    // spacing은 나중에 컴포넌트 레벨에서 처리
+    // (Config에는 직접 포함하지 않음)
+  }
+
+  // 2. Preset 로드
+  const presetData = PRESET_MAP[presetName];
+  if (!presetData) {
     throw new Error(
       `Unknown preset: "${presetName}". Available presets: ${Object.keys(PRESET_MAP).join(', ')}`
     );
   }
 
-  // 2. Preset을 Config 형식으로 변환
-  const presetConfig = presetToConfig(preset);
+  // 3. Preset을 Config 형식으로 변환
+  const presetConfig = presetToConfig(presetData);
 
-  // 3. 사용자 설정과 병합 (사용자 설정 우선)
+  // 4. Preset 오버라이드와 병합
+  const presetWithOverrides = deepMerge(presetConfig, presetOverrides);
+
+  // 5. 사용자 설정과 병합 (사용자 설정 우선)
   const merged = userConfig
-    ? deepMerge(presetConfig, userConfig)
-    : presetConfig;
+    ? deepMerge(presetWithOverrides, userConfig)
+    : presetWithOverrides;
 
   // 4. 최종 Config 형식으로 변환 (필수 필드 보장)
   return {
