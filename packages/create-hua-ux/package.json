@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "build": "echo 'No build needed for CLI tool'",
-    "dev": "node bin/create-hua-ux.js"
+    "dev": "tsx src/index.ts",
+    "test": "tsx src/index.ts test-project"
   },
   "dependencies": {
     "fs-extra": "^11.2.0",

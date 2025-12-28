@@ -92,7 +92,24 @@ export async function generatePackageJson(
 export async function generateConfig(projectPath: string): Promise<void> {
   const configContent = `import { defineConfig } from '@hua-labs/hua-ux/framework';
 
+/**
+ * hua-ux 프레임워크 설정
+ * 
+ * Preset을 선택하면 대부분의 설정이 자동으로 적용됩니다.
+ * - 'product': 제품 페이지용 (전문적, 효율적)
+ * - 'marketing': 마케팅 페이지용 (화려함, 눈에 띄는)
+ */
 export default defineConfig({
+  /**
+   * 프리셋 선택
+   * 
+   * Preset을 선택하면 motion, spacing, i18n 등이 자동 설정됩니다.
+   */
+  preset: 'product',
+  
+  /**
+   * 다국어 설정
+   */
   i18n: {
     defaultLanguage: 'ko',
     supportedLanguages: ['ko', 'en'],
@@ -100,10 +117,18 @@ export default defineConfig({
     translationLoader: 'api',
     translationApiPath: '/api/translations',
   },
+  
+  /**
+   * 모션/애니메이션 설정
+   */
   motion: {
     defaultPreset: 'product',
     enableAnimations: true,
   },
+  
+  /**
+   * 상태 관리 설정
+   */
   state: {
     persist: true,
     ssr: true,
@@ -115,4 +140,18 @@ export default defineConfig({
     path.join(projectPath, 'hua-ux.config.ts'),
     configContent
   );
+}
+
+/**
+ * Generate AI context files
+ * 
+ * Cursor, Claude 등 다양한 AI 도구를 위한 컨텍스트 파일 생성
+ */
+export async function generateAiContextFiles(projectPath: string): Promise<void> {
+  // .cursorrules는 템플릿에서 복사됨 (이미 처리됨)
+  // .claude/project-context.md도 템플릿에서 복사됨 (이미 처리됨)
+  // ai-context.md도 템플릿에서 복사됨 (이미 처리됨)
+  
+  // 필요시 여기서 프로젝트별 커스터마이징 가능
+  // 예: 프로젝트 이름을 ai-context.md에 삽입 등
 }

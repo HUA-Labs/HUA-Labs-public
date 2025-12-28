@@ -4,19 +4,25 @@
  * create-hua-ux CLI
  * 
  * Scaffolding tool for creating hua-ux projects
+ * 
+ * For local development, use: npx tsx src/index.ts <project-name>
+ * For production, this will use compiled JavaScript
  */
 
-// Note: This is a simplified version. In production, you would compile TypeScript first
-// or use tsx/ts-node to run TypeScript directly
-
+// Simple wrapper - in production, this would load compiled JS
+// For now, direct users to use tsx for local development
 const projectName = process.argv[2];
 
 if (!projectName) {
   console.error('Usage: create-hua-ux <project-name>');
+  console.error('\nFor local development, use:');
+  console.error('  npx tsx src/index.ts <project-name>');
   process.exit(1);
 }
 
-// For now, this is a placeholder
-// The actual implementation would use the compiled JavaScript from src/
-console.log('Creating project:', projectName);
-console.log('Note: This CLI tool needs to be built first. Run: pnpm build');
+console.error('Note: For local development, use:');
+console.error(`  npx tsx src/index.ts ${projectName}`);
+console.error('\nOr install tsx globally:');
+console.error('  pnpm add -g tsx');
+console.error(`  tsx src/index.ts ${projectName}`);
+process.exit(1);
