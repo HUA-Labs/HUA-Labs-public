@@ -223,15 +223,22 @@ export function loadConfig(): HuaUxConfig {
       ];
 
       // 첫 번째로 발견된 설정 파일 사용
+      // 주의: Next.js 빌드 시 동적 require는 경고를 발생시킬 수 있지만,
+      // 런타임에서는 정상 작동합니다. 설정 파일은 보통 빌드 타임에 처리되므로
+      // 이 코드는 주로 개발 환경에서 사용됩니다.
       for (const configPath of configPaths) {
         if (fs.existsSync(configPath)) {
           try {
-            // 동적 require는 Next.js 빌드 시 문제가 될 수 있으므로
-            // 런타임에서만 사용하고, 빌드 시에는 기본값 사용
-            // 실제 설정은 Next.js가 자동으로 처리
-            if (typeof require !== 'undefined' && require.resolve) {
+            // 동적 require는 Next.js 빌드 시 경고를 발생시킬 수 있지만
+            // 런타임에서는 정상 작동합니다.
+            // 실제 프로덕션에서는 설정 파일이 이미 import되어 있으므로
+            // 이 경로는 거의 사용되지 않습니다.
+            if (typeof require !== 'undefined' && typeof require.resolve === 'function') {
               try {
-                const configModule = require(configPath);
+                // webpackIgnore 주석으로 Next.js 빌드 시 무시하도록 시도
+                // @ts-ignore - 동적 require는 타입 체크를 통과하지 못함
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
+                const configModule = require(/* webpackIgnore: true */ configPath);
                 const userConfig = configModule.default || configModule;
                 
                 // Preset 병합 처리
@@ -274,9 +281,24 @@ export function loadConfig(): HuaUxConfig {
  * Get current configuration
  * 
  * 캐시된 설정을 반환하거나, 없으면 로드합니다.
+ * 
+ * **클라이언트 안전**: 클라이언트에서는 항상 기본값을 반환합니다.
+ * **Client Safe**: Always returns default config on client side.
  */
 export function getConfig(): HuaUxConfig {
-  return cachedConfig || loadConfig();
+  if (cachedConfig) {
+    return cachedConfig;
+  }
+  
+  // 클라이언트 환경에서는 loadConfig를 호출하지 않고 기본값 반환
+  // (loadConfig는 서버 전용이며 fs 모듈을 사용함)
+  if (typeof window !== 'undefined') {
+    cachedConfig = mergePresetWithConfig('product', {});
+    return cachedConfig;
+  }
+  
+  // 서버 환경에서만 loadConfig 호출
+  return loadConfig();
 }
 
 /**
