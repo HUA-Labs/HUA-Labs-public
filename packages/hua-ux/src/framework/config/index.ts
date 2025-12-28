@@ -136,6 +136,12 @@ let cachedConfig: HuaUxConfig | null = null;
  * ```
  */
 export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
+  // 라이선스 초기화
+  if (config.license) {
+    const { initLicense } = require('./license');
+    initLicense(config.license);
+  }
+  
   // Preset이 지정된 경우 Preset과 병합
   if (config.preset) {
     const { preset, ...userConfig } = config;
