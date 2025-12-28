@@ -109,6 +109,44 @@ export default function HomePage() {
 }
 ```
 
+#### SEO 메타데이터가 포함된 페이지 / Page with SEO Metadata
+
+SEO를 위해 Next.js `metadata` export를 사용하는 것을 권장합니다:
+
+```tsx
+// app/page.tsx (Server Component)
+import { generatePageMetadata } from '@hua-labs/hua-ux/framework';
+import { HomePageContent } from './HomePageContent';
+
+export const metadata = generatePageMetadata({
+  title: '홈',
+  description: '환영합니다',
+  seo: {
+    keywords: ['키워드1', '키워드2'],
+    ogImage: '/og-image.png',
+  },
+});
+
+export default function HomePage() {
+  return <HomePageContent />;
+}
+```
+
+```tsx
+// app/HomePageContent.tsx (Client Component)
+'use client';
+
+import { HuaUxPage } from '@hua-labs/hua-ux/framework';
+
+export function HomePageContent() {
+  return (
+    <HuaUxPage title="홈" description="환영합니다">
+      <h1>안녕하세요!</h1>
+    </HuaUxPage>
+  );
+}
+```
+
 #### SEO와 i18n이 포함된 페이지 / Page with SEO and i18n
 
 ```tsx
