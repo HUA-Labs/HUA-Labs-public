@@ -1,195 +1,205 @@
 # npm 배포 가이드
 
-## 현재 상태
+## 배포 전 체크리스트
 
-### ✅ 완료된 작업
-
-1. **TypeScript 빌드 설정**
-   - `tsconfig.json` 생성
-   - `dist/` 폴더로 컴파일
-   - 빌드 성공 확인
-
-2. **package.json 업데이트**
-   - `main`: `./dist/index.js`
-   - `bin`: `./dist/bin/create-hua-ux.js`
-   - `build` 스크립트 추가
-   - `files` 필드에 `dist`, `templates` 포함
-
-3. **bin 파일 생성**
-   - `src/bin/create-hua-ux.ts` 작성
-   - 컴파일 후 `dist/bin/create-hua-ux.js`로 출력
-
-4. **의존성 문제 해결**
-   - 생성되는 프로젝트의 `package.json`에서 `workspace:*` 제거
-   - `getHuaUxVersion()` 함수로 버전 관리
-   - 모노레포 내부 테스트를 위한 환경 변수 지원
-
-5. **템플릿 업데이트**
-   - 최신 `hua-ux.config.ts` 템플릿 반영
-   - Preset 확장 기능 문서화
-   - motion.style 옵션 추가
-   - license, plugins 필드 주석 추가
-
-## npm 배포 전 체크리스트
-
-### 빌드 및 테스트
-
-- [x] TypeScript 빌드 성공
-- [x] bin 파일 생성 확인
-- [ ] 로컬에서 빌드된 CLI 테스트
-- [ ] 생성되는 프로젝트가 정상 작동하는지 확인
-- [ ] 모노레포 외부에서 테스트 (임시 디렉토리)
-
-### 패키지 설정
-
-- [x] `package.json`의 `main`, `bin` 경로 정확
-- [x] `files` 필드에 필요한 파일만 포함
-- [ ] `.npmignore` 파일 생성 (선택적)
-- [ ] 버전 번호 결정 (현재: 0.1.0)
-
-### 의존성 관리
-
-- [x] 생성되는 프로젝트의 `package.json`에서 `workspace:*` 제거
-- [ ] `@hua-labs/hua-ux` 버전 관리 전략 결정
-  - 현재: `^0.1.0` (고정 버전)
-  - 향후: npm에서 최신 버전 조회 로직 추가 가능
-
-### 문서화
-
-- [x] README.md 업데이트
-- [ ] npm 배포 후 사용 가이드
-- [ ] 트러블슈팅 가이드
-
-## 배포 절차
-
-### 1. 사전 준비
+### 1. 빌드 확인
 
 ```bash
-# 1. 빌드
 cd packages/create-hua-ux
 pnpm run build
+```
 
-# 2. 생성되는 파일 확인
-ls -la dist/
-ls -la dist/bin/
+**확인 사항**:
+- [x] `dist/` 폴더가 생성됨
+- [x] `dist/bin/create-hua-ux.js` 파일 존재
+- [x] `dist/index.js` 파일 존재
+- [x] TypeScript 컴파일 에러 없음
 
-# 3. 로컬 테스트
+### 2. 로컬 테스트
+
+#### 방법 1: 직접 실행
+
+```bash
+cd packages/create-hua-ux
 node dist/bin/create-hua-ux.js test-project
-cd test-project
-pnpm install
-pnpm dev
 ```
 
-### 2. 버전 업데이트
+#### 방법 2: pnpm link 사용
 
 ```bash
-# 패치 버전 (0.1.0 → 0.1.1)
-npm version patch
-
-# 마이너 버전 (0.1.0 → 0.2.0)
-npm version minor
-
-# 메이저 버전 (0.1.0 → 1.0.0)
-npm version major
-```
-
-### 3. npm 배포
-
-```bash
-# 1. npm 로그인 (최초 1회)
-npm login
-
-# 2. 배포 전 최종 빌드
-pnpm run build
-
-# 3. 배포
-npm publish --access public
-
-# 또는 dry-run으로 확인
-npm publish --access public --dry-run
-```
-
-### 4. 배포 후 테스트
-
-```bash
-# 임시 디렉토리에서 테스트
-cd /tmp
-pnpm create hua-ux test-app
-cd test-app
-pnpm install
-pnpm dev
-```
-
-## 모노레포 내부 테스트
-
-모노레포 내부에서 테스트할 때는 환경 변수를 설정하여 `workspace:*` 버전을 사용할 수 있습니다:
-
-```bash
-# 환경 변수 설정
-export HUA_UX_WORKSPACE_VERSION=workspace
-
-# CLI 실행
+# create-hua-ux 패키지에서
 cd packages/create-hua-ux
-pnpm run dev test-project
+pnpm link --global
+
+# 다른 위치에서 테스트
+cd /path/to/test
+pnpm create hua-ux test-project
 ```
 
-또는 직접 실행:
+**확인 사항**:
+- [ ] 프로젝트가 정상적으로 생성됨
+- [ ] 생성된 프로젝트의 `package.json`에 `@hua-labs/hua-ux` 버전이 올바름 (workspace:* 아님)
+- [ ] 생성된 프로젝트에서 `pnpm install` 성공
+- [ ] 생성된 프로젝트에서 `pnpm dev` 성공
 
-```bash
-cd packages/create-hua-ux
-npx tsx src/index.ts test-project
-```
+### 3. 의존성 확인
 
-## 생성되는 프로젝트의 의존성
-
-### 현재 설정
-
-생성되는 프로젝트의 `package.json`에서 `@hua-labs/hua-ux` 버전은:
-
-- **기본값**: `^0.1.0` (npm 배포 후)
-- **모노레포 내부 테스트**: `HUA_UX_WORKSPACE_VERSION=workspace` 환경 변수 설정 시 `workspace:*`
-
-### 향후 개선
-
-npm에서 최신 버전을 자동으로 가져오는 로직 추가 가능:
-
-```typescript
-async function getLatestVersion(): Promise<string> {
-  try {
-    const response = await fetch('https://registry.npmjs.org/@hua-labs/hua-ux/latest');
-    const data = await response.json();
-    return `^${data.version}`;
-  } catch {
-    return '^0.1.0'; // fallback
+**생성되는 프로젝트의 package.json**:
+```json
+{
+  "dependencies": {
+    "@hua-labs/hua-ux": "^0.1.0"  // workspace:* 아님
   }
 }
 ```
 
-## 주의사항
+**주의**: `@hua-labs/hua-ux`가 npm에 배포되어 있어야 생성된 프로젝트가 정상 작동합니다.
 
-### 1. bin 파일 권한
+### 4. 버전 관리
 
-npm 배포 시 bin 파일에 실행 권한이 자동으로 추가되지만, 로컬에서 테스트할 때는:
+**버전 업데이트**:
+```bash
+cd packages/create-hua-ux
+npm version patch  # 0.1.0 → 0.1.1
+# 또는
+npm version minor   # 0.1.0 → 0.2.0
+# 또는
+npm version major   # 0.1.0 → 1.0.0
+```
 
+**버전 동기화**:
+- `create-hua-ux`와 `@hua-labs/hua-ux`의 버전을 동기화하는 것이 좋음
+- 또는 `create-hua-ux`에서 `@hua-labs/hua-ux`의 최신 버전을 자동으로 가져오는 로직 추가
+
+## npm 배포 절차
+
+### 1. 사전 준비
+
+#### npm 계정 설정
+
+```bash
+# npm 로그인
+npm login
+
+# 계정 확인
+npm whoami
+```
+
+#### 패키지 이름 확인
+
+현재 패키지 이름: `create-hua-ux`
+
+**주의**: npm에서 `create-*` 패키지는 특별한 의미가 있습니다:
+- `pnpm create hua-ux` → `create-hua-ux` 패키지를 찾음
+- 패키지 이름이 정확해야 함
+
+### 2. 배포 전 최종 확인
+
+```bash
+cd packages/create-hua-ux
+
+# 1. 빌드
+pnpm run build
+
+# 2. 배포할 파일 확인
+npm pack --dry-run
+
+# 3. package.json 확인
+cat package.json | grep -E '"name"|"version"|"files"'
+```
+
+**확인 사항**:
+- [x] `files` 필드에 `dist`와 `templates` 포함
+- [x] `bin` 경로가 `dist/bin/create-hua-ux.js`로 올바름
+- [x] `main` 경로가 `dist/index.js`로 올바름
+
+### 3. 배포 실행
+
+```bash
+cd packages/create-hua-ux
+
+# 배포 (공개 패키지)
+npm publish --access public
+```
+
+**주의**: 
+- 첫 배포는 `--access public` 필수
+- 이후 배포는 버전만 올리면 됨
+
+### 4. 배포 후 확인
+
+#### 설치 테스트
+
+```bash
+# 다른 위치에서
+cd /path/to/test
+pnpm create hua-ux test-project
+```
+
+**확인 사항**:
+- [ ] `pnpm create hua-ux` 명령어가 정상 작동
+- [ ] 생성된 프로젝트가 정상 작동
+- [ ] npm 레지스트리에서 패키지 확인 가능
+
+## 버전 관리 전략
+
+### @hua-labs/hua-ux와의 버전 동기화
+
+**옵션 1: 수동 동기화**
+- `@hua-labs/hua-ux` 배포 후 버전 확인
+- `create-hua-ux/src/utils.ts`의 `getHuaUxVersion()` 함수 수정
+
+**옵션 2: 자동 버전 조회 (향후 구현)**
+```typescript
+async function getHuaUxVersion(): Promise<string> {
+  try {
+    // npm에서 최신 버전 조회
+    const response = await fetch('https://registry.npmjs.org/@hua-labs/hua-ux/latest');
+    const data = await response.json();
+    return `^${data.version}`;
+  } catch {
+    // 폴백: 고정 버전
+    return '^0.1.0';
+  }
+}
+```
+
+**현재 구현**: 고정 버전 `^0.1.0` 사용 (수동 업데이트 필요)
+
+## 문제 해결
+
+### 빌드 에러
+
+**에러**: `Could not find a declaration file for module 'fs-extra'`
+
+**해결**:
+```bash
+pnpm add -D @types/fs-extra @types/inquirer
+```
+
+### bin 파일이 작동하지 않음
+
+**확인 사항**:
+1. `dist/bin/create-hua-ux.js` 파일이 존재하는지
+2. 파일 첫 줄에 `#!/usr/bin/env node`가 있는지
+3. 파일 권한이 올바른지 (Unix/Linux)
+
+**해결**:
 ```bash
 chmod +x dist/bin/create-hua-ux.js
 ```
 
-### 2. 템플릿 파일
+### 생성된 프로젝트에서 의존성 설치 실패
 
-`templates/` 폴더는 `files` 필드에 포함되어 있으므로 npm 패키지에 포함됩니다.
+**원인**: `@hua-labs/hua-ux`가 npm에 배포되지 않음
 
-### 3. 버전 동기화
+**해결**: 
+1. `@hua-labs/hua-ux`를 먼저 npm에 배포
+2. 또는 `create-hua-ux`에서 `@hua-labs/hua-ux`를 포함하여 배포 (monorepo 구조상 어려움)
 
-`@hua-labs/hua-ux` 패키지가 npm에 배포되기 전에는 `create-hua-ux`를 배포해도 생성되는 프로젝트가 작동하지 않을 수 있습니다.
+## 배포 순서
 
-**해결 방안**:
-1. `@hua-labs/hua-ux`를 먼저 배포
-2. 또는 `create-hua-ux` 배포 시점에 `@hua-labs/hua-ux`도 함께 배포
-
-## 배포 순서 (권장)
-
-1. **@hua-labs/hua-ux 배포**
+1. **@hua-labs/hua-ux 배포** (먼저 필요)
    ```bash
    cd packages/hua-ux
    npm publish --access public
@@ -198,43 +208,13 @@ chmod +x dist/bin/create-hua-ux.js
 2. **create-hua-ux 배포**
    ```bash
    cd packages/create-hua-ux
-   # getHuaUxVersion()에서 배포된 버전 사용
    npm publish --access public
    ```
-
-## 트러블슈팅
-
-### 빌드 실패
-
-**문제**: TypeScript 컴파일 에러
-
-**해결**:
-- `tsconfig.json`의 `skipLibCheck: true` 확인
-- 타입 정의 패키지 설치 확인 (`@types/fs-extra`, `@types/inquirer`)
-
-### bin 파일이 작동하지 않음
-
-**문제**: `create-hua-ux` 명령어를 찾을 수 없음
-
-**해결**:
-- `package.json`의 `bin` 필드 경로 확인
-- `dist/bin/create-hua-ux.js` 파일 존재 확인
-- 파일에 `#!/usr/bin/env node` shebang 확인
-
-### 생성되는 프로젝트가 의존성을 찾을 수 없음
-
-**문제**: `@hua-labs/hua-ux` 패키지를 찾을 수 없음
-
-**해결**:
-- `@hua-labs/hua-ux`가 npm에 배포되었는지 확인
-- 생성되는 프로젝트의 `package.json`에서 버전 확인
-- `pnpm install` 실행 확인
 
 ## 참고 자료
 
 - [npm 배포 가이드](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry)
-- [package.json files 필드](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#files)
-- [bin 필드](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#bin)
+- [create-* 패키지 규칙](https://docs.npmjs.com/cli/v9/commands/npm-init)
 
 ---
 
