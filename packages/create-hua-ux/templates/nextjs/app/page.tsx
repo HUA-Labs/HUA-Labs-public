@@ -1,3 +1,5 @@
+'use client';
+
 import { HuaUxPage } from "@hua-labs/hua-ux/framework";
 import { Button, Card } from "@hua-labs/hua-ux";
 

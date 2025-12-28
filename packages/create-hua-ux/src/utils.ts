@@ -54,10 +54,28 @@ function getHuaUxVersion(): string {
     return 'workspace:*';
   }
   
+  // 로컬 테스트 모드: 현재 디렉토리가 모노레포 내부인지 확인
+  // (test-cli 같은 폴더에서 생성된 경우 workspace 사용)
+  const cwd = process.cwd();
+  if (cwd.includes('hua-platform') && !cwd.includes('node_modules')) {
+    // 모노레포 내부에서 생성된 경우 workspace 사용
+    return 'workspace:*';
+  }
+  
   // npm 배포 후에는 실제 버전 사용
   // TODO: npm에서 최신 버전을 가져오는 로직 추가 가능
   // 현재는 고정 버전 사용 (향후 업데이트 필요)
   return '^0.1.0';
+}
+
+/**
+ * Get hua-ux related package version
+ * 
+ * hua-ux와 관련된 패키지들의 버전을 반환합니다.
+ * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
+ */
+function getHuaUxRelatedPackageVersion(): string {
+  return getHuaUxVersion();
 }
 
 /**
@@ -79,6 +97,8 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
+      '@hua-labs/i18n-core-zustand': getHuaUxRelatedPackageVersion(),
+      '@hua-labs/state': getHuaUxRelatedPackageVersion(),
       next: '16.0.10',
       react: '19.2.1',
       'react-dom': '19.2.1',
