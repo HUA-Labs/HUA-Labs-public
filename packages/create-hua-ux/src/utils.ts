@@ -143,7 +143,8 @@ export async function generatePackageJson(
       dev: 'next dev --turbopack',
       build: 'next build',
       start: 'next start',
-      lint: "echo 'Skipping lint'",
+      lint: "next lint",
+      'lint:fix': 'next lint --fix',
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
