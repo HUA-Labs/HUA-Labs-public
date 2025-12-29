@@ -31,8 +31,11 @@ pnpm dev
 - ✅ `@hua-labs/hua-ux` pre-installed and configured
 - ✅ Basic project structure (`app/`, `components/`, `lib/`, `store/`)
 - ✅ i18n setup with Korean and English translations
-- ✅ Example page using `HuaUxLayout` and `HuaUxPage`
+- ✅ Example page using `HuaUxLayout` and `HuaUxPage` with translation keys
 - ✅ `hua-ux.config.ts` configuration file
+- ✅ Dynamic language setting in layout (middleware-ready)
+- ✅ Improved error handling in translation API
+- ✅ ESLint configuration ready
 
 ## Project Structure
 
@@ -65,6 +68,43 @@ my-app/
 3. **Create pages**: Add new pages in `app/` directory
 4. **Add components**: Create reusable components in `components/` directory
 5. **Optional: Add middleware**: If you need automatic language detection, rename `middleware.ts.example` to `middleware.ts` and uncomment the code (⚠️ Note: Runs on Edge Runtime)
+   - The layout will automatically read the language from the `x-language` header set by middleware
+
+## Template Features
+
+### GEO (Generative Engine Optimization)
+Example files for AI search engine optimization are included:
+- `app/layout-with-geo.example.tsx` - Layout with GEO metadata
+- `app/page-with-geo.example.tsx` - Page with GEO and SEO metadata
+
+These examples show how to integrate GEO metadata for better AI discoverability.
+
+### Dynamic Language Setting
+The generated `app/layout.tsx` automatically reads the language from middleware headers:
+
+```tsx
+// app/layout.tsx
+import { headers } from "next/headers";
+
+const headersList = headers();
+const language = headersList.get('x-language') || 'ko';
+
+return <html lang={language}>...</html>;
+```
+
+### Translation Keys Usage
+The example page uses translation keys instead of hardcoded text:
+
+```tsx
+// app/page.tsx
+import { useTranslation } from '@hua-labs/i18n-core';
+
+const { t } = useTranslation('common');
+return <h1>{t('title')}</h1>;
+```
+
+### Improved Error Handling
+The translation API route includes proper error handling with type distinction and validation.
 
 ## Framework Layer
 

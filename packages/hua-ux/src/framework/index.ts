@@ -45,6 +45,25 @@ export {
   generateFAQPageLD,
   generateTechArticleLD,
   generateHowToLD,
+  generateCodeLD,
+  generateVideoLD,
+  generateOrganizationLD,
+  GEO_PRESETS,
+  META_NAMES,
+  OG_PROPERTIES,
+  metaToObject,
+  openGraphToObject,
+  validateGEOMetadata,
+  prettyPrintGEOMetadata,
+  compareGEOMetadata,
+  isValidGEOConfig,
+} from './seo/geo';
+export type {
+  GEOPreset,
+  RequiredGEOConfig,
+  OptionalGEOConfig,
+  GEOConfigInput,
+  GEOValidationResult,
 } from './seo/geo';
 export type {
   GEOConfig,
@@ -53,6 +72,7 @@ export type {
   SoftwareApplicationType,
   SoftwareCategory,
   ProgrammingLanguage,
+  TechnologyStack,
 } from './seo/geo';
 
 // License System
