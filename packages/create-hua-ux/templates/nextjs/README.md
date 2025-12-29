@@ -24,6 +24,16 @@ pnpm start
 
 ## hua-ux 사용 가이드 / hua-ux Usage Guide
 
+### 0. GEO (AI 검색 엔진 최적화) / GEO (Generative Engine Optimization)
+
+**GEO**는 ChatGPT, Claude, Gemini, Perplexity 같은 AI 검색 엔진이 당신의 소프트웨어를 잘 찾고 추천하도록 최적화하는 기능입니다.
+
+**GEO** helps AI search engines (ChatGPT, Claude, Gemini, Perplexity) discover and recommend your software.
+
+**예제 파일**:
+- `app/layout-with-geo.example.tsx` - GEO가 포함된 레이아웃 예제
+- `app/page-with-geo.example.tsx` - GEO가 포함된 페이지 예제
+
 ### 1. 프로젝트 구조 / Project Structure
 
 ```
@@ -131,6 +141,44 @@ export default function HomePage() {
   return <HomePageContent />;
 }
 ```
+
+#### GEO (AI 검색 엔진 최적화)가 포함된 페이지 / Page with GEO
+
+ChatGPT, Claude, Gemini, Perplexity 같은 AI 검색 엔진이 당신의 앱을 잘 찾고 추천하도록 GEO를 추가할 수 있습니다:
+
+```tsx
+// app/page.tsx (Server Component)
+import { generateGEOMetadata, renderJSONLD } from '@hua-labs/hua-ux/framework';
+import Script from 'next/script';
+import { HomePageContent } from './page-content';
+
+// GEO 메타데이터 생성
+const geoMeta = generateGEOMetadata({
+  name: 'My App',
+  description: 'Built with hua-ux framework',
+  version: '1.0.0',
+  applicationCategory: ['UX Framework', 'Developer Tool'],
+  programmingLanguage: ['TypeScript', 'React', 'Next.js'],
+  features: ['i18n', 'Motion', 'Accessibility'],
+  keywords: ['nextjs', 'react', 'ux'],
+});
+
+export const metadata = {
+  title: 'My App',
+  description: geoMeta.meta.find(m => m.name === 'description')?.content,
+};
+
+export default function HomePage() {
+  return (
+    <>
+      <Script {...renderJSONLD(geoMeta.jsonLd[0])} />
+      <HomePageContent />
+    </>
+  );
+}
+```
+
+자세한 예제는 `app/layout-with-geo.example.tsx`와 `app/page-with-geo.example.tsx`를 참고하세요.
 
 ```tsx
 // app/HomePageContent.tsx (Client Component)
