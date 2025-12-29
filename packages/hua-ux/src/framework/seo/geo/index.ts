@@ -9,7 +9,13 @@
  */
 
 // Main GEO function
-export { generateGEOMetadata, renderJSONLD, createAIContext } from './generateGEOMetadata';
+export {
+  generateGEOMetadata,
+  renderJSONLD,
+  createAIContext,
+  metaToObject,
+  openGraphToObject,
+} from './generateGEOMetadata';
 
 // Structured data helpers
 export {
@@ -17,7 +23,25 @@ export {
   generateFAQPageLD,
   generateTechArticleLD,
   generateHowToLD,
+  generateCodeLD,
+  generateVideoLD,
+  generateOrganizationLD,
 } from './structuredData';
+
+// Presets
+export { GEO_PRESETS } from './presets';
+export type { GEOPreset } from './presets';
+
+// Test utilities
+export {
+  validateGEOMetadata,
+  prettyPrintGEOMetadata,
+  compareGEOMetadata,
+} from './test-utils';
+export type { GEOValidationResult } from './test-utils';
+
+// Constants
+export { META_NAMES, OG_PROPERTIES } from './types';
 
 // Types
 export type {
@@ -27,4 +51,11 @@ export type {
   SoftwareApplicationType,
   SoftwareCategory,
   ProgrammingLanguage,
+  TechnologyStack,
+  RequiredGEOConfig,
+  OptionalGEOConfig,
+  GEOConfigInput,
 } from './types';
+
+// Type guards
+export { isValidGEOConfig } from './types';
