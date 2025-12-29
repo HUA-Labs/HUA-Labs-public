@@ -34,6 +34,25 @@ export type { I18nMiddlewareConfig } from './middleware/i18n';
 export { generatePageMetadata } from './utils/metadata';
 export type { SEOConfig } from './utils/metadata';
 
+// GEO (Generative Engine Optimization)
+export {
+  generateGEOMetadata,
+  renderJSONLD,
+  createAIContext,
+  generateSoftwareApplicationLD,
+  generateFAQPageLD,
+  generateTechArticleLD,
+  generateHowToLD,
+} from './seo/geo';
+export type {
+  GEOConfig,
+  GEOMetadata,
+  StructuredData,
+  SoftwareApplicationType,
+  SoftwareCategory,
+  ProgrammingLanguage,
+} from './seo/geo';
+
 // License System
 export { 
   initLicense, 
