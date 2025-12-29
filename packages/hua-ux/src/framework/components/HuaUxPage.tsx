@@ -93,7 +93,8 @@ export function HuaUxPage({
     if (shouldEnableMotion) {
       motionResult.start?.();
     }
-  }, [shouldEnableMotion, motionResult]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldEnableMotion]); // motionResult.start는 안정적인 함수이므로 dependency에서 제외
   const pageRef = motionResult.ref;
 
   // SEO 메타데이터는 Next.js App Router에서 page.tsx의 export const metadata로 처리하는 것이 권장됩니다.
@@ -119,7 +120,7 @@ export function HuaUxPage({
   }, [i18nKey]);
 
   const pageContent = (
-    <div ref={pageRef}>
+    <div ref={pageRef} style={motionResult.style}>
       {children}
     </div>
   );

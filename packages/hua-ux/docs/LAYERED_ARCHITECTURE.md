@@ -50,7 +50,7 @@
 // 개별 패키지 직접 사용
 import { createHuaStore } from '@hua-labs/state';
 import { useFadeIn } from '@hua-labs/motion-core';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux';
 
 // 완전한 제어 가능
 const store = createHuaStore((set) => ({

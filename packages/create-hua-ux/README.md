@@ -97,7 +97,7 @@ The example page uses translation keys instead of hardcoded text:
 
 ```tsx
 // app/page.tsx
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux';
 
 const { t } = useTranslation('common');
 return <h1>{t('title')}</h1>;

@@ -151,7 +151,7 @@ export default function RootLayout({ children }) {
 
 import { Button, Card } from '@hua-labs/hua-ux';
 import { useFadeIn, useSlideUp } from '@hua-labs/hua-ux';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -780,7 +780,7 @@ const motionConfig = marketingPreset.motion;
 ### 3. 다국어 지원
 
 ```tsx
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux';
 
 function MyComponent() {
   const { t } = useTranslation();
