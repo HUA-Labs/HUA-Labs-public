@@ -5,6 +5,13 @@
  * application discoverable by AI search engines
  *
  * AI 검색 엔진이 애플리케이션을 잘 찾고 추천하도록 GEO 사용 예시
+ *
+ * These examples demonstrate various use cases including:
+ * - Basic GEO configuration
+ * - Using presets
+ * - Error handling
+ * - Dynamic content
+ * - Minimal configuration
  */
 
 import Script from 'next/script';
@@ -323,5 +330,86 @@ export function Example6_CompleteLandingPage() {
       </head>
       <body>{/* Your content */}</body>
     </html>
+  );
+}
+
+/**
+ * Example 7: Minimal Configuration
+ * 
+ * 최소한의 설정으로 GEO 메타데이터 생성
+ * Shows minimum required fields
+ */
+export function Example7_MinimalConfig() {
+  const geoMeta = generateGEOMetadata({
+    name: 'My App',
+    description: 'A simple app',
+  });
+
+  return (
+    <>
+      <Script {...renderJSONLD(geoMeta.jsonLd[0])} />
+      <main>
+        <h1>Minimal GEO Configuration</h1>
+        <p>Only name and description are required.</p>
+      </main>
+    </>
+  );
+}
+
+/**
+ * Example 8: Error Handling
+ * 
+ * 에러 처리 예제
+ * Shows how to handle validation errors
+ */
+export function Example8_ErrorHandling() {
+  try {
+    const geoMeta = generateGEOMetadata({
+      name: '', // Invalid!
+      description: 'Test',
+    });
+    return <div>Success</div>;
+  } catch (error) {
+    console.error('GEO metadata generation failed:', error);
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{(error as Error).message}</p>
+      </div>
+    );
+  }
+}
+
+/**
+ * Example 9: Dynamic Content
+ * 
+ * 동적 콘텐츠를 사용한 GEO 메타데이터 생성
+ * Shows how to use dynamic data
+ */
+export function Example9_DynamicContent({
+  title,
+  features,
+}: {
+  title: string;
+  features: string[];
+}) {
+  const geoMeta = generateGEOMetadata({
+    name: title,
+    description: `App with ${features.length} features`,
+    features,
+  });
+
+  return (
+    <>
+      <Script {...renderJSONLD(geoMeta.jsonLd[0])} />
+      <main>
+        <h1>{title}</h1>
+        <ul>
+          {features.map((feature, i) => (
+            <li key={i}>{feature}</li>
+          ))}
+        </ul>
+      </main>
+    </>
   );
 }
