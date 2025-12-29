@@ -232,7 +232,7 @@ export default function Page() {
 }
 
 // 또는 일부만 사용
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux';
 export default function Page() {
   const { t } = useTranslation();
   return <div>{t('welcome')}</div>;  // i18n만 사용
