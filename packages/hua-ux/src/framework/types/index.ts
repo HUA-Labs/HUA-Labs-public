@@ -161,6 +161,29 @@ export interface HuaUxConfig {
      * 'api' 로더 사용 시 API 경로 / API path when using 'api' loader
      */
     translationApiPath?: string;
+    
+    /**
+     * Custom translation loader / 커스텀 번역 로더
+     * 
+     * 'custom' 로더 사용 시 커스텀 로더 함수 / Custom loader function when using 'custom' loader
+     * 
+     * @example
+     * ```ts
+     * loadTranslations: async (language, namespace) => {
+     *   const response = await fetch(`/translations/${language}/${namespace}.json`);
+     *   return response.json();
+     * }
+     * ```
+     */
+    loadTranslations?: (language: string, namespace: string) => Promise<Record<string, string>>;
+    
+    /**
+     * Debug mode / 디버그 모드
+     * 
+     * 디버그 모드를 활성화하면 Translator의 상세한 로그가 출력됩니다.
+     * Enable debug mode to see detailed Translator logs.
+     */
+    debug?: boolean;
   };
 
   /**
@@ -581,4 +604,20 @@ export interface HuaUxPageProps {
      */
     ogType?: 'website' | 'article' | 'product';
   };
+
+  /**
+   * ErrorBoundary 활성화 여부 / Enable ErrorBoundary
+   * 
+   * 기본값: true
+   * Default: true
+   */
+  enableErrorBoundary?: boolean;
+
+  /**
+   * ErrorBoundary fallback UI / ErrorBoundary fallback UI
+   * 
+   * 에러 발생 시 표시할 커스텀 fallback UI
+   * Custom fallback UI to display when an error occurs
+   */
+  errorBoundaryFallback?: ReactNode | ((error: Error, reset: () => void) => ReactNode);
 }
