@@ -3,20 +3,23 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 /**
- * Translation API Route
+ * Translation API Route (Dynamic Path)
  * 
  * 번역 파일을 제공하는 API 엔드포인트입니다.
  * Provides translation files via API endpoint.
  * 
+ * 경로: /api/translations/[language]/[namespace]
+ * Path: /api/translations/[language]/[namespace]
+ * 
  * @param request - Next.js request object
- * @param request.nextUrl.searchParams.language - Language code (e.g., 'ko', 'en')
- * @param request.nextUrl.searchParams.namespace - Translation namespace (e.g., 'common')
+ * @param params - Route parameters: { language: string, namespace: string }
  * @returns Translation object or error response
  */
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const language = searchParams.get('language') || 'ko';
-  const namespace = searchParams.get('namespace') || 'common';
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { language: string; namespace: string } }
+) {
+  const { language, namespace } = params;
 
   // 언어 검증
   // Validate language
@@ -28,13 +31,18 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // 네임스페이스 검증 (선택적)
-  // Validate namespace (optional)
-  // 필요시 지원하는 네임스페이스 목록을 추가할 수 있습니다.
-  // You can add a list of supported namespaces if needed.
+  // 네임스페이스 검증 (보안: 파일 경로 조작 방지)
+  // Validate namespace (security: prevent path traversal)
+  const safeNamespace = namespace.replace(/[^a-zA-Z0-9-_]/g, '');
+  if (safeNamespace !== namespace) {
+    return NextResponse.json(
+      { error: 'Invalid namespace' },
+      { status: 400 }
+    );
+  }
 
   try {
-    const filePath = join(process.cwd(), 'translations', language, `${namespace}.json`);
+    const filePath = join(process.cwd(), 'translations', language, `${safeNamespace}.json`);
     const fileContents = readFileSync(filePath, 'utf-8');
     const translations = JSON.parse(fileContents);
 
