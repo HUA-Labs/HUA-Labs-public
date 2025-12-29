@@ -136,6 +136,13 @@ export async function generatePackageJson(
   projectPath: string,
   projectName: string
 ): Promise<void> {
+  const packageJsonPath = path.join(projectPath, 'package.json');
+  
+  // 기존 package.json이 있다면 삭제 (템플릿에서 복사된 파일이 있을 수 있음)
+  if (await fs.pathExists(packageJsonPath)) {
+    await fs.remove(packageJsonPath);
+  }
+
   const packageJson = {
     name: projectName,
     version: '0.1.0',
@@ -168,11 +175,7 @@ export async function generatePackageJson(
     },
   };
 
-  await fs.writeJSON(
-    path.join(projectPath, 'package.json'),
-    packageJson,
-    { spaces: 2 }
-  );
+  await fs.writeJSON(packageJsonPath, packageJson, { spaces: 2 });
 }
 
 /**
