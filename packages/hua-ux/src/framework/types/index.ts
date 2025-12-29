@@ -522,8 +522,18 @@ export interface HuaUxPageProps {
   motion?: 'fadeIn' | 'slideUp' | 'slideLeft' | 'slideRight' | 'scaleIn' | 'bounceIn';
 
   /**
+   * Enable Error Boundary
+   */
+  enableErrorBoundary?: boolean;
+
+  /**
+   * Error Boundary fallback UI
+   */
+  errorBoundaryFallback?: ReactNode | ((error: Error, reset: () => void) => ReactNode);
+
+  /**
    * SEO 메타데이터 설정 / SEO metadata settings
-   * 
+   *
    * Next.js App Router에서는 page.tsx에서 `export const metadata`를 사용하는 것이 권장됩니다.
    * 이 prop은 문서화 및 타입 안전성을 위한 것입니다.
    * 
