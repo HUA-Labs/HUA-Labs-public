@@ -34,7 +34,10 @@
     "dev": "node ../../node_modules/typescript/lib/tsc.js --watch",
     "clean": "rm -rf dist",
     "lint": "echo 'Skipping lint for hua-ux (ESLint 8, needs separate config)'",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@hua-labs/i18n-core": "workspace:*",
@@ -45,7 +48,13 @@
   },
   "peerDependencies": {
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "next": ">=13.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
   },
   "keywords": [
     "hua-ux",
@@ -68,7 +77,13 @@
   },
   "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "jsdom": "^27.2.0",
+    "vitest": "^4.0.14"
   }
 }
