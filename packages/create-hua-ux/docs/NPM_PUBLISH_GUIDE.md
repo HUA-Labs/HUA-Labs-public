@@ -153,25 +153,18 @@ pnpm create hua-ux test-project
 - `@hua-labs/hua-ux` 배포 후 버전 확인
 - `create-hua-ux/src/utils.ts`의 `getHuaUxVersion()` 함수 수정
 
-**옵션 2: 자동 버전 조회 (향후 구현)**
+**옵션 2: 빌드 시점 자동 버전 동기화 (현재 구현)**
 ```typescript
-async function getHuaUxVersion(): Promise<string> {
-  try {
-    // npm에서 최신 버전 조회
-    const response = await fetch('https://registry.npmjs.org/@hua-labs/hua-ux/latest');
-    const data = await response.json();
-    return `^${data.version}`;
-  } catch {
-    // 폴백: 고정 버전
-    return '^0.1.0';
-  }
-}
+// 빌드 시점에 scripts/generate-version.ts가 실행되어
+// hua-ux 패키지의 버전을 읽어서 src/version.ts 파일을 생성합니다.
+// npm 배포 후에도 올바른 버전을 사용할 수 있습니다.
 ```
 
 **현재 구현 / Current Implementation:**
-- `getHuaUxVersion()` 함수가 자동으로 `hua-ux` 패키지의 `package.json`에서 버전을 읽어옴 / `getHuaUxVersion()` function automatically reads version from `hua-ux` package's `package.json`
-- 모노레포 내부에서는 `workspace:*` 사용, 외부에서는 `^[version]` 형식 사용 / Uses `workspace:*` inside monorepo, `^[version]` format outside
-- 빌드 시 자동으로 버전 동기화됨 (수동 업데이트 불필요) / Version automatically synchronized at build time (no manual update needed)
+- 빌드 시점에 `scripts/generate-version.ts`가 `hua-ux/package.json`에서 버전을 읽어 `src/version.ts` 생성 / At build time, `scripts/generate-version.ts` reads version from `hua-ux/package.json` and generates `src/version.ts`
+- 모노레포 내부에서는 `workspace:*` 사용, 외부에서는 빌드 시 생성된 버전 상수 사용 / Uses `workspace:*` inside monorepo, generated version constant outside
+- `hua-ux` 버전이 바뀌면 `create-hua-ux` 재빌드/재배포 시 자동으로 동기화됨 / Automatically synchronized when `create-hua-ux` is rebuilt/redeployed after `hua-ux` version changes
+- 수동 업데이트 불필요 / No manual update needed
 
 ## 문제 해결
 
