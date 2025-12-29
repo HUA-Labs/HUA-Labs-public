@@ -309,3 +309,71 @@ export async function generateAiContextFiles(projectPath: string): Promise<void>
   // 필요시 여기서 프로젝트별 커스터마이징 가능
   // 예: 프로젝트 이름을 ai-context.md에 삽입 등
 }
+
+/**
+ * Validate generated project
+ * 
+ * 프로젝트 생성 후 필수 파일과 설정이 올바르게 생성되었는지 검증
+ */
+export async function validateGeneratedProject(projectPath: string): Promise<void> {
+  const errors: string[] = [];
+
+  // 1. package.json 검증
+  const packageJsonPath = path.join(projectPath, 'package.json');
+  if (!(await fs.pathExists(packageJsonPath))) {
+    errors.push('package.json 파일이 생성되지 않았습니다.');
+  } else {
+    try {
+      const packageJson = await fs.readJSON(packageJsonPath);
+      
+      // lint 스크립트 검증
+      if (packageJson.scripts?.lint !== 'next lint') {
+        errors.push(`package.json의 lint 스크립트가 올바르지 않습니다. 예상: "next lint", 실제: "${packageJson.scripts?.lint}"`);
+      }
+      
+      // 필수 의존성 검증
+      const requiredDeps = ['@hua-labs/hua-ux', 'next', 'react', 'react-dom'];
+      for (const dep of requiredDeps) {
+        if (!packageJson.dependencies?.[dep]) {
+          errors.push(`필수 의존성 ${dep}이 package.json에 없습니다.`);
+        }
+      }
+    } catch (error) {
+      errors.push(`package.json 파싱 실패: ${error}`);
+    }
+  }
+
+  // 2. hua-ux.config.ts 검증
+  const configPath = path.join(projectPath, 'hua-ux.config.ts');
+  if (!(await fs.pathExists(configPath))) {
+    errors.push('hua-ux.config.ts 파일이 생성되지 않았습니다.');
+  }
+
+  // 3. 필수 디렉토리 검증
+  const requiredDirs = ['app', 'lib', 'store', 'translations'];
+  for (const dir of requiredDirs) {
+    const dirPath = path.join(projectPath, dir);
+    if (!(await fs.pathExists(dirPath))) {
+      errors.push(`필수 디렉토리 ${dir}가 생성되지 않았습니다.`);
+    }
+  }
+
+  // 4. 필수 파일 검증
+  const requiredFiles = [
+    'app/layout.tsx',
+    'app/page.tsx',
+    'tsconfig.json',
+    'next.config.ts',
+  ];
+  for (const file of requiredFiles) {
+    const filePath = path.join(projectPath, file);
+    if (!(await fs.pathExists(filePath))) {
+      errors.push(`필수 파일 ${file}이 생성되지 않았습니다.`);
+    }
+  }
+
+  // 에러가 있으면 예외 발생
+  if (errors.length > 0) {
+    throw new Error(`프로젝트 검증 실패:\n${errors.map(e => `  - ${e}`).join('\n')}`);
+  }
+}
