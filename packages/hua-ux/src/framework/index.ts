@@ -10,6 +10,8 @@ export { HuaUxPage } from './components/HuaUxPage';
 export { UnifiedProviders } from './components/Providers';
 export { BrandedButton } from './components/BrandedButton';
 export { BrandedCard } from './components/BrandedCard';
+export { ErrorBoundary } from './components/ErrorBoundary';
+export type { ErrorBoundaryProps } from './components/ErrorBoundary';
 
 // Configuration
 export { defineConfig, loadConfig, getConfig, setConfig, resetConfig } from './config';
@@ -81,6 +83,40 @@ export type { HuaUxPlugin } from './plugins/types';
 export { BrandingProvider, useBranding, useBrandingColor } from './branding/context';
 export { generateCSSVariables, generateCSSVariablesObject } from './branding/css-vars';
 export { generateTailwindConfig } from './branding/tailwind-config';
+
+// Accessibility (a11y)
+export {
+  useFocusManagement,
+  useFocusTrap,
+  SkipToContent,
+  LiveRegion,
+  useLiveRegion,
+} from './a11y';
+export type {
+  FocusManagementOptions,
+  FocusTrapOptions,
+  SkipToContentProps,
+  LiveRegionProps,
+} from './a11y';
+
+// Loading
+export {
+  useDelayedLoading,
+  useLoadingState,
+  Skeleton,
+  SkeletonGroup,
+  SuspenseWrapper,
+  withSuspense,
+} from './loading';
+export type {
+  DelayedLoadingOptions,
+  SkeletonGroupProps,
+  SuspenseWrapperProps,
+} from './loading';
+
+// Motion Hooks
+export { useMotion } from './hooks/useMotion';
+export type { MotionType, UseMotionOptions } from './hooks/useMotion';
 
 // Types
 export type { HuaUxLayoutProps, HuaUxPageProps } from './types';

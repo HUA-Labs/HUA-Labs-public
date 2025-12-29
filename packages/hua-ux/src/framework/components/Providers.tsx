@@ -16,9 +16,23 @@ import { BrandingProvider } from '../branding/context';
 
 /**
  * Create providers based on configuration
+ * 
+ * Provider 체인을 생성합니다. Branding Provider는 가장 바깥쪽에 위치하여
+ * 다른 Provider들이 브랜딩 설정을 사용할 수 있도록 합니다.
+ * 
+ * Creates a provider chain. Branding Provider is placed at the outermost level
+ * so other providers can use branding configuration.
  */
 function createProviders(config: HuaUxConfig) {
   const providers: React.ComponentType<{ children: ReactNode }>[] = [];
+
+  // Branding Provider를 먼저 추가 (다른 Provider들이 사용 가능하도록)
+  // Add Branding Provider first (so other providers can use it)
+  if (config.branding) {
+    providers.push(({ children }) => (
+      <BrandingProvider branding={config.branding}>{children}</BrandingProvider>
+    ));
+  }
 
   // i18n Provider
   if (config.i18n) {
@@ -42,7 +56,8 @@ function createProviders(config: HuaUxConfig) {
 
   // Return a combined provider
   return function CombinedProvider({ children }: { children: ReactNode }) {
-    // Branding provider는 가장 바깥쪽에 위치 (다른 Provider들이 사용 가능)
+    // Provider 체인 생성 (Branding Provider가 가장 바깥쪽)
+    // Create provider chain (Branding Provider is outermost)
     const wrapped = providers.reduceRight(
       (acc, Provider) => <Provider>{acc}</Provider>,
       children
@@ -71,10 +86,7 @@ export function UnifiedProviders({
 
   const Provider = React.useMemo(() => createProviders(config), [config]);
 
-  // Branding provider를 가장 바깥쪽에 추가
-  return (
-    <BrandingProvider branding={config.branding || null}>
-      <Provider>{children}</Provider>
-    </BrandingProvider>
-  );
+  // Provider 체인은 createProviders 내부에서 처리됨
+  // Provider chain is handled inside createProviders
+  return <Provider>{children}</Provider>;
 }

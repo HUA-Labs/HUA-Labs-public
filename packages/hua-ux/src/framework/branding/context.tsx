@@ -8,6 +8,7 @@
 
 import React, { createContext, useContext } from 'react';
 import type { HuaUxConfig } from '../types';
+import { generateCSSVariables } from './css-vars';
 
 /**
  * Branding context value
@@ -43,43 +44,19 @@ export function BrandingProvider({
   branding: NonNullable<HuaUxConfig['branding']> | null;
   children: React.ReactNode;
 }) {
-  // CSS 변수를 동적으로 생성하고 주입
-  // Generate and inject CSS variables dynamically
+  // SSR 시 초기 CSS 변수 주입 (FOUC 방지)
+  // Inject initial CSS variables on SSR (prevent FOUC)
+  // Next.js의 suppressHydrationWarning을 사용하여 클라이언트 하이드레이션 시 경고 방지
+  // Use Next.js suppressHydrationWarning to prevent warnings during client hydration
+  const cssVarsString = React.useMemo(() => {
+    if (!branding) return '';
+    return generateCSSVariables(branding);
+  }, [branding]);
+
+  // 클라이언트 사이드에서 CSS 변수 동적 업데이트
+  // Dynamically update CSS variables on client side
   React.useEffect(() => {
-    if (!branding) return;
-
-    // CSS 변수 생성
-    // Generate CSS variables
-    const cssVars: string[] = [];
-    
-    if (branding.colors) {
-      Object.entries(branding.colors).forEach(([key, value]) => {
-        if (value) {
-          cssVars.push(`--color-${key}: ${value};`);
-        }
-      });
-    }
-    
-    if (branding.typography) {
-      if (branding.typography.fontFamily) {
-        cssVars.push(`--font-family: ${branding.typography.fontFamily.join(', ')};`);
-      }
-      if (branding.typography.fontSize) {
-        Object.entries(branding.typography.fontSize).forEach(([key, value]) => {
-          if (value) {
-            cssVars.push(`--font-size-${key}: ${value};`);
-          }
-        });
-      }
-    }
-    
-    if (branding.customVariables) {
-      Object.entries(branding.customVariables).forEach(([key, value]) => {
-        cssVars.push(`--${key}: ${value};`);
-      });
-    }
-
-    if (cssVars.length === 0) return;
+    if (!branding || !cssVarsString) return;
 
     // style 태그 생성 또는 업데이트
     // Create or update style tag
@@ -92,7 +69,7 @@ export function BrandingProvider({
       document.head.appendChild(styleElement);
     }
     
-    styleElement.textContent = `:root {\n  ${cssVars.join('\n  ')}\n}`;
+    styleElement.textContent = cssVarsString;
 
     // Cleanup
     return () => {
@@ -101,10 +78,19 @@ export function BrandingProvider({
         element.remove();
       }
     };
-  }, [branding]);
+  }, [branding, cssVarsString]);
 
   return (
     <BrandingContext.Provider value={{ branding }}>
+      {/* SSR 시 초기 CSS 변수 주입 (FOUC 방지) */}
+      {/* Inject initial CSS variables on SSR (prevent FOUC) */}
+      {cssVarsString && (
+        <style
+          id="hua-ux-branding-vars"
+          dangerouslySetInnerHTML={{ __html: cssVarsString }}
+          suppressHydrationWarning
+        />
+      )}
       {children}
     </BrandingContext.Provider>
   );

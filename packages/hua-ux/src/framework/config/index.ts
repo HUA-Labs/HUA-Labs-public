@@ -192,8 +192,23 @@ export function defineConfig(config: Partial<HuaUxConfig>): HuaUxConfig {
  * 
  * **Zero-Config**: 설정 파일이 없어도 기본값으로 동작합니다.
  * 
- * **주의**: 이 함수는 Node.js 환경(빌드 타임)에서만 동작합니다.
- * 런타임에서는 캐시된 설정을 사용합니다.
+ * **주의사항**:
+ * - 이 함수는 Node.js 환경(빌드 타임)에서만 동작합니다.
+ * - 런타임에서는 캐시된 설정을 사용합니다.
+ * - **권장**: 설정 파일을 명시적으로 import하여 타입 안전성을 보장하세요.
+ *   ```ts
+ *   // hua-ux.config.ts
+ *   import { defineConfig } from '@hua-labs/hua-ux/framework';
+ *   export default defineConfig({ preset: 'product' });
+ *   
+ *   // app/layout.tsx 또는 다른 서버 컴포넌트에서
+ *   import config from '../hua-ux.config';
+ *   import { setConfig } from '@hua-labs/hua-ux/framework';
+ *   setConfig(config);
+ *   ```
+ * 
+ * **Fallback 용도**: 이 함수는 설정 파일이 명시적으로 import되지 않은 경우에만 사용됩니다.
+ * 프로덕션 환경에서는 설정 파일을 명시적으로 import하는 것을 권장합니다.
  */
 export function loadConfig(): HuaUxConfig {
   if (cachedConfig) {
@@ -223,9 +238,20 @@ export function loadConfig(): HuaUxConfig {
       ];
 
       // 첫 번째로 발견된 설정 파일 사용
-      // 주의: Next.js 빌드 시 동적 require는 경고를 발생시킬 수 있지만,
+      // 
+      // ⚠️ 주의: 이 코드는 Fallback 용도입니다.
+      // 권장 방법: 설정 파일을 명시적으로 import하여 타입 안전성을 보장하세요.
+      // 
+      // Next.js 빌드 시 동적 require는 경고를 발생시킬 수 있지만,
       // 런타임에서는 정상 작동합니다. 설정 파일은 보통 빌드 타임에 처리되므로
       // 이 코드는 주로 개발 환경에서 사용됩니다.
+      // 
+      // 실제 프로덕션에서는 설정 파일을 명시적으로 import하는 것을 권장합니다:
+      // ```ts
+      // import config from './hua-ux.config';
+      // import { setConfig } from '@hua-labs/hua-ux/framework';
+      // setConfig(config);
+      // ```
       for (const configPath of configPaths) {
         if (fs.existsSync(configPath)) {
           try {
@@ -238,6 +264,7 @@ export function loadConfig(): HuaUxConfig {
                 // webpackIgnore 주석으로 Next.js 빌드 시 무시하도록 시도
                 // @ts-ignore - 동적 require는 타입 체크를 통과하지 못함
                 // eslint-disable-next-line @typescript-eslint/no-require-imports
+                // ⚠️ Fallback 용도: 명시적 import를 권장합니다.
                 const configModule = require(/* webpackIgnore: true */ configPath);
                 const userConfig = configModule.default || configModule;
                 
@@ -286,12 +313,14 @@ export function loadConfig(): HuaUxConfig {
  * **Client Safe**: Always returns default config on client side.
  */
 export function getConfig(): HuaUxConfig {
+  // 캐시된 설정이 있으면 반환
   if (cachedConfig) {
     return cachedConfig;
   }
   
   // 클라이언트 환경에서는 loadConfig를 호출하지 않고 기본값 반환
   // (loadConfig는 서버 전용이며 fs 모듈을 사용함)
+  // 단, setConfig로 설정된 경우는 캐시를 우선 사용
   if (typeof window !== 'undefined') {
     cachedConfig = mergePresetWithConfig('product', {});
     return cachedConfig;

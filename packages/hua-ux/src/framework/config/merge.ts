@@ -123,6 +123,9 @@ export function mergePresetWithConfig(
 
   // 3. Preset을 Config 형식으로 변환
   const presetConfig = presetToConfig(presetData);
+  
+  // preset 속성 추가 (원본 preset 정보 보존)
+  presetConfig.preset = presetName;
 
   // 4. Preset 오버라이드와 병합
   const presetWithOverrides = deepMerge(presetConfig, presetOverrides);

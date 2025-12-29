@@ -13,6 +13,9 @@ A framework for React product teams that provides pre-wired UX defaults for spac
 - ✅ **타입 안전**: TypeScript로 모든 것이 타입 안전하게 제공
 - ✅ **SSR 지원**: Next.js App Router와 완벽하게 작동
 - ✅ **통합 경험**: UI, Motion, i18n이 하나의 생태계에서 작동
+- ✅ **에러 처리 자동화**: ErrorBoundary가 HuaUxPage에 기본 내장
+- ✅ **접근성 우선**: WCAG 2.1 준수, 스크린 리더 지원, 키보드 탐색 최적화 (useFocusManagement, useFocusTrap, SkipToContent, LiveRegion)
+- ✅ **로딩 UX 최적화**: 깜빡임 방지, Skeleton UI, Suspense 자동화 (useDelayedLoading, useLoadingState, SuspenseWrapper)
 
 ## 5분 시작
 
@@ -282,6 +285,24 @@ export default defineConfig({
 });
 ```
 
+**타입 안전성을 위한 명시적 import (권장)**:
+
+프로덕션 환경에서는 설정 파일을 명시적으로 import하여 타입 안전성을 보장하는 것을 권장합니다:
+
+```tsx
+// app/layout.tsx 또는 초기화 파일
+import config from '../hua-ux.config';
+import { setConfig } from '@hua-labs/hua-ux/framework';
+
+// 설정을 명시적으로 로드 (타입 안전성 보장)
+setConfig(config);
+```
+
+이 방법을 사용하면:
+- ✅ 타입 안전성 보장
+- ✅ Next.js 빌드 경고 방지
+- ✅ 런타임 에러 방지
+
 ### 2. Layout 설정
 
 ```tsx
@@ -315,6 +336,426 @@ export default function HomePage() {
 ```
 
 자세한 내용은 [프레임워크 레이어 문서](./src/framework/README.md)를 참고하세요.
+
+## 주요 기능
+
+### 🎯 통합 Motion Hook (성능 최적화)
+
+**useMotion Hook** - 모든 motion hook을 통합하여 코드 가독성 및 유지보수성 향상:
+
+```tsx
+import { useMotion } from '@hua-labs/hua-ux/framework';
+
+const motion = useMotion({
+  type: 'fadeIn',
+  duration: 600,
+  autoStart: false,
+});
+
+return <div ref={motion.ref} style={motion.style}>Content</div>;
+```
+
+**HuaUxPage에서 자동 사용** - 별도 설정 없이 자동으로 최적화된 motion 적용됩니다.
+
+### 🛡️ ErrorBoundary (에러 처리 자동화)
+
+**HuaUxPage에 기본 내장** - 별도 설정 없이 모든 페이지에서 에러를 자동으로 캐치합니다.
+
+**프로덕션 에러 리포팅 지원** - Sentry, LogRocket 등과 통합 가능:
+
+```ts
+// 프로덕션 환경에서 에러 리포팅 설정
+window.__ERROR_REPORTER__ = (error, errorInfo) => {
+  Sentry.captureException(error, {
+    contexts: { react: errorInfo },
+  });
+};
+```
+
+```tsx
+// 자동으로 ErrorBoundary가 적용됩니다
+<HuaUxPage title="Home">
+  <MyComponent /> {/* 에러 발생 시 fallback UI 표시 */}
+</HuaUxPage>
+```
+
+**커스텀 fallback UI**:
+```tsx
+<HuaUxPage
+  title="Home"
+  errorBoundaryFallback={(error, reset) => (
+    <div>
+      <h1>에러: {error.message}</h1>
+      <button onClick={reset}>다시 시도</button>
+    </div>
+  )}
+>
+  <MyComponent />
+</HuaUxPage>
+```
+
+**독립적으로 사용** (HuaUxPage 외부):
+```tsx
+import { ErrorBoundary } from '@hua-labs/hua-ux/framework';
+
+<ErrorBoundary>
+  <MyComponent />
+</ErrorBoundary>
+```
+
+### 🎨 브랜딩 (White Labeling)
+
+**SSR 지원 CSS 변수 주입** - 서버 사이드에서도 브랜딩 CSS 변수가 즉시 적용되어 FOUC를 방지합니다:
+
+```tsx
+// hua-ux.config.ts
+export default defineConfig({
+  branding: {
+    colors: {
+      primary: '#3B82F6',
+      secondary: '#8B5CF6',
+    },
+  },
+});
+```
+
+브랜딩 설정을 하면 모든 컴포넌트에 자동으로 적용됩니다.
+
+### 🤖 GEO (Generative Engine Optimization)
+
+**AI 검색 엔진 최적화** - ChatGPT, Claude, Gemini, Perplexity가 당신의 소프트웨어를 잘 찾고 추천하도록 최적화:
+
+#### 기본 사용법
+
+```tsx
+import { generateGEOMetadata, renderJSONLD } from '@hua-labs/hua-ux/framework';
+import Script from 'next/script';
+
+// GEO 메타데이터 생성
+const geoMeta = generateGEOMetadata({
+  name: 'My App',
+  description: 'Built with hua-ux framework',
+  version: '1.0.0',
+  applicationCategory: ['UX Framework', 'Developer Tool'],
+  programmingLanguage: ['TypeScript', 'React', 'Next.js'],
+  features: ['i18n', 'Motion', 'Accessibility'],
+  useCases: ['Multilingual apps', 'Accessible UX'],
+  keywords: ['nextjs', 'react', 'ux', 'i18n'],
+  codeRepository: 'https://github.com/your-org/your-app',
+  license: 'MIT',
+});
+
+// Next.js metadata와 통합
+export const metadata = {
+  title: 'My App',
+  description: geoMeta.meta.find(m => m.name === 'description')?.content,
+};
+
+// JSON-LD 추가
+export default function Page() {
+  return (
+    <>
+      <Script {...renderJSONLD(geoMeta.jsonLd[0])} />
+      <main>...</main>
+    </>
+  );
+}
+```
+
+#### Layout에서 사용 (앱 전체)
+
+```tsx
+// app/layout.tsx
+import { generateGEOMetadata, renderJSONLD } from '@hua-labs/hua-ux/framework';
+import Script from 'next/script';
+
+const appGeoMeta = generateGEOMetadata({
+  name: 'My App',
+  description: 'My amazing application',
+  // ... 앱 전체 설정
+});
+
+export const metadata = {
+  title: appGeoMeta.meta.find(m => m.name === 'description')?.content,
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <head>
+        <Script {...renderJSONLD(appGeoMeta.jsonLd[0])} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+#### FAQ, HowTo, TechArticle 구조화된 데이터
+
+```tsx
+import { generateFAQPageLD, generateHowToLD, generateTechArticleLD } from '@hua-labs/hua-ux/framework';
+
+// FAQ 페이지
+const faqLD = generateFAQPageLD([
+  { question: 'What is hua-ux?', answer: 'A UX framework for Next.js' },
+]);
+
+// 튜토리얼 페이지
+const howToLD = generateHowToLD({
+  name: 'How to get started',
+  steps: [
+    { name: 'Install', text: 'Run: pnpm create hua-ux my-app' },
+    { name: 'Configure', text: 'Edit hua-ux.config.ts' },
+  ],
+});
+
+// 기술 문서
+const articleLD = generateTechArticleLD({
+  headline: 'Getting Started with hua-ux',
+  datePublished: '2025-12-29',
+  author: { name: 'hua-labs' },
+});
+```
+
+### ♿ 접근성 (Accessibility)
+
+WCAG 2.1 준수를 위한 완벽한 도구 세트를 제공합니다.
+
+#### 1. Skip to Content (네비게이션 건너뛰기)
+
+키보드 사용자를 위한 필수 기능 - Tab 키로 메인 콘텐츠로 바로 이동:
+
+```tsx
+// app/layout.tsx
+import { SkipToContent } from '@hua-labs/hua-ux/framework';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <SkipToContent />
+        <nav>{/* navigation */}</nav>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
+      </body>
+    </html>
+  );
+}
+```
+
+#### 2. Focus Management (포커스 관리)
+
+페이지 전환 시 자동으로 메인 콘텐츠에 포커스:
+
+```tsx
+import { useFocusManagement } from '@hua-labs/hua-ux/framework';
+
+function MyPage() {
+  const mainRef = useFocusManagement({ autoFocus: true });
+
+  return (
+    <main ref={mainRef} tabIndex={-1}>
+      <h1>Page Title</h1>
+    </main>
+  );
+}
+```
+
+**모달/드로어용 Focus Trap**:
+```tsx
+import { useFocusTrap } from '@hua-labs/hua-ux/framework';
+
+function Modal({ isOpen, onClose }) {
+  const modalRef = useFocusTrap({ isActive: isOpen, onEscape: onClose });
+
+  return (
+    <div ref={modalRef} role="dialog" aria-modal="true">
+      <button>Close</button>
+    </div>
+  );
+}
+```
+
+#### 3. Live Region (스크린 리더 알림)
+
+동적 상태 변화를 스크린 리더 사용자에게 알림:
+
+```tsx
+import { LiveRegion, useLiveRegion } from '@hua-labs/hua-ux/framework';
+
+// 선언적 사용
+function MyForm() {
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async () => {
+    setMessage('저장 중...');
+    await saveData();
+    setMessage('저장되었습니다!');
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>{/* fields */}</form>
+      <LiveRegion message={message} />
+    </div>
+  );
+}
+
+// Hook 사용 (프로그래밍 방식)
+function MyComponent() {
+  const { announce, LiveRegionComponent } = useLiveRegion();
+
+  const handleClick = () => {
+    announce('버튼이 클릭되었습니다');
+  };
+
+  return (
+    <div>
+      <button onClick={handleClick}>Click me</button>
+      {LiveRegionComponent}
+    </div>
+  );
+}
+```
+
+### ⏳ 로딩 상태 최적화 (Loading State)
+
+깜빡임 없는 부드러운 로딩 경험을 제공합니다.
+
+#### 1. useDelayedLoading (깜빡임 방지)
+
+**문제**: 빠른 API 응답 시 로딩 UI가 깜빡거림
+**해결**: 300ms 이하로 끝나면 로딩 UI를 아예 안보여줌
+
+```tsx
+import { useDelayedLoading } from '@hua-labs/hua-ux/framework';
+
+function MyComponent() {
+  const [isLoading, setIsLoading] = useState(false);
+  const showLoading = useDelayedLoading(isLoading);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    await api.getData(); // 빠르게 끝나면 로딩 UI 안보임
+    setIsLoading(false);
+  };
+
+  return showLoading ? <Spinner /> : <Content />;
+}
+```
+
+**편의성 hook**:
+```tsx
+import { useLoadingState } from '@hua-labs/hua-ux/framework';
+
+function MyComponent() {
+  const { showLoading, startLoading, stopLoading } = useLoadingState();
+
+  const fetchData = async () => {
+    startLoading();
+    try {
+      await api.getData();
+    } finally {
+      stopLoading();
+    }
+  };
+
+  return showLoading && <Spinner />;
+}
+```
+
+#### 2. Skeleton (로딩 중 콘텐츠 미리보기)
+
+로딩 시간이 체감적으로 짧게 느껴지고, 레이아웃 시프트를 방지합니다.
+
+```tsx
+import { Skeleton, SkeletonGroup } from '@hua-labs/hua-ux/framework';
+
+// 텍스트 스켈레톤
+<Skeleton width="80%" />
+<Skeleton width="60%" />
+
+// 원형 (아바타)
+<Skeleton variant="circular" width={40} height={40} />
+
+// 직사각형 (이미지)
+<Skeleton variant="rectangular" width={300} height={200} />
+
+// 카드 스켈레톤
+<div className="card">
+  <Skeleton variant="rectangular" height={200} />
+  <SkeletonGroup className="p-4">
+    <Skeleton width="60%" height={24} />
+    <Skeleton width="80%" />
+    <Skeleton width="40%" />
+  </SkeletonGroup>
+</div>
+```
+
+**useDelayedLoading + Skeleton 조합**:
+```tsx
+function MyComponent() {
+  const { data, isLoading } = useQuery('data', fetchData);
+  const showLoading = useDelayedLoading(isLoading);
+
+  if (showLoading) {
+    return (
+      <SkeletonGroup>
+        <Skeleton width="60%" height={32} />
+        <Skeleton width="80%" />
+        <Skeleton width="70%" />
+      </SkeletonGroup>
+    );
+  }
+
+  return <div>{data?.content}</div>;
+}
+```
+
+#### 3. SuspenseWrapper (React Suspense 편의성)
+
+React Suspense를 더 쉽게 사용할 수 있습니다.
+
+```tsx
+import { SuspenseWrapper } from '@hua-labs/hua-ux/framework';
+
+// 기본 사용 (자동 Skeleton fallback)
+<SuspenseWrapper>
+  <AsyncComponent />
+</SuspenseWrapper>
+
+// 커스텀 fallback
+<SuspenseWrapper fallback={<Spinner />}>
+  <AsyncComponent />
+</SuspenseWrapper>
+
+// Next.js Server Component
+async function Posts() {
+  const posts = await fetchPosts();
+  return <div>{posts.map(p => <div key={p.id}>{p.title}</div>)}</div>;
+}
+
+export default function PostsPage() {
+  return (
+    <SuspenseWrapper>
+      <Posts />
+    </SuspenseWrapper>
+  );
+}
+```
+
+**HOC 패턴**:
+```tsx
+import { withSuspense } from '@hua-labs/hua-ux/framework';
+
+const AsyncPosts = withSuspense(Posts, <Skeleton height={200} />);
+
+function MyPage() {
+  return <AsyncPosts />;
+}
+```
 
 ## Use Cases
 
@@ -362,6 +803,25 @@ const useAppStore = createHuaStore((set) => ({
   ssr: true,
 });
 ```
+
+## 테스트
+
+프레임워크의 주요 기능에 대한 테스트가 포함되어 있습니다:
+
+```bash
+cd packages/hua-ux
+pnpm test
+```
+
+**테스트 커버리지**:
+- ✅ Motion hooks (`useMotion`)
+- ✅ GEO 메타데이터 생성 (`generateGEOMetadata`, `createAIContext`)
+- ✅ 구조화된 데이터 (`generateSoftwareApplicationLD`, `generateFAQPageLD`, etc.)
+- ✅ CSS 변수 생성 (`generateCSSVariables`)
+- ✅ Config 시스템 (`defineConfig`, `getConfig`, `setConfig`)
+- ✅ ErrorBoundary 컴포넌트
+- 🔄 Accessibility 모듈 (구현 완료, 테스트 예정)
+- 🔄 Loading 모듈 (구현 완료, 테스트 예정)
 
 ## 버전
 
