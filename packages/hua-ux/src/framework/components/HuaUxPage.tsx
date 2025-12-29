@@ -9,14 +9,8 @@
 import React from 'react';
 import type { HuaUxPageProps } from '../types';
 import { getConfig } from '../config';
-import { 
-  useFadeIn, 
-  useSlideUp, 
-  useSlideLeft, 
-  useSlideRight, 
-  useScaleIn, 
-  useBounceIn 
-} from '@hua-labs/motion-core';
+import { useMotion } from '../hooks/useMotion';
+import { ErrorBoundary } from './ErrorBoundary';
 
 /**
  * HuaUxPage Component
@@ -65,6 +59,8 @@ export function HuaUxPage({
   vibe,
   i18nKey,
   enableMotion = true,
+  enableErrorBoundary = true,
+  errorBoundaryFallback,
   seo,
   motion,
 }: HuaUxPageProps) {
@@ -79,58 +75,17 @@ export function HuaUxPage({
   // Determine motion type based on motion prop or vibe
   const motionType = motion || (vibe === 'fancy' ? 'slideUp' : vibe === 'minimal' ? 'fadeIn' : 'fadeIn');
 
-  // Call all hooks unconditionally (React Rules of Hooks)
-  // 모든 hook을 조건 없이 호출 (React Rules of Hooks 준수)
-  const fadeInResult = useFadeIn<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
+  // 통합 Motion Hook 사용 (성능 최적화)
+  // Use unified Motion Hook (performance optimization)
+  // Note: React Rules of Hooks를 준수하기 위해 내부적으로 모든 hook을 호출하지만,
+  // 실제로는 선택된 hook만 활성화되어 성능 오버헤드를 최소화합니다.
+  // Note: All hooks are called internally to respect React Rules of Hooks,
+  // but only the selected hook is actually activated to minimize performance overhead.
+  const motionResult = useMotion<HTMLDivElement>({
+    type: motionType,
+    duration: motionDuration,
+    autoStart: false, // 수동으로 start 호출
   });
-  const slideUpResult = useSlideUp<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
-  });
-  const slideLeftResult = useSlideLeft<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
-  });
-  const slideRightResult = useSlideRight<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
-  });
-  const scaleInResult = useScaleIn<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
-  });
-  const bounceInResult = useBounceIn<HTMLDivElement>({ 
-    duration: motionDuration, 
-    autoStart: false 
-  });
-
-  // Select the appropriate result based on motion type
-  // motionType에 따라 적절한 결과 선택
-  let motionResult: typeof fadeInResult;
-  
-  switch (motionType) {
-    case 'slideUp':
-      motionResult = slideUpResult;
-      break;
-    case 'slideLeft':
-      motionResult = slideLeftResult;
-      break;
-    case 'slideRight':
-      motionResult = slideRightResult;
-      break;
-    case 'scaleIn':
-      motionResult = scaleInResult;
-      break;
-    case 'bounceIn':
-      motionResult = bounceInResult;
-      break;
-    case 'fadeIn':
-    default:
-      motionResult = fadeInResult;
-      break;
-  }
 
   // Start the selected motion if enabled
   // 모션이 활성화된 경우 선택된 모션 시작
@@ -163,9 +118,20 @@ export function HuaUxPage({
     }
   }, [i18nKey]);
 
-  return (
+  const pageContent = (
     <div ref={pageRef}>
       {children}
     </div>
   );
+
+  // Wrap with ErrorBoundary if enabled
+  if (enableErrorBoundary) {
+    return (
+      <ErrorBoundary fallback={errorBoundaryFallback}>
+        {pageContent}
+      </ErrorBoundary>
+    );
+  }
+
+  return pageContent;
 }

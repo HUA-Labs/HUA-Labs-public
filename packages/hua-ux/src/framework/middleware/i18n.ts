@@ -2,14 +2,62 @@
  * @hua-labs/hua-ux/framework - i18n Middleware
  * 
  * i18n middleware for automatic language detection and routing
+ * 
+ * **타입 안전성**: Next.js를 peerDependency로 사용하므로,
+ * Next.js 프로젝트에서는 자동으로 타입이 추론됩니다.
+ * 
+ * **Type Safety**: Next.js is used as a peerDependency,
+ * so types are automatically inferred in Next.js projects.
  */
 
-// Next.js types - only available in Next.js projects
-// These types are provided by Next.js at runtime
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type NextRequest = any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const NextResponse = { redirect: (url: string) => ({ url }), next: () => ({}) } as any;
+// Next.js types - 조건부 import로 타입 안전성 향상
+// Next.js types - Improved type safety with conditional import
+type NextRequest = 
+  // Next.js가 설치되어 있으면 실제 타입 사용
+  // Use actual types if Next.js is installed
+  typeof import('next/server') extends { NextRequest: infer T } ? T
+  // 없으면 기본 인터페이스 사용
+  // Use default interface if not installed
+  : {
+    headers: {
+      get(name: string): string | null;
+    };
+    cookies: {
+      get(name: string): { value: string } | undefined;
+    };
+    nextUrl: {
+      pathname: string;
+      searchParams: URLSearchParams;
+    };
+  };
+
+type NextResponseType = 
+  typeof import('next/server') extends { NextResponse: infer T } ? T
+  : {
+    next(): { headers: Headers };
+    redirect(url: string): { url: string };
+  };
+
+// Next.js가 설치되어 있으면 실제 NextResponse 사용, 없으면 폴백
+// Use actual NextResponse if Next.js is installed, otherwise use fallback
+let NextResponse: NextResponseType;
+
+try {
+  // Next.js가 설치되어 있으면 실제 import 시도
+  // Try to import actual NextResponse if Next.js is installed
+  // @ts-expect-error - 동적 import는 타입 체크를 통과하지 못함
+  const nextServer = require('next/server');
+  NextResponse = nextServer.NextResponse;
+} catch {
+  // Next.js가 없으면 폴백 구현
+  // Fallback implementation if Next.js is not available
+  NextResponse = {
+    next: () => ({
+      headers: new Headers(),
+    }),
+    redirect: (url: string) => ({ url }),
+  } as NextResponseType;
+}
 
 /**
  * i18n middleware configuration
