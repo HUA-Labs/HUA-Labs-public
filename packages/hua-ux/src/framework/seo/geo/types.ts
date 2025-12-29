@@ -6,6 +6,31 @@
  */
 
 /**
+ * Meta tag name constants
+ * HTML meta 태그 이름 상수
+ */
+export const META_NAMES = {
+  DESCRIPTION: 'description',
+  KEYWORDS: 'keywords',
+  SOFTWARE_VERSION: 'software:version',
+  SOFTWARE_CATEGORY: 'software:category',
+  SOFTWARE_LANGUAGE: 'software:language',
+  AI_CONTEXT: 'ai:context',
+} as const;
+
+/**
+ * Open Graph property constants
+ * Open Graph 속성 상수
+ */
+export const OG_PROPERTIES = {
+  TITLE: 'og:title',
+  DESCRIPTION: 'og:description',
+  TYPE: 'og:type',
+  URL: 'og:url',
+  SITE_NAME: 'og:site_name',
+} as const;
+
+/**
  * Software Application Type
  * Schema.org SoftwareApplication types
  */
@@ -17,8 +42,40 @@ export type SoftwareApplicationType =
 
 /**
  * Programming Language
+ * 프로그래밍 언어 (프레임워크가 아닌 실제 언어만)
  */
-export type ProgrammingLanguage = 'TypeScript' | 'JavaScript' | 'React' | 'Next.js';
+export type ProgrammingLanguage =
+  | 'TypeScript'
+  | 'JavaScript'
+  | 'Python'
+  | 'Java'
+  | 'Go'
+  | 'Rust'
+  | 'C#'
+  | 'C++'
+  | 'Ruby'
+  | 'PHP'
+  | 'Swift'
+  | 'Kotlin'
+  | 'Dart'
+  | (string & {}); // Allow custom strings for flexibility
+
+/**
+ * Technology Stack
+ * 기술 스택 (프레임워크, 라이브러리 등)
+ */
+export type TechnologyStack =
+  | 'React'
+  | 'Next.js'
+  | 'Vue'
+  | 'Angular'
+  | 'Svelte'
+  | 'Node.js'
+  | 'Express'
+  | 'Tailwind CSS'
+  | 'Zustand'
+  | 'Prisma'
+  | (string & {}); // Allow custom strings for flexibility
 
 /**
  * Software Category
@@ -69,8 +126,15 @@ export interface GEOConfig {
 
   /**
    * Programming language(s)
+   * 프로그래밍 언어 (TypeScript, JavaScript, Python 등)
    */
   programmingLanguage?: ProgrammingLanguage | ProgrammingLanguage[];
+
+  /**
+   * Technology stack
+   * 기술 스택 (React, Next.js, Vue 등)
+   */
+  technologyStack?: TechnologyStack | TechnologyStack[];
 
   /**
    * Software type
@@ -141,13 +205,71 @@ export interface GEOConfig {
 }
 
 /**
+ * Utility types for better developer experience
+ * 더 나은 개발자 경험을 위한 유틸리티 타입
+ */
+
+/**
+ * Required GEO config fields
+ * 필수 GEO 설정 필드
+ */
+export type RequiredGEOConfig = Required<Pick<GEOConfig, 'name' | 'description'>>;
+
+/**
+ * Optional GEO config fields
+ * 선택적 GEO 설정 필드
+ */
+export type OptionalGEOConfig = Partial<Omit<GEOConfig, 'name' | 'description'>>;
+
+/**
+ * GEO config input type
+ * GEO 설정 입력 타입 (필수 + 선택)
+ */
+export type GEOConfigInput = RequiredGEOConfig & OptionalGEOConfig;
+
+/**
+ * Type guard for GEO config validation
+ * GEO 설정 유효성 검사를 위한 타입 가드
+ * 
+ * @param config - Unknown value to check
+ * @returns True if config is a valid GEOConfig
+ * 
+ * @example
+ * ```tsx
+ * if (isValidGEOConfig(userInput)) {
+ *   const geoMeta = generateGEOMetadata(userInput);
+ * }
+ * ```
+ */
+export function isValidGEOConfig(config: unknown): config is GEOConfig {
+  return (
+    typeof config === 'object' &&
+    config !== null &&
+    'name' in config &&
+    'description' in config &&
+    typeof (config as { name: unknown }).name === 'string' &&
+    typeof (config as { description: unknown }).description === 'string'
+  );
+}
+
+/**
  * Structured Data (Schema.org JSON-LD)
  * AI가 파싱하기 쉬운 구조화된 데이터
  */
 export interface StructuredData {
   '@context': 'https://schema.org';
-  '@type': string;
-  [key: string]: unknown;
+  '@type':
+    | 'SoftwareApplication'
+    | 'FAQPage'
+    | 'TechArticle'
+    | 'HowTo'
+    | 'Question'
+    | 'Answer'
+    | 'Organization'
+    | 'CreativeWork'
+    | 'Code'
+    | 'VideoObject';
+  [key: string]: string | number | boolean | object | unknown[] | undefined;
 }
 
 /**
@@ -184,4 +306,10 @@ export interface GEOMetadata {
     name: string;
     content: string;
   }[];
+
+  /**
+   * Schema version
+   * GEO 메타데이터 스키마 버전 (향후 마이그레이션 및 디버깅용)
+   */
+  version?: string;
 }
