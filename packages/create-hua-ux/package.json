@@ -12,6 +12,7 @@
     "templates"
   ],
   "scripts": {
+    "prebuild": "tsx scripts/generate-version.ts",
     "build": "node ../../node_modules/typescript/lib/tsc.js",
     "dev": "tsx src/index.ts",
     "test": "tsx src/index.ts test-project",

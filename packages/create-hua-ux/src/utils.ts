@@ -7,6 +7,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import inquirer from 'inquirer';
+import { HUA_UX_VERSION } from './version';
 
 const TEMPLATE_DIR = path.join(__dirname, '../templates/nextjs');
 
@@ -113,9 +114,9 @@ function getHuaUxVersion(): string {
     // 파일을 읽을 수 없는 경우 무시하고 다음 단계로
   }
   
-  // 5. npm 배포 후에는 실제 버전 사용 (기본값)
-  // 빌드 시 hua-ux 패키지의 package.json을 읽지 못한 경우 폴백
-  return '^0.1.0';
+  // 5. 빌드 시점에 생성된 버전 상수 사용 (npm 배포 후)
+  // 빌드 스크립트에서 hua-ux 패키지의 버전을 읽어서 생성한 상수
+  return HUA_UX_VERSION;
 }
 
 /**
