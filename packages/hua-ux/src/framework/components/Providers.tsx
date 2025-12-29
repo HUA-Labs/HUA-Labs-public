@@ -49,6 +49,8 @@ function createProviders(config: HuaUxConfig) {
       translationLoader: config.i18n.translationLoader || 'api',
       translationApiPath: config.i18n.translationApiPath || '/api/translations',
       defaultLanguage: config.i18n.defaultLanguage,
+      loadTranslations: config.i18n.loadTranslations,
+      debug: config.i18n.debug,
     });
 
     providers.push(I18nProvider);
