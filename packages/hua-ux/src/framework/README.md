@@ -179,12 +179,28 @@ export default defineConfig({
 
 Client-side data fetching hook.
 
+**Parameters**:
+- `url`: API endpoint to fetch from
+- `options`: Optional `RequestInit` configuration (standard fetch options)
+  - **Note**: Currently supports standard `RequestInit` only. For advanced features like `revalidateOnFocus`, `revalidateOnReconnect`, or `refreshInterval`, consider using SWR or React Query.
+
+**Returns**:
+- `data`: Fetched data (or `null` if loading/error)
+- `isLoading`: Loading state
+- `error`: Error object (or `null`)
+- `refetch`: Function to manually refetch data
+
 **Usage in Client Components**:
 
 ```tsx
 'use client';
 
 import { useData } from '@hua-labs/hua-ux/framework';
+
+interface Post {
+  id: string;
+  title: string;
+}
 
 export default function PostsPage() {
   const { data, isLoading, error, refetch } = useData<Post[]>('/api/posts');
@@ -207,24 +223,46 @@ export default function PostsPage() {
 
 Server-side data fetching utility.
 
+**Parameters**:
+- `url`: API endpoint to fetch from
+- `options`: Optional `RequestInit` configuration (standard fetch options)
+
+**Returns**: Promise that resolves to the fetched data
+
+**Throws**: `Error` if the request fails or response is not ok
+
 **Usage in Server Components**:
 
 ```tsx
 // app/posts/page.tsx (Server Component)
 import { fetchData } from '@hua-labs/hua-ux/framework';
 
+interface Post {
+  id: string;
+  title: string;
+}
+
 export default async function PostsPage() {
-  const posts = await fetchData<Post[]>('/api/posts');
-  
-  return (
-    <div>
-      {posts.map(post => (
-        <div key={post.id}>{post.title}</div>
-      ))}
-    </div>
-  );
+  try {
+    const posts = await fetchData<Post[]>('/api/posts');
+    
+    return (
+      <div>
+        {posts.map(post => (
+          <div key={post.id}>{post.title}</div>
+        ))}
+      </div>
+    );
+  } catch (error) {
+    // Handle error appropriately
+    console.error('Failed to fetch posts:', error);
+    return <div>Error loading posts. Please try again later.</div>;
+  }
 }
 ```
+
+**Error Handling**:
+Always wrap `fetchData` calls in try-catch blocks in Server Components, as it throws errors on failure.
 
 ### Middleware
 
@@ -238,7 +276,12 @@ Create i18n middleware for Next.js.
 // middleware.ts
 import { createI18nMiddleware } from '@hua-labs/hua-ux/framework';
 
-// Edge Runtime 명시 (Vercel 자동 감지 방지)
+// Edge Runtime 명시 (권장)
+// Next.js middleware는 기본적으로 Edge Runtime에서 실행됩니다.
+// Vercel과 같은 플랫폼은 자동으로 Edge Runtime을 감지하지만,
+// 명시적으로 설정하는 것이 좋습니다.
+// Next.js middleware runs on Edge Runtime by default.
+// Platforms like Vercel auto-detect Edge Runtime, but explicit configuration is recommended.
 export const runtime = 'edge';
 
 export default createI18nMiddleware({
@@ -251,7 +294,7 @@ export default createI18nMiddleware({
 **Edge Runtime 제약사항 / Edge Runtime Limitations**:
 - Node.js API 사용 불가 (fs, path 등) / Cannot use Node.js APIs (fs, path, etc.)
 - 일부 npm 패키지가 Edge Runtime과 호환되지 않을 수 있음 / Some npm packages may not be compatible with Edge Runtime
-- Vercel은 자동으로 Edge Runtime으로 감지하므로 명시적으로 설정 권장 / Vercel auto-detects Edge Runtime, so explicit configuration is recommended
+- Next.js middleware는 기본적으로 Edge Runtime에서 실행됩니다 / Next.js middleware runs on Edge Runtime by default
 
 **대안 / Alternatives**: 
 - Edge Runtime을 사용하지 않으려면 API Route나 클라이언트 컴포넌트에서 언어 감지를 처리할 수 있습니다.  
