@@ -286,6 +286,9 @@ importers:
         specifier: '>=5.0.0'
         version: 5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
     devDependencies:
+      '@hua-labs/i18n-core-zustand':
+        specifier: workspace:*
+        version: link:../hua-i18n-core-zustand
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
