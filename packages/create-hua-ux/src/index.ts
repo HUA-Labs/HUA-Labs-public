@@ -88,9 +88,10 @@ export async function main(): Promise<void> {
       }
       // AI context generation options
       const aiContextOptions = await promptAiContextOptions();
+      const parsed = parseAiContextOptions();
       await createProject(name, aiContextOptions, {
-        dryRun: process.argv.includes('--dry-run'),
-        skipPrerequisites: process.argv.includes('--dry-run'), // Skip prerequisites in dry-run
+        dryRun: parsed.dryRun,
+        skipPrerequisites: parsed.dryRun, // Skip prerequisites in dry-run
       });
       return;
     } catch (error) {

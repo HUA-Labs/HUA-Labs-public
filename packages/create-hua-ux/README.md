@@ -73,7 +73,7 @@ pnpm dev
 
 ## What Gets Created
 
-- ✅ Next.js 15 project with App Router
+- ✅ Next.js 16 project with App Router
 - ✅ TypeScript configuration
 - ✅ Tailwind CSS setup
 - ✅ `@hua-labs/hua-ux` pre-installed and configured
