@@ -738,7 +738,6 @@ export async function validateTemplate(): Promise<void> {
     'tsconfig.json',
     'next.config.ts',
     'tailwind.config.js',
-    'postcss.config.js',
     'app/layout.tsx',
     'app/page.tsx',
     'app/globals.css',
