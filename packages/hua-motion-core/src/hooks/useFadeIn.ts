@@ -1,20 +1,6 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { FadeInOptions, BaseMotionReturn, MotionElement } from '../types'
 
-/**
- * 요소가 화면에 나타날 때 페이드인 효과를 적용합니다
- * 
- * @example
- * ```tsx
- * const { ref, style } = useFadeIn({
- *   delay: 200,        // 지연 시간
- *   duration: 700,     // 지속 시간
- *   triggerOnce: true  // 한 번만 실행
- * })
- * 
- * return <div ref={ref} style={style}>페이드인 효과</div>
- * ```
- */
 export function useFadeIn<T extends MotionElement = HTMLDivElement>(
   options: FadeInOptions = {}
 ): BaseMotionReturn<T> {
@@ -87,22 +73,6 @@ export function useFadeIn<T extends MotionElement = HTMLDivElement>(
     onReset?.()
   }, [stop, onReset])
 
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    setIsAnimating(false)
-  }, [])
-
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (!isVisible && !isAnimating) {
-      start()
-    }
-  }, [isVisible, isAnimating, start])
-
   // Intersection Observer 설정
   useEffect(() => {
     if (!ref.current || !autoStart) return
@@ -130,24 +100,29 @@ export function useFadeIn<T extends MotionElement = HTMLDivElement>(
     }
   }, [autoStart, threshold, triggerOnce, start])
 
+  // 자동 시작이 비활성화된 경우 수동 시작
+  useEffect(() => {
+    if (!autoStart) {
+      start()
+    }
+  }, [autoStart, start])
+
   // 컴포넌트 언마운트 시 정리
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-      if (motionRef.current) {
-        cancelAnimationFrame(motionRef.current)
-      }
+      stop()
     }
-  }, [])
+  }, [stop])
 
-  // 스타일 계산
-  const style: React.CSSProperties = {
+  // 스타일 계산 (React 19 호환) - 메모이제이션으로 불필요한 리렌더링 방지
+  const style = useMemo(() => ({
     opacity: isVisible ? targetOpacity : initialOpacity,
     transition: `opacity ${duration}ms ${easing}`,
-    willChange: 'opacity'
-  }
+    '--motion-delay': `${delay}ms`,
+    '--motion-duration': `${duration}ms`,
+    '--motion-easing': easing,
+    '--motion-progress': `${progress}`
+  } as const), [isVisible, targetOpacity, initialOpacity, duration, easing, delay, progress])
 
   return {
     ref,
@@ -157,8 +132,6 @@ export function useFadeIn<T extends MotionElement = HTMLDivElement>(
     progress,
     start,
     stop,
-    reset,
-    pause,
-    resume
+    reset
   }
-}
+} 

@@ -1,14 +1,6 @@
 # HUA Motion Core
 
-React 모션의 기초
-
-[![npm version](https://badge.fury.io/js/@hua-labs%2Fmotion-core.svg)](https://badge.fury.io/js/@hua-labs%2Fmotion-core)
-[![npm downloads](https://img.shields.io/npm/dm/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8+-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://react.dev/)
-
-[English](./README.md) | [한국어](./README_KR.md)
+React 모션의 기초 ✨
 
 ## 개요
 
@@ -223,22 +215,22 @@ const fadeIn: BaseMotionReturn<HTMLDivElement> = useFadeIn({
 
 ## 브라우저 지원
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+- Chrome 60+
+- Firefox 60+
+- Safari 12+
+- Edge 79+
 
 ## 기여하기
 
-기여를 환영합니다! 자세한 내용은 [기여 가이드](../../CONTRIBUTING.md)를 참조하세요.
+기여를 환영합니다! 자세한 내용은 [기여 가이드](CONTRIBUTING.md)를 참조하세요.
 
 ## 라이선스
 
-MIT 라이선스 - 자세한 내용은 [LICENSE](../../LICENSE) 파일을 참조하세요.
+MIT 라이선스 - 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
 ## 변경 로그
 
-릴리스 히스토리는 [CHANGELOG.md](../../CHANGELOG.md)를 참조하세요.
+릴리스 히스토리는 [CHANGELOG.md](CHANGELOG.md)를 참조하세요.
 
 ---
 

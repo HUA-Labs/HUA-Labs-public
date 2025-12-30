@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { SlideOptions, BaseMotionReturn, MotionElement } from '../types'
 
 export function useSlideUp<T extends MotionElement = HTMLDivElement>(
@@ -11,8 +11,12 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     triggerOnce = true,
     easing = 'ease-out',
     autoStart = true,
+    direction = 'up',
     distance = 50,
-    onComplete, onStart, onStop, onReset
+    onComplete,
+    onStart,
+    onStop,
+    onReset
   } = options
 
   const ref = useRef<T>(null)
@@ -21,6 +25,22 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
   const [progress, setProgress] = useState(0)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const timeoutRef = useRef<number | null>(null)
+
+  // 방향에 따른 초기 위치 계산
+  const getInitialTransform = useCallback(() => {
+    switch (direction) {
+      case 'up':
+        return `translateY(${distance}px)`
+      case 'down':
+        return `translateY(-${distance}px)`
+      case 'left':
+        return `translateX(${distance}px)`
+      case 'right':
+        return `translateX(-${distance}px)`
+      default:
+        return `translateY(${distance}px)`
+    }
+  }, [direction, distance])
 
   // 모션 시작 함수
   const start = useCallback(() => {
@@ -64,22 +84,6 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     onReset?.()
   }, [stop, onReset])
 
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    setIsAnimating(false)
-  }, [])
-
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (!isVisible && !isAnimating) {
-      start()
-    }
-  }, [isVisible, isAnimating, start])
-
   // Intersection Observer 설정
   useEffect(() => {
     if (!ref.current || !autoStart) return
@@ -107,21 +111,35 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     }
   }, [autoStart, threshold, triggerOnce, start])
 
+  // 자동 시작이 비활성화된 경우 수동 시작
+  useEffect(() => {
+    if (!autoStart) {
+      start()
+    }
+  }, [autoStart, start])
+
   // 컴포넌트 언마운트 시 정리
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
+      stop()
     }
-  }, [])
+  }, [stop])
 
-  // 스타일 계산
-  const style: React.CSSProperties = {
-    transform: `translateY(${isVisible ? 0 : distance}px)`,
-    transition: `transform ${duration}ms ${easing}`,
-    willChange: 'transform'
-  }
+  // 초기 transform 값 메모이제이션
+  const initialTransform = useMemo(() => getInitialTransform(), [direction, distance])
+
+  // 스타일 계산 (React 19 호환) - 메모이제이션으로 불필요한 리렌더링 방지
+  const style = useMemo(() => ({
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? 'translateY(0)' : initialTransform,
+    transition: `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`,
+    '--motion-delay': `${delay}ms`,
+    '--motion-duration': `${duration}ms`,
+    '--motion-easing': easing,
+    '--motion-progress': `${progress}`,
+    '--motion-direction': direction,
+    '--motion-distance': `${distance}px`
+  } as const), [isVisible, initialTransform, duration, easing, delay, progress, direction, distance])
 
   return {
     ref,
@@ -131,8 +149,6 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     progress,
     start,
     stop,
-    reset,
-    pause,
-    resume
+    reset
   }
-}
+} 

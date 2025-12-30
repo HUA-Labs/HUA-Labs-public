@@ -1,105 +1,43 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
-import { BaseMotionOptions, InteractionReturn, MotionElement } from '../types'
+import { useRef, useEffect, useCallback } from 'react'
 
-export interface HoverMotionOptions extends BaseMotionOptions {
-  hoverScale?: number
-  hoverOpacity?: number
-  hoverRotate?: number
-  hoverTranslateY?: number
-  hoverTranslateX?: number
-  initialScale?: number
-  initialOpacity?: number
-  initialRotate?: number
-  initialTranslateY?: number
-  initialTranslateX?: number
-}
-
-export function useHoverMotion<T extends MotionElement = HTMLDivElement>(
-  options: HoverMotionOptions = {}
-): InteractionReturn<T> {
+export function useHoverMotion(
+  motionHook: (() => any) | any,
+  options: {
+    onHover?: 'start' | 'reverse'
+    onLeave?: 'reverse' | 'reset'
+  } = {}
+) {
   const {
-    duration = 300,
-    easing = 'ease-out',
-    hoverScale = 1.05,
-    hoverOpacity = 1,
-    hoverRotate = 0,
-    hoverTranslateY = 0,
-    hoverTranslateX = 0,
-    initialScale = 1,
-    initialOpacity = 1,
-    initialRotate = 0,
-    initialTranslateY = 0,
-    initialTranslateX = 0,
-    onComplete, onStart, onStop, onReset
+    onHover = 'start',
+    onLeave = 'reverse'
   } = options
 
-  const ref = useRef<T>(null)
-  const [isHovered, setIsHovered] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const elementRef = useRef<HTMLElement | null>(null)
+  const motionRef = useRef<any>(null)
+  
+  // motion 객체를 ref로 안정화
+  if (!motionRef.current) {
+    motionRef.current = typeof motionHook === 'function' ? motionHook() : motionHook
+  }
 
-  // 호버 시작
   const handleMouseEnter = useCallback(() => {
-    setIsHovered(true)
-    setIsAnimating(true)
-    setProgress(0)
-    onStart?.()
-
-    // 애니메이션 완료 시
-    setTimeout(() => {
-      setIsAnimating(false)
-      setProgress(1)
-      onComplete?.()
-    }, duration)
-  }, [duration, onStart, onComplete])
-
-  // 호버 종료
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false)
-    setIsAnimating(true)
-    setProgress(1)
-
-    // 애니메이션 완료 시
-    setTimeout(() => {
-      setIsAnimating(false)
-      setProgress(0)
-    }, duration)
-  }, [duration])
-
-  // 모션 시작 함수 (프로그래매틱 제어용)
-  const start = useCallback(() => {
-    handleMouseEnter()
-  }, [handleMouseEnter])
-
-  // 모션 중단 함수
-  const stop = useCallback(() => {
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
-  const reset = useCallback(() => {
-    setIsHovered(false)
-    setIsAnimating(false)
-    setProgress(0)
-    onReset?.()
-  }, [onReset])
-
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    setIsAnimating(false)
-  }, [])
-
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (isHovered) {
-      setIsAnimating(true)
+    if (onHover === 'start') {
+      motionRef.current?.start()
+    } else if (onHover === 'reverse') {
+      motionRef.current?.reset()
     }
-  }, [isHovered])
+  }, [onHover])
 
-  // 이벤트 리스너 설정
+  const handleMouseLeave = useCallback(() => {
+    if (onLeave === 'reverse') {
+      motionRef.current?.stop() // stop 사용으로 현재 상태 유지
+    } else if (onLeave === 'reset') {
+      motionRef.current?.reset() // reset 사용으로 초기 상태로 복원
+    }
+  }, [onLeave])
+
   useEffect(() => {
-    const element = ref.current
+    const element = elementRef.current
     if (!element) return
 
     element.addEventListener('mouseenter', handleMouseEnter)
@@ -111,33 +49,15 @@ export function useHoverMotion<T extends MotionElement = HTMLDivElement>(
     }
   }, [handleMouseEnter, handleMouseLeave])
 
-  // 스타일 계산
-  const style: React.CSSProperties = {
-    transform: `
-      scale(${isHovered ? hoverScale : initialScale})
-      rotate(${isHovered ? hoverRotate : initialRotate}deg)
-      translate(${isHovered ? hoverTranslateX : initialTranslateX}px, ${isHovered ? hoverTranslateY : initialTranslateY}px)
-    `,
-    opacity: isHovered ? hoverOpacity : initialOpacity,
-    transition: `all ${duration}ms ${easing}`,
-    willChange: 'transform, opacity'
-  }
+  const setRef = useCallback((element: HTMLElement | null) => {
+    elementRef.current = element
+    if (motionRef.current?.ref) {
+      motionRef.current.ref(element)
+    }
+  }, [])
 
   return {
-    ref,
-    isVisible: isHovered,
-    isAnimating,
-    style,
-    progress,
-    start,
-    stop,
-    reset,
-    pause,
-    resume,
-    // 새로운 직관적 API 추가
-    hover: handleMouseEnter,
-    leave: handleMouseLeave,
-    // 상태 속성 추가
-    isHovered
+    ...motionRef.current,
+    ref: setRef
   }
 }
