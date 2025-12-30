@@ -1,75 +1,66 @@
 "use client"
 
-import * as React from "react"
-import { cn } from "../lib/utils"
+import React from "react"
+import { merge } from "../lib/utils"
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  variant?: "default" | "outline" | "filled" | "ghost"
-  size?: "sm" | "md" | "lg"
-  error?: boolean
-  success?: boolean
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-}
+/**
+ * Input 컴포넌트의 props / Input component props
+ * HTML input 요소의 모든 표준 속성을 상속받습니다.
+ * Inherits all standard attributes of HTML input element.
+ * @typedef {Object} InputProps
+ * @extends {React.InputHTMLAttributes<HTMLInputElement>}
+ */
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
+/**
+ * Input 컴포넌트 / Input component
+ * 
+ * 표준 HTML input 요소를 래핑한 스타일링된 입력 필드 컴포넌트입니다.
+ * 접근성 속성(aria-invalid)을 자동으로 처리합니다.
+ * 
+ * Styled input field component wrapping standard HTML input element.
+ * Automatically handles accessibility attributes (aria-invalid).
+ * 
+ * @component
+ * @example
+ * // 기본 사용 / Basic usage
+ * <Input type="text" placeholder="이름을 입력하세요" />
+ * 
+ * @example
+ * // 에러 상태 / Error state
+ * <Input 
+ *   type="email" 
+ *   placeholder="이메일"
+ *   aria-invalid={true}
+ * />
+ * 
+ * @example
+ * // ref 사용 / Using ref
+ * const inputRef = useRef<HTMLInputElement>(null)
+ * <Input ref={inputRef} type="text" />
+ * 
+ * @param {InputProps} props - Input 컴포넌트의 props / Input component props
+ * @param {React.Ref<HTMLInputElement>} ref - input 요소 ref / input element ref
+ * @returns {JSX.Element} Input 컴포넌트 / Input component
+ */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ 
-    className, 
-    type, 
-    variant = "default",
-    size = "md",
-    error = false,
-    success = false,
-    leftIcon,
-    rightIcon,
-    ...props 
-  }, ref) => {
-    const variantClasses = {
-      default: "border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400",
-      outline: "border-2 border-gray-200 bg-transparent text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400",
-      filled: "border-transparent bg-gray-50 text-gray-900 placeholder-gray-500 focus:bg-white focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:bg-gray-800 dark:focus:border-blue-400 dark:focus:ring-blue-400",
-      ghost: "border-transparent bg-transparent text-gray-900 placeholder-gray-500 focus:bg-gray-50 focus:border-gray-300 focus:ring-gray-500 dark:text-white dark:placeholder-gray-400 dark:focus:bg-gray-800 dark:focus:border-gray-600 dark:focus:ring-gray-400"
-    }
-
-    const sizeClasses = {
-      sm: "h-8 px-3 text-sm",
-      md: "h-10 px-4 text-base",
-      lg: "h-12 px-4 text-lg"
-    }
-
-    const stateClasses = error 
-      ? "border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-400 dark:focus:border-red-400 dark:focus:ring-red-400"
-      : success
-      ? "border-green-500 focus:border-green-500 focus:ring-green-500 dark:border-green-400 dark:focus:border-green-400 dark:focus:ring-green-400"
-      : ""
-
+  ({ className, type, ...props }, ref) => {
+    // aria-invalid이 명시적으로 전달되지 않았고, error prop이 있으면 자동 설정
+    const ariaInvalid = props["aria-invalid" as keyof typeof props] as boolean | undefined;
+    const isInvalid = ariaInvalid !== undefined ? ariaInvalid : false;
+    
     return (
-      <div className="relative">
-        {leftIcon && (
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
-            {leftIcon}
-          </div>
+      <input
+        type={type}
+        className={merge(
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 hover:border-blue-400 hover:shadow-sm",
+          isInvalid && "border-red-500 focus-visible:ring-red-500",
+          className
         )}
-        <input
-          type={type}
-          className={cn(
-            "flex w-full rounded-md border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            variantClasses[variant],
-            sizeClasses[size],
-            stateClasses,
-            leftIcon ? "pl-10" : "",
-            rightIcon ? "pr-10" : "",
-            className
-          )}
-          ref={ref}
-          {...props}
-        />
-        {rightIcon && (
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
-            {rightIcon}
-          </div>
-        )}
-      </div>
+        ref={ref}
+        aria-invalid={isInvalid || undefined}
+        {...props}
+      />
     )
   }
 )
