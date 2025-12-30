@@ -30,7 +30,7 @@ function createProviders(config: HuaUxConfig) {
   // Add Branding Provider first (so other providers can use it)
   if (config.branding) {
     providers.push(({ children }) => (
-      <BrandingProvider branding={config.branding}>{children}</BrandingProvider>
+      <BrandingProvider branding={config.branding || null}>{children}</BrandingProvider>
     ));
   }
 
