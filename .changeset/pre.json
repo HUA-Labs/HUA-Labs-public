@@ -1,0 +1,22 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "create-hua-ux": "0.1.0",
+    "@hua-labs/i18n-beginner": "2.0.0",
+    "@hua-labs/i18n-core": "2.0.0",
+    "@hua-labs/i18n-core-zustand": "2.0.0",
+    "@hua-labs/i18n-loaders": "1.0.0",
+    "@hua-labs/motion-core": "1.0.0",
+    "@hua-labs/state": "0.1.0",
+    "@hua-labs/ui": "1.0.0",
+    "@hua-labs/hua-ux": "0.1.0"
+  },
+  "changesets": [
+    "create-hua-ux-cli-new",
+    "hua-ux-framework-new",
+    "motion-core-update",
+    "state-package-new",
+    "ui-package-update"
+  ]
+}

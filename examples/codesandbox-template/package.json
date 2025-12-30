@@ -1,5 +1,5 @@
 {
-  "name": "hua-i18n-codesandbox-demo",
+  "name": "@hua-labs/i18n-codesandbox-demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hua-labs/i18n-core": "^1.0.0",
-    "@hua-labs/i18n-core-zustand": "^1.0.0",
+    "@hua-labs/i18n-core": "workspace:*",
+    "@hua-labs/i18n-core-zustand": "workspace:*",
     "next": "15.0.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

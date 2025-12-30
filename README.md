@@ -10,7 +10,7 @@ Public SDKs and libraries provided by HUA Labs.
   - Includes framework layer (HuaUxLayout, HuaUxPage) | 프레임워크 레이어 포함
   - GEO (AI search engine optimization) support | GEO (AI 검색 엔진 최적화) 지원
   - Accessibility features & loading optimization | 접근성 기능 및 로딩 최적화
-- **[create-hua-ux](./packages/create-hua-ux)** - CLI tool for scaffolding hua-ux projects | hua-ux 프로젝트 생성 CLI 도구
+- **[@hua-labs/create-hua-ux](./packages/create-hua-ux)** - CLI tool for scaffolding hua-ux projects | hua-ux 프로젝트 생성 CLI 도구
   - Quick project setup with interactive prompts | 대화형 프롬프트로 빠른 프로젝트 설정
   - AI context files generation | AI 컨텍스트 파일 생성
 - **[@hua-labs/state](./packages/hua-state)** - Unified state management with SSR support | SSR 지원 통합 상태 관리
