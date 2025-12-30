@@ -1,5 +1,5 @@
 {
-  "name": "hua-i18n-nextjs-example",
+  "name": "@hua-labs/i18n-nextjs-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {

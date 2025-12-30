@@ -1,4 +1,4 @@
-# create-hua-ux
+# @hua-labs/create-hua-ux
 
 **Scaffolding tool for creating hua-ux projects**
 

@@ -281,7 +281,7 @@ export function generateOrganizationLD(org: {
  *   },
  *   {
  *     question: 'How do I install hua-ux?',
- *     answer: 'Run: npx create-hua-ux my-app',
+ *     answer: 'Run: npx @hua-labs/create-hua-ux my-app',
  *   },
  * ]);
  * ```
@@ -375,7 +375,7 @@ export function generateTechArticleLD(article: {
  *   name: 'How to add i18n to your Next.js app',
  *   description: 'Step-by-step guide to internationalization',
  *   steps: [
- *     { name: 'Install hua-ux', text: 'Run: npx create-hua-ux my-app' },
+ *     { name: 'Install hua-ux', text: 'Run: npx @hua-labs/create-hua-ux my-app' },
  *     { name: 'Configure i18n', text: 'Add locales to your config' },
  *   ],
  * });
