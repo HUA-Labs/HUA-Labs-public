@@ -1,0 +1,67 @@
+/**
+ * Framework and dependency versions
+ * 
+ * This file centralizes all version numbers used in generated projects.
+ * Update versions here when upgrading dependencies.
+ */
+
+/**
+ * Next.js version
+ */
+export const NEXTJS_VERSION = '16.0.10';
+
+/**
+ * React version
+ */
+export const REACT_VERSION = '19.2.1';
+
+/**
+ * React DOM version (should match React version)
+ */
+export const REACT_DOM_VERSION = '19.2.1';
+
+/**
+ * Zustand version
+ */
+export const ZUSTAND_VERSION = '^5.0.8';
+
+/**
+ * TypeScript version
+ */
+export const TYPESCRIPT_VERSION = '^5.9.3';
+
+/**
+ * Node.js types version
+ */
+export const TYPES_NODE_VERSION = '^22.0.0';
+
+/**
+ * React types version
+ */
+export const TYPES_REACT_VERSION = '^19.2.7';
+
+/**
+ * React DOM types version
+ */
+export const TYPES_REACT_DOM_VERSION = '^19.2.3';
+
+/**
+ * Tailwind CSS PostCSS version
+ */
+export const TAILWIND_POSTCSS_VERSION = '^4';
+
+/**
+ * Autoprefixer version
+ */
+export const AUTOPREFIXER_VERSION = '^10.4.21';
+
+/**
+ * PostCSS version
+ */
+export const POSTCSS_VERSION = '^8.5.6';
+
+/**
+ * Tailwind CSS version
+ * Latest as of December 2025: v4.1.18 (released Dec 11, 2025)
+ */
+export const TAILWIND_VERSION = '^4.1.18';
