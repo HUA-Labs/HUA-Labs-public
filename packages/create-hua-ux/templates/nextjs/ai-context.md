@@ -17,7 +17,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 
 ### Middle Layer: Framework & Config
 - `hua-ux.config.ts`: Framework configuration
-- `I18nProviderWrapper`: i18n Provider wrapper (use in layout.tsx)
+- `HuaUxLayout`: Automatic Provider setup
 - `HuaUxPage`: Page wrapper (Motion, i18n, SEO automatically applied)
 
 ### Bottom Layer: Core & Types
@@ -31,7 +31,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 ```
 Project Root/
 ├── app/                    # Next.js App Router pages
-│   ├── layout.tsx          # Root layout (uses I18nProviderWrapper)
+│   ├── layout.tsx          # Root layout (uses HuaUxLayout)
 │   ├── page.tsx            # Home page (uses HuaUxPage)
 │   └── api/                # API Routes
 │       └── translations/   # i18n translation API
@@ -82,7 +82,7 @@ Project Root/
 ### @hua-labs/hua-ux/framework
 
 **Framework Components**:
-- `I18nProviderWrapper`: i18n Provider wrapper (use in layout.tsx)
+- `HuaUxLayout`: Automatic Provider setup
 - `HuaUxPage`: Page wrapper (Motion, i18n, SEO automatically applied)
 - `UnifiedProviders`: All Providers unified
 - `BrandedButton`, `BrandedCard`: Components with automatic branding

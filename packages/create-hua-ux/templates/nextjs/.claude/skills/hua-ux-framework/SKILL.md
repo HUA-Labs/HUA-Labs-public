@@ -1,6 +1,6 @@
 ---
 name: hua-ux Framework Usage
-description: Quick reference guide for developing with hua-ux framework
+description: Guide for developing Next.js applications using the hua-ux framework
 license: MIT
 compatibility:
   - claude
@@ -8,9 +8,11 @@ compatibility:
 
 # hua-ux Framework Usage Skill
 
-**Quick reference** for hua-ux framework. For detailed project structure, see `.claude/project-context.md`.
+This skill guides you on how to develop Next.js applications using the hua-ux framework.
 
-## 🚨 Required Guidelines
+## 🚨 Required Guidelines for Claude Assistants
+
+### Required Checks Before Using Framework
 
 ```
 IF (creating a new page or component) THEN
@@ -29,89 +31,157 @@ END IF
 
 **"You don't need to know Next.js. Just configure and tell AI what to do."**
 
-## Essential Patterns
+## Framework Structure
 
-### Page Creation
+### Top Layer: Framework & Config
+- `hua-ux.config.ts`: Framework configuration
+- `HuaUxLayout`: Automatic Provider setup
+- `HuaUxPage`: Page wrapper (Motion, i18n, SEO automatically applied)
+
+### Bottom Layer: Core Packages
+- `@hua-labs/ui`: UI component library
+- `@hua-labs/motion-core`: Motion/animations
+- `@hua-labs/i18n-core`: Internationalization
+- `@hua-labs/state`: State management
+
+## Key Patterns
+
+### 1. Page Creation Pattern
 
 ```tsx
+// app/my-page/page.tsx
 import { HuaUxPage } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/hua-ux';
+import { useTranslation } from '@hua-labs/i18n-core';
 
 export default function MyPage() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('my-page');
+  
   return (
-    <HuaUxPage title={t('common:title')} description={t('common:description')}>
-      <h1>{t('common:title')}</h1>
+    <HuaUxPage title={t('title')} description={t('description')}>
+      <h1>{t('title')}</h1>
+      {/* content */}
     </HuaUxPage>
   );
 }
 ```
 
-### Client Component
+**Important**:
+- Wrapping with `HuaUxPage` automatically applies Motion, i18n, SEO
+- Add translation keys to `translations/{language}/my-page.json`
+- Create as Server Component (default)
+
+### 2. Client Component Creation Pattern
 
 ```tsx
+// components/MyComponent.tsx
 'use client';
-import { Card, Button } from '@hua-labs/hua-ux';
-import { useFadeIn } from '@hua-labs/hua-ux';
+
+import { Card, Button } from '@hua-labs/ui';
+import { useMotion } from '@hua-labs/hua-ux/framework';
+import { useTranslation } from '@hua-labs/i18n-core';
 
 export function MyComponent() {
-  const motion = useFadeIn();
+  const { t } = useTranslation('my-component');
+  const motion = useMotion();
+  
   return (
     <Card ref={motion.ref} style={motion.style}>
-      <Button>Click me</Button>
+      <h2>{t('title')}</h2>
+      <Button>{t('button')}</Button>
     </Card>
   );
 }
 ```
 
-### Language Toggle
+**Important**:
+- Client components require `'use client'`
+- Utilize framework components (`@hua-labs/ui`, `@hua-labs/motion-core`)
 
-```tsx
-'use client';
-import { useAppStore } from '@/store/useAppStore';
+### 3. Translation File Pattern
 
-export function LanguageToggle() {
-  const language = useAppStore((state) => state.language);
-  const setLanguage = useAppStore((state) => state.setLanguage);
-  
-  return (
-    <button onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')}>
-      {language === 'ko' ? 'EN' : 'KO'}
-    </button>
-  );
+```json
+// translations/ko/my-page.json
+{
+  "title": "Title",
+  "description": "Description",
+  "button": "Button"
+}
+
+// translations/en/my-page.json
+{
+  "title": "Title",
+  "description": "Description",
+  "button": "Button"
 }
 ```
 
-## Key Components
+**Important**:
+- Add all translation keys to both Korean and English
+- Namespace should match page name
 
-- **`HuaUxPage`**: Page wrapper (Motion, i18n, SEO auto-applied)
-- **`I18nProviderWrapper`**: Required in `layout.tsx` for language toggle
-- **`Button`, `Card`, `Badge`**: From `@hua-labs/hua-ux`
-- **`useFadeIn`, `useSlideUp`**: Motion hooks from `@hua-labs/hua-ux`
+## Available Components
 
-## Configuration
+### @hua-labs/ui
+- `Button`, `Card`, `Input`, `Modal`, `Alert`, `Toast`, `Table`, `Form`, etc.
+- See `ai-context.md` for detailed list
+
+### @hua-labs/hua-ux/framework
+- `HuaUxPage`: Page wrapper
+- `HuaUxLayout`: Layout
+- `UnifiedProviders`: Provider unification
+- `useMotion`: Unified motion hook
+- `useData`: Client data fetching
+- `fetchData`: Server data fetching
+
+## Configuration File
+
+### hua-ux.config.ts
 
 ```typescript
-// hua-ux.config.ts
+import { defineConfig } from '@hua-labs/hua-ux/framework';
+
 export default defineConfig({
-  preset: 'product',  // or 'marketing'
+  preset: 'product',  // 'product' or 'marketing'
+  
   i18n: {
     defaultLanguage: 'ko',
     supportedLanguages: ['ko', 'en'],
   },
+  
+  motion: {
+    defaultPreset: 'product',
+    enableAnimations: true,
+  },
 });
 ```
 
-## Quick Rules
+**Preset Selection**:
+- `'product'`: For product pages (professional, efficient)
+- `'marketing'`: For marketing pages (dramatic, eye-catching)
 
-1. **Pages**: Wrap with `HuaUxPage`, use `useTranslation()`
-2. **Components**: Add `'use client'` if needed, use framework components
-3. **Translations**: Always create both `ko/` and `en/` files
-4. **Config**: Only modify `hua-ux.config.ts`
+## Guidelines for Claude Code Generation
+
+1. **When Creating Pages**:
+   - Wrap with `HuaUxPage`
+   - Generate translation files together
+   - Use `useTranslation` hook
+   - Prefer Server Components
+
+2. **When Creating Components**:
+   - Add `'use client'` directive (for client components)
+   - Utilize framework components
+   - Consider applying motion
+
+3. **When Adding Translations**:
+   - Add both Korean and English
+   - Maintain namespace consistency
+
+4. **When Changing Configuration**:
+   - Only modify `hua-ux.config.ts`
+   - Prefer Preset (over manual configuration)
 
 ## References
 
-- **Detailed guide**: `.claude/project-context.md` (project structure, full component list)
-- **Component styles**: `docs/COMPONENT_STYLE_GUIDE.md`
-- **Motion hooks**: `docs/MOTION_HOOKS.md`
-- **Troubleshooting**: `docs/TROUBLESHOOTING.md`
+- `ai-context.md`: Detailed project structure explanation
+- `.cursorrules`: Cursor IDE rules
+- Framework docs: `node_modules/@hua-labs/hua-ux/README.md`

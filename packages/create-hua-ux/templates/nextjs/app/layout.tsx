@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
-import { I18nProviderWrapper } from "@/components/I18nProviderWrapper";
+import { HuaUxLayout } from "@hua-labs/hua-ux/framework";
 
 export const metadata: Metadata = {
   title: "HUA UX App",
   description: "Created with hua-ux",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,14 +17,13 @@ export default async function RootLayout({
   // Dynamic language setting (use header set by middleware)
   // middleware.ts에서 'x-language' 헤더를 설정하면 여기서 읽을 수 있습니다.
   // If middleware.ts sets 'x-language' header, it can be read here.
-  // Note: Next.js 16+ requires await for headers()
-  const headersList = await headers();
+  const headersList = headers();
   const language = headersList.get('x-language') || 'ko'; // 기본값: 'ko'
 
   return (
     <html lang={language}>
       <body className="antialiased">
-        <I18nProviderWrapper>{children}</I18nProviderWrapper>
+        <HuaUxLayout>{children}</HuaUxLayout>
       </body>
     </html>
   );
