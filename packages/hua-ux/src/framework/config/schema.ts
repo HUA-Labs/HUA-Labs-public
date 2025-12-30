@@ -12,7 +12,11 @@ import type { HuaUxConfig, Preset } from '../types';
  * Preset을 사용하지 않을 때의 기본값입니다.
  * Preset을 사용하면 이 값은 무시되고 Preset 값이 사용됩니다.
  */
-export const defaultConfig: Required<Omit<HuaUxConfig, 'branding'>> & { branding?: HuaUxConfig['branding'] } = {
+export const defaultConfig: Required<Omit<HuaUxConfig, 'branding' | 'plugins' | 'license'>> & { 
+  branding?: HuaUxConfig['branding'];
+  plugins?: HuaUxConfig['plugins'];
+  license?: HuaUxConfig['license'];
+} = {
   preset: 'product',  // 기본 Preset
   i18n: {
     defaultLanguage: 'ko',
@@ -33,6 +37,8 @@ export const defaultConfig: Required<Omit<HuaUxConfig, 'branding'>> & { branding
   fileStructure: {
     enforce: false,
   },
+  plugins: [],
+  license: undefined,
 };
 
 /**

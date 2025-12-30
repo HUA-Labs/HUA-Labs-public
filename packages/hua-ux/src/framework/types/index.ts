@@ -283,7 +283,7 @@ export interface HuaUxConfig {
    * });
    * ```
    */
-  plugins?: import('./plugins/types').HuaUxPlugin[];
+  plugins?: import('../plugins/types').HuaUxPlugin[];
 
   /**
    * License configuration / 라이선스 설정

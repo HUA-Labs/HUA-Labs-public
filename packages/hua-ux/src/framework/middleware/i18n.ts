@@ -12,51 +12,64 @@
 
 // Next.js types - 조건부 import로 타입 안전성 향상
 // Next.js types - Improved type safety with conditional import
-type NextRequest = 
-  // Next.js가 설치되어 있으면 실제 타입 사용
-  // Use actual types if Next.js is installed
-  typeof import('next/server') extends { NextRequest: infer T } ? T
-  // 없으면 기본 인터페이스 사용
-  // Use default interface if not installed
-  : {
-    headers: {
-      get(name: string): string | null;
-    };
-    cookies: {
-      get(name: string): { value: string } | undefined;
-    };
-    nextUrl: {
-      pathname: string;
-      searchParams: URLSearchParams;
-    };
-  };
 
-type NextResponseType = 
-  typeof import('next/server') extends { NextResponse: infer T } ? T
-  : {
-    next(): { headers: Headers };
-    redirect(url: string): { url: string };
+/**
+ * Base interface for NextRequest (when Next.js is not available)
+ */
+interface BaseNextRequest {
+  headers: {
+    get(name: string): string | null;
   };
+  cookies: {
+    get(name: string): { value: string } | undefined;
+  };
+  nextUrl: {
+    pathname: string;
+    searchParams: URLSearchParams;
+  };
+}
 
-// Next.js가 설치되어 있으면 실제 NextResponse 사용, 없으면 폴백
-// Use actual NextResponse if Next.js is installed, otherwise use fallback
-let NextResponse: NextResponseType;
+/**
+ * NextRequest type - Next.js가 있으면 실제 타입, 없으면 기본 인터페이스
+ * 
+ * Next.js가 optional peerDependency이므로, 타입 레벨에서만 처리합니다.
+ * 실제 Next.js 프로젝트에서는 Next.js의 NextRequest 타입이 자동으로 사용됩니다.
+ */
+type NextRequest = BaseNextRequest;
+
+/**
+ * Base interface for NextResponse (when Next.js is not available)
+ */
+interface BaseNextResponse {
+  headers: Headers;
+  next?(): BaseNextResponse;
+  redirect?(url: string): BaseNextResponse;
+}
+
+/**
+ * NextResponse factory function
+ * Next.js가 설치되어 있으면 실제 NextResponse를 사용하고, 없으면 폴백 구현을 사용합니다.
+ */
+let NextResponseFactory: {
+  next(): BaseNextResponse;
+  redirect(url: string): BaseNextResponse;
+};
 
 try {
-  // Next.js가 설치되어 있으면 실제 import 시도
-  // Try to import actual NextResponse if Next.js is installed
-  // @ts-expect-error - 동적 import는 타입 체크를 통과하지 못함
+  // Next.js가 설치되어 있으면 실제 NextResponse 사용
   const nextServer = require('next/server');
-  NextResponse = nextServer.NextResponse;
+  NextResponseFactory = nextServer.NextResponse;
 } catch {
   // Next.js가 없으면 폴백 구현
   // Fallback implementation if Next.js is not available
-  NextResponse = {
+  NextResponseFactory = {
     next: () => ({
       headers: new Headers(),
-    }),
-    redirect: (url: string) => ({ url }),
-  } as NextResponseType;
+    } as BaseNextResponse),
+    redirect: (url: string) => ({
+      headers: new Headers(),
+    } as BaseNextResponse),
+  };
 }
 
 /**
@@ -140,7 +153,7 @@ export function createI18nMiddleware(config: I18nMiddlewareConfig) {
     }
     
     // Add language to request headers for use in components
-    const response = NextResponse.next();
+    const response = NextResponseFactory.next();
     response.headers.set('x-language', language);
     
     return response;
