@@ -12,7 +12,7 @@ import type { ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
  * i18n store state interface
  * Extends ZustandLanguageStore for compatibility with i18n-core-zustand
  */
-export interface I18nStoreState extends ZustandLanguageStore<string>, BaseStoreState {
+export interface I18nStoreState extends ZustandLanguageStore, BaseStoreState {
   // language and setLanguage are already defined in ZustandLanguageStore
 }
 
@@ -24,22 +24,22 @@ export interface I18nStoreConfig {
    * Default language
    */
   defaultLanguage: string;
-  
+
   /**
    * Supported languages
    */
   supportedLanguages: string[];
-  
+
   /**
    * Enable persistence
    */
   persist?: boolean;
-  
+
   /**
    * Persistence storage key
    */
   persistKey?: string;
-  
+
   /**
    * Enable SSR support
    */

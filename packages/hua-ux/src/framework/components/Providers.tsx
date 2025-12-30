@@ -45,7 +45,7 @@ function createProviders(config: HuaUxConfig) {
 
     // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
     const I18nProvider = createZustandI18n(
-      i18nStore as import('zustand').UseBoundStore<import('zustand').StoreApi<import('@hua-labs/i18n-core-zustand').ZustandLanguageStore<string>>>,
+      i18nStore as any, // Type assertion needed due to Zustand's complex type system
       {
         fallbackLanguage: config.i18n.fallbackLanguage || 'en',
         namespaces: config.i18n.namespaces || ['common'],
@@ -68,7 +68,7 @@ function createProviders(config: HuaUxConfig) {
       (acc, Provider) => <Provider>{acc}</Provider>,
       children
     );
-    
+
     return wrapped;
   };
 }
