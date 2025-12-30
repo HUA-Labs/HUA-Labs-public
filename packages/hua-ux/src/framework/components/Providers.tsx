@@ -43,15 +43,19 @@ function createProviders(config: HuaUxConfig) {
       ssr: config.state?.ssr ?? true,
     });
 
-    const I18nProvider = createZustandI18n(i18nStore, {
-      fallbackLanguage: config.i18n.fallbackLanguage || 'en',
-      namespaces: config.i18n.namespaces || ['common'],
-      translationLoader: config.i18n.translationLoader || 'api',
-      translationApiPath: config.i18n.translationApiPath || '/api/translations',
-      defaultLanguage: config.i18n.defaultLanguage,
-      loadTranslations: config.i18n.loadTranslations,
-      debug: config.i18n.debug,
-    });
+    // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
+    const I18nProvider = createZustandI18n(
+      i18nStore as import('zustand').UseBoundStore<import('zustand').StoreApi<import('@hua-labs/i18n-core-zustand').ZustandLanguageStore<string>>>,
+      {
+        fallbackLanguage: config.i18n.fallbackLanguage || 'en',
+        namespaces: config.i18n.namespaces || ['common'],
+        translationLoader: config.i18n.translationLoader || 'api',
+        translationApiPath: config.i18n.translationApiPath || '/api/translations',
+        defaultLanguage: config.i18n.defaultLanguage,
+        loadTranslations: config.i18n.loadTranslations,
+        debug: config.i18n.debug,
+      }
+    );
 
     providers.push(I18nProvider);
   }
