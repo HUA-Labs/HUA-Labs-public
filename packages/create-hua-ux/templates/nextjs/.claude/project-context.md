@@ -1,8 +1,6 @@
 # hua-ux Project Context
 
-This document provides **detailed project structure and configuration** for this specific hua-ux project.
-
-> **Quick reference**: For essential patterns and guidelines, see `.claude/skills/hua-ux-framework/SKILL.md`
+This document is a guide for Claude to understand the structure and usage of this project.
 
 ## Project Overview
 
@@ -19,7 +17,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 
 ### Middle Layer: Framework & Config
 - `hua-ux.config.ts`: Framework configuration
-- `I18nProviderWrapper`: i18n Provider wrapper (use in layout.tsx)
+- `HuaUxLayout`: Automatic Provider setup
 - `HuaUxPage`: Page wrapper (Motion, i18n, SEO automatically applied)
 - `UnifiedProviders`: All Providers unified
 
@@ -34,7 +32,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 ```
 Project Root/
 ├── app/                    # Next.js App Router pages
-│   ├── layout.tsx          # Root layout (uses I18nProviderWrapper)
+│   ├── layout.tsx          # Root layout (uses HuaUxLayout)
 │   ├── page.tsx            # Home page (uses HuaUxPage)
 │   └── api/                # API Routes
 │       └── translations/   # i18n translation API
@@ -77,7 +75,7 @@ Project Root/
 ### @hua-labs/hua-ux/framework
 
 **Framework Components**:
-- `I18nProviderWrapper`: i18n Provider wrapper (use in layout.tsx)
+- `HuaUxLayout`: Automatic Provider setup
 - `HuaUxPage`: Page wrapper (Motion, i18n, SEO automatically applied)
 - `UnifiedProviders`: All Providers unified
 - `BrandedButton`, `BrandedCard`: Components with automatic branding
@@ -304,11 +302,9 @@ This project supports **vibe coding**:
 
 ## References
 
-- **Quick reference**: `.claude/skills/hua-ux-framework/SKILL.md` (essential patterns)
-- **Component styles**: `docs/COMPONENT_STYLE_GUIDE.md`
-- **Motion hooks**: `docs/MOTION_HOOKS.md`
-- **Troubleshooting**: `docs/TROUBLESHOOTING.md`
-- **Quick start**: `docs/QUICK_START.md`
-- `ai-context.md`: General AI context
+- `ai-context.md`: Detailed project structure explanation
 - `.cursorrules`: Cursor IDE rules
 - Framework docs: `node_modules/@hua-labs/hua-ux/README.md`
+- UI components: `node_modules/@hua-labs/ui/README.md`
+- Motion: `node_modules/@hua-labs/motion-core/README.md`
+- i18n: `node_modules/@hua-labs/i18n-core-zustand/README.md`

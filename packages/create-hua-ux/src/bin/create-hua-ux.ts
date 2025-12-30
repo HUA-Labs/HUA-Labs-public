@@ -3,10 +3,6 @@
 /**
  * create-hua-ux CLI Entry Point
  * 
- * AI-first development tool for React
- * Create production-ready projects with AI context files in seconds.
- * Built for vibe coding - you don't need to know Next.js. Just configure and tell AI what to do.
- * 
  * This file is compiled to dist/bin/create-hua-ux.js
  * and used as the executable when the package is installed.
  */

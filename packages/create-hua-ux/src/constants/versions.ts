@@ -62,6 +62,5 @@ export const POSTCSS_VERSION = '^8.5.6';
 
 /**
  * Tailwind CSS version
- * Latest as of December 2025: v4.1.18 (released Dec 11, 2025)
  */
-export const TAILWIND_VERSION = '^4.1.18';
+export const TAILWIND_VERSION = '^4.1.13';

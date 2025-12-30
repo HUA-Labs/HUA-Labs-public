@@ -2,7 +2,7 @@
  * This file is auto-generated at build time.
  * Do not edit manually.
  * 
- * Generated from: C:\hua\packages\hua-ux\package.json
+ * Generated from: D:\HUA\hua-labs-public\packages\hua-ux\package.json
  * Source version: 0.1.0
  */
 
