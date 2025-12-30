@@ -47,15 +47,36 @@ function isRetryableError(error: unknown): boolean {
   return false;
 }
 
+/**
+ * API 기반 번역 로더 생성
+ * 
+ * @param options - 로더 옵션
+ * @returns 번역 로더 및 캐시 무효화 함수
+ * 
+ * @example
+ * ```typescript
+ * const { loader, invalidate, clear } = createApiTranslationLoader({
+ *   translationApiPath: '/api/translations',
+ *   autoInvalidateInDev: true
+ * });
+ * 
+ * // 특정 언어/네임스페이스 무효화
+ * invalidate('ko', 'common');
+ * 
+ * // 전체 캐시 클리어
+ * clear();
+ * ```
+ */
 export function createApiTranslationLoader(
   options: ApiLoaderOptions = {}
-): TranslationLoader {
+): TranslationLoader & { invalidate: (language?: string, namespace?: string) => void; clear: () => void } {
   const translationApiPath = options.translationApiPath ?? '/api/translations';
   const cacheTtlMs = options.cacheTtlMs ?? FIVE_MINUTES;
   const fetcher = options.fetcher ?? defaultFetcher;
   const logger = options.logger ?? console;
   const retryCount = options.retryCount ?? 0;
   const retryDelay = options.retryDelay ?? 1000;
+  const autoInvalidateInDev = options.autoInvalidateInDev ?? (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
   const localCache = new Map<string, CacheEntry>();
   const inFlightRequests = new Map<string, Promise<TranslationRecord>>();
 
@@ -194,6 +215,67 @@ export function createApiTranslationLoader(
     return requestPromise;
   };
 
-  return loadTranslations;
+  /**
+   * 특정 언어/네임스페이스의 캐시 무효화
+   */
+  const invalidate = (language?: string, namespace?: string) => {
+    if (language && namespace) {
+      // 특정 언어/네임스페이스만 무효화
+      const cacheKey = `${language}:${namespace}`;
+      localCache.delete(cacheKey);
+      logger.log?.('[i18n-loaders] Cache invalidated:', cacheKey);
+    } else if (language) {
+      // 특정 언어의 모든 네임스페이스 무효화
+      const prefix = `${language}:`;
+      for (const key of localCache.keys()) {
+        if (key.startsWith(prefix)) {
+          localCache.delete(key);
+        }
+      }
+      logger.log?.('[i18n-loaders] Cache invalidated for language:', language);
+    } else if (namespace) {
+      // 특정 네임스페이스의 모든 언어 무효화
+      const suffix = `:${namespace}`;
+      for (const key of localCache.keys()) {
+        if (key.endsWith(suffix)) {
+          localCache.delete(key);
+        }
+      }
+      logger.log?.('[i18n-loaders] Cache invalidated for namespace:', namespace);
+    } else {
+      // 전체 캐시 무효화
+      clear();
+    }
+  };
+
+  /**
+   * 전체 캐시 클리어
+   */
+  const clear = () => {
+    localCache.clear();
+    logger.log?.('[i18n-loaders] Cache cleared');
+  };
+
+  // 개발 모드에서 자동 무효화 설정
+  if (autoInvalidateInDev && typeof window !== 'undefined') {
+    // 개발 모드에서 페이지 포커스 시 캐시 무효화 (번역 파일 변경 감지)
+    window.addEventListener('focus', () => {
+      if (process.env.NODE_ENV === 'development') {
+        logger.log?.('[i18n-loaders] Development mode: Auto-invalidating cache on focus');
+        clear();
+      }
+    });
+  }
+
+  // loadTranslations 함수에 invalidate와 clear 메서드 추가
+  const loader = loadTranslations as TranslationLoader & {
+    invalidate: (language?: string, namespace?: string) => void;
+    clear: () => void;
+  };
+  
+  loader.invalidate = invalidate;
+  loader.clear = clear;
+
+  return loader;
 }
 
