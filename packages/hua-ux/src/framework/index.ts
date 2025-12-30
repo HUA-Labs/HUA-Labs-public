@@ -7,7 +7,6 @@
 // Components
 export { HuaUxLayout } from './components/HuaUxLayout';
 export { HuaUxPage } from './components/HuaUxPage';
-export { WelcomePage } from './components/WelcomePage';
 export { UnifiedProviders } from './components/Providers';
 export { BrandedButton } from './components/BrandedButton';
 export { BrandedCard } from './components/BrandedCard';
@@ -121,4 +120,3 @@ export type { MotionType, UseMotionOptions } from './hooks/useMotion';
 
 // Types
 export type { HuaUxLayoutProps, HuaUxPageProps } from './types';
-export type { WelcomePageProps } from './components/WelcomePage';

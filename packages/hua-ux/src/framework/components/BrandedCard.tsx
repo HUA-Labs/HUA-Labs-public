@@ -11,8 +11,7 @@
 'use client';
 
 import React from 'react';
-import { Card, merge } from '@hua-labs/ui';
-import type { CardProps } from '@hua-labs/ui/src/components/Card';
+import { Card, merge, type CardProps } from '@hua-labs/ui';
 import { useBranding } from '../branding/context';
 
 /**
@@ -54,11 +53,7 @@ import { useBranding } from '../branding/context';
  * </BrandedCard>
  * ```
  */
-export interface BrandedCardProps extends CardProps {
-  variant?: 'default' | 'outline' | 'elevated';
-}
-
-export const BrandedCard = React.forwardRef<HTMLDivElement, BrandedCardProps>(
+export const BrandedCard = React.forwardRef<HTMLDivElement, CardProps>(
   ({ variant = 'default', className, ...props }, ref) => {
     const branding = useBranding();
 
@@ -81,6 +76,7 @@ export const BrandedCard = React.forwardRef<HTMLDivElement, BrandedCardProps>(
     return (
       <Card
         ref={ref}
+        variant={variant}
         className={merge(brandingClasses, className)}
         {...props}
       />

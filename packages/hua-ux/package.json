@@ -47,9 +47,9 @@
     "@hua-labs/ui": "workspace:*"
   },
   "peerDependencies": {
+    "next": ">=13.0.0",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
-    "next": ">=13.0.0"
+    "react-dom": ">=16.8.0"
   },
   "peerDependenciesMeta": {
     "next": {
@@ -80,10 +80,12 @@
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "jsdom": "^27.2.0",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.14"
   }
 }
