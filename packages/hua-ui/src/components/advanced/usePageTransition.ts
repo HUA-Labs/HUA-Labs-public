@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-// Note: TransitionType is also exported from @hua-labs/motion-core
-// This is a local type for AdvancedPageTransition hooks
-export type AdvancedPageTransitionType = 
+export type TransitionType = 
   | 'fade' 
   | 'slide' 
   | 'scale' 
@@ -27,7 +25,7 @@ export type TransitionEasing =
   | 'smooth'
 
 export interface TransitionConfig {
-  type: AdvancedPageTransitionType
+  type: TransitionType
   duration: number
   easing: TransitionEasing
   delay?: number
@@ -66,7 +64,7 @@ export const usePageTransition = (
   const animationRef = useRef<number | null>(null)
   const startTimeRef = useRef<number | null>(null)
   const configRef = useRef<TransitionConfig>({
-    type: 'fade' as AdvancedPageTransitionType,
+    type: 'fade',
     duration: 500,
     easing: 'smooth',
     delay: 0,

@@ -1,143 +1,105 @@
 # Icon System Documentation
 
-## 왜 HUA UI Icon을 사용해야 하나요? / Why use HUA UI Icon?
+## 현재 상태
 
-HUA UI의 Icon 컴포넌트는 단순히 아이콘 라이브러리를 래핑한 것이 아닙니다. 여러 아이콘 라이브러리를 통합하고, 추가 기능을 제공하는 통합 아이콘 시스템입니다.
+### 아키텍처
+- **Provider 패턴**: React Context API 기반
+- **상태관리**: 서비스 레벨에서 Zustand 등으로 관리 (패키지 의존성 없음)
+- **지원 세트**: Lucide (기본), Phosphor, Untitled (준비 중)
+- **기본 동작**: IconProvider 없이도 사용 가능 (기본값 자동 적용)
 
-The Icon component in HUA UI is not just a wrapper for icon libraries. It's an integrated icon system that unifies multiple icon libraries and provides additional features.
-
-### 직접 `lucide-react`를 사용하는 것과의 차이점 / Differences from using `lucide-react` directly
-
-| 기능 | 직접 사용 | HUA UI Icon |
-|------|----------|-------------|
-| **다중 라이브러리 지원** | 각 라이브러리마다 다른 컴포넌트 import 필요 | 하나의 `<Icon>` 컴포넌트로 모든 라이브러리 사용 |
-| **아이콘 이름 매핑** | 라이브러리마다 다른 이름을 알아야 함 (Home vs House) | 하나의 이름으로 모든 라이브러리에서 작동 |
-| **직관적인 이름** | 정확한 아이콘 이름만 사용 가능 | `back`, `prev`, `gear`, `spinner` 등 Alias 지원 |
-| **전역 설정** | 각 컴포넌트마다 props 반복 | IconProvider로 한 번 설정 |
-| **감정/상태 아이콘** | 직접 아이콘 이름 지정 | `emotion="happy"`, `status="loading"` 등 의미 기반 |
-| **색상 변형** | 매번 className 작성 | `variant="success"` 등으로 자동 색상 적용 |
-| **애니메이션** | CSS 직접 작성 | `spin`, `pulse`, `bounce` prop으로 간단하게 |
-| **SSR 안전** | 직접 처리 필요 | 자동으로 hydration 오류 방지 |
-| **타입 안전성** | 문자열로 아이콘 이름 (오타 가능) | IconName 타입으로 컴파일 타임 체크 |
-
-### 예시 비교
-
-```tsx
-// ❌ 직접 lucide-react 사용
-import { Heart, Loader2, AlertCircle } from 'lucide-react'
-
-<Heart className="h-6 w-6 text-red-600 dark:text-red-400" />
-<Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-<AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
-
-// ✅ HUA UI Icon 사용
-import { Icon } from '@hua-labs/ui'
-
-<Icon name="heart" variant="error" size={24} />
-<Icon name="loader" status="loading" spin variant="primary" />
-<Icon name="alertCircle" variant="warning" size={24} />
-```
-
-## 현재 상태 / Current Status
-
-### 아키텍처 / Architecture
-- **Provider 패턴 / Provider Pattern**: React Context API 기반 / Based on React Context API
-- **상태관리 / State Management**: 서비스 레벨에서 Zustand 등으로 관리 (패키지 의존성 없음) / Managed with Zustand, etc. at service level (no package dependency)
-- **지원 세트 / Supported Sets**: Lucide (기본 / default), Phosphor, Untitled (준비 중 / in preparation)
-- **기본 동작 / Default Behavior**: IconProvider 없이도 사용 가능 (기본값 자동 적용) / Can be used without IconProvider (default values automatically applied)
-
-### 파일 구조 / File Structure
+### 파일 구조
 ```
 hua-ui/src/components/Icon/
-├── Icon.tsx           # Icon 컴포넌트 / Icon component
+├── Icon.tsx           # Icon 컴포넌트
 ├── IconProvider.tsx   # Context Provider
-├── icon-store.ts      # 타입 정의 및 기본값 / Type definitions and defaults
-└── index.ts           # 통합 export / Unified export
+├── icon-store.ts      # 타입 정의 및 기본값
+└── index.ts           # 통합 export
 ```
 
-### 주요 기능 / Key Features
-- 전역 아이콘 설정 (Provider) / Global icon settings (Provider)
-- 다중 아이콘 세트 지원 (Lucide, Phosphor) / Multiple icon set support (Lucide, Phosphor)
-- 세트별 자동 매핑 (PROJECT_ICONS) / Automatic mapping by set (PROJECT_ICONS)
-- Tree-shaking 지원 / Tree-shaking support
-- SSR 안전 (hydration 방지) / SSR safe (prevents hydration errors)
-- 애니메이션 지원 (spin, pulse, bounce) / Animation support (spin, pulse, bounce)
-- Variant 지원 (primary, success, error 등) / Variant support (primary, success, error, etc.)
-- 감정/상태 아이콘 매핑 / Emotion/status icon mapping
+### 주요 기능
+- 전역 아이콘 설정 (Provider)
+- 다중 아이콘 세트 지원 (Lucide, Phosphor)
+- 세트별 자동 매핑 (PROJECT_ICONS)
+- Tree-shaking 지원
+- SSR 안전 (hydration 방지)
+- 애니메이션 지원 (spin, pulse, bounce)
+- Variant 지원 (primary, success, error 등)
+- 감정/상태 아이콘 매핑
 
 ## 사용법
 
-### 일반적인 사용 방법 / Common Usage
+### 일반적인 사용 방법
 
-**IconProvider 없이 사용하는 방법 / Usage without IconProvider:**
+**현재 sum-diary에서 사용 중인 방식 (IconProvider 없이):**
 
 ```tsx
 import { Icon } from '@hua-labs/ui'
 
-// 1. 기본 사용 / Basic usage
+// 1. 기본 사용
 <Icon name="arrowLeft" className="h-4 w-4" />
 
-// 2. 버튼 내부 / Inside button
+// 2. 버튼 내부
 <Button>
   <Icon name="refresh" className="h-4 w-4 mr-2" />
-  새로고침 / Refresh
+  새로고침
 </Button>
 
-// 3. 링크 아이콘 / Link icon
+// 3. 링크 아이콘
 <Link href="/admin">
   <Icon name="arrowLeft" className="h-4 w-4" />
 </Link>
 
-// 4. 상태 표시 / Status indicator
+// 4. 상태 표시
 <Icon name="warning" className="h-6 w-6 text-yellow-600 mr-3" />
 
-// 5. 큰 아이콘 / Large icon
+// 5. 큰 아이콘
 <Icon name="barChart" className="h-12 w-12 text-gray-400" />
 ```
 
-**특징 / Features:**
-- IconProvider 없이도 즉시 사용 가능 / Can be used immediately without IconProvider
-- 기본값 자동 적용: `phosphor`, `regular`, `size: 20` / Default values automatically applied
-- 각 아이콘마다 `size`, `className` 등으로 개별 설정 가능 / Individual settings per icon via `size`, `className`, etc.
-- 기존 코드 수정 불필요 / No need to modify existing code
+**특징:**
+- IconProvider 없이도 즉시 사용 가능
+- 기본값 자동 적용: `phosphor`, `regular`, `size: 20`
+- 각 아이콘마다 `size`, `className` 등으로 개별 설정 가능
+- 기존 코드 수정 불필요
 
-### 1. 기본 사용 (IconProvider 없이) / Basic Usage (without IconProvider)
+### 1. 기본 사용 (IconProvider 없이)
 
-**가장 간단한 사용법 / Simplest usage:**
+**가장 간단한 사용법:**
 
 ```tsx
 import { Icon } from '@hua-labs/ui'
 
-// 기본값 사용 (phosphor, regular, size: 20) / Using default values
+// 기본값 사용 (phosphor, regular, size: 20)
 <Icon name="heart" />
 <Icon name="user" size={24} />
 <Icon name="settings" variant="primary" />
 ```
 
-**기본값 / Default values:**
+**기본값:**
 - `set`: `phosphor`
 - `weight`: `regular`
 - `size`: `20`
 - `color`: `currentColor`
 
-### 2. IconProvider와 함께 사용 (권장) / Using with IconProvider (Recommended)
+### 2. IconProvider와 함께 사용 (권장)
 
-**전역 설정으로 일관성 유지 / Maintain consistency with global settings:**
+**전역 설정으로 일관성 유지:**
 
 ```tsx
 import { Icon, IconProvider } from '@hua-labs/ui'
 
-// layout.tsx에서 전역 설정 / Global settings in layout.tsx
+// layout.tsx에서 전역 설정
 <IconProvider set="phosphor" weight="regular" size={20}>
   <App />
 </IconProvider>
 
-// 그 후 어디서나 / Then anywhere
-<Icon name="heart" />  // Provider 설정 자동 적용 / Provider settings automatically applied
-<Icon name="user" size={24} />  // size만 오버라이드 / Only size overridden
+// 그 후 어디서나
+<Icon name="heart" />  // Provider 설정 자동 적용
+<Icon name="user" size={24} />  // size만 오버라이드
 ```
 
-**Next.js App Router 적용 예시 / Next.js App Router example:**
+**sum-diary에 적용 예시:**
 
 ```tsx
 // app/layout.tsx
@@ -160,7 +122,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### 3. Zustand와 통합 / Integration with Zustand
+### 3. Zustand와 통합
 
 ```tsx
 import { create } from 'zustand'
@@ -193,19 +155,19 @@ function App() {
 }
 ```
 
-### 4. 개별 아이콘 오버라이드 / Individual Icon Override
+### 4. 개별 아이콘 오버라이드
 
 ```tsx
-// Provider 설정을 오버라이드 / Override Provider settings
+// Provider 설정을 오버라이드
 <Icon 
   name="heart" 
-  provider="lucide"  // 전역 설정 무시 / Ignore global settings
-  size={32}           // 전역 size 무시 / Ignore global size
-  weight="bold"       // Phosphor weight 오버라이드 / Override Phosphor weight
+  provider="lucide"  // 전역 설정 무시
+  size={32}           // 전역 size 무시
+  weight="bold"       // Phosphor weight 오버라이드
 />
 ```
 
-### 5. 애니메이션 / Animation
+### 5. 애니메이션
 
 ```tsx
 <Icon name="loader" spin />
@@ -222,7 +184,7 @@ function App() {
 <Icon name="info" variant="primary" />
 ```
 
-### 7. 감정/상태 아이콘 / Emotion/Status Icons
+### 7. 감정/상태 아이콘
 
 ```tsx
 <Icon emotion="happy" />
@@ -230,34 +192,34 @@ function App() {
 <Icon status="success" variant="success" />
 ```
 
-#### 감정 아이콘 매핑표 / Emotion Icon Mapping
+#### 감정 아이콘 매핑표
 
-| emotion | 매핑된 아이콘 / Mapped Icon | 설명 / Description |
+| emotion | 매핑된 아이콘 | 설명 |
 |---------|--------------|------|
-| `happy` | `smile` | 행복한 표정 / Happy expression |
-| `sad` | `frown` | 슬픈 표정 / Sad expression |
-| `neutral` | `meh` | 무표정 / Neutral expression |
-| `excited` | `laugh` | 신나는 표정 / Excited expression |
-| `angry` | `angry` | 화난 표정 / Angry expression |
-| `love` | `heart` | 하트 아이콘 / Heart icon |
-| `like` | `thumbsUp` | 좋아요 / Like |
-| `dislike` | `thumbsDown` | 싫어요 / Dislike |
+| `happy` | `smile` | 행복한 표정 |
+| `sad` | `frown` | 슬픈 표정 |
+| `neutral` | `meh` | 무표정 |
+| `excited` | `laugh` | 신나는 표정 |
+| `angry` | `angry` | 화난 표정 |
+| `love` | `heart` | 하트 아이콘 |
+| `like` | `thumbsUp` | 좋아요 |
+| `dislike` | `thumbsDown` | 싫어요 |
 
-#### 상태 아이콘 매핑표 / Status Icon Mapping
+#### 상태 아이콘 매핑표
 
-| status | 매핑된 아이콘 / Mapped Icon | 설명 / Description |
+| status | 매핑된 아이콘 | 설명 |
 |--------|--------------|------|
-| `loading` | `loader` | 로딩 중 / Loading |
-| `success` | `success` (checkCircle) | 성공 / Success |
-| `error` | `error` (xCircle) | 에러 / Error |
-| `warning` | `warning` (alertCircle) | 경고 / Warning |
-| `info` | `info` | 정보 / Info |
-| `locked` | `lock` | 잠금 / Locked |
-| `unlocked` | `unlock` | 잠금 해제 / Unlocked |
-| `visible` | `eye` | 보임 / Visible |
-| `hidden` | `eyeOff` | 숨김 / Hidden |
+| `loading` | `loader` | 로딩 중 |
+| `success` | `success` (checkCircle) | 성공 |
+| `error` | `error` (xCircle) | 에러 |
+| `warning` | `warning` (alertCircle) | 경고 |
+| `info` | `info` | 정보 |
+| `locked` | `lock` | 잠금 |
+| `unlocked` | `unlock` | 잠금 해제 |
+| `visible` | `eye` | 보임 |
+| `hidden` | `eyeOff` | 숨김 |
 
-### 8. 특화된 아이콘 컴포넌트 / Specialized Icon Components
+### 8. 특화된 아이콘 컴포넌트
 
 ```tsx
 import { LoadingIcon, SuccessIcon, ErrorIcon, EmotionIcon, StatusIcon } from '@hua-labs/ui'
@@ -269,26 +231,26 @@ import { LoadingIcon, SuccessIcon, ErrorIcon, EmotionIcon, StatusIcon } from '@h
 <StatusIcon status="success" />
 ```
 
-## 지원하는 아이콘 세트 / Supported Icon Sets
+## 지원하는 아이콘 세트
 
-### Lucide Icons (기본 / Default)
-- **패키지 / Package**: `lucide-react` (의존성 포함 / included as dependency)
-- **특징 / Features**: strokeWidth 기반 / strokeWidth-based
-- **기본값 / Default**: strokeWidth 1.25
+### Lucide Icons (기본)
+- **패키지**: `lucide-react` (의존성 포함)
+- **특징**: strokeWidth 기반
+- **기본값**: strokeWidth 1.25
 
 ### Phosphor Icons
-- **패키지 / Package**: `@phosphor-icons/react` (dependency - 자동 설치됨 / automatically installed)
-- **특징 / Features**: weight 기반 (thin, light, regular, bold, duotone, fill) / weight-based
-- **기본값 / Default**: weight "regular"
-- **설치 / Installation**: 별도 설치 불필요 (패키지에 포함됨) / No separate installation needed (included in package)
+- **패키지**: `@phosphor-icons/react` (peerDependency)
+- **특징**: weight 기반 (thin, light, regular, bold, duotone, fill)
+- **기본값**: weight "regular"
+- **설치**: `pnpm add @phosphor-icons/react`
 
 ### Untitled Icons
-- **상태 / Status**: 준비 중 / In preparation
-- **특징 / Features**: SVG 기반 / SVG-based
-- **API 차이점 / API Differences**: 
-  - `weight` prop 지원 안 함 (Phosphor 전용) / `weight` prop not supported (Phosphor only)
-  - `strokeWidth` 사용 (Lucide와 동일) / Uses `strokeWidth` (same as Lucide)
-  - Provider에서 `weight` 설정 시 무시되고 `strokeWidth` 사용 / `weight` setting in Provider is ignored, uses `strokeWidth`
+- **상태**: 준비 중
+- **특징**: SVG 기반
+- **API 차이점**: 
+  - `weight` prop 지원 안 함 (Phosphor 전용)
+  - `strokeWidth` 사용 (Lucide와 동일)
+  - Provider에서 `weight` 설정 시 무시되고 `strokeWidth` 사용
 
 ## API Reference
 
@@ -296,11 +258,11 @@ import { LoadingIcon, SuccessIcon, ErrorIcon, EmotionIcon, StatusIcon } from '@h
 
 ```tsx
 interface IconProviderProps {
-  set?: 'lucide' | 'phosphor' | 'untitled'  // 기본: 'phosphor' / Default: 'phosphor'
-  weight?: 'thin' | 'light' | 'regular' | 'bold' | 'duotone' | 'fill'  // 기본: 'regular' / Default: 'regular'
-  size?: number  // 기본: 20 / Default: 20
-  color?: string  // 기본: 'currentColor' / Default: 'currentColor'
-  strokeWidth?: number  // Lucide/Untitled용, 기본: 1.25 / For Lucide/Untitled, default: 1.25
+  set?: 'lucide' | 'phosphor' | 'untitled'  // 기본: 'phosphor'
+  weight?: 'thin' | 'light' | 'regular' | 'bold' | 'duotone' | 'fill'  // 기본: 'regular'
+  size?: number  // 기본: 20
+  color?: string  // 기본: 'currentColor'
+  strokeWidth?: number  // Lucide/Untitled용, 기본: 1.25
   children: React.ReactNode
 }
 ```
@@ -309,13 +271,13 @@ interface IconProviderProps {
 
 ```tsx
 interface IconProps {
-  name: IconName  // 필수 / Required
-  size?: number | string  // Provider 설정 오버라이드 / Override Provider settings
+  name: IconName  // 필수
+  size?: number | string  // Provider 설정 오버라이드
   className?: string
   emotion?: 'happy' | 'sad' | 'neutral' | 'excited' | 'angry' | 'love' | 'like' | 'dislike'
   status?: 'loading' | 'success' | 'error' | 'warning' | 'info' | 'locked' | 'unlocked' | 'visible' | 'hidden'
-  provider?: IconSet  // Provider 설정 오버라이드 / Override Provider settings
-  weight?: PhosphorWeight  // Phosphor weight 오버라이드 / Override Phosphor weight
+  provider?: IconSet  // Provider 설정 오버라이드
+  weight?: PhosphorWeight  // Phosphor weight 오버라이드
   animated?: boolean
   pulse?: boolean
   spin?: boolean
@@ -324,255 +286,205 @@ interface IconProps {
 }
 ```
 
-## 아이콘 매핑 / Icon Mapping
+## 아이콘 매핑
 
-### PROJECT_ICONS 매핑 / PROJECT_ICONS Mapping
+### PROJECT_ICONS 매핑
 
-아이콘 이름은 `PROJECT_ICONS`에서 자동 매핑됩니다 / Icon names are automatically mapped in `PROJECT_ICONS`:
+아이콘 이름은 `PROJECT_ICONS`에서 자동 매핑됩니다:
 
 ```tsx
-// 예시 / Example
+// 예시
 'home' → Lucide: 'Home', Phosphor: 'House'
 'settings' → Lucide: 'Settings', Phosphor: 'Gear'
 ```
 
-### Icon Alias 시스템 / Icon Alias System
+### Icon Alias 시스템
 
 여러 이름이 같은 아이콘을 가리키도록 하는 alias 시스템을 제공합니다. DX 향상을 위해 직관적인 이름들을 지원합니다.
 
-Provides an alias system that allows multiple names to point to the same icon. Supports intuitive names for better developer experience.
-
-**사용 예시 / Usage example:**
+**사용 예시:**
 ```tsx
-// 모두 같은 아이콘 (arrowLeft) / All point to the same icon (arrowLeft)
+// 모두 같은 아이콘 (arrowLeft)
 <Icon name="back" />
 <Icon name="prev" />
 <Icon name="previous" />
 <Icon name="arrowLeft" />
 ```
 
-**주요 Alias / Main Aliases:**
+**주요 Alias:**
+- Navigation: `back`, `prev`, `previous` → `arrowLeft`
+- Actions: `plus`, `new` → `add` / `remove`, `trash` → `delete`
+- Status: `spinner`, `loading` → `loader` / `checkmark` → `success`
+- User: `person`, `account`, `profile` → `user`
+- Settings: `gear`, `config`, `preferences` → `settings`
 
-| 카테고리 / Category | Alias | 실제 아이콘 / Actual Icon |
-|---------------------|-------|---------------------------|
-| Navigation | `back`, `prev`, `previous` | `arrowLeft` |
-| Navigation | `forward`, `next` | `arrowRight` |
-| Actions | `plus`, `new` | `add` |
-| Actions | `remove`, `trash` | `delete` |
-| Actions | `pencil`, `modify` | `edit` |
-| Status | `spinner`, `loading`, `wait` | `loader` |
-| Status | `checkmark`, `checkCircle` | `success` |
-| Status | `fail`, `cross`, `xCircle` | `error` |
-| Status | `alert`, `caution` | `warning` |
-| User | `person`, `account`, `profile` | `user` |
-| Settings | `gear`, `config`, `preferences`, `prefs` | `settings` |
-| Close | `close`, `cancel` | `x` |
-| Mail | `email`, `envelope` | `mail` |
-| Eye | `show`, `view` | `eye` |
-| Eye | `hide`, `hidden` | `eyeOff` |
-
-**Alias 확인 / Checking Aliases:**
-
-`resolveIconAlias` 함수는 alias를 실제 아이콘 이름으로 변환합니다. `getIconAliases` 함수는 특정 아이콘의 모든 alias를 반환합니다.
-
-The `resolveIconAlias` function converts an alias to the actual icon name. The `getIconAliases` function returns all aliases for a specific icon.
-
+**Alias 확인:**
 ```tsx
 import { resolveIconAlias, getIconAliases } from '@hua-labs/ui'
 
-// Alias 해결 (역방향 매핑) / Resolve alias (reverse mapping)
+// Alias 해결 (역방향 매핑)
 const actualName1 = resolveIconAlias('back')         // 'arrowLeft'
 const actualName2 = resolveIconAlias('gear')        // 'settings'
 const actualName3 = resolveIconAlias('preferences') // 'settings'
 const actualName4 = resolveIconAlias('spinner')     // 'loader'
-const actualName5 = resolveIconAlias('email')       // 'mail'
-const actualName6 = resolveIconAlias('close')       // 'x'
-const actualName7 = resolveIconAlias('remove')      // 'delete'
+const actualName5 = resolveIconAlias('email')      // 'mail'
 
-// 특정 아이콘의 모든 alias 가져오기 / Get all aliases for a specific icon
+// 특정 아이콘의 모든 alias 가져오기
 const aliases1 = getIconAliases('arrowLeft')
 // ['back', 'prev', 'previous']
 
 const aliases2 = getIconAliases('settings')
 // ['gear', 'config', 'preferences', 'prefs']
-
-const aliases3 = getIconAliases('loader')
-// ['spinner', 'loading', 'wait']
-
-const aliases4 = getIconAliases('user')
-// ['person', 'account', 'profile']
 ```
 
+자세한 내용은 [Icon Autocomplete Guide](./ICON_AUTOCOMPLETE.md#icon-alias-시스템)를 참고하세요.
 
-### 매핑되지 않은 아이콘 사용 / Using Unmapped Icons
+### 매핑되지 않은 아이콘 사용
 
-**매핑되지 않은 아이콘도 사용 가능합니다 / Unmapped icons can also be used!**
-
-`icons.ts`나 `PROJECT_ICONS`에 없는 아이콘도 동적으로 로드할 수 있습니다. Lucide와 Phosphor 모두 지원합니다.
-
-Icons not in `icons.ts` or `PROJECT_ICONS` can be dynamically loaded. Both Lucide and Phosphor are supported.
+**매핑되지 않은 아이콘도 사용 가능합니다!**
 
 ```tsx
-// icons.ts에 없는 아이콘도 동적으로 로드됨 / Icons not in icons.ts are dynamically loaded
-<Icon name="someNewIcon" />              // 동적 로딩 / Dynamic loading
-<Icon name="Zap" provider="lucide" />    // Lucide: PascalCase 시도 / Lucide: tries PascalCase
-<Icon name="zap" provider="phosphor" />  // Phosphor: 동적 로딩 / Phosphor: dynamic loading
+// icons.ts에 없는 아이콘도 동적으로 로드됨
+<Icon name="someNewIcon" />  // 동적 로딩
 ```
 
-**동작 방식 / How it works:**
+**동작 방식:**
+1. 먼저 `icons.ts`에서 찾기 (실제 사용되는 아이콘만 포함)
+2. 없으면 `PROJECT_ICONS`에서 매핑 확인
+3. 없으면 동적으로 Lucide에서 가져오기 (fallback)
 
-1. 먼저 `icons.ts`에서 찾기 (Lucide만, 실제 사용되는 아이콘만 포함) / First search in `icons.ts` (Lucide only, only includes actually used icons)
-2. 없으면 `PROJECT_ICONS`에서 매핑 확인 / If not found, check mapping in `PROJECT_ICONS`
-3. 없으면 동적으로 해당 provider에서 가져오기 (fallback) / If not found, dynamically load from the provider (fallback)
+**장점:**
+- 번들 크기 최적화 (실제 사용되는 아이콘만 포함)
+- 새로운 아이콘도 즉시 사용 가능
+- 점진적 마이그레이션 가능
 
-**Lucide provider 동작 / Lucide provider behavior:**
-- PascalCase 변환 시도 (예: `zap` → `Zap`) / Tries PascalCase conversion (e.g., `zap` → `Zap`)
-- 원본 이름 그대로 시도 / Tries original name as-is
-- camelCase 변환 시도 / Tries camelCase conversion
-
-**Phosphor provider 동작 / Phosphor provider behavior:**
-- PascalCase 변환 시도 (예: `house` → `House`) / Tries PascalCase conversion (e.g., `house` → `House`)
-- camelCase를 PascalCase로 변환 시도 (예: `arrowLeft` → `ArrowLeft`) / Tries converting camelCase to PascalCase (e.g., `arrowLeft` → `ArrowLeft`)
-- 원본 이름 그대로 시도 / Tries original name as-is
-
-**제한사항 / Limitations:**
-- 아이콘을 찾을 수 없으면 빈 원형 아이콘 표시 (콘솔 경고) / Displays empty circle icon with console warning if icon not found
-- Phosphor Icons는 동적 import로 로드되므로 초기 로딩 시 약간의 지연 가능 / Phosphor Icons may have slight delay on initial load due to dynamic import
-
-**장점 / Benefits:**
-- 번들 크기 최적화 (실제 사용되는 아이콘만 포함) / Bundle size optimization (only includes actually used icons)
-- 새로운 아이콘도 즉시 사용 가능 (Lucide, Phosphor 모두) / New icons can be used immediately (both Lucide and Phosphor)
-- 점진적 마이그레이션 가능 / Progressive migration possible
-
-## 주의사항 / Notes
+## 주의사항
 
 ### SSR (Server-Side Rendering)
 
-**현재 구현 / Current implementation:**
-- 모든 아이콘은 **hydration mismatch 방지**를 위해 클라이언트에서만 렌더링됩니다 / All icons are rendered only on the client to prevent hydration mismatch
-- SSR 시 빈 `<span>` 요소가 렌더링되고, 클라이언트에서 실제 아이콘으로 교체됩니다 / Empty `<span>` elements are rendered during SSR, replaced with actual icons on the client
+**현재 구현:**
+- 모든 아이콘은 **hydration mismatch 방지**를 위해 클라이언트에서만 렌더링됩니다
+- SSR 시 빈 `<span>` 요소가 렌더링되고, 클라이언트에서 실제 아이콘으로 교체됩니다
 
-**세트별 SSR 지원 / SSR support by set:**
-- **Lucide**: SSR-safe (하지만 현재는 클라이언트 전용으로 제한) / SSR-safe (but currently limited to client-only)
-- **Phosphor**: Dynamic import 사용 (SSR 시 클라이언트에서만 로드) / Uses dynamic import (loaded only on client during SSR)
-- **Untitled**: SVG 기반이므로 SSR 가능 (구현 시) / SSR possible since SVG-based (when implemented)
+**세트별 SSR 지원:**
+- **Lucide**: SSR-safe (하지만 현재는 클라이언트 전용으로 제한)
+- **Phosphor**: Dynamic import 사용 (SSR 시 클라이언트에서만 로드)
+- **Untitled**: SVG 기반이므로 SSR 가능 (구현 시)
 
-**권장사항 / Recommendations:**
-- Next.js App Router 사용 시 `'use client'` 지시어 필요 / `'use client'` directive required when using Next.js App Router
-- SSR이 중요한 경우, 아이콘 영역에 스켈레톤 UI 추가 고려 / Consider adding skeleton UI to icon areas if SSR is important
+**권장사항:**
+- Next.js App Router 사용 시 `'use client'` 지시어 필요
+- SSR이 중요한 경우, 아이콘 영역에 스켈레톤 UI 추가 고려
 
-### Phosphor 초기화 / Phosphor Initialization
-- Phosphor Icons는 동적 로딩으로 약간의 지연 가능 / Phosphor Icons may have slight delay due to dynamic loading
-- 첫 사용 시에만 로드되며, 이후 캐시됨 / Loaded only on first use, then cached
+### Phosphor 초기화
+- Phosphor Icons는 동적 로딩으로 약간의 지연 가능
+- 첫 사용 시에만 로드되며, 이후 캐시됨
 
-### Provider 선택사항 / Provider Optional
-- IconProvider 없이 사용하면 기본값 사용 (`phosphor`, `regular`, `size: 20`) / Uses default values when used without IconProvider
-- 서비스 레벨에서 Zustand 등으로 관리 권장 / Recommended to manage with Zustand at service level
+### Provider 필수
+- IconProvider 없이 사용하면 기본값 사용 (`phosphor`, `regular`, `size: 20`)
+- 서비스 레벨에서 Zustand 등으로 관리 권장
 
-### 타입 안전성 / Type Safety
-- `IconName` 타입으로 아이콘 이름 제한 / Icon names restricted by `IconName` type
-- 존재하지 않는 아이콘 사용 시 콘솔 경고 / Console warning when using non-existent icons
+### 타입 안전성
+- `IconName` 타입으로 아이콘 이름 제한
+- 존재하지 않는 아이콘 사용 시 콘솔 경고
 
-### Variant/Animated와 Tailwind CSS 충돌 / Variant/Animated and Tailwind CSS Conflicts
+### Variant/Animated와 Tailwind CSS 충돌
 
-**충돌 없음 / No conflicts:**
-- Icon의 `variant` prop은 **내부 클래스**로 적용 (`text-blue-600` 등) / Icon's `variant` prop is applied as **internal classes** (`text-blue-600`, etc.)
-- Icon의 `animated`, `spin`, `pulse`, `bounce`는 **별도 클래스**로 적용 / Icon's `animated`, `spin`, `pulse`, `bounce` are applied as **separate classes**
-- Tailwind의 `animate-spin`, `text-success` 등과 **독립적으로 동작** / **Operates independently** from Tailwind's `animate-spin`, `text-success`, etc.
+**충돌 없음:**
+- Icon의 `variant` prop은 **내부 클래스**로 적용 (`text-blue-600` 등)
+- Icon의 `animated`, `spin`, `pulse`, `bounce`는 **별도 클래스**로 적용
+- Tailwind의 `animate-spin`, `text-success` 등과 **독립적으로 동작**
 
-**사용 예시 / Usage example:**
+**사용 예시:**
 ```tsx
-// Icon의 variant와 Tailwind 클래스 함께 사용 가능 / Can use Icon's variant with Tailwind classes
+// Icon의 variant와 Tailwind 클래스 함께 사용 가능
 <Icon name="check" variant="success" className="ml-2" />
 
-// Icon의 spin과 Tailwind 애니메이션 충돌 없음 / No conflict between Icon's spin and Tailwind animations
+// Icon의 spin과 Tailwind 애니메이션 충돌 없음
 <Icon name="loader" spin className="animate-pulse" />
 ```
 
-### Tree-shaking 지원 / Tree-shaking Support
+### Tree-shaking 지원
 
-**세트별 Tree-shaking 상태 / Tree-shaking status by set:**
+**세트별 Tree-shaking 상태:**
 
-| 세트 / Set | Tree-shaking | 설명 / Description |
+| 세트 | Tree-shaking | 설명 |
 |------|-------------|------|
-| **Lucide** | 지원 / Supported | ESM 기반, 사용하지 않는 아이콘 자동 제거 / ESM-based, automatically removes unused icons |
-| **Phosphor** | ESM/Dynamic | Dynamic import 사용 시 선택적 로딩 / Selective loading when using dynamic import |
-| **Untitled** | 제한적 / Limited | SVG 파일 기반이므로 번들러 설정 필요 / Requires bundler configuration since SVG-based |
+| **Lucide** | 완전 지원 | ESM 기반, 사용하지 않는 아이콘 자동 제거 |
+| **Phosphor** | ESM/Dynamic | Dynamic import 사용 시 선택적 로딩 |
+| **Untitled** | 제한적 | SVG 파일 기반이므로 번들러 설정 필요 |
 
-**최적화 팁 / Optimization tips:**
-- Lucide: 자동으로 tree-shaking 됨 / Automatically tree-shaken
-- Phosphor: Dynamic import로 필요한 아이콘만 로드 / Load only needed icons via dynamic import
-- Untitled: SVG 파일을 개별 import하여 번들러가 최적화하도록 설정 / Configure bundler to optimize by importing SVG files individually
+**최적화 팁:**
+- Lucide: 자동으로 tree-shaking 됨
+- Phosphor: Dynamic import로 필요한 아이콘만 로드
+- Untitled: SVG 파일을 개별 import하여 번들러가 최적화하도록 설정
 
-## 완료된 개선사항 / Completed Improvements
+## 완료된 개선사항
 
-1. 파일 구조 정리 (Icon 폴더로 통합) / File structure organized (consolidated into Icon folder)
-2. Context API 기반 Provider 구현 / Provider implementation based on Context API
-3. 서비스 레벨 상태관리 지원 (Zustand 등) / Service-level state management support (Zustand, etc.)
-4. 타입 정의 정리 / Type definitions organized
-5. strokeWidth 기본값 함수 추가 / Added default strokeWidth function
-6. 통합 export (index.ts) / Unified export (index.ts)
+1. 파일 구조 정리 (Icon 폴더로 통합)
+2. Context API 기반 Provider 구현
+3. 서비스 레벨 상태관리 지원 (Zustand 등)
+4. 타입 정의 정리
+5. strokeWidth 기본값 함수 추가
+6. 통합 export (index.ts)
 
-## 타입 자동 생성 / Type Auto-generation
+## 타입 자동 생성
 
-### IconName 타입 자동 생성 스크립트 / IconName Type Auto-generation Script
+### IconName 타입 자동 생성 스크립트
 
 아이콘 이름의 타입 안전성을 보장하기 위해 자동 생성 스크립트를 제공합니다.
 
-Provides an auto-generation script to ensure type safety for icon names.
-
-**사용법 / Usage:**
+**사용법:**
 ```bash
 pnpm generate:icon-types
 ```
 
-**동작 방식 / How it works:**
-1. `src/lib/icons.ts` 파일을 스캔 / Scans `src/lib/icons.ts` file
-2. `icons` 객체의 모든 키를 추출 / Extracts all keys from `icons` object
-3. `src/lib/icon-names.generated.ts` 파일 생성 / Generates `src/lib/icon-names.generated.ts` file
+**동작 방식:**
+1. `src/lib/icons.ts` 파일을 스캔
+2. `icons` 객체의 모든 키를 추출
+3. `src/lib/icon-names.generated.ts` 파일 생성
 
-**장점 / Benefits:**
-- 이름 충돌 방지 / Prevents name conflicts
-- 업데이트 누락 방지 / Prevents missed updates
-- 오타 방지 / Prevents typos
-- 타입 안전성 향상 / Improves type safety
+**장점:**
+- 이름 충돌 방지
+- 업데이트 누락 방지
+- 오타 방지
+- 타입 안전성 향상
 
-**주의사항 / Notes:**
-- 생성된 파일은 자동 생성 파일이므로 수동 수정 금지 / Do not manually edit generated files
-- 아이콘 추가/삭제 후 스크립트 재실행 필요 / Re-run script after adding/removing icons
+**주의사항:**
+- 생성된 파일은 자동 생성 파일이므로 수동 수정 금지
+- 아이콘 추가/삭제 후 스크립트 재실행 필요
 
-## 향후 개선 계획 / Future Improvements
+## 향후 개선 계획
 
-### 1. 기능 개선 / Feature Improvements
-- [ ] Untitled Icons 구현 / Implement Untitled Icons
-- [ ] 테마별 weight 자동 분기 (라이트/다크) / Automatic weight branching by theme (light/dark)
-- [ ] 아이콘 로딩 에러 처리 개선 / Improve icon loading error handling
-- [ ] Phosphor 초기화 캐싱 / Phosphor initialization caching
+### 1. 기능 개선
+- [ ] Untitled Icons 구현
+- [ ] 테마별 weight 자동 분기 (라이트/다크)
+- [ ] 아이콘 로딩 에러 처리 개선
+- [ ] Phosphor 초기화 캐싱
 
-### 2. 성능 최적화 / Performance Optimization
-- [ ] 아이콘 컴포넌트 메모이제이션 / Icon component memoization
-- [ ] 불필요한 리렌더링 방지 / Prevent unnecessary re-renders
-- [ ] 아이콘 프리로딩 옵션 / Icon preloading option
+### 2. 성능 최적화
+- [ ] 아이콘 컴포넌트 메모이제이션
+- [ ] 불필요한 리렌더링 방지
+- [ ] 아이콘 프리로딩 옵션
 
-### 3. 문서화 / Documentation
-- [x] 감정/상태 아이콘 매핑표 추가 / Added emotion/status icon mapping table
-- [x] SSR 주의사항 명확화 / Clarified SSR notes
-- [x] Tree-shaking 체크리스트 추가 / Added Tree-shaking checklist
-- [x] Variant/Tailwind 충돌 설명 추가 / Added Variant/Tailwind conflict explanation
-- [ ] 아이콘 목록 문서화 / Document icon list
-- [ ] 마이그레이션 가이드 / Migration guide
-- [ ] Storybook 스토리 추가 / Add Storybook stories
+### 3. 문서화
+- [x] 감정/상태 아이콘 매핑표 추가
+- [x] SSR 주의사항 명확화
+- [x] Tree-shaking 체크리스트 추가
+- [x] Variant/Tailwind 충돌 설명 추가
+- [ ] 아이콘 목록 문서화
+- [ ] 마이그레이션 가이드
+- [ ] Storybook 스토리 추가
 
-### 4. 테스트 / Testing
-- [ ] Icon 컴포넌트 테스트 / Icon component tests
-- [ ] IconProvider 테스트 / IconProvider tests
-- [ ] 아이콘 매핑 테스트 / Icon mapping tests
-- [ ] SSR 테스트 / SSR tests
+### 4. 테스트
+- [ ] Icon 컴포넌트 테스트
+- [ ] IconProvider 테스트
+- [ ] 아이콘 매핑 테스트
+- [ ] SSR 테스트
 
-## 변경 이력 / Changelog
+## 변경 이력
 
-### v1.0.0 (현재 / Current)
-- IconProvider 패턴 도입 / Introduced IconProvider pattern
-- Context API 기반 전역 설정 / Global settings based on Context API
-- Phosphor Icons 지원 / Phosphor Icons support
-- Zustand 통합 지원 / Zustand integration support
+### v1.0.0 (현재)
+- IconProvider 패턴 도입
+- Context API 기반 전역 설정
+- Phosphor Icons 지원
+- Zustand 통합 지원

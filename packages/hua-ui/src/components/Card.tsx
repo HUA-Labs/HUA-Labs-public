@@ -1,50 +1,128 @@
 "use client"
 
 import React from "react"
-import { cn } from "../lib/utils"
+import { merge } from "../lib/utils"
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+/**
+ * Card 컴포넌트의 props / Card component props
+ * @typedef {Object} CardProps
+ * @property {"default" | "outline" | "elevated"} [variant="default"] - 카드 스타일 변형 / Card style variant
+ * @extends {React.HTMLAttributes<HTMLDivElement>}
+ */
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "default" | "outline" | "elevated"
+}
 
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
-
-export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
-
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
-
+/**
+ * Card 컴포넌트 / Card component
+ * 
+ * 콘텐츠를 카드 형태로 표시하는 컴포넌트입니다.
+ * CardHeader, CardTitle, CardDescription, CardContent, CardFooter와 함께 사용합니다.
+ * 
+ * Component that displays content in card format.
+ * Used with CardHeader, CardTitle, CardDescription, CardContent, and CardFooter.
+ * 
+ * @component
+ * @example
+ * // 기본 카드 / Basic card
+ * <Card>
+ *   <CardHeader>
+ *     <CardTitle>카드 제목</CardTitle>
+ *     <CardDescription>카드 설명</CardDescription>
+ *   </CardHeader>
+ *   <CardContent>
+ *     <p>카드 내용</p>
+ *   </CardContent>
+ *   <CardFooter>
+ *     <Button>액션</Button>
+ *   </CardFooter>
+ * </Card>
+ * 
+ * @example
+ * // Elevated 스타일 / Elevated style
+ * <Card variant="elevated">
+ *   <CardContent>강조된 카드</CardContent>
+ * </Card>
+ * 
+ * @param {CardProps} props - Card 컴포넌트의 props / Card component props
+ * @param {React.Ref<HTMLDivElement>} ref - div 요소 ref / div element ref
+ * @returns {JSX.Element} Card 컴포넌트 / Card component
+ */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "rounded-lg border bg-card text-card-foreground shadow-sm",
-        className
-      )}
-      {...props}
-    />
-  )
+  ({ className, variant = "default", ...props }, ref) => {
+    const variantClasses = {
+      default: "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700",
+      outline: "bg-transparent border-2 border-slate-300 dark:border-slate-600",
+      elevated: "bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700"
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={merge(
+          "rounded-lg p-6",
+          variantClasses[variant],
+          className
+        )}
+        {...props}
+      />
+    )
+  }
 )
+
 Card.displayName = "Card"
 
+/**
+ * CardHeader 컴포넌트의 props / CardHeader component props
+ * @typedef {Object} CardHeaderProps
+ * @extends {React.HTMLAttributes<HTMLDivElement>}
+ */
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+/**
+ * CardHeader 컴포넌트 / CardHeader component
+ * 카드의 헤더 영역을 표시합니다. CardTitle과 CardDescription을 포함합니다.
+ * Displays the header area of a card. Contains CardTitle and CardDescription.
+ * 
+ * @component
+ * @param {CardHeaderProps} props - CardHeader 컴포넌트의 props / CardHeader component props
+ * @param {React.Ref<HTMLDivElement>} ref - div 요소 ref / div element ref
+ * @returns {JSX.Element} CardHeader 컴포넌트 / CardHeader component
+ */
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col space-y-2 p-8", className)} // 더 넉넉한 여백
+      className={merge("flex flex-col space-y-1.5 p-6", className)}
       {...props}
     />
   )
 )
+
 CardHeader.displayName = "CardHeader"
 
-const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+/**
+ * CardTitle 컴포넌트의 props / CardTitle component props
+ * @typedef {Object} CardTitleProps
+ * @extends {React.HTMLAttributes<HTMLHeadingElement>}
+ */
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+
+/**
+ * CardTitle 컴포넌트 / CardTitle component
+ * 카드의 제목을 표시합니다. h3 태그로 렌더링됩니다.
+ * Displays the card title. Renders as h3 tag.
+ * 
+ * @component
+ * @param {CardTitleProps} props - CardTitle 컴포넌트의 props / CardTitle component props
+ * @param {React.Ref<HTMLParagraphElement>} ref - h3 요소 ref / h3 element ref
+ * @returns {JSX.Element} CardTitle 컴포넌트 / CardTitle component
+ */
+const CardTitle = React.forwardRef<HTMLParagraphElement, CardTitleProps>(
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn(
+      className={merge(
         "text-2xl font-semibold leading-none tracking-tight",
         className
       )}
@@ -52,35 +130,90 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
     />
   )
 )
+
 CardTitle.displayName = "CardTitle"
 
+/**
+ * CardDescription 컴포넌트의 props / CardDescription component props
+ * @typedef {Object} CardDescriptionProps
+ * @extends {React.HTMLAttributes<HTMLParagraphElement>}
+ */
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
+/**
+ * CardDescription 컴포넌트 / CardDescription component
+ * 카드의 설명 텍스트를 표시합니다.
+ * Displays the card description text.
+ * 
+ * @component
+ * @param {CardDescriptionProps} props - CardDescription 컴포넌트의 props / CardDescription component props
+ * @param {React.Ref<HTMLParagraphElement>} ref - p 요소 ref / p element ref
+ * @returns {JSX.Element} CardDescription 컴포넌트 / CardDescription component
+ */
 const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={merge("text-sm text-slate-500 dark:text-slate-400", className)}
       {...props}
     />
   )
 )
+
 CardDescription.displayName = "CardDescription"
 
+/**
+ * CardContent 컴포넌트의 props / CardContent component props
+ * @typedef {Object} CardContentProps
+ * @extends {React.HTMLAttributes<HTMLDivElement>}
+ */
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+/**
+ * CardContent 컴포넌트 / CardContent component
+ * 카드의 메인 콘텐츠 영역을 표시합니다.
+ * Displays the main content area of a card.
+ * 
+ * @component
+ * @param {CardContentProps} props - CardContent 컴포넌트의 props / CardContent component props
+ * @param {React.Ref<HTMLDivElement>} ref - div 요소 ref / div element ref
+ * @returns {JSX.Element} CardContent 컴포넌트 / CardContent component
+ */
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-8 pt-0", className)} {...props} /> // 더 넉넉한 여백
+    <div ref={ref} className={merge("p-6 pt-0", className)} {...props} />
   )
 )
+
 CardContent.displayName = "CardContent"
 
+/**
+ * CardFooter 컴포넌트의 props / CardFooter component props
+ * @typedef {Object} CardFooterProps
+ * @extends {React.HTMLAttributes<HTMLDivElement>}
+ */
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+/**
+ * CardFooter 컴포넌트 / CardFooter component
+ * 카드의 푸터 영역을 표시합니다. 주로 액션 버튼을 배치합니다.
+ * Displays the footer area of a card. Typically used for action buttons.
+ * 
+ * @component
+ * @param {CardFooterProps} props - CardFooter 컴포넌트의 props / CardFooter component props
+ * @param {React.Ref<HTMLDivElement>} ref - div 요소 ref / div element ref
+ * @returns {JSX.Element} CardFooter 컴포넌트 / CardFooter component
+ */
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center p-8 pt-0", className)} // 더 넉넉한 여백
+      className={merge("flex items-center p-6 pt-0", className)}
       {...props}
     />
   )
 )
+
 CardFooter.displayName = "CardFooter"
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } 
