@@ -6,23 +6,94 @@
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import inquirer from 'inquirer';
+import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
 
+// Resolve template directory
+// When compiled, __dirname points to dist/, so we need to go up to templates/
+// When running with tsx, __dirname points to src/, so we need to go up one level
 const TEMPLATE_DIR = path.join(__dirname, '../templates/nextjs');
+
+/**
+ * AI context generation options
+ */
+export interface AiContextOptions {
+  /**
+   * Generate .cursorrules file
+   */
+  cursorrules: boolean;
+  
+  /**
+   * Generate ai-context.md file
+   */
+  aiContext: boolean;
+  
+  /**
+   * Generate .claude/project-context.md file
+   */
+  claudeContext: boolean;
+  
+  /**
+   * Generate .claude/skills/ files
+   */
+  claudeSkills: boolean;
+  
+  /**
+   * Language for documentation (ko, en, both)
+   */
+  language: 'ko' | 'en' | 'both';
+}
+
+/**
+ * Check if English-only mode is enabled
+ */
+function isEnglishOnly(): boolean {
+  return process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
+}
+
+/**
+ * Get localized message
+ */
+function t(key: 'projectNamePrompt' | 'projectNameRequired' | 'selectAiContext' | 'documentationLanguage'): string {
+  if (isEnglishOnly()) {
+    const messages: Record<string, string> = {
+      projectNamePrompt: 'What is your project name?',
+      projectNameRequired: 'Project name is required',
+      selectAiContext: 'Select AI context files to generate:',
+      documentationLanguage: 'Documentation language:',
+    };
+    return messages[key] || key;
+  }
+  
+  // Bilingual (Korean + English)
+  const messages: Record<string, string> = {
+    projectNamePrompt: 'What is your project name? / 프로젝트 이름을 입력하세요:',
+    projectNameRequired: 'Project name is required / 프로젝트 이름이 필요합니다',
+    selectAiContext: 'Select AI context files to generate / 생성할 AI 컨텍스트 파일을 선택하세요:',
+    documentationLanguage: 'Documentation language / 문서 언어:',
+  };
+  return messages[key] || key;
+}
 
 /**
  * Prompt for project name
  */
 export async function promptProjectName(): Promise<string> {
+  // If not interactive, cannot prompt
+  if (!isInteractive()) {
+    throw new Error('Project name is required when running in non-interactive mode. Please provide it as an argument: npx tsx src/index.ts <project-name>');
+  }
+
   const { projectName } = await inquirer.prompt([
     {
       type: 'input',
       name: 'projectName',
-      message: 'What is your project name?',
+      message: t('projectNamePrompt'),
       validate: (input: string) => {
         if (!input.trim()) {
-          return 'Project name is required';
+          return t('projectNameRequired');
         }
         return true;
       },
@@ -33,13 +104,148 @@ export async function promptProjectName(): Promise<string> {
 }
 
 /**
- * Copy template files to project directory
+ * Check if running in interactive mode
+ * 
+ * For PowerShell and other environments, we check:
+ * 1. stdin/stdout are TTY (if available)
+ * 2. Not in CI environment
+ * 3. Not explicitly set to non-interactive
+ * 4. stdin is readable (not piped)
+ * 
+ * In PowerShell, isTTY might be undefined, so we use a more lenient check.
  */
-export async function copyTemplate(projectPath: string): Promise<void> {
+function isInteractive(): boolean {
+  // Explicitly non-interactive
+  if (process.env.CI || process.env.NON_INTERACTIVE) {
+    return false;
+  }
+
+  // Check if stdin is TTY (available in most terminals)
+  // In PowerShell, this might be undefined, so we check if it's explicitly false
+  // If undefined, we assume it might be interactive (PowerShell can be interactive)
+  const stdinTTY = process.stdin.isTTY;
+  const stdoutTTY = process.stdout.isTTY;
+  
+  // If both are explicitly false, definitely not interactive
+  if (stdinTTY === false && stdoutTTY === false) {
+    return false;
+  }
+  
+  // If either is true, or both are undefined (PowerShell case), assume interactive
+  // This allows inquirer to attempt to use prompts
+  // Inquirer will handle the actual TTY check internally
+  return stdinTTY !== false && stdoutTTY !== false;
+}
+
+/**
+ * Prompt for AI context generation options
+ */
+export async function promptAiContextOptions(): Promise<AiContextOptions> {
+  // If not interactive, use defaults
+  if (!isInteractive()) {
+    console.log('Running in non-interactive mode, using default options...');
+    return {
+      cursorrules: true,
+      aiContext: true,
+      claudeContext: true,
+      claudeSkills: false,
+      language: 'both',
+    };
+  }
+
+  // Use inquirer with proper error handling
+  try {
+    const isEn = isEnglishOnly();
+    const answers = await inquirer.prompt([
+    {
+      type: 'checkbox',
+      name: 'options',
+      message: t('selectAiContext'),
+      choices: [
+        {
+          name: isEn ? '.cursorrules (Cursor IDE rules)' : '.cursorrules (Cursor IDE rules) / Cursor IDE 규칙',
+          value: 'cursorrules',
+          checked: true,
+        },
+        {
+          name: isEn ? 'ai-context.md (General AI context)' : 'ai-context.md (General AI context) / 범용 AI 컨텍스트',
+          value: 'aiContext',
+          checked: true,
+        },
+        {
+          name: isEn ? '.claude/project-context.md (Claude context)' : '.claude/project-context.md (Claude context) / Claude 컨텍스트',
+          value: 'claudeContext',
+          checked: true,
+        },
+        {
+          name: isEn ? '.claude/skills/ (Claude skills)' : '.claude/skills/ (Claude skills) / Claude 스킬',
+          value: 'claudeSkills',
+          checked: false,
+        },
+      ],
+    },
+    {
+      type: 'list',
+      name: 'language',
+      message: t('documentationLanguage'),
+      choices: [
+        { name: isEn ? 'Korean only' : 'Korean only / 한국어만', value: 'ko' },
+        { name: isEn ? 'English only' : 'English only / 영어만', value: 'en' },
+        { name: isEn ? 'Both Korean and English' : 'Both Korean and English / 한국어와 영어 모두', value: 'both' },
+      ],
+      default: 'both',
+    },
+  ]);
+
+    return {
+      cursorrules: answers.options.includes('cursorrules'),
+      aiContext: answers.options.includes('aiContext'),
+      claudeContext: answers.options.includes('claudeContext'),
+      claudeSkills: answers.options.includes('claudeSkills'),
+      language: answers.language || 'both',
+    };
+  } catch (error) {
+    // If inquirer fails (e.g., in non-interactive environment), use defaults
+    console.warn('Failed to get interactive input, using default options...');
+    return {
+      cursorrules: true,
+      aiContext: true,
+      claudeContext: true,
+      claudeSkills: false,
+      language: 'both',
+    };
+  }
+}
+
+/**
+ * Copy template files to project directory
+ * 
+ * @param projectPath - Target project directory
+ * @param options - Copy options
+ * @param options.skipAiContext - Skip AI context files (.cursorrules, ai-context.md, .claude/)
+ */
+export async function copyTemplate(
+  projectPath: string,
+  options?: { skipAiContext?: boolean }
+): Promise<void> {
   await fs.copy(TEMPLATE_DIR, projectPath, {
     filter: (src: string) => {
       // Skip node_modules and .git
-      return !src.includes('node_modules') && !src.includes('.git');
+      if (src.includes('node_modules') || src.includes('.git')) {
+        return false;
+      }
+      
+      // Conditionally skip AI context files
+      if (options?.skipAiContext) {
+        const relativePath = path.relative(TEMPLATE_DIR, src);
+        if (relativePath === '.cursorrules' ||
+            relativePath === 'ai-context.md' ||
+            relativePath.startsWith('.claude')) {
+          return false;
+        }
+      }
+      
+      return true;
     },
   });
 }
@@ -300,14 +506,250 @@ export default defineConfig({
  * Generate AI context files
  * 
  * Cursor, Claude 등 다양한 AI 도구를 위한 컨텍스트 파일 생성
+ * 템플릿 파일을 복사한 후 프로젝트별 정보를 동적으로 추가합니다.
  */
-export async function generateAiContextFiles(projectPath: string): Promise<void> {
-  // .cursorrules는 템플릿에서 복사됨 (이미 처리됨)
-  // .claude/project-context.md도 템플릿에서 복사됨 (이미 처리됨)
-  // ai-context.md도 템플릿에서 복사됨 (이미 처리됨)
+export async function generateAiContextFiles(
+  projectPath: string,
+  projectName?: string,
+  options?: AiContextOptions
+): Promise<void> {
+  const opts = options || {
+    cursorrules: true,
+    aiContext: true,
+    claudeContext: true,
+    claudeSkills: false,
+    language: 'both',
+  };
   
-  // 필요시 여기서 프로젝트별 커스터마이징 가능
-  // 예: 프로젝트 이름을 ai-context.md에 삽입 등
+  // 옵션에 따라 파일 삭제 (생성하지 않을 파일)
+  if (!opts.cursorrules) {
+    const cursorrulesPath = path.join(projectPath, '.cursorrules');
+    if (await fs.pathExists(cursorrulesPath)) {
+      await fs.remove(cursorrulesPath);
+    }
+  }
+  
+  if (!opts.aiContext) {
+    const aiContextPath = path.join(projectPath, 'ai-context.md');
+    if (await fs.pathExists(aiContextPath)) {
+      await fs.remove(aiContextPath);
+    }
+  }
+  
+  if (!opts.claudeContext) {
+    const claudeContextPath = path.join(projectPath, '.claude', 'project-context.md');
+    if (await fs.pathExists(claudeContextPath)) {
+      await fs.remove(claudeContextPath);
+    }
+  }
+  
+  if (!opts.claudeSkills) {
+    const claudeSkillsPath = path.join(projectPath, '.claude', 'skills');
+    if (await fs.pathExists(claudeSkillsPath)) {
+      await fs.remove(claudeSkillsPath);
+    }
+  }
+  
+  // 프로젝트별 커스터마이징
+  if (projectName) {
+    // ai-context.md에 프로젝트 이름 추가
+    if (opts.aiContext) {
+      const aiContextPath = path.join(projectPath, 'ai-context.md');
+      if (await fs.pathExists(aiContextPath)) {
+        let content = await fs.readFile(aiContextPath, 'utf-8');
+        // Add project name to document header
+        content = content.replace(
+          /^# hua-ux Project AI Context/,
+          `# ${projectName} - hua-ux Project AI Context\n\n**Project Name**: ${projectName}`
+        );
+        await fs.writeFile(aiContextPath, content, 'utf-8');
+      }
+    }
+    
+    // .claude/project-context.md에도 프로젝트 이름 추가
+    if (opts.claudeContext) {
+      const claudeContextPath = path.join(projectPath, '.claude', 'project-context.md');
+      if (await fs.pathExists(claudeContextPath)) {
+        let content = await fs.readFile(claudeContextPath, 'utf-8');
+        content = content.replace(
+          /^# hua-ux Project Context/,
+          `# ${projectName} - hua-ux Project Context\n\n**Project Name**: ${projectName}`
+        );
+        await fs.writeFile(claudeContextPath, content, 'utf-8');
+      }
+    }
+  }
+  
+  // package.json에서 실제 설치된 패키지 버전 정보 추출하여 컨텍스트에 추가
+  const packageJsonPath = path.join(projectPath, 'package.json');
+  if (await fs.pathExists(packageJsonPath)) {
+    try {
+      const packageJson = await fs.readJSON(packageJsonPath);
+      const dependencies = packageJson.dependencies || {};
+      const devDependencies = packageJson.devDependencies || {};
+      
+      // 버전 정보를 ai-context.md에 추가
+      if (opts.aiContext) {
+        const aiContextPath = path.join(projectPath, 'ai-context.md');
+        if (await fs.pathExists(aiContextPath)) {
+          let content = await fs.readFile(aiContextPath, 'utf-8');
+          
+          // 의존성 정보 섹션 추가
+          const depsSection = `
+## 설치된 패키지 버전 / Installed Package Versions
+
+### 핵심 의존성 / Core Dependencies
+${Object.entries(dependencies)
+  .filter(([name]) => name.startsWith('@hua-labs/') || name === 'next' || name === 'react')
+  .map(([name, version]) => `- \`${name}\`: ${version}`)
+  .join('\n')}
+
+### 개발 의존성 / Dev Dependencies
+${Object.entries(devDependencies)
+  .filter(([name]) => name.includes('typescript') || name.includes('tailwind') || name.includes('@types'))
+  .map(([name, version]) => `- \`${name}\`: ${version}`)
+  .join('\n')}
+`;
+          
+          // 참고 자료 섹션 앞에 추가
+          content = content.replace(
+            /## 참고 자료/,
+            `${depsSection}\n## 참고 자료`
+          );
+          
+          await fs.writeFile(aiContextPath, content, 'utf-8');
+        }
+      }
+    } catch (error) {
+      // package.json 파싱 실패 시 무시 (선택적 기능)
+      console.warn('Failed to extract package versions for AI context:', error);
+    }
+  }
+}
+
+/**
+ * Check prerequisites before project creation
+ * 
+ * Verifies Node.js version, pnpm installation, and template integrity
+ */
+export async function checkPrerequisites(): Promise<void> {
+  const isEn = isEnglishOnly();
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  // 1. Node.js version check
+  const nodeVersion = process.version;
+  const requiredVersion = '18.0.0';
+  
+  // Simple version comparison (major.minor.patch)
+  const parseVersion = (v: string): number[] => {
+    return v.replace(/^v/, '').split('.').map(Number);
+  };
+  
+  const compareVersions = (v1: string, v2: string): number => {
+    const v1Parts = parseVersion(v1);
+    const v2Parts = parseVersion(v2);
+    
+    for (let i = 0; i < 3; i++) {
+      if (v1Parts[i] > v2Parts[i]) return 1;
+      if (v1Parts[i] < v2Parts[i]) return -1;
+    }
+    return 0;
+  };
+
+  if (compareVersions(nodeVersion, requiredVersion) < 0) {
+    errors.push(
+      isEn
+        ? `Node.js ${requiredVersion}+ required. Current: ${nodeVersion}`
+        : `Node.js ${requiredVersion}+ 필요합니다. 현재: ${nodeVersion}`
+    );
+  }
+
+  // 2. pnpm installation check
+  try {
+    execSync('pnpm --version', { stdio: 'ignore' });
+  } catch {
+    errors.push(
+      isEn
+        ? 'pnpm is required. Install: npm install -g pnpm'
+        : 'pnpm이 필요합니다. 설치: npm install -g pnpm'
+    );
+  }
+
+  // 3. Template validation
+  try {
+    await validateTemplate();
+  } catch (error) {
+    errors.push(
+      isEn
+        ? `Template validation failed: ${error instanceof Error ? error.message : String(error)}`
+        : `템플릿 검증 실패: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+
+  // Display warnings
+  if (warnings.length > 0) {
+    console.log(chalk.yellow('\n⚠️  Warnings:'));
+    warnings.forEach(w => console.log(chalk.yellow(`  - ${w}`)));
+  }
+
+  // Throw error if prerequisites not met
+  if (errors.length > 0) {
+    const errorMessage = isEn
+      ? `Prerequisites check failed:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 Tips:\n  - Update Node.js: https://nodejs.org/\n  - Install pnpm: npm install -g pnpm`
+      : `사전 검증 실패:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 팁:\n  - Node.js 업데이트: https://nodejs.org/\n  - pnpm 설치: npm install -g pnpm`;
+    
+    throw new Error(errorMessage);
+  }
+}
+
+/**
+ * Validate template files integrity
+ * 
+ * Checks if all required template files exist before project creation
+ */
+export async function validateTemplate(): Promise<void> {
+  // Check if template directory exists
+  if (!(await fs.pathExists(TEMPLATE_DIR))) {
+    const isEn = isEnglishOnly();
+    throw new Error(
+      isEn
+        ? `Template directory not found: ${TEMPLATE_DIR}`
+        : `템플릿 디렉토리를 찾을 수 없습니다: ${TEMPLATE_DIR}`
+    );
+  }
+
+  // Note: package.json is generated dynamically, not in template
+  const requiredFiles = [
+    'tsconfig.json',
+    'next.config.ts',
+    'tailwind.config.js',
+    'app/layout.tsx',
+    'app/page.tsx',
+    'app/globals.css',
+    'lib/i18n-setup.ts',
+    'store/useAppStore.ts',
+    'translations/ko/common.json',
+    'translations/en/common.json',
+  ];
+
+  const missingFiles: string[] = [];
+
+  for (const file of requiredFiles) {
+    const filePath = path.join(TEMPLATE_DIR, file);
+    if (!(await fs.pathExists(filePath))) {
+      missingFiles.push(file);
+    }
+  }
+
+  if (missingFiles.length > 0) {
+    const isEn = isEnglishOnly();
+    throw new Error(
+      isEn
+        ? `Template files missing: ${missingFiles.join(', ')}`
+        : `템플릿 파일 누락: ${missingFiles.join(', ')}`
+    );
+  }
 }
 
 /**
@@ -321,7 +763,8 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   // 1. package.json 검증
   const packageJsonPath = path.join(projectPath, 'package.json');
   if (!(await fs.pathExists(packageJsonPath))) {
-    errors.push('package.json 파일이 생성되지 않았습니다.');
+    const isEn = isEnglishOnly();
+    errors.push(isEn ? 'package.json file was not created' : 'package.json 파일이 생성되지 않았습니다.');
   } else {
     try {
       const packageJson = await fs.readJSON(packageJsonPath);
@@ -346,7 +789,8 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   // 2. hua-ux.config.ts 검증
   const configPath = path.join(projectPath, 'hua-ux.config.ts');
   if (!(await fs.pathExists(configPath))) {
-    errors.push('hua-ux.config.ts 파일이 생성되지 않았습니다.');
+    const isEn = isEnglishOnly();
+    errors.push(isEn ? 'hua-ux.config.ts file was not created' : 'hua-ux.config.ts 파일이 생성되지 않았습니다.');
   }
 
   // 3. 필수 디렉토리 검증
@@ -354,7 +798,8 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   for (const dir of requiredDirs) {
     const dirPath = path.join(projectPath, dir);
     if (!(await fs.pathExists(dirPath))) {
-      errors.push(`필수 디렉토리 ${dir}가 생성되지 않았습니다.`);
+      const isEn = isEnglishOnly();
+      errors.push(isEn ? `Required directory ${dir} was not created` : `필수 디렉토리 ${dir}가 생성되지 않았습니다.`);
     }
   }
 
@@ -368,12 +813,188 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   for (const file of requiredFiles) {
     const filePath = path.join(projectPath, file);
     if (!(await fs.pathExists(filePath))) {
-      errors.push(`필수 파일 ${file}이 생성되지 않았습니다.`);
+      const isEn = isEnglishOnly();
+      errors.push(isEn ? `Required file ${file} was not created` : `필수 파일 ${file}이 생성되지 않았습니다.`);
     }
   }
 
   // 에러가 있으면 예외 발생
   if (errors.length > 0) {
-    throw new Error(`프로젝트 검증 실패:\n${errors.map(e => `  - ${e}`).join('\n')}`);
+    const isEn = isEnglishOnly();
+    throw new Error(isEn 
+      ? `Project validation failed:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 Tips:\n  - Check file permissions\n  - Ensure disk space is available\n  - Try running again`
+      : `프로젝트 검증 실패:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 팁:\n  - 파일 권한 확인\n  - 디스크 공간 확인\n  - 다시 실행해보세요`);
+  }
+}
+
+/**
+ * Validate translation files JSON syntax
+ */
+export async function validateTranslationFiles(projectPath: string): Promise<void> {
+  const translationFiles = [
+    'translations/ko/common.json',
+    'translations/en/common.json',
+  ];
+
+  const errors: string[] = [];
+  const isEn = isEnglishOnly();
+
+  for (const file of translationFiles) {
+    const filePath = path.join(projectPath, file);
+    if (await fs.pathExists(filePath)) {
+      try {
+        const content = await fs.readFile(filePath, 'utf-8');
+        JSON.parse(content);
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          errors.push(
+            isEn
+              ? `Invalid JSON in ${file}: ${error.message}`
+              : `${file}의 JSON 문법 오류: ${error.message}`
+          );
+        } else {
+          errors.push(
+            isEn
+              ? `Failed to read ${file}: ${error instanceof Error ? error.message : String(error)}`
+              : `${file} 읽기 실패: ${error instanceof Error ? error.message : String(error)}`
+          );
+        }
+      }
+    }
+  }
+
+  if (errors.length > 0) {
+    throw new Error(
+      isEn
+        ? `Translation files validation failed:\n${errors.map(e => `  ❌ ${e}`).join('\n')}`
+        : `번역 파일 검증 실패:\n${errors.map(e => `  ❌ ${e}`).join('\n')}`
+    );
+  }
+}
+
+/**
+ * Generate installation summary
+ */
+export async function generateSummary(
+  projectPath: string,
+  aiContextOptions?: AiContextOptions
+): Promise<{
+  directories: number;
+  files: number;
+  aiContextFiles: string[];
+  languages: string[];
+}> {
+  let directories = 0;
+  let files = 0;
+  
+  const countItems = async (dirPath: string): Promise<void> => {
+    try {
+      const items = await fs.readdir(dirPath, { withFileTypes: true });
+      for (const item of items) {
+        // Skip hidden files and common ignore patterns
+        if (item.name.startsWith('.') && item.name !== '.cursorrules' && !item.name.startsWith('.claude')) {
+          continue;
+        }
+        if (item.name === 'node_modules' || item.name === '.git') {
+          continue;
+        }
+        
+        const itemPath = path.join(dirPath, item.name);
+        if (item.isDirectory()) {
+          directories++;
+          await countItems(itemPath);
+        } else {
+          files++;
+        }
+      }
+    } catch (error) {
+      // Ignore permission errors or other issues
+    }
+  };
+  
+  await countItems(projectPath);
+  
+  const aiContextFiles: string[] = [];
+  if (aiContextOptions) {
+    if (aiContextOptions.cursorrules) aiContextFiles.push('.cursorrules');
+    if (aiContextOptions.aiContext) aiContextFiles.push('ai-context.md');
+    if (aiContextOptions.claudeContext) aiContextFiles.push('.claude/project-context.md');
+    if (aiContextOptions.claudeSkills) aiContextFiles.push('.claude/skills/');
+  }
+  
+  const languages: string[] = [];
+  if (aiContextOptions?.language === 'ko' || aiContextOptions?.language === 'both') {
+    languages.push('ko');
+  }
+  if (aiContextOptions?.language === 'en' || aiContextOptions?.language === 'both') {
+    languages.push('en');
+  }
+  
+  return {
+    directories,
+    files,
+    aiContextFiles,
+    languages,
+  };
+}
+
+/**
+ * Display installation summary
+ */
+export function displaySummary(summary: {
+  directories: number;
+  files: number;
+  aiContextFiles: string[];
+  languages: string[];
+}): void {
+  const isEn = isEnglishOnly();
+  
+  console.log(chalk.cyan('\n📊 Summary:'));
+  console.log(chalk.white(`  📁 Directories: ${summary.directories}`));
+  console.log(chalk.white(`  📄 Files: ${summary.files}`));
+  
+  if (summary.aiContextFiles.length > 0) {
+    console.log(chalk.white(`  🤖 AI Context: ${summary.aiContextFiles.join(', ')}`));
+  } else {
+    console.log(chalk.gray(`  🤖 AI Context: None`));
+  }
+  
+  if (summary.languages.length > 0) {
+    console.log(chalk.white(`  🌐 Languages: ${summary.languages.join(', ')}`));
+  }
+}
+
+/**
+ * Display next steps with customized guidance
+ */
+export function displayNextSteps(
+  projectPath: string,
+  aiContextOptions?: AiContextOptions
+): void {
+  const isEn = isEnglishOnly();
+  const relativePath = path.relative(process.cwd(), projectPath);
+  const displayPath = relativePath || path.basename(projectPath);
+  
+  console.log(chalk.cyan(`\n📚 Next Steps:`));
+  console.log(chalk.white(`  cd ${displayPath}`));
+  console.log(chalk.white(`  pnpm install`));
+  console.log(chalk.white(`  pnpm dev`));
+  
+  if (aiContextOptions?.claudeSkills) {
+    console.log(chalk.cyan(`\n💡 Claude Skills enabled:`));
+    console.log(chalk.white(
+      isEn
+        ? '  Check .claude/skills/ for framework usage guide'
+        : '  .claude/skills/에서 프레임워크 사용 가이드를 확인하세요'
+    ));
+  }
+  
+  if (aiContextOptions?.language === 'both') {
+    console.log(chalk.cyan(`\n🌐 Bilingual mode:`));
+    console.log(chalk.white(
+      isEn
+        ? '  Edit translations/ko/ and translations/en/ for your content'
+        : '  translations/ko/와 translations/en/에서 번역을 수정하세요'
+    ));
   }
 }
