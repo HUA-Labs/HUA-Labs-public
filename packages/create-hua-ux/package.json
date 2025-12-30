@@ -16,6 +16,7 @@
     "build": "node ../../node_modules/typescript/lib/tsc.js",
     "dev": "tsx src/index.ts",
     "test": "tsx src/index.ts test-project",
+    "test:cli": "bash scripts/test-cli.sh",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm run build"
   },

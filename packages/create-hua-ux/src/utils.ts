@@ -10,6 +10,20 @@ import { execSync } from 'child_process';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
+import {
+  NEXTJS_VERSION,
+  REACT_VERSION,
+  REACT_DOM_VERSION,
+  ZUSTAND_VERSION,
+  TYPESCRIPT_VERSION,
+  TYPES_NODE_VERSION,
+  TYPES_REACT_VERSION,
+  TYPES_REACT_DOM_VERSION,
+  TAILWIND_POSTCSS_VERSION,
+  AUTOPREFIXER_VERSION,
+  POSTCSS_VERSION,
+  TAILWIND_VERSION,
+} from './constants/versions';
 
 // Resolve template directory
 // When compiled, __dirname points to dist/, so we need to go up to templates/
@@ -364,20 +378,20 @@ export async function generatePackageJson(
       '@hua-labs/hua-ux': getHuaUxVersion(),
       '@hua-labs/i18n-core-zustand': getHuaUxRelatedPackageVersion(),
       '@hua-labs/state': getHuaUxRelatedPackageVersion(),
-      next: '16.0.10',
-      react: '19.2.1',
-      'react-dom': '19.2.1',
-      zustand: '^5.0.8',
+      next: NEXTJS_VERSION,
+      react: REACT_VERSION,
+      'react-dom': REACT_DOM_VERSION,
+      zustand: ZUSTAND_VERSION,
     },
     devDependencies: {
-      '@types/node': '^22.0.0',
-      '@types/react': '^19.2.7',
-      '@types/react-dom': '^19.2.3',
-      '@tailwindcss/postcss': '^4',
-      autoprefixer: '^10.4.21',
-      postcss: '^8.5.6',
-      tailwindcss: '^4.1.13',
-      typescript: '^5.9.3',
+      '@types/node': TYPES_NODE_VERSION,
+      '@types/react': TYPES_REACT_VERSION,
+      '@types/react-dom': TYPES_REACT_DOM_VERSION,
+      '@tailwindcss/postcss': TAILWIND_POSTCSS_VERSION,
+      autoprefixer: AUTOPREFIXER_VERSION,
+      postcss: POSTCSS_VERSION,
+      tailwindcss: TAILWIND_VERSION,
+      typescript: TYPESCRIPT_VERSION,
     },
   };
 

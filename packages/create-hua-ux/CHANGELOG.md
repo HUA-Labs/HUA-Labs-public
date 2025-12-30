@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Comprehensive CLI installation improvements
+  - Prerequisites check (Node.js version, pnpm installation, template validation)
+  - Progress indication (5-step visual feedback)
+  - Conditional template copying optimization
+  - Enhanced post-validation (translation files JSON validation)
+  - Installation summary and customized guide
+  - `--dry-run` flag for preview mode
+  - `hua-ux doctor` command for project health diagnosis
+  - `--install` flag for automatic dependency installation
+- Interactive and non-interactive mode support
+- Bilingual CLI prompts (Korean/English)
+- English-only mode support (`--english-only` flag)
+
+### Changed
+- Improved error messages with user-friendly tips
+- Optimized template copying (conditional copy instead of copy-then-delete)
+- Enhanced project validation with detailed error reporting
+
+### Fixed
+- Template validation now correctly excludes dynamically generated files (package.json)
+- Improved TTY detection for PowerShell compatibility
+
 ## [0.1.0] - 2025-12-29
 
 ### Added
