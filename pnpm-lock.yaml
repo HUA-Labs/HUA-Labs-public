@@ -24,11 +24,11 @@ importers:
   examples/codesandbox-template:
     dependencies:
       '@hua-labs/i18n-core':
-        specifier: ^1.0.0
-        version: 1.0.0(react@19.2.0)
+        specifier: workspace:*
+        version: link:../../packages/hua-i18n-core
       '@hua-labs/i18n-core-zustand':
-        specifier: ^1.0.0
-        version: 1.0.0(react@19.2.0)(zustand@4.5.7(@types/react@19.2.7)(react@19.2.0))
+        specifier: workspace:*
+        version: link:../../packages/hua-i18n-core-zustand
       next:
         specifier: 15.0.7
         version: 15.0.7(@babel/core@7.28.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -70,14 +70,14 @@ importers:
   examples/next-app-router-example:
     dependencies:
       '@hua-labs/i18n-core':
-        specifier: ^1.0.0
-        version: 1.0.0(react@19.2.0)
+        specifier: workspace:*
+        version: link:../../packages/hua-i18n-core
       '@hua-labs/i18n-core-zustand':
-        specifier: ^1.0.0
-        version: 1.0.0(react@19.2.0)(zustand@4.5.7(@types/react@19.2.7)(react@19.2.0))
+        specifier: workspace:*
+        version: link:../../packages/hua-i18n-core-zustand
       '@hua-labs/i18n-loaders':
-        specifier: ^1.0.0
-        version: 1.0.0(react@19.2.0)
+        specifier: workspace:*
+        version: link:../../packages/hua-i18n-loaders
       next:
         specifier: 15.0.7
         version: 15.0.7(@babel/core@7.28.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -980,22 +980,6 @@ packages:
     peerDependenciesMeta:
       '@exodus/crypto':
         optional: true
-
-  '@hua-labs/i18n-core-zustand@1.0.0':
-    resolution: {integrity: sha512-KLzsBjw5wj/ujWKAFv2DFoCc1t+8eMj684j4EhrCfSnxfTKkNyYkkVazpo8EuMHzomTtEMueBDiINCdhG2uZNA==}
-    peerDependencies:
-      react: '>=16.8.0'
-      zustand: ^4.0.0
-
-  '@hua-labs/i18n-core@1.0.0':
-    resolution: {integrity: sha512-r2utm84zkbNuzORNIdGv3iPsOW+j1YoxcdGfb1Sl4muUgqDFtwlHJBcynMLbz0yMWviHuxPSd0a5rX2WE2Q0Dg==}
-    peerDependencies:
-      react: '>=16.8.0'
-
-  '@hua-labs/i18n-loaders@1.0.0':
-    resolution: {integrity: sha512-Wj0YEkSIskud7hVLpmoMerFsvsDNio4SQV4OMDiMDcekSpF0RYd8C2a4wHBlAMKUKlFg8/LSEuHh5VplI13FBQ==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   '@hua-labs/motion-core@2.0.0':
     resolution: {integrity: sha512-bt88uVhXfi8c/iaRWO5s4awItrqC6FCxg/NKxooX2wKQ7LAOmgJv98I2MBAQHrYTTNC2c8YG4p4HYu5cysGccA==}
@@ -5104,21 +5088,6 @@ snapshots:
       levn: 0.4.1
 
   '@exodus/bytes@1.7.0': {}
-
-  '@hua-labs/i18n-core-zustand@1.0.0(react@19.2.0)(zustand@4.5.7(@types/react@19.2.7)(react@19.2.0))':
-    dependencies:
-      '@hua-labs/i18n-core': 1.0.0(react@19.2.0)
-      react: 19.2.0
-      zustand: 4.5.7(@types/react@19.2.7)(react@19.2.0)
-
-  '@hua-labs/i18n-core@1.0.0(react@19.2.0)':
-    dependencies:
-      react: 19.2.0
-
-  '@hua-labs/i18n-loaders@1.0.0(react@19.2.0)':
-    dependencies:
-      '@hua-labs/i18n-core': 1.0.0(react@19.2.0)
-      react: 19.2.0
 
   '@hua-labs/motion-core@2.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
