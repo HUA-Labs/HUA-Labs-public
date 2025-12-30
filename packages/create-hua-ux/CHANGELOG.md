@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- 31920d5: Introduce CLI scaffolding tool for hua-ux projects (v0.1.0)
+
+  - Interactive CLI with prompts for project configuration
+  - Template-based project generation
+  - AI context files generation for better Claude Code integration
+  - Auto-detection and installation of dependencies (npm/pnpm/yarn)
+  - Quick project setup with `npm create hua-ux my-app`
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -8,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive CLI installation improvements
   - Prerequisites check (Node.js version, pnpm installation, template validation)
   - Progress indication (5-step visual feedback)
@@ -22,11 +35,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - English-only mode support (`--english-only` flag)
 
 ### Changed
+
 - Improved error messages with user-friendly tips
 - Optimized template copying (conditional copy instead of copy-then-delete)
 - Enhanced project validation with detailed error reporting
 
 ### Fixed
+
 - Template validation now correctly excludes dynamically generated files (package.json)
 - Improved TTY detection for PowerShell compatibility
 
@@ -71,6 +86,7 @@ pnpm dev
 ### Dependencies
 
 The generated project includes:
+
 - `@hua-labs/hua-ux`: ^0.1.0
 - `@hua-labs/i18n-core-zustand`: ^0.1.0
 - `@hua-labs/state`: ^0.1.0

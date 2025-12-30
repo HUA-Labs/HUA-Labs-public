@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- 31920d5: Introduce complete UX framework package (v0.1.0 alpha)
+
+  - Added framework layer with HuaUxLayout and HuaUxPage components
+  - GEO (AI search engine optimization) support built-in
+  - Accessibility features and loading optimization
+  - Pre-wired integration of UI, motion, i18n, and state management
+  - Framework presets for common use cases
+
+### Patch Changes
+
+- Updated dependencies [31920d5]
+- Updated dependencies [31920d5]
+- Updated dependencies [31920d5]
+  - @hua-labs/motion-core@1.1.0
+  - @hua-labs/state@0.2.0
+  - @hua-labs/ui@2.0.0
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
