@@ -54,7 +54,11 @@ import { useBranding } from '../branding/context';
  * </BrandedCard>
  * ```
  */
-export const BrandedCard = React.forwardRef<HTMLDivElement, CardProps>(
+export interface BrandedCardProps extends CardProps {
+  variant?: 'default' | 'outline' | 'elevated';
+}
+
+export const BrandedCard = React.forwardRef<HTMLDivElement, BrandedCardProps>(
   ({ variant = 'default', className, ...props }, ref) => {
     const branding = useBranding();
 
@@ -77,7 +81,6 @@ export const BrandedCard = React.forwardRef<HTMLDivElement, CardProps>(
     return (
       <Card
         ref={ref}
-        variant={variant}
         className={merge(brandingClasses, className)}
         {...props}
       />
