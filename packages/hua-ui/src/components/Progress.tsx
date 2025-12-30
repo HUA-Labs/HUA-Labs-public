@@ -1,13 +1,27 @@
 "use client"
 
-import * as React from "react"
-import { cn } from "../lib/utils"
+import React from "react"
+import { merge } from "../lib/utils"
 
+/**
+ * Progress 컴포넌트의 props
+ * @typedef {Object} ProgressProps
+ * @property {number} [value=0] - 진행률 값
+ * @property {number} [max=100] - 최대값
+ * @property {"sm" | "md" | "lg"} [size="md"] - Progress 바 크기
+ * @property {"default" | "success" | "warning" | "error" | "info" | "glass"} [variant="default"] - Progress 스타일 변형
+ * @property {boolean} [showValue=false] - 진행률 퍼센트 표시 여부
+ * @property {boolean} [animated=true] - 애니메이션 활성화 여부
+ * @property {boolean} [striped=false] - 줄무늬 패턴 표시 여부
+ * @property {string} [label] - Progress 라벨 텍스트
+ * @property {string} [description] - Progress 설명 텍스트
+ * @extends {React.HTMLAttributes<HTMLDivElement>}
+ */
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: number
   max?: number
   size?: "sm" | "md" | "lg"
-  variant?: "default" | "success" | "warning" | "error" | "info"
+  variant?: "default" | "success" | "warning" | "error" | "info" | "glass"
   showValue?: boolean
   animated?: boolean
   striped?: boolean
@@ -15,6 +29,41 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   description?: string
 }
 
+/**
+ * Progress 컴포넌트 / Progress component
+ * 
+ * 진행률을 표시하는 프로그레스 바 컴포넌트입니다.
+ * 다양한 스타일과 애니메이션을 지원합니다.
+ * 
+ * Progress bar component that displays progress.
+ * Supports various styles and animations.
+ * 
+ * @component
+ * @example
+ * // 기본 사용 / Basic usage
+ * <Progress value={50} />
+ * 
+ * @example
+ * // 라벨과 값 표시 / Show label and value
+ * <Progress 
+ *   value={75} 
+ *   label="업로드 진행률"
+ *   showValue
+ * />
+ * 
+ * @example
+ * // Success 스타일, 줄무늬 패턴 / Success style, striped pattern
+ * <Progress 
+ *   value={90}
+ *   variant="success"
+ *   striped
+ *   animated
+ * />
+ * 
+ * @param {ProgressProps} props - Progress 컴포넌트의 props / Progress component props
+ * @param {React.Ref<HTMLDivElement>} ref - div 요소 ref / div element ref
+ * @returns {JSX.Element} Progress 컴포넌트 / Progress component
+ */
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
   ({ 
     className, 
@@ -47,6 +96,8 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           return "bg-red-500 dark:bg-red-400"
         case "info":
           return "bg-blue-500 dark:bg-blue-400"
+        case "glass":
+          return "bg-white/50 backdrop-blur-sm"
         default:
           return "bg-gray-900 dark:bg-gray-100"
       }
@@ -58,7 +109,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     }
 
     return (
-      <div className={cn("w-full", className)} {...props}>
+      <div className={merge("w-full", className)} {...props}>
         {/* 라벨과 값 */}
         {(label || showValue) && (
           <div className="flex items-center justify-between mb-2"> {/* 8px 여백 */}
@@ -78,13 +129,16 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         {/* 프로그레스 바 */}
         <div
           ref={ref}
-          className={cn(
-            "relative w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
+          className={merge(
+            "relative w-full overflow-hidden rounded-full",
+            variant === "glass" 
+              ? "bg-white/10 backdrop-blur-sm border border-white/20 dark:bg-slate-800/10 dark:border-slate-700/50"
+              : "bg-gray-200 dark:bg-gray-700",
             sizeClasses[size]
           )}
         >
           <div
-            className={cn(
+            className={merge(
               "h-full rounded-full transition-all duration-300 ease-out",
               getVariantClasses(),
               getStripedClasses(),
@@ -139,9 +193,9 @@ export const ProgressInfo = React.forwardRef<HTMLDivElement, Omit<ProgressProps,
 ProgressInfo.displayName = "ProgressInfo"
 
 // 복합 Progress 컴포넌트들
-export const ProgressCard = React.forwardRef<HTMLDivElement, ProgressProps & { title?: string }>(
+export const ProgressWrapper = React.forwardRef<HTMLDivElement, ProgressProps & { title?: string }>(
   ({ title, className, ...props }, ref) => (
-    <div className={cn("p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700", className)}>
+    <div className={merge("p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700", className)}>
       {title && (
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3"> {/* 12px 여백 */}
           {title}
@@ -151,13 +205,13 @@ export const ProgressCard = React.forwardRef<HTMLDivElement, ProgressProps & { t
     </div>
   )
 )
-ProgressCard.displayName = "ProgressCard"
+ProgressWrapper.displayName = "ProgressWrapper"
 
 export const ProgressGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("space-y-4", className)} // 16px 간격
+      className={merge("space-y-4", className)} // 16px 간격
       {...props}
     >
       {children}

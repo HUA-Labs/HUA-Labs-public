@@ -1,49 +1,56 @@
-import React from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Button } from '../Button';
 
 describe('Button', () => {
-  it('should render button with text', () => {
+  it('should render button element', () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
+    
+    const button = screen.getByRole('button', { name: 'Click me' });
+    expect(button).toBeInTheDocument();
   });
 
-  it('should render anchor when href is provided', () => {
-    render(<Button href="/test">Link Button</Button>);
-    const link = screen.getByRole('link', { name: /link button/i });
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/test');
+  it('should call onClick when clicked', async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+    
+    render(<Button onClick={handleClick}>Click me</Button>);
+    
+    const button = screen.getByRole('button');
+    await user.click(button);
+    
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('should apply variant classes', () => {
-    const { container } = render(<Button variant="outline">Outline</Button>);
-    const button = container.querySelector('button');
-    expect(button?.className).toContain('border');
-  });
-
-  it('should apply size classes', () => {
-    const { container } = render(<Button size="lg">Large</Button>);
-    const button = container.querySelector('button');
-    expect(button?.className).toMatch(/text-(lg|xl)/);
-  });
-
-  it('should be disabled when disabled prop is true', () => {
+  it('should be disabled when disabled prop is set', () => {
     render(<Button disabled>Disabled</Button>);
-    const button = screen.getByRole('button', { name: /disabled/i });
+    
+    const button = screen.getByRole('button');
     expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('should show loading state', () => {
     render(<Button loading>Loading</Button>);
+    
     const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-busy', 'true');
   });
 
-  it('should support fullWidth prop', () => {
-    const { container } = render(<Button fullWidth>Full Width</Button>);
+  it('should render as anchor when href is provided', () => {
+    render(<Button href="/test">Link</Button>);
+    
+    const link = screen.getByRole('link');
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/test');
+  });
+
+  it('should apply variant styles', () => {
+    const { container } = render(<Button variant="destructive">Delete</Button>);
+    
     const button = container.querySelector('button');
-    expect(button?.className).toContain('w-full');
+    expect(button).toHaveClass('bg-red-600');
   });
 });
 

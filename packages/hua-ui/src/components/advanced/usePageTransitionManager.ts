@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { AdvancedPageTransitionType, TransitionEasing, TransitionConfig } from './usePageTransition'
+import { TransitionType, TransitionEasing, TransitionConfig } from './usePageTransition'
 
 export interface PageTransitionManagerConfig {
-  defaultType?: AdvancedPageTransitionType
+  defaultType?: TransitionType
   defaultDuration?: number
   defaultEasing?: TransitionEasing
   enableHistory?: boolean
@@ -14,7 +14,7 @@ export interface PageTransitionManagerConfig {
 
 export interface PageTransitionEvent {
   id: string
-  type: AdvancedPageTransitionType
+  type: TransitionType
   duration: number
   easing: TransitionEasing
   timestamp: number
@@ -38,7 +38,7 @@ export interface PageTransitionManagerControls {
   getTransitionStats: () => {
     total: number
     average: number
-    byType: Record<AdvancedPageTransitionType, number>
+    byType: Record<TransitionType, number>
     byStatus: Record<string, number>
   }
 }
@@ -193,7 +193,7 @@ export const usePageTransitionManager = (
     const byType = transitionHistory.reduce((acc, t) => {
       acc[t.type] = (acc[t.type] || 0) + 1
       return acc
-    }, {} as Record<AdvancedPageTransitionType, number>)
+    }, {} as Record<TransitionType, number>)
 
     const byStatus = transitionHistory.reduce((acc, t) => {
       acc[t.status] = (acc[t.status] || 0) + 1

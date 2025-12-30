@@ -3,9 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { merge } from '../../lib/utils'
 
-// Note: TransitionType is also exported from @hua-labs/motion-core
-// This is a local type for AdvancedPageTransition component
-export type AdvancedPageTransitionType = 
+export type TransitionType = 
   | 'fade' 
   | 'slide' 
   | 'scale' 
@@ -30,7 +28,7 @@ export type TransitionEasing =
 export interface AdvancedPageTransitionProps {
   children: React.ReactNode
   className?: string
-  type?: AdvancedPageTransitionType
+  type?: TransitionType
   duration?: number
   easing?: TransitionEasing
   delay?: number
