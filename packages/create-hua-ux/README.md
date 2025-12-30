@@ -16,8 +16,56 @@ yarn create hua-ux my-app
 
 ## Usage
 
+### Interactive Mode (Recommended)
+
+When you run the CLI, you'll be prompted to select which AI context files to generate:
+
 ```bash
 pnpm create hua-ux my-app
+# or
+npx tsx src/index.ts my-app
+```
+
+You'll see interactive prompts:
+1. **Select AI context files** (checkboxes):
+   - `.cursorrules` (Cursor IDE rules) - default: checked
+   - `ai-context.md` (General AI context) - default: checked
+   - `.claude/project-context.md` (Claude context) - default: checked
+   - `.claude/skills/` (Claude skills) - default: unchecked
+
+2. **Documentation language**:
+   - Korean only
+   - English only
+   - Both Korean and English (default)
+
+### Non-Interactive Mode
+
+For CI/CD or automated scripts, use environment variable:
+
+```bash
+NON_INTERACTIVE=1 pnpm create hua-ux my-app
+```
+
+This will use default options (all files except Claude skills, both languages).
+
+### CLI Flags
+
+You can also use CLI flags to specify options:
+
+```bash
+npx tsx src/index.ts my-app --claude-skills --lang both
+```
+
+Available flags:
+- `--claude-skills`: Include Claude skills
+- `--no-cursorrules`: Skip .cursorrules
+- `--no-ai-context`: Skip ai-context.md
+- `--no-claude-context`: Skip .claude/project-context.md
+- `--lang <ko|en|both>`: Set documentation language
+
+### After Creation
+
+```bash
 cd my-app
 pnpm install
 pnpm dev
