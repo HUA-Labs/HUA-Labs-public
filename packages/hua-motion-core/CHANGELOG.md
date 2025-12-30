@@ -1,5 +1,16 @@
 # @hua-labs/motion-core
 
+## 1.1.0
+
+### Minor Changes
+
+- 31920d5: Update motion-core with latest hooks and improvements
+
+  - Added `useUnifiedMotion` hook for streamlined animation API
+  - Enhanced type definitions for better TypeScript support
+  - Improved animation performance and stability
+  - Updated documentation and examples
+
 ## 2.0.0
 
 ### Major Changes

@@ -1,6 +1,6 @@
 # @hua-labs/ui
 
-## 0.1.0-alpha.0.1-alpha.0
+## 0.1.0-alpha.0.1
 
 ### Minor Changes
 
@@ -15,4 +15,4 @@
 ### Patch Changes
 
 - Updated dependencies [31920d5]
-  - @hua-labs/motion-core@1.1.0-alpha.0
+  - @hua-labs/motion-core@2.0.1
