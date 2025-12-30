@@ -1,138 +1,102 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { SlideOptions, BaseMotionReturn, MotionElement } from '../types'
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { BaseMotionReturn, MotionElement } from '../types'
+
+export interface SlideRightOptions {
+  distance?: number
+  duration?: number
+  delay?: number
+  autoStart?: boolean
+  easing?: string
+}
 
 export function useSlideRight<T extends MotionElement = HTMLDivElement>(
-  options: SlideOptions = {}
-): BaseMotionReturn<T> {
+  options: SlideRightOptions = {}
+): BaseMotionReturn<T> & {
+  translateX: number
+  opacity: number
+} {
   const {
+    distance = 100,
+    duration = 1000,
     delay = 0,
-    duration = 700,
-    threshold = 0.1,
-    triggerOnce = true,
-    easing = 'ease-out',
     autoStart = true,
-    distance = 50,
-    onComplete, onStart, onStop, onReset
+    easing = 'ease-out'
   } = options
 
   const ref = useRef<T>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [translateX, setTranslateX] = useState(autoStart ? -distance : 0)
+  const [opacity, setOpacity] = useState(autoStart ? 0 : 1)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const timeoutRef = useRef<number | null>(null)
+  const [isVisible, setIsVisible] = useState(autoStart ? false : true)
+  const [progress, setProgress] = useState(autoStart ? 0 : 1)
 
-  // 모션 시작 함수
   const start = useCallback(() => {
-    if (isAnimating) return
-
     setIsAnimating(true)
+    setTranslateX(-distance)
+    setOpacity(0)
     setProgress(0)
-    onStart?.()
 
-    // 지연 시간 적용
-    if (delay > 0) {
-      timeoutRef.current = window.setTimeout(() => {
-        setIsVisible(true)
-        setProgress(1)
-        setIsAnimating(false)
-        onComplete?.()
-      }, delay)
-    } else {
-      setIsVisible(true)
+    setTimeout(() => {
       setProgress(1)
+      setTranslateX(0)
+      setOpacity(1)
+      setIsVisible(true)
       setIsAnimating(false)
-      onComplete?.()
-    }
-  }, [delay, isAnimating, onStart, onComplete])
+    }, delay)
+  }, [distance, delay])
 
-  // 모션 중단 함수
-  const stop = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
   const reset = useCallback(() => {
-    stop()
-    setIsVisible(false)
+    // 즉시 초기 상태로 복원 (모션 없이)
+    setTranslateX(-distance)
+    setOpacity(0)
     setProgress(0)
-    onReset?.()
-  }, [stop, onReset])
-
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+    setIsVisible(false)
+    setIsAnimating(false)
+    
+    // DOM 요소가 있다면 즉시 스타일 적용
+    if (ref.current) {
+      const element = ref.current
+      element.style.transition = 'none'
+      element.style.opacity = '0'
+      element.style.transform = `translateX(${-distance}px)`
+      
+      // 다음 프레임에서 transition 복원
+      requestAnimationFrame(() => {
+        element.style.transition = ''
+      })
     }
+  }, [distance])
+
+  const stop = useCallback(() => {
     setIsAnimating(false)
   }, [])
 
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (!isVisible && !isAnimating) {
+  useEffect(() => {
+    if (autoStart) {
       start()
     }
-  }, [isVisible, isAnimating, start])
+  }, [autoStart, start])
 
-  // Intersection Observer 설정
-  useEffect(() => {
-    if (!ref.current || !autoStart) return
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            start()
-            if (triggerOnce) {
-              observerRef.current?.disconnect()
-            }
-          }
-        })
-      },
-      { threshold }
-    )
-
-    observerRef.current.observe(ref.current)
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [autoStart, threshold, triggerOnce, start])
-
-  // 컴포넌트 언마운트 시 정리
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  // 스타일 계산
-  const style: React.CSSProperties = {
-    transform: `translateX(${isVisible ? 0 : -distance}px)`,
-    transition: `transform ${duration}ms ${easing}`,
-    willChange: 'transform'
-  }
+  // 스타일 계산 - 메모이제이션으로 불필요한 리렌더링 방지
+  const style = useMemo(() => ({
+    transform: `translateX(${translateX}px)`,
+    opacity,
+    transition: `all ${duration}ms ${easing}`,
+    '--motion-delay': `${delay}ms`,
+    '--motion-duration': `${duration}ms`,
+    '--motion-easing': easing
+  } as const), [translateX, opacity, duration, easing, delay])
 
   return {
     ref,
+    translateX,
+    opacity,
     isVisible,
     isAnimating,
     style,
     progress,
     start,
-    stop,
     reset,
-    pause,
-    resume
+    stop
   }
-}
+} 

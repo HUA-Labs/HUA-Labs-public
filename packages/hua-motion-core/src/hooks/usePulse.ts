@@ -1,154 +1,133 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { PulseOptions, BaseMotionReturn, MotionElement } from '../types'
+import { useRef, useEffect, useCallback, useState, useMemo } from 'react'
+import { BaseMotionReturn, MotionElement } from '../types'
+import { getEasing } from '../utils/easing'
 
+export interface PulseOptions {
+  duration?: number
+  intensity?: number
+  repeat?: number
+  yoyo?: boolean
+  autoStart?: boolean
+}
+
+// 💫 진짜 간단한 펄스 훅!
 export function usePulse<T extends MotionElement = HTMLDivElement>(
   options: PulseOptions = {}
 ): BaseMotionReturn<T> {
   const {
-    delay = 0,
-    duration = 1000,
-    threshold = 0.1,
-    triggerOnce = true,
-    easing = 'ease-in-out',
-    autoStart = true,
-    pulseScale = 1.1,
-    pulseCount = 2,
-    onComplete, onStart, onStop, onReset
+    duration = 3000,
+    intensity = 1,
+    repeat = Infinity,
+    yoyo = true,
+    autoStart = false
   } = options
 
   const ref = useRef<T>(null)
-  const [isVisible, setIsVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [progress, setProgress] = useState(0)
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const timeoutRef = useRef<number | null>(null)
+  const motionRef = useRef<number | null>(null)
+  
+  // 이징 함수 메모이제이션 (애니메이션 루프 내 반복 호출 방지)
+  const easingFn = useMemo(() => getEasing('easeInOut'), [])
 
-  // 모션 시작 함수
+  // 🚀 모션 시작
   const start = useCallback(() => {
-    if (isAnimating) return
+    if (!ref.current) return
+
+    const element = ref.current
+    let repeatCount = 0
 
     setIsAnimating(true)
-    setProgress(0)
-    onStart?.()
 
-    // 지연 시간 적용
-    if (delay > 0) {
-      timeoutRef.current = window.setTimeout(() => {
-        setIsVisible(true)
-        setProgress(1)
-        setIsAnimating(false)
-        onComplete?.()
-      }, delay)
-    } else {
-      setIsVisible(true)
-      setProgress(1)
-      setIsAnimating(false)
-      onComplete?.()
+    const animate = (startTime: number) => {
+      const updateMotion = (currentTime: number) => {
+        const elapsed = currentTime - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const easedProgress = easingFn(progress)
+
+        // Yoyo 효과
+        const finalProgress = yoyo && repeatCount % 2 === 1 ? 1 - easedProgress : easedProgress
+
+        // 펄스 효과 (투명도 변화)
+        const opacity = 0.3 + (0.7 * finalProgress * intensity)
+        element.style.opacity = opacity.toString()
+        setProgress(progress)
+
+        if (progress < 1) {
+          motionRef.current = requestAnimationFrame(updateMotion)
+        } else {
+          repeatCount++
+          if (repeat === Infinity || repeatCount < repeat) {
+            // 다음 반복 시작
+            motionRef.current = requestAnimationFrame(() => animate(performance.now()))
+          } else {
+            setIsAnimating(false)
+          }
+        }
+      }
+
+      motionRef.current = requestAnimationFrame(updateMotion)
     }
-  }, [delay, isAnimating, onStart, onComplete])
 
-  // 모션 중단 함수
+    animate(performance.now())
+  }, [duration, intensity, repeat, yoyo, easingFn])
+
+  // 🛑 모션 정지
   const stop = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
-  const reset = useCallback(() => {
-    stop()
-    setIsVisible(false)
-    setProgress(0)
-    onReset?.()
-  }, [stop, onReset])
-
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+    if (motionRef.current) {
+      cancelAnimationFrame(motionRef.current)
+      motionRef.current = null
     }
     setIsAnimating(false)
   }, [])
 
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (!isVisible && !isAnimating) {
+  // 🔄 모션 리셋
+  const reset = useCallback(() => {
+    // 모션 중단
+    if (motionRef.current) {
+      cancelAnimationFrame(motionRef.current)
+      motionRef.current = null
+    }
+    
+    // 상태 초기화
+    setIsAnimating(false)
+    
+    // DOM 요소 초기 상태로 복원
+    if (ref.current) {
+      const element = ref.current
+      // opacity를 1로 설정하고 transition 제거하여 즉시 적용
+      element.style.transition = 'none'
+      element.style.opacity = '1'
+      
+      // 다음 프레임에서 transition 복원
+      requestAnimationFrame(() => {
+        element.style.transition = ''
+      })
+    }
+  }, [])
+
+  // 자동 시작
+  useEffect(() => {
+    if (autoStart) {
       start()
     }
-  }, [isVisible, isAnimating, start])
-
-  // Intersection Observer 설정
-  useEffect(() => {
-    if (!ref.current || !autoStart) return
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            start()
-            if (triggerOnce) {
-              observerRef.current?.disconnect()
-            }
-          }
-        })
-      },
-      { threshold }
-    )
-
-    observerRef.current.observe(ref.current)
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [autoStart, threshold, triggerOnce, start])
+  }, [autoStart, start])
 
   // 컴포넌트 언마운트 시 정리
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
+      if (motionRef.current) {
+        cancelAnimationFrame(motionRef.current)
       }
     }
   }, [])
 
-  // 펄스 애니메이션 스타일 계산
-  const getPulseStyle = (): React.CSSProperties => {
-    if (!isVisible) {
-      return {
-        transform: 'scale(1)',
-        transition: `transform ${duration}ms ${easing}`,
-        willChange: 'transform'
-      }
-    }
-
-    // 펄스 효과를 위한 CSS 애니메이션
-    const pulseKeyframes = `
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(${pulseScale});
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-    `
-
-    return {
-      animation: `pulse ${duration}ms ${easing} ${pulseCount}`,
-      willChange: 'transform'
-    }
-  }
-
-  const style = getPulseStyle()
+  // 스타일 계산
+  const style = useMemo(() => ({
+    opacity: isAnimating ? 0.3 + (0.7 * progress * intensity) : 1,
+    transition: isAnimating ? 'none' : 'opacity 0.3s ease-in-out'
+  }), [isAnimating, progress, intensity])
 
   return {
     ref,
@@ -158,8 +137,6 @@ export function usePulse<T extends MotionElement = HTMLDivElement>(
     progress,
     start,
     stop,
-    reset,
-    pause,
-    resume
+    reset
   }
-}
+} 

@@ -1,14 +1,6 @@
 # HUA Motion Core
 
-The foundation of React motion
-
-[![npm version](https://badge.fury.io/js/@hua-labs%2Fmotion-core.svg)](https://badge.fury.io/js/@hua-labs%2Fmotion-core)
-[![npm downloads](https://img.shields.io/npm/dm/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8+-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://react.dev/)
-
-[한국어](./README_KR.md) | [English](./README.md)
+The foundation of React motion ✨
 
 ## Overview
 
@@ -215,30 +207,35 @@ const fadeIn: BaseMotionReturn<HTMLDivElement> = useFadeIn({
 } as FadeInOptions);
 ```
 
+## Related Packages
+
+- **[@hua-labs/motion-advanced](../../hua-motion-advanced)** - Advanced motion hooks and orchestration
+- **[@hua-labs/motion](../../hua-motion)** - Unified package (Core + Advanced re-export)
+
 ## Roadmap
 
-- **Motion Core** - Essential hooks (Current)
-- **Motion Advanced** - Complex animations (In Development)
+- **Motion Core** - Essential hooks ✅ (Current)
+- **Motion Advanced** - Complex animations ✅ (Available)
 - **Motion Enterprise** - Team solutions (Planned)
 
 ## Browser Support
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+- Chrome 60+
+- Firefox 60+
+- Safari 12+
+- Edge 79+
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## License
 
-MIT License - see [LICENSE](../../LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
-See [CHANGELOG.md](../../CHANGELOG.md) for release history.
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ---
 

@@ -3,10 +3,56 @@
 // ========================================
 
 // ========================================
-// 기본 모션 훅들 (12개)
+// 핵심 모션 엔진 (의존성 제로)
 // ========================================
 
-// 기본 모션
+// MotionEngine - 순수 JavaScript 모션 엔진
+export { 
+  MotionEngine, 
+  motionEngine,
+  type MotionFrame,
+  type MotionOptions,
+  type Motion
+} from './core/MotionEngine'
+
+// TransitionEffects - 전환 효과 시스템
+export { 
+  TransitionEffects, 
+  transitionEffects,
+  type TransitionType,
+  type TransitionOptions
+} from './core/TransitionEffects'
+
+// PerformanceOptimizer - 성능 최적화
+export { 
+  PerformanceOptimizer, 
+  performanceOptimizer,
+  type PerformanceMetrics,
+  type OptimizationConfig
+} from './core/PerformanceOptimizer'
+
+// ========================================
+// 3단계 추상화 (Core 패키지 핵심)
+// ========================================
+
+// 1단계: useSimplePageMotion (프리셋 기반)
+export { useSimplePageMotion } from './hooks/useSimplePageMotion'
+
+// 2단계: usePageMotions (페이지 레벨)
+export { usePageMotions } from './hooks/usePageMotions'
+
+// 3단계: useSmartMotion (개별 요소) - 기존 호환성 유지
+export { useSmartMotion } from './hooks/useSmartMotion'
+
+// 통합 Motion Hook (단일 타입으로 여러 hook 중 선택)
+export { useUnifiedMotion } from './hooks/useUnifiedMotion'
+export type { UseUnifiedMotionOptions } from './hooks/useUnifiedMotion'
+
+// ========================================
+// 기본 모션 훅들 (Core 패키지 범위)
+// ========================================
+
+// 기본 모션 (fade, slide, scale, bounce, pulse)
 export { useFadeIn } from './hooks/useFadeIn'
 export { useSlideUp } from './hooks/useSlideUp'
 export { useSlideLeft } from './hooks/useSlideLeft'
@@ -16,33 +62,37 @@ export { useBounceIn } from './hooks/useBounceIn'
 export { usePulse } from './hooks/usePulse'
 export { useSpringMotion } from './hooks/useSpringMotion'
 export { useGradient } from './hooks/useGradient'
-export { useMotion } from './hooks/useMotion'
-export { useSlideDown } from './hooks/useSlideDown'
-export { useSkeleton } from './hooks/useSkeleton'
 
-// 기본 인터랙션
+// 기본 인터랙션 (hover, click, focus)
 export { useHoverMotion } from './hooks/useHoverMotion'
 export { useClickToggle } from './hooks/useClickToggle'
 export { useFocusToggle } from './hooks/useFocusToggle'
-export { useVisibilityToggle } from './hooks/useVisibilityToggle'
 
-// 기본 스크롤
+// 기본 스크롤 (reveal, progress)
 export { useScrollReveal } from './hooks/useScrollReveal'
-export { useScrollToggle } from './hooks/useScrollToggle'
 export { useScrollProgress } from './hooks/useScrollProgress'
 
-// 🆕 한국 개발자들이 자주 사용하는 기능
-export { useCardList } from './hooks/useCardList'
-export { useNavigation } from './hooks/useNavigation'
-export { useLoadingSpinner } from './hooks/useLoadingSpinner'
-export { useButtonEffect } from './hooks/useButtonEffect'
-
-// 기본 유틸리티
+// 기본 유틸리티 (state, repeat, toggle)
 export { useMotionState } from './hooks/useMotionState'
 export { useRepeat } from './hooks/useRepeat'
+export { useToggleMotion } from './hooks/useToggleMotion'
 
 // ========================================
-// 기본 이징 함수들 (8개)
+// 기본 제스처 훅들 (Core 패키지 범위)
+// ========================================
+
+// 기본 제스처 (gesture, gestureMotion)
+export { useGesture } from './hooks/useGesture'
+export { useGestureMotion } from './hooks/useGestureMotion'
+
+// ========================================
+// 프리셋 시스템 (Core 패키지 범위)
+// ========================================
+
+export * from './presets'
+
+// ========================================
+// 기본 이징 함수들 (Core 패키지 범위)
 // ========================================
 
 export {
@@ -51,25 +101,40 @@ export {
   type EasingFunction, type EasingType
 } from './utils/easing'
 
-// 이징 유틸리티
 export { 
   getEasing, applyEasing, safeApplyEasing, isValidEasing, 
   getAvailableEasings, isEasingFunction, easingPresets, getPresetEasing 
 } from './utils/easing'
 
 // ========================================
-// 기본 타입들
+// 기본 타입들 (Core 패키지 범위)
 // ========================================
 
 export type {
+  // 3단계 추상화 타입들
+  PageType,
+  MotionType,
+  EntranceType,
+  PageMotionElement,
+  PageMotionsConfig,
+  MotionState,
+  MotionRef,
+  // SmartMotionOptions 제거 (useMotion으로 대체)
+  // SmartMotionReturn 제거 (useMotion으로 대체)
+  
   // 공통 타입들
   BaseMotionOptions,
   BaseMotionReturn,
-  FadeInOptions,
-  SlideOptions,
-  ScaleOptions,
-  BounceOptions,
-  PulseOptions,
+  MotionElement, // MotionElement 추가
+  
+  // 프리셋 시스템
+  MotionPreset,
+  PresetConfig,
+  
+  // 고급 모션 타입들
+  SpringConfig,
+  GestureConfig,
+  OrchestrationConfig,
   
   // 기본 타입들
   MotionDirection,
@@ -77,10 +142,5 @@ export type {
   MotionTrigger,
   MotionCallback,
   MotionProgressCallback,
-  MotionStateCallback,
-  
-  // React 19 호환 타입들
-  MotionElement,
-  MotionRef,
-  MotionStyle
+  MotionStateCallback
 } from './types'

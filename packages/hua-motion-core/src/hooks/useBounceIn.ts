@@ -1,172 +1,104 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { BounceOptions, BaseMotionReturn, MotionElement } from '../types'
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { BaseMotionReturn, MotionElement } from '../types'
+
+export interface BounceInOptions {
+  duration?: number
+  delay?: number
+  autoStart?: boolean
+  intensity?: number
+}
 
 export function useBounceIn<T extends MotionElement = HTMLDivElement>(
-  options: BounceOptions = {}
-): BaseMotionReturn<T> {
+  options: BounceInOptions = {}
+): BaseMotionReturn<T> & {
+  scale: number
+  opacity: number
+} {
   const {
+    duration = 1000,
     delay = 0,
-    duration = 700,
-    threshold = 0.1,
-    triggerOnce = true,
-    easing = 'ease-out',
     autoStart = true,
-    bounceHeight = 20,
-    bounceCount = 3,
-    onComplete, onStart, onStop, onReset
+    intensity = 0.3
   } = options
 
   const ref = useRef<T>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [scale, setScale] = useState(autoStart ? 0 : 1)
+  const [opacity, setOpacity] = useState(autoStart ? 0 : 1)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isVisible, setIsVisible] = useState(autoStart ? false : true)
   const [progress, setProgress] = useState(0)
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const timeoutRef = useRef<number | null>(null)
 
-  // 모션 시작 함수
   const start = useCallback(() => {
-    if (isAnimating) return
-
     setIsAnimating(true)
+    setScale(0)
+    setOpacity(0)
     setProgress(0)
-    onStart?.()
 
-    // 지연 시간 적용
-    if (delay > 0) {
-      timeoutRef.current = window.setTimeout(() => {
-        setIsVisible(true)
+    setTimeout(() => {
+      setProgress(0.5)
+      setScale(1 + intensity)
+      setOpacity(1)
+      
+      setTimeout(() => {
         setProgress(1)
+        setScale(1)
+        setIsVisible(true)
         setIsAnimating(false)
-        onComplete?.()
-      }, delay)
-    } else {
-      setIsVisible(true)
-      setProgress(1)
-      setIsAnimating(false)
-      onComplete?.()
-    }
-  }, [delay, isAnimating, onStart, onComplete])
+      }, 200)
+    }, delay)
+  }, [delay, intensity])
 
-  // 모션 중단 함수
-  const stop = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
   const reset = useCallback(() => {
-    stop()
-    setIsVisible(false)
+    // 즉시 초기 상태로 복원 (모션 없이)
+    setScale(0)
+    setOpacity(0)
     setProgress(0)
-    onReset?.()
-  }, [stop, onReset])
-
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+    setIsVisible(false)
+    setIsAnimating(false)
+    
+    // DOM 요소가 있다면 즉시 스타일 적용
+    if (ref.current) {
+      const element = ref.current
+      element.style.transition = 'none'
+      element.style.opacity = '0'
+      element.style.transform = 'scale(0)'
+      
+      // 다음 프레임에서 transition 복원
+      requestAnimationFrame(() => {
+        element.style.transition = ''
+      })
     }
+  }, [])
+
+  const stop = useCallback(() => {
     setIsAnimating(false)
   }, [])
 
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (!isVisible && !isAnimating) {
+  useEffect(() => {
+    if (autoStart) {
       start()
     }
-  }, [isVisible, isAnimating, start])
+  }, [autoStart, start])
 
-  // Intersection Observer 설정
-  useEffect(() => {
-    if (!ref.current || !autoStart) return
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            start()
-            if (triggerOnce) {
-              observerRef.current?.disconnect()
-            }
-          }
-        })
-      },
-      { threshold }
-    )
-
-    observerRef.current.observe(ref.current)
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [autoStart, threshold, triggerOnce, start])
-
-  // 컴포넌트 언마운트 시 정리
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  // 바운스 애니메이션 스타일 계산
-  const getBounceStyle = (): React.CSSProperties => {
-    if (!isVisible) {
-      return {
-        transform: `translateY(${bounceHeight}px)`,
-        opacity: 0,
-        transition: `transform ${duration}ms ${easing}, opacity ${duration}ms ${easing}`,
-        willChange: 'transform, opacity'
-      }
-    }
-
-    // 바운스 효과를 위한 CSS 애니메이션
-    const bounceKeyframes = `
-      @keyframes bounceIn {
-        0% {
-          transform: translateY(${bounceHeight}px);
-          opacity: 0;
-        }
-        60% {
-          transform: translateY(-${bounceHeight / 2}px);
-          opacity: 1;
-        }
-        80% {
-          transform: translateY(${bounceHeight / 4}px);
-        }
-        100% {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-    `
-
-    return {
-      animation: `bounceIn ${duration}ms ${easing}`,
-      willChange: 'transform, opacity'
-    }
-  }
-
-  const style = getBounceStyle()
+  // 스타일 계산 - 메모이제이션으로 불필요한 리렌더링 방지
+  const style = useMemo(() => ({
+    transform: `scale(${scale})`,
+    opacity,
+    transition: `all ${duration}ms ease-out`,
+    '--motion-delay': `${delay}ms`,
+    '--motion-duration': `${duration}ms`
+  } as const), [scale, opacity, duration, delay])
 
   return {
     ref,
+    scale,
+    opacity,
     isVisible,
     isAnimating,
     style,
     progress,
     start,
-    stop,
     reset,
-    pause,
-    resume
+    stop
   }
-}
+} 

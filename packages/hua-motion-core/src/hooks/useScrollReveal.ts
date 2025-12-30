@@ -1,143 +1,149 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { BaseMotionOptions, BaseMotionReturn, MotionElement } from '../types'
+import { useRef, useEffect, useCallback, useState, useMemo } from 'react'
+import { BaseMotionReturn, MotionElement } from '../types'
 
-export interface ScrollRevealOptions extends BaseMotionOptions {
-  revealScale?: number
-  revealOpacity?: number
-  revealRotate?: number
-  revealTranslateY?: number
-  revealTranslateX?: number
-  initialScale?: number
-  initialOpacity?: number
-  initialRotate?: number
-  initialTranslateY?: number
-  initialTranslateX?: number
-  scrollThreshold?: number
-  scrollDirection?: 'up' | 'down' | 'both'
+type MotionType = 'fadeIn' | 'slideUp' | 'slideLeft' | 'slideRight' | 'scaleIn' | 'bounceIn'
+
+interface ScrollRevealOptions {
+  threshold?: number
+  rootMargin?: string
+  triggerOnce?: boolean
+  delay?: number
+  motionType?: MotionType
 }
 
 export function useScrollReveal<T extends MotionElement = HTMLDivElement>(
   options: ScrollRevealOptions = {}
-): BaseMotionReturn<T> {
+): BaseMotionReturn<T> & {
+  progress: number
+} {
   const {
-    duration = 700,
-    easing = 'ease-out',
-    revealScale = 1,
-    revealOpacity = 1,
-    revealRotate = 0,
-    revealTranslateY = 0,
-    revealTranslateX = 0,
-    initialScale = 0.8,
-    initialOpacity = 0,
-    initialRotate = 0,
-    initialTranslateY = 50,
-    initialTranslateX = 0,
-    scrollThreshold = 0.1,
-    scrollDirection = 'both',
-    onComplete, onStart, onStop, onReset
+    threshold = 0.1,
+    rootMargin = '0px',
+    triggerOnce = true,
+    delay = 0,
+    motionType = 'fadeIn'
   } = options
 
   const ref = useRef<T>(null)
-  const [isRevealed, setIsRevealed] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [hasTriggered, setHasTriggered] = useState(false)
   const [progress, setProgress] = useState(0)
 
-  // 스크롤 이벤트 핸들러
-  const handleScroll = useCallback(() => {
+  const observerCallback = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && (!triggerOnce || !hasTriggered)) {
+        setIsAnimating(true)
+        setTimeout(() => {
+          setIsVisible(true)
+          setHasTriggered(true)
+          setProgress(1)
+          setIsAnimating(false)
+        }, delay)
+      }
+    })
+  }, [triggerOnce, hasTriggered, delay])
+
+  useEffect(() => {
     if (!ref.current) return
 
-    const rect = ref.current.getBoundingClientRect()
-    const threshold = window.innerHeight * scrollThreshold
-    const shouldReveal = rect.top <= threshold
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold,
+      rootMargin
+    })
 
-    if (shouldReveal && !isRevealed) {
-      setIsRevealed(true)
-      setIsAnimating(true)
-      setProgress(0)
-      onStart?.()
-
-      setTimeout(() => {
-        setIsAnimating(false)
-        setProgress(1)
-        onComplete?.()
-      }, duration)
-    }
-  }, [isRevealed, scrollThreshold, duration, onStart, onComplete])
-
-  // 스크롤 이벤트 리스너 설정
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    observer.observe(ref.current)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
     }
-  }, [handleScroll])
+  }, [observerCallback, threshold, rootMargin])
 
-  // 모션 시작 함수
+  // 모션 스타일 생성 - 메모이제이션으로 불필요한 리렌더링 방지
+  const style = useMemo(() => {
+    const baseTransition = 'all 700ms ease-out'
+    
+    if (!isVisible) {
+      switch (motionType) {
+        case 'fadeIn':
+          return {
+            opacity: 0,
+            transition: baseTransition
+          }
+        case 'slideUp':
+          return {
+            opacity: 0,
+            transform: 'translateY(32px)',
+            transition: baseTransition
+          }
+        case 'slideLeft':
+          return {
+            opacity: 0,
+            transform: 'translateX(-32px)',
+            transition: baseTransition
+          }
+        case 'slideRight':
+          return {
+            opacity: 0,
+            transform: 'translateX(32px)',
+            transition: baseTransition
+          }
+        case 'scaleIn':
+          return {
+            opacity: 0,
+            transform: 'scale(0.95)',
+            transition: baseTransition
+          }
+        case 'bounceIn':
+          return {
+            opacity: 0,
+            transform: 'scale(0.75)',
+            transition: baseTransition
+          }
+        default:
+          return {
+            opacity: 0,
+            transition: baseTransition
+          }
+      }
+    }
+    
+    // 보이는 상태일 때
+    return {
+      opacity: 1,
+      transform: 'none',
+      transition: baseTransition
+    }
+  }, [isVisible, motionType])
+
   const start = useCallback(() => {
-    if (!isRevealed) {
-      setIsRevealed(true)
-      setIsAnimating(true)
-      setProgress(0)
-      onStart?.()
+    setIsAnimating(true)
+    setTimeout(() => {
+      setIsVisible(true)
+      setProgress(1)
+      setIsAnimating(false)
+    }, delay)
+  }, [delay])
 
-      setTimeout(() => {
-        setIsAnimating(false)
-        setProgress(1)
-        onComplete?.()
-      }, duration)
-    }
-  }, [isRevealed, duration, onStart, onComplete])
-
-  // 모션 중단 함수
-  const stop = useCallback(() => {
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
   const reset = useCallback(() => {
-    setIsRevealed(false)
+    setIsVisible(false)
     setIsAnimating(false)
     setProgress(0)
-    onReset?.()
-  }, [onReset])
+    setHasTriggered(false)
+  }, [])
 
-  // 모션 일시정지 함수
-  const pause = useCallback(() => {
+  const stop = useCallback(() => {
     setIsAnimating(false)
   }, [])
 
-  // 모션 재개 함수
-  const resume = useCallback(() => {
-    if (isRevealed) {
-      setIsAnimating(true)
-    }
-  }, [isRevealed])
-
-  // 스타일 계산
-  const style: React.CSSProperties = {
-    transform: `
-      scale(${isRevealed ? revealScale : initialScale})
-      rotate(${isRevealed ? revealRotate : initialRotate}deg)
-      translate(${isRevealed ? revealTranslateX : initialTranslateX}px, ${isRevealed ? revealTranslateY : initialTranslateY}px)
-    `,
-    opacity: isRevealed ? revealOpacity : initialOpacity,
-    transition: `all ${duration}ms ${easing}`,
-    willChange: 'transform, opacity'
-  }
-
   return {
     ref,
-    isVisible: isRevealed,
+    isVisible,
     isAnimating,
-    style,
     progress,
+    style,
     start,
-    stop,
     reset,
-    pause,
-    resume
+    stop
   }
-}
+} 

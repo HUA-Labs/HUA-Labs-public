@@ -1,207 +1,126 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { BaseMotionOptions, BaseMotionReturn, MotionElement } from '../types'
+import { useState, useEffect, useCallback } from 'react'
+import { BaseMotionReturn, MotionElement, MotionRef } from '../types'
 
-export interface GradientOptions extends BaseMotionOptions {
-  colors: string[]
-  direction?: 'to-right' | 'to-left' | 'to-bottom' | 'to-top' | 'to-bottom-right' | 'to-bottom-left' | 'to-top-right' | 'to-top-left'
-  gradientType?: 'linear' | 'radial'
-  startPosition?: number // 0-100
-  endPosition?: number // 0-100
-  animateColors?: boolean
-  animateDirection?: boolean
-  animatePosition?: boolean
-  colorTransitionDuration?: number
-  directionTransitionDuration?: number
-  positionTransitionDuration?: number
+export interface GradientOptions {
+  colors?: string[]
+  duration?: number
+  direction?: 'horizontal' | 'vertical' | 'diagonal'
+  size?: number
+  easing?: 'linear' | 'ease-in-out' | 'ease-in' | 'ease-out'
   autoStart?: boolean
 }
 
+const defaultColors = ['#60a5fa', '#34d399', '#fbbf24', '#f87171']
+
 export function useGradient<T extends MotionElement = HTMLDivElement>(
-  options: GradientOptions
+  options: GradientOptions = {}
 ): BaseMotionReturn<T> & {
-  currentColors: string[]
-  currentDirection: string
-  currentStartPosition: number
-  currentEndPosition: number
-  setColors: (colors: string[]) => void
-  setDirection: (direction: 'to-right' | 'to-left' | 'to-bottom' | 'to-top' | 'to-bottom-right' | 'to-bottom-left' | 'to-top-right' | 'to-top-left') => void
-  setPositions: (start: number, end: number) => void
+  style: React.CSSProperties
 } {
   const {
-    duration = 1000,
+    colors = defaultColors,
+    duration = 6000,
+    direction = 'diagonal',
+    size = 300,
     easing = 'ease-in-out',
-    colors,
-    direction = 'to-right',
-    gradientType = 'linear',
-    startPosition = 0,
-    endPosition = 100,
-    animateColors = true,
-    animateDirection = false,
-    animatePosition = false,
-    colorTransitionDuration = 1000,
-    directionTransitionDuration = 500,
-    positionTransitionDuration = 800,
-    autoStart = true,
-    onComplete, onStart, onStop, onReset
+    autoStart = false
   } = options
 
-  const ref = useRef<T>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [currentColors, setCurrentColors] = useState(colors)
-  const [currentDirection, setCurrentDirection] = useState(direction)
-  const [currentStartPosition, setCurrentStartPosition] = useState(startPosition)
-  const [currentEndPosition, setCurrentEndPosition] = useState(endPosition)
+  const [isAnimating, setIsAnimating] = useState(autoStart)
+  const [isVisible, setIsVisible] = useState(true)
+  const [motionProgress, setMotionProgress] = useState(0)
 
-  // 색상 변경 함수
-  const setColors = useCallback((newColors: string[]) => {
-    if (!animateColors) {
-      setCurrentColors(newColors)
-      return
+  const getGradientStyle = useCallback((): React.CSSProperties => {
+    const gradientDirection = direction === 'horizontal' ? '90deg' :
+                             direction === 'vertical' ? '180deg' : '135deg'
+    
+    const background = `linear-gradient(${gradientDirection}, ${colors.join(', ')})`
+    const backgroundSize = `${size}% ${size}%`
+    
+    const easingFunction = easing === 'linear' ? 'linear' :
+                          easing === 'ease-in' ? 'ease-in' :
+                          easing === 'ease-out' ? 'ease-out' : 'ease-in-out'
+
+    return {
+      background,
+      backgroundSize,
+      animation: isAnimating ? `gradientShift ${duration}ms ${easingFunction} infinite` : 'none',
+      backgroundPosition: isAnimating ? undefined : `${motionProgress}% 50%`
     }
+  }, [colors, direction, size, duration, easing, isAnimating, motionProgress])
 
-    setIsAnimating(true)
-    setProgress(0)
-    onStart?.()
-
-    setTimeout(() => {
-      setCurrentColors(newColors)
-      setIsAnimating(false)
-      setProgress(1)
-      onComplete?.()
-    }, colorTransitionDuration)
-  }, [animateColors, colorTransitionDuration, onStart, onComplete])
-
-  // 방향 변경 함수
-  const setDirection = useCallback((newDirection: 'to-right' | 'to-left' | 'to-bottom' | 'to-top' | 'to-bottom-right' | 'to-bottom-left' | 'to-top-right' | 'to-top-left') => {
-    if (!animateDirection) {
-      setCurrentDirection(newDirection)
-      return
-    }
-
-    setIsAnimating(true)
-    setProgress(0)
-    onStart?.()
-
-    setTimeout(() => {
-      setCurrentDirection(newDirection)
-      setIsAnimating(false)
-      setProgress(1)
-      onComplete?.()
-    }, directionTransitionDuration)
-  }, [animateDirection, directionTransitionDuration, onStart, onComplete])
-
-  // 위치 변경 함수
-  const setPositions = useCallback((start: number, end: number) => {
-    if (!animatePosition) {
-      setCurrentStartPosition(start)
-      setCurrentEndPosition(end)
-      return
-    }
-
-    setIsAnimating(true)
-    setProgress(0)
-    onStart?.()
-
-    setTimeout(() => {
-      setCurrentStartPosition(start)
-      setCurrentEndPosition(end)
-      setIsAnimating(false)
-      setProgress(1)
-      onComplete?.()
-    }, positionTransitionDuration)
-  }, [animatePosition, positionTransitionDuration, onStart, onComplete])
-
-  // 모션 시작 함수
   const start = useCallback(() => {
-    if (!isVisible) {
-      setIsVisible(true)
-      setIsAnimating(true)
-      setProgress(0)
-      onStart?.()
+    setIsAnimating(true)
+  }, [])
 
-      setTimeout(() => {
-        setIsAnimating(false)
-        setProgress(1)
-        onComplete?.()
-      }, duration)
-    }
-  }, [isVisible, duration, onStart, onComplete])
-
-  // 모션 중단 함수
-  const stop = useCallback(() => {
-    setIsAnimating(false)
-    onStop?.()
-  }, [onStop])
-
-  // 모션 리셋 함수
-  const reset = useCallback(() => {
-    setIsVisible(false)
-    setIsAnimating(false)
-    setProgress(0)
-    setCurrentColors(colors)
-    setCurrentDirection(direction)
-    setCurrentStartPosition(startPosition)
-    setCurrentEndPosition(endPosition)
-    onReset?.()
-  }, [colors, direction, startPosition, endPosition, onReset])
-
-  // 모션 일시정지 함수
   const pause = useCallback(() => {
     setIsAnimating(false)
   }, [])
 
-  // 모션 재개 함수
   const resume = useCallback(() => {
-    if (isVisible) {
-      setIsAnimating(true)
-    }
-  }, [isVisible])
+    setIsAnimating(true)
+  }, [])
 
-  // 자동 시작
+  const reset = useCallback(() => {
+    // 모션 완전 정지
+    setIsAnimating(false)
+    // 진행률 초기화
+    setMotionProgress(0)
+  }, [])
+
+  const stop = useCallback(() => {
+    setIsAnimating(false)
+  }, [])
+
   useEffect(() => {
-    if (autoStart) {
-      start()
+    if (!isAnimating) {
+      const interval = setInterval(() => {
+        setMotionProgress(prev => {
+          const newProgress = prev + (100 / (duration / 16)) // 60fps 기준
+          return newProgress >= 100 ? 0 : newProgress
+        })
+      }, 16)
+
+      return () => clearInterval(interval)
     }
-  }, [autoStart, start])
+  }, [isAnimating, duration])
 
-  // 그라데이션 스타일 생성
-  const getGradientStyle = (): React.CSSProperties => {
-    let background: string
-
-    if (gradientType === 'radial') {
-      background = `radial-gradient(circle at ${currentStartPosition}% ${currentEndPosition}%, ${currentColors.join(', ')})`
-    } else {
-      background = `linear-gradient(${currentDirection}, ${currentColors.join(', ')})`
-    }
-
-    return {
-      background,
-      transition: `all ${duration}ms ${easing}`,
-      willChange: 'background'
-    }
-  }
-
-  const style = getGradientStyle()
+  // 초기 상태 설정만 하고 이후에는 수동으로 제어
+  useEffect(() => {
+    setIsAnimating(autoStart)
+  }, [autoStart])
 
   return {
-    ref,
+    ref: { current: null } as React.RefObject<T | null>, // useGradient는 ref를 직접 사용하지 않음
     isVisible,
     isAnimating,
-    style,
-    progress,
+    style: getGradientStyle(),
+    progress: motionProgress / 100,
     start,
-    stop,
-    reset,
     pause,
     resume,
-    currentColors,
-    currentDirection,
-    currentStartPosition,
-    currentEndPosition,
-    setColors,
-    setDirection,
-    setPositions
+    reset,
+    stop
   }
 }
+
+// CSS 키프레임 생성 함수
+export const createGradientKeyframes = (name: string = 'gradientShift') => {
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes ${name} {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+  `
+  
+  if (!document.head.querySelector(`style[data-gradient="${name}"]`)) {
+    style.setAttribute('data-gradient', name)
+    document.head.appendChild(style)
+  }
+}
+
+// 자동으로 키프레임 생성
+if (typeof document !== 'undefined') {
+  createGradientKeyframes()
+} 
