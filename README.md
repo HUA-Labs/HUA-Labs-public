@@ -2,7 +2,20 @@
 
 Public SDKs and libraries provided by HUA Labs.
 
-## Available Packages
+## Available Packages | 사용 가능한 패키지
+
+### 🎯 UX Framework | UX 프레임워크 (NEW!)
+- **[@hua-labs/hua-ux](./packages/hua-ux)** - Ship UX faster: UI + motion + i18n, pre-wired ⭐
+  - Complete UX framework for React product teams | React 프로덕트 팀을 위한 완전한 UX 프레임워크
+  - Includes framework layer (HuaUxLayout, HuaUxPage) | 프레임워크 레이어 포함
+  - GEO (AI search engine optimization) support | GEO (AI 검색 엔진 최적화) 지원
+  - Accessibility features & loading optimization | 접근성 기능 및 로딩 최적화
+- **[create-hua-ux](./packages/create-hua-ux)** - CLI tool for scaffolding hua-ux projects | hua-ux 프로젝트 생성 CLI 도구
+  - Quick project setup with interactive prompts | 대화형 프롬프트로 빠른 프로젝트 설정
+  - AI context files generation | AI 컨텍스트 파일 생성
+- **[@hua-labs/state](./packages/hua-state)** - Unified state management with SSR support | SSR 지원 통합 상태 관리
+  - Zustand-based state management | Zustand 기반 상태 관리
+  - i18n integration store | i18n 통합 스토어
 
 ### Internationalization (i18n)
 - **[@hua-labs/i18n-beginner](./packages/hua-i18n-beginner)** - Simple i18n SDK for React beginners
@@ -14,11 +27,13 @@ Public SDKs and libraries provided by HUA Labs.
 - **@hua-labs/i18n-advanced** - Enterprise-grade i18n solution (coming soon)
 
 ### UI Components
-- **[@hua-labs/ui](./packages/hua-ui)** - React UI component library
+- **[@hua-labs/ui](./packages/hua-ui)** - Modern React UI component library
+  - Beautiful, accessible, customizable components
+  - 50+ components with advanced features
   - [English](./packages/hua-ui/README.md)
 
 ### Motion & Animation
-- **[@hua-labs/motion-core](./packages/hua-motion-core)** - Essential React animation hooks (25 hooks)
+- **[@hua-labs/motion-core](./packages/hua-motion-core)** - Essential React animation hooks (25+ hooks)
   - [English](./packages/hua-motion-core/README.md) | [한국어](./packages/hua-motion-core/README_KR.md)
 - **@hua-labs/animation** - ~~Animation library~~ ⚠️ **DEPRECATED** - Migrate to @hua-labs/motion-core
 
@@ -27,17 +42,25 @@ Public SDKs and libraries provided by HUA Labs.
 ### Installation
 
 ```bash
+# HUA UX Framework (NEW! - Complete UX solution)
+pnpm create hua-ux my-app
+# or
+npm create hua-ux my-app
+
 # i18n Beginner SDK
 npm install @hua-labs/i18n-beginner
 
-# Motion Core (New!)
+# Motion Core
 npm install @hua-labs/motion-core
 
+# UI Components
+npm install @hua-labs/ui
+
 # or yarn
-yarn add @hua-labs/i18n-beginner @hua-labs/motion-core
+yarn add @hua-labs/i18n-beginner @hua-labs/motion-core @hua-labs/ui
 
 # or pnpm
-pnpm add @hua-labs/i18n-beginner @hua-labs/motion-core
+pnpm add @hua-labs/i18n-beginner @hua-labs/motion-core @hua-labs/ui
 ```
 
 ### Basic Usage
