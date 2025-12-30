@@ -82,5 +82,5 @@ export function createI18nStore(
       ssr,
       partialize: (state) => ({ language: state.language }),
     }
-  );
+  ) as HuaStore<I18nStoreState>;
 }

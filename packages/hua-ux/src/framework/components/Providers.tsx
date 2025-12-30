@@ -43,7 +43,7 @@ function createProviders(config: HuaUxConfig) {
       ssr: config.state?.ssr ?? true,
     });
 
-    const I18nProvider = createZustandI18n(i18nStore, {
+    const I18nProvider = createZustandI18n(i18nStore as any, {
       fallbackLanguage: config.i18n.fallbackLanguage || 'en',
       namespaces: config.i18n.namespaces || ['common'],
       translationLoader: config.i18n.translationLoader || 'api',
