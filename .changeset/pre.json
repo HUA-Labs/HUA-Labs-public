@@ -14,6 +14,7 @@
     "@hua-labs/create-hua-ux": "0.1.0-alpha.0.2"
   },
   "changesets": [
-    "alpha-release"
+    "alpha-release",
+    "fix-create-hua-ux-cjs"
   ]
 }
