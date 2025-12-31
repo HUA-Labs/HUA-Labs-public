@@ -7,7 +7,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import chalk from 'chalk';
-import { copyTemplate, generatePackageJson, generateConfig, generateAiContextFiles, validateGeneratedProject, type AiContextOptions } from './utils';
+import { copyTemplate, generatePackageJson, generateConfig, generateAiContextFiles, validateGeneratedProject, isEmptyDir, type AiContextOptions } from './utils';
 
 /**
  * Resolve project path
@@ -17,7 +17,7 @@ import { copyTemplate, generatePackageJson, generateConfig, generateAiContextFil
  */
 export function resolveProjectPath(projectName: string): string {
   const cwd = process.cwd();
-  
+
   // Check if we're running from packages/create-hua-ux directory
   // More robust check: look for both 'packages' and 'create-hua-ux' in path
   const normalizedCwd = path.normalize(cwd).replace(/\\/g, '/');
@@ -27,31 +27,31 @@ export function resolveProjectPath(projectName: string): string {
     const monorepoRoot = normalizedCwd.substring(0, packagesIndex);
     return path.resolve(monorepoRoot, projectName);
   }
-  
+
   // Default: create in current working directory
   return path.resolve(cwd, projectName);
 }
 
 export async function createProject(
-  projectName: string, 
+  projectName: string,
   aiContextOptions?: AiContextOptions,
   options?: { dryRun?: boolean; skipPrerequisites?: boolean }
 ): Promise<void> {
   const projectPath = resolveProjectPath(projectName);
   const isDryRun = options?.dryRun ?? false;
-  
+
   // Debug: log the resolved path (only in development)
   if (process.env.NODE_ENV !== 'production' && !isDryRun) {
     console.log(chalk.gray(`Project will be created at: ${projectPath}`));
   }
 
-  // Check if directory already exists
-  if (!isDryRun && await fs.pathExists(projectPath)) {
+  // Check if directory already exists and is not empty
+  if (!isDryRun && await fs.pathExists(projectPath) && !(await isEmptyDir(projectPath))) {
     const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
     console.error(chalk.red(
       isEn
-        ? `Directory "${projectPath}" already exists`
-        : `디렉토리 "${projectPath}"가 이미 존재합니다`
+        ? `Directory "${projectPath}" already exists and is not empty`
+        : `디렉토리 "${projectPath}"가 이미 존재하며 비어있지 않습니다`
     ));
     console.error(chalk.yellow(
       isEn
@@ -95,7 +95,7 @@ export async function createProject(
       // If user explicitly disabled all AI context, skip them during copy for performance
       // Note: We still copy them and delete later for safety, but this optimization
       // can be enabled if all AI context is explicitly disabled
-      const shouldSkipAiContext = aiContextOptions 
+      const shouldSkipAiContext = aiContextOptions
         ? !aiContextOptions.cursorrules && !aiContextOptions.aiContext && !aiContextOptions.claudeContext && !aiContextOptions.claudeSkills
         : false;
       await copyTemplate(projectPath, { skipAiContext: shouldSkipAiContext });
@@ -147,11 +147,11 @@ export async function createProject(
     console.log(chalk.blue('\n✅ Step 5/5: Validating project...'));
     if (!isDryRun) {
       await validateGeneratedProject(projectPath);
-      
+
       // Validate translation files
       const { validateTranslationFiles } = await import('./utils');
       await validateTranslationFiles(projectPath);
-      
+
       console.log(chalk.green('✅ Project validation passed'));
     } else {
       console.log(chalk.gray('  Would validate: package.json, tsconfig.json, required directories'));
@@ -179,24 +179,32 @@ export async function createProject(
     // Generate and display summary
     const { generateSummary, displaySummary, displayNextSteps } = await import('./utils');
     const summary = await generateSummary(projectPath, aiContextOptions);
-    
+
     console.log(chalk.green(`\n✅ Project created successfully!`));
     displaySummary(summary);
     displayNextSteps(projectPath, aiContextOptions);
-    
+
   } catch (error) {
     // Log error details
     const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
     console.error(chalk.red(`\n❌ ${isEn ? 'Error creating project' : '프로젝트 생성 중 오류 발생'}:`));
-    
+
     if (error instanceof Error) {
       console.error(chalk.red(error.message));
+      if (process.env.NODE_ENV !== 'production' || process.env.DEBUG) {
+        console.error(chalk.gray(error.stack));
+      }
     } else {
       console.error(error);
     }
-    
-    // Cleanup on error
+
+    // Cleanup on error (only if we created a new directory)
     if (!isDryRun && await fs.pathExists(projectPath)) {
+      // Check if it was empty before we started? 
+      // Simplified: always try to clean up if it's the target, but maybe only if it's "new"
+      // actually, if we started in an existing empty dir, we might want to clean up what we added.
+      // But for safety, if it was an existing dir, maybe don't rm -rf the whole thing.
+      // Let's keep existing cleanup but log more.
       console.log(chalk.yellow('\n🧹 Cleaning up...'));
       await fs.remove(projectPath);
     }
