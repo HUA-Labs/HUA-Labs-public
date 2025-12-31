@@ -57,14 +57,19 @@
     }
   },
   "keywords": [
+    "hua-labs",
     "hua-ux",
-    "framework",
     "react",
-    "ui",
+    "framework",
+    "ui-components",
     "motion",
+    "animation",
     "i18n",
+    "internationalization",
     "typescript",
-    "nextjs"
+    "nextjs",
+    "ssr",
+    "zustand"
   ],
   "author": "HUA Labs",
   "license": "MIT",

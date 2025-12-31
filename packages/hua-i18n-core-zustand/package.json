@@ -38,11 +38,15 @@
     "zustand": "^4.0.0"
   },
   "keywords": [
+    "hua-labs",
     "i18n",
     "internationalization",
     "zustand",
     "state-management",
-    "adapter"
+    "adapter",
+    "react",
+    "typescript",
+    "ssr"
   ],
   "author": "HUA Labs",
   "license": "MIT",

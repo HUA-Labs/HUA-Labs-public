@@ -38,11 +38,15 @@
     "typescript": "^5.8.3"
   },
   "keywords": [
+    "hua-labs",
     "i18n",
     "internationalization",
+    "translation",
     "loader",
     "preload",
-    "cache"
+    "cache",
+    "react",
+    "typescript"
   ],
   "author": "HUA Labs",
   "license": "MIT",

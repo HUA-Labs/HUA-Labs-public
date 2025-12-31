@@ -38,14 +38,17 @@
     "react": ">=16.8.0"
   },
   "keywords": [
+    "hua-labs",
     "i18n",
     "internationalization",
+    "localization",
     "react",
     "typescript",
     "ssr",
     "csr",
-    "zustand",
-    "state-management"
+    "translation",
+    "nextjs",
+    "zero-flicker"
   ],
   "author": "HUA Labs",
   "license": "MIT",

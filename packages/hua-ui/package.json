@@ -108,17 +108,18 @@
     "react-dom": ">=16.8.0"
   },
   "keywords": [
-    "ui",
-    "components",
+    "hua-labs",
+    "ui-library",
+    "react-components",
     "react",
     "typescript",
     "design-system",
-    "accessible",
-    "modern",
+    "accessibility",
+    "aria",
+    "dark-mode",
     "tailwind",
     "nextjs",
-    "korean",
-    "english"
+    "ssr"
   ],
   "author": "HUA Labs",
   "license": "MIT",

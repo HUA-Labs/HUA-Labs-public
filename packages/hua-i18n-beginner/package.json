@@ -34,6 +34,7 @@
     "react": ">=16.8.0"
   },
   "keywords": [
+    "hua-labs",
     "i18n",
     "internationalization",
     "localization",
@@ -43,7 +44,6 @@
     "react",
     "nextjs",
     "typescript",
-    "korean",
     "english",
     "multilingual",
     "translation"
