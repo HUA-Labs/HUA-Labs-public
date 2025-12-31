@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.1.0-alpha.1
+
+### Patch Changes
+
+- Public alpha release with complete documentation
+
+  - Complete README standardization across all packages
+  - Comprehensive DETAILED_GUIDE documentation for each package
+  - Optimized npm keywords for better discoverability
+  - Professional documentation tone and structure
+  - All packages updated to alpha.0.2
+
+- Updated dependencies
+  - @hua-labs/motion-core@2.1.0-alpha.1
+  - @hua-labs/i18n-core@1.1.0-alpha.1
+  - @hua-labs/i18n-core-zustand@1.1.0-alpha.1
+  - @hua-labs/state@0.1.0-alpha.1
+  - @hua-labs/ui@1.1.0-alpha.1
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,22 @@
 # @hua-labs/i18n-core-zustand
 
+## 1.1.0-alpha.1
+
+### Minor Changes
+
+- Public alpha release with complete documentation
+
+  - Complete README standardization across all packages
+  - Comprehensive DETAILED_GUIDE documentation for each package
+  - Optimized npm keywords for better discoverability
+  - Professional documentation tone and structure
+  - All packages updated to alpha.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @hua-labs/i18n-core@1.1.0-alpha.1
+
 ## 2.0.0
 
 ### Major Changes
