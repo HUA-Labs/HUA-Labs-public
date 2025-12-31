@@ -1,14 +1,23 @@
 # @hua-labs/i18n-core
 
-**Type-safe i18n library with SSR/CSR support and state management integration**
+Type-safe i18n library with SSR/CSR support and state management integration.
+SSR/CSR 지원 및 상태 관리 통합 기능을 갖춘 타입 안전 i18n 라이브러리.
 
-HUA Labs - Core Internationalization Library
+[![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-core.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core)
+[![license](https://img.shields.io/npm/l/@hua-labs/i18n-core.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
-Lightweight i18n library for React applications with essential translation features only.
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
-## Why @hua-labs/i18n-core?
+---
 
-Struggling with flickering on language changes or hydration mismatches? @hua-labs/i18n-core provides a pragmatic, production-ready solution for React i18n.
+## English
+
+### Overview
+Lightweight, production-ready i18n library for React applications. Delivers zero-flicker language transitions through intelligent caching and provides seamless SSR/CSR support with built-in state management integration.
+
+### Why i18n-core?
+
+Built to address common challenges in React internationalization: language transition flickers and SSR hydration mismatches. Provides a focused solution for these specific problems.
 
 **Key advantages:**
 - **Zero flickering**: Automatically shows previous language translation during switch

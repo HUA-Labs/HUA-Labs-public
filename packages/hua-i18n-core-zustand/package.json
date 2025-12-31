@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/i18n-core-zustand",
-  "version": "1.1.0-alpha.0.1",
+  "version": "1.1.0-alpha.0.2",
   "description": "Zustand adapter for @hua-labs/i18n-core - Type-safe state management integration",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -38,11 +38,15 @@
     "zustand": "^4.0.0"
   },
   "keywords": [
+    "hua-labs",
     "i18n",
     "internationalization",
     "zustand",
     "state-management",
-    "adapter"
+    "adapter",
+    "react",
+    "typescript",
+    "ssr"
   ],
   "author": "HUA Labs",
   "license": "MIT",

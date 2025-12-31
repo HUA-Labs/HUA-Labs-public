@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/state",
-  "version": "0.1.0-alpha.0.1",
+  "version": "0.1.0-alpha.0.2",
   "description": "HUA State - Unified state management for hua-ux framework with SSR support and integrations",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -36,11 +36,15 @@
     "zustand": ">=5.0.0"
   },
   "keywords": [
-    "hua-state",
-    "zustand",
+    "hua-labs",
     "state-management",
-    "ssr",
+    "zustand",
     "react",
+    "typescript",
+    "ssr",
+    "hydration",
+    "persistence",
+    "i18n",
     "nextjs"
   ],
   "author": "HUA Labs",

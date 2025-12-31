@@ -1,6 +1,19 @@
 # @hua-labs/i18n-core-zustand
 
-Type-safe adapter package for integrating Zustand state management with `@hua-labs/i18n-core`.
+Zustand adapter for @hua-labs/i18n-core with type-safe state integration.
+Zustand 상태 관리와 i18n-core를 타입 안전하게 통합하는 어댑터입니다.
+
+[![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-core-zustand.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core-zustand)
+[![license](https://img.shields.io/npm/l/@hua-labs/i18n-core-zustand.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
+## English
+
+### Overview
+Type-safe adapter for integrating Zustand state management with @hua-labs/i18n-core. Provides seamless language state synchronization across your application.
 
 ## Installation
 

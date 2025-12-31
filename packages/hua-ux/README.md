@@ -1,8 +1,20 @@
 # @hua-labs/hua-ux
 
-**Ship UX faster**: UI + motion + i18n, pre-wired.
+Ship UX faster: UI + Motion + i18n, pre-wired.
+빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크.
 
-A framework for React product teams that provides pre-wired UX defaults for spacing, components, motion, and internationalization.
+[![npm version](https://img.shields.io/npm/v/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
+[![license](https://img.shields.io/npm/l/@hua-labs/hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
+## English
+
+### Overview
+
+hua-ux is a high-level, batteries-included framework for React product teams. It unifies UI components, animation hooks, and internationalization into a cohesive ecosystem, enabling production-ready setup in minutes instead of hours.
 
 ## 왜 hua-ux인가?
 

@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/create-hua-ux",
-  "version": "0.1.0-alpha.0.1",
+  "version": "0.1.0-alpha.0.2",
   "description": "Scaffolding tool for creating hua-ux projects",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -33,10 +33,16 @@
     "typescript": "^5.9.3"
   },
   "keywords": [
+    "hua-labs",
     "hua-ux",
     "scaffolding",
     "cli",
-    "nextjs"
+    "create-app",
+    "boilerplate",
+    "nextjs",
+    "react",
+    "typescript",
+    "starter"
   ],
   "author": "HUA Labs",
   "license": "MIT",
