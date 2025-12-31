@@ -102,7 +102,7 @@
     "vitest": "^4.0.14"
   },
   "peerDependencies": {
-    "@hua-labs/motion-core": "2.1.0-alpha.1",
+    "@hua-labs/motion-core": "^2.1.0-alpha.0",
     "@phosphor-icons/react": "*",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
