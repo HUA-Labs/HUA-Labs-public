@@ -1,0 +1,256 @@
+"use client"
+
+import React from "react"
+import { merge } from "../lib/utils"
+
+/**
+ * Modal 컴포넌트의 props / Modal component props
+ * @typedef {Object} ModalProps
+ * @property {boolean} isOpen - 모달 열림/닫힘 상태 / Modal open/close state
+ * @property {() => void} onClose - 모달 닫기 콜백 함수 / Modal close callback function
+ * @property {React.ReactNode} children - 모달 내용 / Modal content
+ * @property {"sm" | "md" | "lg" | "xl" | "2xl" | "3xl"} [size="md"] - 모달 크기 / Modal size
+ * @property {boolean} [showCloseButton=true] - 닫기 버튼 표시 여부 / Show close button
+ * @property {boolean} [closeOnOverlayClick=true] - 오버레이 클릭 시 닫기 여부 / Close on overlay click
+ * @property {string} [title] - 모달 제목 / Modal title
+ * @property {string} [description] - 모달 설명 / Modal description
+ * @property {boolean} [showBackdrop=true] - 배경 오버레이 표시 여부 / Show backdrop overlay
+ * @property {string} [backdropClassName] - 배경 오버레이 추가 CSS 클래스 / Additional CSS class for backdrop
+ * @property {boolean} [centered=true] - 모달을 화면 중앙에 배치할지 여부 / Center modal on screen
+ * @property {string} [className] - 모달 컨테이너 추가 CSS 클래스 / Additional CSS class for modal container
+ */
+export interface ModalProps {
+  isOpen: boolean
+  onClose: () => void
+  children: React.ReactNode
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
+  showCloseButton?: boolean
+  closeOnOverlayClick?: boolean
+  title?: string
+  description?: string
+  showBackdrop?: boolean
+  backdropClassName?: string
+  centered?: boolean
+  className?: string
+}
+
+// Ref 병합 유틸리티
+function useCombinedRefs<T>(...refs: (React.Ref<T> | undefined)[]): React.RefCallback<T> {
+  return React.useCallback(
+    (node: T) => {
+      refs.forEach((ref) => {
+        if (!ref) return;
+        if (typeof ref === "function") {
+          ref(node);
+        } else {
+          (ref as React.MutableRefObject<T | null>).current = node;
+        }
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    refs
+  );
+}
+
+/**
+ * Modal 컴포넌트 / Modal component
+ * 
+ * 오버레이와 함께 표시되는 모달 다이얼로그 컴포넌트입니다.
+ * ESC 키로 닫기, 오버레이 클릭으로 닫기, 접근성 속성(ARIA)을 지원합니다.
+ * 
+ * Modal dialog component displayed with overlay.
+ * Supports closing with ESC key, overlay click, and ARIA accessibility attributes.
+ * 
+ * @component
+ * @example
+ * // 기본 사용 / Basic usage
+ * const [isOpen, setIsOpen] = useState(false)
+ * 
+ * <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+ *   <p>모달 내용</p>
+ * </Modal>
+ * 
+ * @example
+ * // 제목과 설명 포함 / With title and description
+ * <Modal
+ *   isOpen={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   title="확인"
+ *   description="이 작업을 계속하시겠습니까?"
+ * >
+ *   <Button onClick={handleConfirm}>확인</Button>
+ * </Modal>
+ * 
+ * @example
+ * // 큰 크기 모달 / Large size modal
+ * <Modal
+ *   isOpen={isOpen}
+ *   onClose={() => setIsOpen(false)}
+ *   size="xl"
+ *   closeOnOverlayClick={false}
+ * >
+ *   <div>큰 모달 내용</div>
+ * </Modal>
+ * 
+ * @param {ModalProps} props - Modal 컴포넌트의 props / Modal component props
+ * @param {React.Ref<HTMLDivElement>} ref - 모달 컨테이너 ref / Modal container ref
+ * @returns {JSX.Element} Modal 컴포넌트 / Modal component
+ */
+export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
+  ({ 
+  className,
+  isOpen,
+  onClose,
+  children,
+  size = "md",
+  showCloseButton = true,
+  closeOnOverlayClick = true,
+  title,
+  description,
+  showBackdrop = true,
+  backdropClassName,
+  centered = true
+  }, ref) => {
+  const modalRef = React.useRef<HTMLDivElement>(null)
+    const combinedRef = useCombinedRefs(ref, modalRef)
+
+  // ESC 키로 모달 닫기 및 스크롤 잠금 (화면 흔들림 방지)
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape)
+      // 스크롤바 너비 계산하여 padding 추가 (화면 흔들림 방지)
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.overflow = "hidden"
+      document.body.style.paddingRight = `${scrollbarWidth}px`
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape)
+      document.body.style.overflow = "unset"
+      document.body.style.paddingRight = "unset"
+    }
+  }, [isOpen, onClose])
+
+  // 모달 외부 클릭으로 닫기
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (closeOnOverlayClick && e.target === e.currentTarget) {
+      onClose()
+    }
+  }
+
+  // 모달 크기 클래스 (반응형 포함)
+  const sizeClasses = {
+    sm: "md:w-80", // 20rem = 320px
+    md: "md:w-96", // 24rem = 384px
+    lg: "md:w-[32rem]", // 32rem = 512px
+    xl: "md:w-[38rem]", // 38rem = 608px
+    "2xl": "md:w-[50rem]", // 50rem = 800px
+    "3xl": "md:w-[72rem]" // 72rem = 1152px (더 넓게)
+  }
+
+  // 접근성을 위한 ID 생성
+  const titleId = title ? `modal-title-${React.useId()}` : undefined;
+  const descriptionId = description ? `modal-description-${React.useId()}` : undefined;
+
+  if (!isOpen) return null
+
+  return (
+    <div
+      className={merge(
+        "fixed top-0 left-0 right-0 bottom-0 z-50 flex justify-center p-4 overflow-hidden", // PWA 호환성 개선
+        centered ? "items-center" : "items-start pt-16", // 64px 상단 여백
+        className
+      )}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        minHeight: '100vh'
+      }}
+      onClick={handleOverlayClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+    >
+      {/* 배경 오버레이 */}
+      {showBackdrop && (
+        <div className={merge(
+          "absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300",
+          backdropClassName
+        )} />
+      )}
+      
+      {/* 모달 컨테이너 */}
+      <div
+        ref={combinedRef}
+        className={merge(
+          "relative bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transform transition-all duration-300 ease-out overflow-hidden",
+          // 반응형: 모바일 전체, 데스크톱 고정
+          "w-[calc(100vw-2rem)]", // 모바일: 화면 너비 - 패딩
+          sizeClasses[size],       // 데스크톱: md:w-[72rem]
+          "max-w-[calc(100vw-2rem)] md:max-w-none", // 모바일: 최대 너비 제한, 데스크톱: 제한 없음
+          "flex-none" // flex 컨테이너에서 크기 유지
+        )}
+        style={{
+          animation: "modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+          maxHeight: "90vh",
+          marginTop: centered ? 'auto' : '0',
+          marginBottom: centered ? 'auto' : '0'
+        }}
+      >
+        
+        {/* 헤더 */}
+        {title && (
+          <div className="relative z-10 px-6 pt-6 pb-4 border-b border-gray-200/50 dark:border-gray-700/50">
+            {/* 타이틀과 닫기 버튼 - 같은 줄, 양쪽 끝 */}
+            <div className="flex items-center justify-between gap-4 mb-2">
+              <h2 id={titleId} className="text-xl font-semibold text-gray-900 dark:text-white flex-1 min-w-0">{title}</h2>
+              {/* 닫기 버튼 - 타이틀과 같은 계층의 오른쪽 끝 */}
+              {showCloseButton && (
+                <button
+                  onClick={onClose}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-110 z-20"
+                  aria-label="닫기"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            {/* 설명 - 아래 줄 */}
+            {description && (
+              <p id={descriptionId} className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+            )}
+          </div>
+        )}
+        
+        {/* 타이틀이 없을 때만 별도 닫기 버튼 */}
+        {!title && showCloseButton && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-110 z-20"
+            aria-label="닫기"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+        
+        {/* 모달 내용 */}
+        <div className={`relative z-10 ${title ? 'px-6 mb-6' : 'p-6'}`}>
+          {children}
+        </div>
+      </div>
+    </div>
+  )
+})
+
+Modal.displayName = "Modal" 

@@ -1,0 +1,12 @@
+{
+  "welcome": "Bienvenue",
+  "language": "Langue",
+  "switchLanguage": "Changer de langue",
+  "description": "Cette démo utilise @hua-labs/i18n-core pour afficher les traductions sans scintillement lors du changement de langue.",
+  "features": "Fonctionnalités principales",
+  "feature1": "Changement de langue sans scintillement",
+  "feature2": "Support complet SSR/CSR",
+  "feature3": "Intégration Zustand",
+  "feature4": "Taille de paquet réduite (~2.8KB)"
+}
+

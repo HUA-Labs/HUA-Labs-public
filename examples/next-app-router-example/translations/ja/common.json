@@ -1,0 +1,13 @@
+{
+  "welcome": "ようこそ",
+  "language": "言語",
+  "switchLanguage": "言語切り替え",
+  "description": "この例は、@hua-labs/i18n-coreを使用してNext.js App RouterでSSR/CSR翻訳を実装しています。",
+  "features": "主な機能",
+  "feature1": "SSR翻訳ロード",
+  "feature2": "クライアント言語切り替え",
+  "feature3": "Zustand統合",
+  "feature4": "複数ネームスペース対応",
+  "feature5": "getRawValue使用（配列/オブジェクト）"
+}
+
