@@ -1,10 +1,19 @@
 # @hua-labs/ui
 
-HUA Labs - Modern React UI Component Library
+Modern React UI component library with 70+ production-ready components.
+70개 이상의 프로덕션 준비 완료 React UI 컴포넌트 라이브러리.
 
-Beautiful, accessible, and customizable components for React applications with TypeScript support.
+[![npm version](https://img.shields.io/npm/v/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
+[![license](https://img.shields.io/npm/l/@hua-labs/ui.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
-> **문서**: [아키텍처 문서](./docs/ARCHITECTURE.md) | [개발 가이드](./docs/DEVELOPMENT_GUIDE.md) | [패키지 구조](./docs/PACKAGE_STRUCTURE.md)
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
+## English
+
+### Overview
+Accessible, TypeScript-native component library for React applications. Provides modular entry points for optimal bundle size and comprehensive dark mode support.
 
 ## Features
 

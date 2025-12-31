@@ -1,8 +1,18 @@
 # @hua-labs/i18n-beginner
 
+Beginner-friendly i18n SDK for React. Simple setup, no complexity.
+초보자를 위한 React i18n SDK. 간단한 설정, 복잡함 없음.
+
+[![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-beginner.svg)](https://www.npmjs.com/package/@hua-labs/i18n-beginner)
+[![license](https://img.shields.io/npm/l/@hua-labs/i18n-beginner.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
 [한국어](#korean) | [English](./README_EN.md)
 
-## **이 SDK는 초보자용입니다!**
+## 이 SDK는 초보자용입니다
 
 > 데모 보기 | 기여는 [SDK 레포](https://github.com/HUA-Labs/HUA-Labs-public)에서
 

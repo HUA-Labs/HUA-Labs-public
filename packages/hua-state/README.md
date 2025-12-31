@@ -1,8 +1,19 @@
 # @hua-labs/state
 
-**Unified state management for hua-ux framework** with SSR support and integrations.
+Unified state management for the hua-ux ecosystem with SSR support.
+hua-ux 생태계를 위한 SSR 지원 통합 상태 관리 솔루션입니다.
 
-A Zustand-based state management solution optimized for the hua-ux ecosystem with built-in SSR support, persistence, and i18n integration.
+[![npm version](https://img.shields.io/npm/v/@hua-labs/state.svg)](https://www.npmjs.com/package/@hua-labs/state)
+[![license](https://img.shields.io/npm/l/@hua-labs/state.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
+## English
+
+### Overview
+Zustand-based state management wrapper optimized for the hua-ux ecosystem. Provides built-in SSR hydration handling, localStorage persistence, and seamless i18n integration for React and Next.js applications.
 
 ## Installation
 

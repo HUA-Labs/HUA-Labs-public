@@ -1,6 +1,19 @@
 # @hua-labs/i18n-loaders
 
-Production-ready translation loaders, caching, and preloading utilities. Use with `@hua-labs/i18n-core` to reuse proven loading strategies from SUM API.
+Translation loaders with caching and preloading for @hua-labs/i18n-core.
+캐싱 및 프리로딩 기능을 갖춘 번역 로더.
+
+[![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-loaders.svg)](https://www.npmjs.com/package/@hua-labs/i18n-loaders)
+[![license](https://img.shields.io/npm/l/@hua-labs/i18n-loaders.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+
+---
+
+## English
+
+### Overview
+Production-ready translation loaders with built-in caching and preloading. Designed to work seamlessly with @hua-labs/i18n-core.
 
 ## Key Features
 
