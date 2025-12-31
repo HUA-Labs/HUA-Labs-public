@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.2
+
+### Patch Changes
+
+- 53abfbb: fix: (create-hua-ux) Downgraded chalk to v4 for CommonJS compatibility and allowed initialization in existing empty directories. Added --non-interactive flag and improved internal error logging.
+
 ## 0.1.0-alpha.1
 
 ### Patch Changes
