@@ -669,7 +669,7 @@ export async function checkPrerequisites(): Promise<void> {
 
   // 1. Node.js version check
   const nodeVersion = process.version;
-  const requiredVersion = '18.0.0';
+  const requiredVersion = '22.0.0';
 
   // Simple version comparison (major.minor.patch)
   const parseVersion = (v: string): number[] => {
