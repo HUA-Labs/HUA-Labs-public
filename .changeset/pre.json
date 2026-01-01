@@ -10,8 +10,7 @@
     "@hua-labs/motion-core": "1.0.0",
     "@hua-labs/state": "0.1.0",
     "@hua-labs/ui": "1.0.0",
-    "@hua-labs/hua-ux": "0.1.0",
-    "@hua-labs/create-hua-ux": "0.1.0-alpha.0.2"
+    "@hua-labs/hua-ux": "0.1.0"
   },
   "changesets": [
     "alpha-release",
