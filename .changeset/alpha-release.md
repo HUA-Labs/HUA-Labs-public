@@ -7,7 +7,7 @@
 "@hua-labs/state": minor
 "@hua-labs/hua-ux": patch
 "@hua-labs/ui": minor
-"@hua-labs/create-hua-ux": patch
+"create-hua-ux": patch
 ---
 
 Public alpha release with complete documentation
