@@ -15,6 +15,7 @@
   },
   "changesets": [
     "alpha-release",
-    "fix-create-hua-ux-cjs"
+    "fix-create-hua-ux-final",
+    "fix-create-hua-ux-npm-versions"
   ]
 }
