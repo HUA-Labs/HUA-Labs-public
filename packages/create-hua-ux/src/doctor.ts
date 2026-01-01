@@ -56,7 +56,7 @@ export async function diagnoseProject(projectPath: string): Promise<{
   } else {
     try {
       const packageJson = await fs.readJSON(packageJsonPath);
-      
+
       // Check for hua-ux dependency
       if (!packageJson.dependencies?.['@hua-labs/hua-ux']) {
         issues.push({
@@ -122,7 +122,7 @@ export async function diagnoseProject(projectPath: string): Promise<{
   // Check Node.js and pnpm
   try {
     const nodeVersion = process.version;
-    const requiredVersion = '18.0.0';
+    const requiredVersion = '22.0.0';
     const parseVersion = (v: string): number[] => {
       return v.replace(/^v/, '').split('.').map(Number);
     };
@@ -174,7 +174,7 @@ export async function diagnoseProject(projectPath: string): Promise<{
  */
 export async function runDoctor(projectPath: string): Promise<void> {
   const isEn = isEnglishOnly();
-  
+
   console.log(chalk.blue(`\n🔍 Diagnosing project: ${projectPath}\n`));
 
   try {
