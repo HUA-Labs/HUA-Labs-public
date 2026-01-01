@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-alpha.3
+
+### Patch Changes
+
+- 5eefccd: fix: (create-hua-ux) Fixed Step 2/5 installation failure by resolving CJS/ESM compatibility issue with chalk v5 (downgraded to v4). Updated Node.js requirement to 22.x or higher as requested.
+- ce478ab: fix: (create-hua-ux) Fetch latest alpha versions from npm registry at project creation time instead of using hardcoded version assumptions. This fixes installation failures when @hua-labs packages have different version numbers (e.g., @hua-labs/i18n-core-zustand@1.1.0-alpha.1 vs @hua-labs/hua-ux@0.1.0-alpha.1).
+
 ## 0.1.0-alpha.2
 
 ### Patch Changes
