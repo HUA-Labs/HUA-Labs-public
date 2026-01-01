@@ -1,6 +1,6 @@
 /**
  * create-hua-ux - Utilities
- * 
+ *
  * Utility functions for project creation
  */
 
@@ -13,6 +13,17 @@ import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
 
 const execAsync = promisify(exec);
+
+/**
+ * Detect which package manager was used to run the CLI
+ */
+function detectPackageManager(): 'npm' | 'pnpm' | 'yarn' {
+  const userAgent = process.env.npm_config_user_agent || '';
+
+  if (userAgent.startsWith('pnpm')) return 'pnpm';
+  if (userAgent.startsWith('yarn')) return 'yarn';
+  return 'npm';
+}
 import {
   NEXTJS_VERSION,
   REACT_VERSION,
@@ -1051,10 +1062,11 @@ export function displayNextSteps(
   const relativePath = path.relative(process.cwd(), projectPath);
   const displayPath = relativePath || path.basename(projectPath);
 
+  const packageManager = detectPackageManager();
   console.log(chalk.cyan(`\n📚 Next Steps:`));
   console.log(chalk.white(`  cd ${displayPath}`));
-  console.log(chalk.white(`  pnpm install`));
-  console.log(chalk.white(`  pnpm dev`));
+  console.log(chalk.white(`  ${packageManager} install`));
+  console.log(chalk.white(`  ${packageManager} dev`));
 
   if (aiContextOptions?.claudeSkills) {
     console.log(chalk.cyan(`\n💡 Claude Skills enabled:`));
