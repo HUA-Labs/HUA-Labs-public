@@ -15,6 +15,7 @@
   },
   "changesets": [
     "alpha-release",
+    "docs-update-create-hua-ux-readme",
     "fix-create-hua-ux-final",
     "fix-create-hua-ux-npm-versions",
     "fix-create-hua-ux-template-copy"
