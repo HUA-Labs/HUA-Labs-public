@@ -1,11 +1,11 @@
-# @hua-labs/create-hua-ux
+# create-hua-ux
 
 Scaffolding tool for creating hua-ux projects.
 hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 
-[![npm version](https://img.shields.io/npm/v/@hua-labs/create-hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/create-hua-ux)
-[![npm downloads](https://img.shields.io/npm/dw/@hua-labs/create-hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/create-hua-ux)
-[![license](https://img.shields.io/npm/l/@hua-labs/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
+[![npm downloads](https://img.shields.io/npm/dw/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
+[![license](https://img.shields.io/npm/l/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
@@ -16,12 +16,12 @@ hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 ### Overview
 The fastest way to bootstrap a production-ready Next.js project with the hua-ux framework. Automatically configures UI components, animation hooks, internationalization, and includes AI-optimized context files for seamless development.
 
-## Installation
+## Quick Start
 
 ```bash
-pnpm create hua-ux my-app
-# or
 npm create hua-ux my-app
+# or
+pnpm create hua-ux my-app
 # or
 yarn create hua-ux my-app
 ```

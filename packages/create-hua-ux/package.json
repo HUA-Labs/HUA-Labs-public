@@ -1,11 +1,11 @@
 {
-  "name": "@hua-labs/create-hua-ux",
+  "name": "create-hua-ux",
   "version": "0.1.0-alpha.5",
   "description": "Scaffolding tool for creating hua-ux projects",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "@hua-labs/create-hua-ux": "./dist/bin/create-hua-ux.js"
+    "create-hua-ux": "./dist/bin/create-hua-ux.js"
   },
   "files": [
     "dist",
