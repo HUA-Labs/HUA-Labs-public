@@ -263,14 +263,16 @@ export async function copyTemplate(
 ): Promise<void> {
   await fs.copy(TEMPLATE_DIR, projectPath, {
     filter: (src: string) => {
-      // Skip node_modules and .git
-      if (src.includes('node_modules') || src.includes('.git')) {
+      // Use relative path to avoid issues with template being inside node_modules
+      const relativePath = path.relative(TEMPLATE_DIR, src);
+
+      // Skip node_modules and .git within the template
+      if (relativePath.includes('node_modules') || relativePath.includes('.git')) {
         return false;
       }
 
       // Conditionally skip AI context files
       if (options?.skipAiContext) {
-        const relativePath = path.relative(TEMPLATE_DIR, src);
         if (relativePath === '.cursorrules' ||
           relativePath === 'ai-context.md' ||
           relativePath.startsWith('.claude')) {
