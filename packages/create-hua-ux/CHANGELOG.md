@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.5
+
+### Patch Changes
+
+- f4116d9: docs(create-hua-ux): Update README with npm badges and enhanced features documentation. Added npm downloads badge, comprehensive features section highlighting intelligent version management, performance optimizations, and AI-optimized development tools. Reorganized "What Gets Created" section with categorized subsections for better clarity.
+
 ## 0.1.0-alpha.4
 
 ### Patch Changes
