@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.2
+
+### Patch Changes
+
+- 2032326: docs(hua-ux): Update project creation commands to include npm and yarn. Added all three package manager options (npm, pnpm, yarn) for better user guidance after CLI package rename to create-hua-ux.
+
 ## 0.1.0-alpha.1
 
 ### Patch Changes
