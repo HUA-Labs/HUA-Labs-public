@@ -6,10 +6,13 @@
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
+import { promisify } from 'util';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
+
+const execAsync = promisify(exec);
 import {
   NEXTJS_VERSION,
   REACT_VERSION,
@@ -360,15 +363,15 @@ function getHuaUxVersion(): string {
  * @param packageName - 조회할 패키지 이름 (예: '@hua-labs/i18n-core-zustand')
  * @returns 최신 alpha 버전 (예: '^1.1.0-alpha.1') 또는 실패 시 'latest'
  */
-function fetchLatestAlphaVersion(packageName: string): string {
+async function fetchLatestAlphaVersion(packageName: string): Promise<string> {
   try {
-    // npm view 명령으로 모든 버전 조회
-    const versionsJson = execSync(
+    // npm view 명령으로 모든 버전 조회 (async)
+    const { stdout } = await execAsync(
       `npm view ${packageName} versions --json`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+      { encoding: 'utf-8' }
     );
 
-    const versions = JSON.parse(versionsJson);
+    const versions = JSON.parse(stdout);
     const versionArray = Array.isArray(versions) ? versions : [versions];
 
     // alpha 버전 필터링 및 최신 버전 찾기
@@ -413,10 +416,12 @@ export async function generatePackageJson(
     await fs.remove(packageJsonPath);
   }
 
-  // npm registry에서 최신 alpha 버전 조회 (실시간)
+  // npm registry에서 최신 alpha 버전 조회 (병렬 실행으로 성능 최적화)
   console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
-  const i18nCoreZustandVersion = fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand');
-  const stateVersion = fetchLatestAlphaVersion('@hua-labs/state');
+  const [i18nCoreZustandVersion, stateVersion] = await Promise.all([
+    fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand'),
+    fetchLatestAlphaVersion('@hua-labs/state'),
+  ]);
 
   const packageJson = {
     name: projectName,
