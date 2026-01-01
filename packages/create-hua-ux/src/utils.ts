@@ -356,8 +356,42 @@ function getHuaUxVersion(): string {
 }
 
 /**
+ * npm registry에서 패키지의 최신 alpha 버전을 가져옵니다.
+ * @param packageName - 조회할 패키지 이름 (예: '@hua-labs/i18n-core-zustand')
+ * @returns 최신 alpha 버전 (예: '^1.1.0-alpha.1') 또는 실패 시 'latest'
+ */
+function fetchLatestAlphaVersion(packageName: string): string {
+  try {
+    // npm view 명령으로 모든 버전 조회
+    const versionsJson = execSync(
+      `npm view ${packageName} versions --json`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+    );
+
+    const versions = JSON.parse(versionsJson);
+    const versionArray = Array.isArray(versions) ? versions : [versions];
+
+    // alpha 버전 필터링 및 최신 버전 찾기
+    const alphaVersions = versionArray.filter((v: string) => v.includes('-alpha.'));
+
+    if (alphaVersions.length > 0) {
+      // 최신 alpha 버전 반환 (배열의 마지막)
+      const latestAlpha = alphaVersions[alphaVersions.length - 1];
+      return `^${latestAlpha}`;
+    }
+
+    // alpha 버전이 없으면 최신 버전 사용
+    const latestVersion = versionArray[versionArray.length - 1];
+    return `^${latestVersion}`;
+  } catch (error) {
+    console.warn(chalk.yellow(`⚠️  Failed to fetch version for ${packageName}, using 'latest'`));
+    return 'latest';
+  }
+}
+
+/**
  * Get hua-ux related package version
- * 
+ *
  * hua-ux와 관련된 패키지들의 버전을 반환합니다.
  * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
  */
@@ -379,6 +413,11 @@ export async function generatePackageJson(
     await fs.remove(packageJsonPath);
   }
 
+  // npm registry에서 최신 alpha 버전 조회 (실시간)
+  console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
+  const i18nCoreZustandVersion = fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand');
+  const stateVersion = fetchLatestAlphaVersion('@hua-labs/state');
+
   const packageJson = {
     name: projectName,
     version: '0.1.0',
@@ -392,8 +431,8 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
-      '@hua-labs/i18n-core-zustand': getHuaUxRelatedPackageVersion(),
-      '@hua-labs/state': getHuaUxRelatedPackageVersion(),
+      '@hua-labs/i18n-core-zustand': i18nCoreZustandVersion,
+      '@hua-labs/state': stateVersion,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
