@@ -4,6 +4,7 @@ Scaffolding tool for creating hua-ux projects.
 hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/create-hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/create-hua-ux)
+[![npm downloads](https://img.shields.io/npm/dw/@hua-labs/create-hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/create-hua-ux)
 [![license](https://img.shields.io/npm/l/@hua-labs/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
@@ -82,19 +83,66 @@ pnpm install
 pnpm dev
 ```
 
+## Features
+
+### 🚀 Intelligent Version Management
+- **Automatic npm Registry Detection**: Fetches the latest alpha versions of `@hua-labs` packages directly from npm registry at project creation time
+- **Zero Version Conflicts**: No hardcoded version assumptions - always uses the correct published versions
+- **Monorepo-Friendly**: Works seamlessly whether packages are published to npm or used as workspace dependencies
+
+### ⚡ Performance Optimized
+- **Parallel Package Resolution**: Uses `Promise.all` for concurrent npm registry queries
+- **Fast Project Creation**: Optimized template copying with smart filtering
+- **Minimal Dependencies**: Only essential dependencies for quick installation
+
+### 🎯 Production-Ready Setup
+- **Complete TypeScript Configuration**: Strict mode enabled with optimal settings
+- **Tailwind CSS 4**: Latest version pre-configured
+- **ESLint Ready**: Code quality checks out of the box
+- **Next.js 16**: Latest App Router with Server Components
+
+### 🌍 Internationalization Built-in
+- **Bilingual Support**: Korean and English translations included
+- **Easy Language Selection**: Choose documentation language during setup
+- **i18n API Routes**: Translation loading endpoint pre-configured
+- **Middleware Support**: Optional automatic language detection
+
+### 🤖 AI-Optimized Development
+- **Claude Code Integration**: `.cursorrules` and `.claude/project-context.md` files
+- **Cursor IDE Support**: Pre-configured rules for better AI assistance
+- **GEO Examples**: Generative Engine Optimization templates included
+- **AI Context Files**: Comprehensive project documentation for AI tools
+
 ## What Gets Created
 
-- ✅ Next.js 16 project with App Router
-- ✅ TypeScript configuration
-- ✅ Tailwind CSS setup
-- ✅ `@hua-labs/hua-ux` pre-installed and configured
-- ✅ Basic project structure (`app/`, `components/`, `lib/`, `store/`)
-- ✅ i18n setup with Korean and English translations
-- ✅ Example page using `HuaUxLayout` and `HuaUxPage` with translation keys
-- ✅ `hua-ux.config.ts` configuration file
-- ✅ Dynamic language setting in layout (middleware-ready)
-- ✅ Improved error handling in translation API
-- ✅ ESLint configuration ready
+### Core Framework
+- ✅ **Next.js 16** project with App Router and React 19
+- ✅ **TypeScript** configuration with strict mode
+- ✅ **Tailwind CSS 4** setup with PostCSS
+- ✅ **`@hua-labs/hua-ux`** pre-installed with latest alpha version from npm
+- ✅ **ESLint** configuration ready
+
+### Project Structure
+- ✅ **Organized directories**: `app/`, `components/`, `lib/`, `store/`, `translations/`
+- ✅ **Framework configuration**: `hua-ux.config.ts` with sensible defaults
+- ✅ **Example components**: Using `HuaUxLayout` and `HuaUxPage` with translation keys
+
+### Internationalization
+- ✅ **i18n setup** with Korean and English translations
+- ✅ **Translation API route**: `/api/translations/[language]/[namespace]`
+- ✅ **Dynamic language setting**: Reads from middleware headers
+- ✅ **Middleware example**: Optional automatic language detection
+
+### AI Development Tools
+- ✅ **`.cursorrules`**: Cursor IDE AI rules (optional)
+- ✅ **`ai-context.md`**: General AI context file (optional)
+- ✅ **`.claude/project-context.md`**: Claude-specific context (optional)
+- ✅ **GEO examples**: AI search engine optimization templates
+
+### Package Management
+- ✅ **Auto-detected versions**: Latest alpha versions fetched from npm registry
+- ✅ **Correct dependencies**: No version conflicts or mismatches
+- ✅ **Zustand store**: State management example included
 
 ## Project Structure
 
