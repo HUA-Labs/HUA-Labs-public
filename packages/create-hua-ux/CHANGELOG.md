@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.4
+
+### Patch Changes
+
+- ea5d62a: fix(create-hua-ux): Fix template copy failure when CLI is installed from npm. The filter function was checking if source path contains 'node_modules', which caused all files to be skipped when the template itself is located inside node_modules (npm installation). Changed to use relative paths for filtering.
+
 ## 0.1.0-alpha.3
 
 ### Patch Changes
