@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0-alpha.7
+
+### Patch Changes
+
+- 16bbe79: fix(create-hua-ux): Fix broken links and add Node.js version badge
+
+  - Fixed framework layer documentation links: `../../packages/hua-ux/src/framework/README.md` → `../hua-ux/src/framework/README.md`
+  - Added Node.js version badge to README
+
 ## 1.0.0-alpha.6
 
 ### Major Changes
