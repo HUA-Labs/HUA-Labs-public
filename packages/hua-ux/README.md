@@ -204,7 +204,12 @@ pnpm dev
 스캐폴딩 도구를 사용하여 새 프로젝트를 생성할 수 있습니다:
 
 ```bash
+npm create hua-ux my-app
+# or
 pnpm create hua-ux my-app
+# or
+yarn create hua-ux my-app
+
 cd my-app
 pnpm install
 pnpm dev
