@@ -2,6 +2,7 @@
   "buildCommand": "cd ../.. && pnpm install && cd examples/next-app-router-example && pnpm build",
   "outputDirectory": ".next",
   "installCommand": "cd ../.. && pnpm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "ignoreCommand": "npx turbo-ignore"
 }
 
