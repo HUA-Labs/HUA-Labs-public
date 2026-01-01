@@ -5,6 +5,7 @@ hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 
 [![npm version](https://img.shields.io/npm/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![npm downloads](https://img.shields.io/npm/dw/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
+[![node version](https://img.shields.io/node/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![license](https://img.shields.io/npm/l/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
@@ -221,7 +222,7 @@ The translation API route includes proper error handling with type distinction a
 - **`HuaUxPage`**: 페이지 래퍼 (자동 모션 적용)
 - **`hua-ux.config.ts`**: 프레임워크 설정 파일
 
-자세한 내용은 [프레임워크 레이어 문서](../../packages/hua-ux/src/framework/README.md)를 참고하세요.
+자세한 내용은 [프레임워크 레이어 문서](../hua-ux/src/framework/README.md)를 참고하세요.
 
 ## Troubleshooting
 
@@ -235,7 +236,7 @@ The translation API route includes proper error handling with type distinction a
 1. 미들웨어를 사용하지 않고 API Route나 클라이언트 컴포넌트에서 언어 감지
 2. Edge Runtime을 명시적으로 설정: `export const runtime = 'edge';`
 
-자세한 내용은 [프레임워크 레이어 문서](../../packages/hua-ux/src/framework/README.md)를 참고하세요.
+자세한 내용은 [프레임워크 레이어 문서](../hua-ux/src/framework/README.md)를 참고하세요.
 
 ## License
 
