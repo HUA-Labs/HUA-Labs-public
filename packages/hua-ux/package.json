@@ -1,26 +1,26 @@
 {
   "name": "@hua-labs/hua-ux",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "HUA UX - Ship UX faster: UI + motion + i18n, pre-wired. A framework for React product teams.",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./framework": {
       "types": "./dist/framework/index.d.ts",
-      "import": "./dist/framework/index.mjs",
+      "import": "./dist/framework/index.js",
       "require": "./dist/framework/index.js",
       "default": "./dist/framework/index.js"
     },
     "./presets": {
       "types": "./dist/presets/index.d.ts",
-      "import": "./dist/presets/index.mjs",
+      "import": "./dist/presets/index.js",
       "require": "./dist/presets/index.js",
       "default": "./dist/presets/index.js"
     }

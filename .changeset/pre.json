@@ -21,6 +21,7 @@
     "fix-create-hua-ux-template-copy",
     "fix-framework-readme-links",
     "fix-hua-ux-critical-issues",
+    "fix-hua-ux-exports",
     "rename-create-hua-ux-package"
   ]
 }
