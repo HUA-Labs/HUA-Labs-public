@@ -825,7 +825,6 @@ export async function validateTemplate(): Promise<void> {
     'store/useAppStore.ts',
     'translations/ko/common.json',
     'translations/en/common.json',
-    'public/favicon.ico',
     'ai-context.md',
     '.cursorrules',
   ];
