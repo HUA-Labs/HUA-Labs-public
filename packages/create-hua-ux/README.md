@@ -1,14 +1,20 @@
 # create-hua-ux
 
-Scaffolding tool for creating hua-ux projects.
-hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
+**Bootstrap production-ready Next.js apps with hua-ux in 60 seconds**
+**60초 만에 프로덕션 준비 완료된 Next.js 앱을 hua-ux와 함께 시작하세요**
 
 [![npm version](https://img.shields.io/npm/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![npm downloads](https://img.shields.io/npm/dw/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
+[![npm provenance](https://img.shields.io/badge/provenance-attestation-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![node version](https://img.shields.io/node/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![license](https://img.shields.io/npm/l/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ 알파 릴리즈**: 현재 알파 단계입니다. 안정 릴리즈 전에 API가 변경될 수 있습니다.
+
+---
+
+**By HUA Labs** | [GitHub](https://github.com/HUA-Labs) | [Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)
 
 ---
 
@@ -238,6 +244,6 @@ The translation API route includes proper error handling with type distinction a
 
 자세한 내용은 [프레임워크 레이어 문서](../hua-ux/src/framework/README.md)를 참고하세요.
 
-## License
+## License | 라이선스
 
-MIT
+MIT © 2025-present HUA Labs

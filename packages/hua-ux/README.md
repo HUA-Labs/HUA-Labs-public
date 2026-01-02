@@ -1,14 +1,20 @@
 # @hua-labs/hua-ux
 
-Ship UX faster: UI + Motion + i18n, pre-wired.
-빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크.
+**Ship UX faster: UI + Motion + i18n, pre-wired for React teams**
+**더 빠른 UX 개발: React 팀을 위한 UI + Motion + i18n 통합 솔루션**
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
+[![npm provenance](https://img.shields.io/badge/provenance-attestation-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![license](https://img.shields.io/npm/l/@hua-labs/hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ 알파 릴리즈**: 현재 알파 단계입니다. 안정 릴리즈 전에 API가 변경될 수 있습니다.
+
+---
+
+**By HUA Labs** | [GitHub](https://github.com/HUA-Labs) | [Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)
 
 ---
 
@@ -849,10 +855,12 @@ pnpm test
 - `0.x`: Alpha 단계, API 변경 가능
 - `1.x`: 안정화 후
 
-## 라이선스
+## License | 라이선스
 
-MIT
+MIT © 2025-present HUA Labs
 
-## 이슈 및 문의
+## Issues & Support | 이슈 및 문의
 
 문제가 발생하거나 제안사항이 있으시면 [GitHub Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)에 등록해주세요.
+
+For issues or feature requests, please visit our [GitHub Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues).

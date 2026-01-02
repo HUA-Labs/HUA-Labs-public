@@ -1,14 +1,20 @@
 # @hua-labs/state
 
-Unified state management for the hua-ux ecosystem with SSR support.
-hua-ux 생태계를 위한 SSR 지원 통합 상태 관리 솔루션입니다.
+**Zustand-powered state management for hua-ux. SSR-ready, type-safe, i18n-integrated**
+**hua-ux를 위한 Zustand 기반 상태 관리. SSR 지원, 타입 안전, i18n 통합**
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/state.svg)](https://www.npmjs.com/package/@hua-labs/state)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/state.svg)](https://www.npmjs.com/package/@hua-labs/state)
+[![npm provenance](https://img.shields.io/badge/provenance-attestation-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![license](https://img.shields.io/npm/l/@hua-labs/state.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ 알파 릴리즈**: 현재 알파 단계입니다. 안정 릴리즈 전에 API가 변경될 수 있습니다.
+
+---
+
+**By HUA Labs** | [GitHub](https://github.com/HUA-Labs) | [Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)
 
 ---
 
@@ -165,6 +171,6 @@ This package is designed to work seamlessly with other hua-ux packages:
 - **@hua-labs/i18n-core-zustand**: Use `createI18nStore` for language management
 - **@hua-labs/hua-ux/framework**: Framework layer uses this for state management
 
-## License
+## License | 라이선스
 
-MIT
+MIT © 2025-present HUA Labs
