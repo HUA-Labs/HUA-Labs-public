@@ -2,11 +2,18 @@
   "$schema": "https://unpkg.com/syncpack@13.0.4/dist/schema.json",
   "versionGroups": [
     {
-      "label": "Align @hua-labs packages across workspace",
+      "label": "Align @hua-labs packages across workspace (exclude peerDependencies)",
       "packages": ["**"],
       "dependencies": ["@hua-labs/**"],
-      "dependencyTypes": ["prod", "peer"],
+      "dependencyTypes": ["prod", "dev"],
       "pinVersion": "workspace:*"
+    },
+    {
+      "label": "Ignore @hua-labs packages in peerDependencies (allow version ranges for published packages)",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["peer"],
+      "isIgnored": true
     },
     {
       "label": "Align React ecosystem",
@@ -44,6 +51,13 @@
       "dependencies": ["**"],
       "dependencyTypes": ["prod", "dev"],
       "range": "^"
+    },
+    {
+      "label": "Allow version ranges in peerDependencies for @hua-labs packages",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["peer"],
+      "range": ">="
     }
   ]
 }

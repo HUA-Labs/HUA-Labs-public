@@ -202,8 +202,8 @@ importers:
         specifier: workspace:*
         version: link:../hua-i18n-core
       react:
-        specifier: '>=16.8.0'
-        version: 19.2.0
+        specifier: '>=18.0.0'
+        version: 19.2.3
     devDependencies:
       '@types/node':
         specifier: ^25.0.3
@@ -216,7 +216,7 @@ importers:
         version: 5.9.3
       zustand:
         specifier: ^5.0.8
-        version: 5.0.9(@types/react@19.2.7)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
+        version: 5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
 
   packages/hua-i18n-loaders:
     dependencies:
@@ -290,8 +290,8 @@ importers:
         version: 5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
     devDependencies:
       '@hua-labs/i18n-core-zustand':
-        specifier: 1.1.0-alpha.1
-        version: 1.1.0-alpha.1(react@19.2.3)(zustand@5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)))
+        specifier: workspace:*
+        version: link:../hua-i18n-core-zustand
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
@@ -969,17 +969,6 @@ packages:
     peerDependenciesMeta:
       '@exodus/crypto':
         optional: true
-
-  '@hua-labs/i18n-core-zustand@1.1.0-alpha.1':
-    resolution: {integrity: sha512-Vf0r9BM+AfD60vU9Bfglaspo2PtFrVPvDD5NZpf6BxgRNOyYwBrdaSMTsd9eDxTMJpP9gZ+tJkEas/esJLQahg==}
-    peerDependencies:
-      react: '>=16.8.0'
-      zustand: ^4.0.0
-
-  '@hua-labs/i18n-core@1.1.0-alpha.1':
-    resolution: {integrity: sha512-BqQsdokEHFT7ixZCJYMSU80IyNn1FIp2vALS+mKcMKCdBxBXGPYBmW3S1EKJq01V2izk7KwAtwxQbc3jOEPheg==}
-    peerDependencies:
-      react: '>=16.8.0'
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -5140,16 +5129,6 @@ snapshots:
 
   '@exodus/bytes@1.7.0': {}
 
-  '@hua-labs/i18n-core-zustand@1.1.0-alpha.1(react@19.2.3)(zustand@5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)))':
-    dependencies:
-      '@hua-labs/i18n-core': 1.1.0-alpha.1(react@19.2.3)
-      react: 19.2.3
-      zustand: 5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3))
-
-  '@hua-labs/i18n-core@1.1.0-alpha.1(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -9299,12 +9278,6 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.7
       react: 19.2.0
-
-  zustand@5.0.9(@types/react@19.2.7)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0)):
-    optionalDependencies:
-      '@types/react': 19.2.7
-      react: 19.2.0
-      use-sync-external-store: 1.6.0(react@19.2.0)
 
   zustand@5.0.9(@types/react@19.2.7)(react@19.2.3)(use-sync-external-store@1.6.0(react@19.2.3)):
     optionalDependencies:
