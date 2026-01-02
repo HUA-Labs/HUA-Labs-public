@@ -22,6 +22,7 @@
     "fix-create-hua-ux-i18n-core",
     "fix-create-hua-ux-npm-versions",
     "fix-create-hua-ux-template-copy",
+    "fix-create-hua-ux-template-validation",
     "fix-framework-readme-links",
     "fix-hua-ux-critical-issues",
     "fix-hua-ux-exports",
