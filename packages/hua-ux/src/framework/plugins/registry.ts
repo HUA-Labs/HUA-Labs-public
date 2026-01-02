@@ -6,6 +6,7 @@
 
 import type { HuaUxPlugin } from './types';
 import { hasLicense } from '../license';
+import type { LicenseFeature } from '../license/types';
 
 /**
  * 플러그인 레지스트리 / Plugin registry
@@ -52,7 +53,8 @@ class PluginRegistry {
         }
       } else {
         // 기본 라이선스 검증 (license feature 기반)
-        const feature = `plugin-${plugin.name}` as any;
+        // Note: Plugin features may not be in FEATURE_LICENSE_MAP, so this is a best-effort check
+        const feature = `plugin-${plugin.name}` as LicenseFeature;
         if (!hasLicense(feature)) {
           // 라이선스가 없어도 경고만 표시 (개발 환경)
           if (process.env.NODE_ENV === 'development') {

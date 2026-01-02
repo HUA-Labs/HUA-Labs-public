@@ -10,8 +10,8 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import type { HuaUxConfig } from '../types';
 import { getConfig } from '../config';
-import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
-import { createI18nStore } from '@hua-labs/state';
+import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
+import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
 
 /**
@@ -45,7 +45,7 @@ function createProviders(config: HuaUxConfig) {
 
     // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
     const I18nProvider = createZustandI18n(
-      i18nStore as any, // Type assertion needed due to Zustand's complex type system
+      i18nStore as UseBoundStore<StoreApi<ZustandLanguageStore>>,
       {
         fallbackLanguage: config.i18n.fallbackLanguage || 'en',
         namespaces: config.i18n.namespaces || ['common'],
