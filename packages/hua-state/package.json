@@ -33,7 +33,8 @@
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
-    "zustand": ">=5.0.0"
+    "zustand": ">=5.0.0",
+    "@hua-labs/i18n-core-zustand": ">=1.0.0"
   },
   "keywords": [
     "hua-labs",
