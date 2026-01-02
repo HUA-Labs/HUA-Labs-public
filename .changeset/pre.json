@@ -14,16 +14,20 @@
   },
   "changesets": [
     "alpha-release",
+    "dependency-alignment",
     "docs-update-create-hua-ux-readme",
     "docs-update-hua-ux-cli-commands",
     "feat-detect-package-manager",
     "fix-create-hua-ux-final",
+    "fix-create-hua-ux-i18n-core",
     "fix-create-hua-ux-npm-versions",
     "fix-create-hua-ux-template-copy",
     "fix-framework-readme-links",
     "fix-hua-ux-critical-issues",
     "fix-hua-ux-exports",
     "fix-package-exports",
-    "rename-create-hua-ux-package"
+    "rename-create-hua-ux-package",
+    "type-safety-improvements",
+    "zustand-v5-upgrade"
   ]
 }

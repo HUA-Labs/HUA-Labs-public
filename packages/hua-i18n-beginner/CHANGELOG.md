@@ -1,5 +1,19 @@
 # @hua-labs/i18n-beginner
 
+## 2.1.0-alpha.2
+
+### Patch Changes
+
+- f7d08f1: chore: align external dependency versions across all packages
+
+  - Introduce syncpack for automated dependency version management
+  - Align @types/node to ^25.0.3 across all packages
+  - Align TypeScript to ^5.9.3 across all packages
+  - Align React ecosystem packages to consistent versions
+  - Add dependency management scripts: deps:check, deps:fix, deps:format
+
+  This ensures consistent behavior across the monorepo and prevents version conflicts.
+
 ## 2.1.0-alpha.1
 
 ### Minor Changes
