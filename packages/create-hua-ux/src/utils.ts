@@ -26,6 +26,7 @@ import {
   AUTOPREFIXER_VERSION,
   POSTCSS_VERSION,
   TAILWIND_VERSION,
+  PHOSPHOR_ICONS_VERSION,
 } from './constants/versions';
 
 // Resolve template directory
@@ -420,8 +421,10 @@ export async function generatePackageJson(
 
   // npm registry에서 최신 alpha 버전 조회 (병렬 실행으로 성능 최적화)
   console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
-  const [i18nCoreZustandVersion, stateVersion] = await Promise.all([
+  const [i18nCoreVersion, i18nCoreZustandVersion, motionCoreVersion, stateVersion] = await Promise.all([
+    fetchLatestAlphaVersion('@hua-labs/i18n-core'),
     fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand'),
+    fetchLatestAlphaVersion('@hua-labs/motion-core'),
     fetchLatestAlphaVersion('@hua-labs/state'),
   ]);
 
@@ -438,8 +441,11 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
+      '@hua-labs/i18n-core': i18nCoreVersion,
       '@hua-labs/i18n-core-zustand': i18nCoreZustandVersion,
+      '@hua-labs/motion-core': motionCoreVersion,
       '@hua-labs/state': stateVersion,
+      '@phosphor-icons/react': PHOSPHOR_ICONS_VERSION,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,

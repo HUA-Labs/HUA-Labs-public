@@ -64,3 +64,8 @@ export const POSTCSS_VERSION = '^8.5.6';
  * Tailwind CSS version
  */
 export const TAILWIND_VERSION = '^4.1.13';
+
+/**
+ * Phosphor Icons version
+ */
+export const PHOSPHOR_ICONS_VERSION = '^2.1.10';
