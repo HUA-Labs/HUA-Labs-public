@@ -4,7 +4,9 @@ Type-safe i18n library with SSR/CSR support and state management integration.
 SSR/CSR 지원 및 상태 관리 통합 기능을 갖춘 타입 안전 i18n 라이브러리.
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-core.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core)
+[![npm downloads](https://img.shields.io/npm/dw/@hua-labs/i18n-core.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core)
 [![license](https://img.shields.io/npm/l/@hua-labs/i18n-core.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
