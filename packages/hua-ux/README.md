@@ -4,7 +4,9 @@ Ship UX faster: UI + Motion + i18n, pre-wired.
 빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크.
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
+[![npm downloads](https://img.shields.io/npm/dw/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
 [![license](https://img.shields.io/npm/l/@hua-labs/hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 

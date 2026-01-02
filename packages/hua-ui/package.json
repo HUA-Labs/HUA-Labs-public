@@ -3,55 +3,55 @@
   "version": "1.1.0-alpha.1",
   "description": "HUA Labs - Modern React UI Component Library - Beautiful, accessible, and customizable components for React applications",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./src/index.ts",
-      "require": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./advanced": {
       "types": "./dist/advanced.d.ts",
-      "import": "./dist/advanced.mjs",
+      "import": "./dist/advanced.js",
       "require": "./dist/advanced.js"
     },
     "./advanced/dashboard": {
-      "types": "./src/advanced/dashboard.ts",
-      "import": "./src/advanced/dashboard.ts",
-      "require": "./src/advanced/dashboard.ts",
-      "default": "./dist/advanced-dashboard.mjs"
+      "types": "./dist/advanced-dashboard.d.ts",
+      "import": "./dist/advanced-dashboard.js",
+      "require": "./dist/advanced-dashboard.js",
+      "default": "./dist/advanced-dashboard.js"
     },
     "./advanced/motion": {
-      "types": "./src/advanced/motion.ts",
-      "import": "./src/advanced/motion.ts",
-      "require": "./src/advanced/motion.ts",
-      "default": "./dist/advanced-motion.mjs"
+      "types": "./dist/advanced-motion.d.ts",
+      "import": "./dist/advanced-motion.js",
+      "require": "./dist/advanced-motion.js",
+      "default": "./dist/advanced-motion.js"
     },
     "./form": {
       "types": "./dist/form.d.ts",
-      "import": "./dist/form.mjs",
+      "import": "./dist/form.js",
       "require": "./dist/form.js"
     },
     "./navigation": {
       "types": "./dist/navigation.d.ts",
-      "import": "./dist/navigation.mjs",
+      "import": "./dist/navigation.js",
       "require": "./dist/navigation.js"
     },
     "./feedback": {
       "types": "./dist/feedback.d.ts",
-      "import": "./dist/feedback.mjs",
+      "import": "./dist/feedback.js",
       "require": "./dist/feedback.js"
     },
     "./components/*": {
       "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.mjs",
+      "import": "./dist/components/*.js",
       "require": "./dist/components/*.js"
     },
     "./components/advanced/*": {
       "types": "./dist/components/advanced/*.d.ts",
-      "import": "./dist/components/advanced/*.mjs",
+      "import": "./dist/components/advanced/*.js",
       "require": "./dist/components/advanced/*.js"
     },
     "./styles/toast.css": "./src/styles/toast.css"
