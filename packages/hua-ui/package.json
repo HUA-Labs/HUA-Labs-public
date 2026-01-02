@@ -130,5 +130,9 @@
   "bugs": {
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
-  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
+  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }
