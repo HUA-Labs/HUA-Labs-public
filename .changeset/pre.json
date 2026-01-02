@@ -22,6 +22,7 @@
     "fix-framework-readme-links",
     "fix-hua-ux-critical-issues",
     "fix-hua-ux-exports",
+    "fix-package-exports",
     "rename-create-hua-ux-package"
   ]
 }
