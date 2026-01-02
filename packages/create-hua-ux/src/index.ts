@@ -99,10 +99,10 @@ export async function main(): Promise<void> {
       });
       return;
     } catch (error) {
-      const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
-      console.error(isEn ? 'Project name is required' : 'Project name is required / 프로젝트 이름이 필요합니다');
-      console.error('Usage: npx @hua-labs/create-hua-ux <project-name> [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--non-interactive] [--english-only]');
-      process.exit(1);
+      if (error instanceof Error && error.message.includes('User force closed')) {
+        process.exit(0);
+      }
+      throw error;
     }
   }
 
