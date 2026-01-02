@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.1.0-alpha.6
+
+### Patch Changes
+
+- f7d08f1: chore: align external dependency versions across all packages
+
+  - Introduce syncpack for automated dependency version management
+  - Align @types/node to ^25.0.3 across all packages
+  - Align TypeScript to ^5.9.3 across all packages
+  - Align React ecosystem packages to consistent versions
+  - Add dependency management scripts: deps:check, deps:fix, deps:format
+
+  This ensures consistent behavior across the monorepo and prevents version conflicts.
+
+- f7d08f1: fix(hua-ux, state): improve type safety and remove 'as any' assertions
+
+  - Remove all 'as any' type assertions from hua-ux framework
+  - Export zustand types (UseBoundStore, StoreApi) from @hua-labs/state for proper type inference
+  - Fix LicenseFeature type handling for dynamic plugin features
+  - Improve type safety in Providers.tsx by using re-exported types
+
+- Updated dependencies [f7d08f1]
+- Updated dependencies [f7d08f1]
+- Updated dependencies [f7d08f1]
+  - @hua-labs/i18n-core@1.1.0-alpha.2
+  - @hua-labs/i18n-core-zustand@1.1.0-alpha.2
+  - @hua-labs/motion-core@2.1.0-alpha.2
+  - @hua-labs/state@0.1.0-alpha.3
+  - @hua-labs/ui@1.1.0-alpha.3
+
 ## 0.1.0-alpha.5
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.0.0-alpha.9
+
+### Patch Changes
+
+- f7d08f1: chore: align external dependency versions across all packages
+
+  - Introduce syncpack for automated dependency version management
+  - Align @types/node to ^25.0.3 across all packages
+  - Align TypeScript to ^5.9.3 across all packages
+  - Align React ecosystem packages to consistent versions
+  - Add dependency management scripts: deps:check, deps:fix, deps:format
+
+  This ensures consistent behavior across the monorepo and prevents version conflicts.
+
+- f7d08f1: fix(create-hua-ux): add missing peer dependencies to generated projects
+
+  - Add @hua-labs/i18n-core to dependencies (fixes MODULE NOT FOUND error)
+  - Add @hua-labs/motion-core to dependencies (required by @hua-labs/ui for animations)
+  - Add @phosphor-icons/react to dependencies (required by @hua-labs/ui for icons)
+  - Fetch latest alpha versions from npm registry for all hua-labs packages
+  - Add PHOSPHOR_ICONS_VERSION constant (^2.1.10)
+
+  This ensures all peer dependencies are satisfied and UI components work out of the box.
+
 ## 1.0.0-alpha.8
 
 ### Minor Changes

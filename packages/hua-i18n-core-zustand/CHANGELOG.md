@@ -1,5 +1,32 @@
 # @hua-labs/i18n-core-zustand
 
+## 1.1.0-alpha.2
+
+### Minor Changes
+
+- f7d08f1: feat(i18n-core-zustand): upgrade to zustand v5
+
+  BREAKING CHANGE: This package now requires zustand >=5.0.0
+
+  - Update peerDependencies to zustand >=5.0.0
+  - Update devDependencies to zustand ^5.0.8
+  - Ensures compatibility with @hua-labs/state which uses zustand v5
+
+### Patch Changes
+
+- f7d08f1: chore: align external dependency versions across all packages
+
+  - Introduce syncpack for automated dependency version management
+  - Align @types/node to ^25.0.3 across all packages
+  - Align TypeScript to ^5.9.3 across all packages
+  - Align React ecosystem packages to consistent versions
+  - Add dependency management scripts: deps:check, deps:fix, deps:format
+
+  This ensures consistent behavior across the monorepo and prevents version conflicts.
+
+- Updated dependencies [f7d08f1]
+  - @hua-labs/i18n-core@1.1.0-alpha.2
+
 ## 1.1.0-alpha.1
 
 ### Minor Changes
