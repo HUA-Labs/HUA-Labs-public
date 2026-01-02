@@ -20,6 +20,7 @@
     "fix-create-hua-ux-npm-versions",
     "fix-create-hua-ux-template-copy",
     "fix-framework-readme-links",
+    "fix-hua-ux-critical-issues",
     "rename-create-hua-ux-package"
   ]
 }
