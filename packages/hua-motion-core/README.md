@@ -1,14 +1,20 @@
 # @hua-labs/motion-core
 
-30+ production-tested React animation hooks. Zero dependencies, SSR-ready.
-프로덕션 검증 완료 React 애니메이션 훅 30개 이상. 의존성 없음, SSR 지원.
+**30+ battle-tested animation hooks. 60fps, zero dependencies, SSR-ready**
+**전투 테스트 완료 애니메이션 훅 30개 이상. 60fps, 의존성 없음, SSR 지원**
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
+[![npm provenance](https://img.shields.io/badge/provenance-attestation-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![license](https://img.shields.io/npm/l/@hua-labs/motion-core.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ 알파 릴리즈**: 현재 알파 단계입니다. 안정 릴리즈 전에 API가 변경될 수 있습니다.
+
+---
+
+**By HUA Labs** | [GitHub](https://github.com/HUA-Labs) | [Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)
 
 ---
 
@@ -273,6 +279,6 @@ npm install @hua-labs/motion-core
 
 ---
 
-## License
+## License | 라이선스
 
-MIT © HUA Labs
+MIT © 2025-present HUA Labs

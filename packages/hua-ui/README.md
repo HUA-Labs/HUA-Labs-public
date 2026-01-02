@@ -1,14 +1,20 @@
 # @hua-labs/ui
 
-Modern React UI component library with 70+ production-ready components.
-70개 이상의 프로덕션 준비 완료 React UI 컴포넌트 라이브러리.
+**70+ production-ready React components. Accessible, TypeScript-native, tree-shakeable**
+**프로덕션 준비 완료 React 컴포넌트 70개 이상. 접근성, TypeScript, 트리셰이킹 지원**
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
+[![npm provenance](https://img.shields.io/badge/provenance-attestation-blue)](https://docs.npmjs.com/generating-provenance-statements)
 [![license](https://img.shields.io/npm/l/@hua-labs/ui.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ 알파 릴리즈**: 현재 알파 단계입니다. 안정 릴리즈 전에 API가 변경될 수 있습니다.
+
+---
+
+**By HUA Labs** | [GitHub](https://github.com/HUA-Labs) | [Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)
 
 ---
 
@@ -1033,11 +1039,11 @@ pnpm test
 - Tailwind CSS (for styling)
 - Optional: @phosphor-icons/react (for Phosphor icon support)
 
-## License
+## License | 라이선스
 
-MIT License
+MIT © 2025-present HUA Labs
 
-## 문서
+## Documentation | 문서
 
 - [아키텍처 문서](./docs/ARCHITECTURE.md) - 전체 아키텍처 및 설계 원칙
 - [패키지 구조](./docs/PACKAGE_STRUCTURE.md) - 디렉토리 구조 및 파일 조직
