@@ -1,8 +1,10 @@
 /**
  * @hua-labs/hua-ux/framework
- * 
+ *
  * Framework layer for hua-ux
  */
+
+'use client';
 
 // Components
 export { HuaUxLayout } from './components/HuaUxLayout';
