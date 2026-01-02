@@ -92,5 +92,9 @@
     "jsdom": "^27.2.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.14"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

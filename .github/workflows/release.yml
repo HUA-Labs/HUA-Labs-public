@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write # Git 커밋 및 릴리즈 노트 생성을 위해 필요
   pull-requests: write # PR 업데이트를 위해 필요 (Changesets가 사용)
+  id-token: write # npm Provenance를 위한 OIDC 토큰 권한
 
 jobs:
   release:
