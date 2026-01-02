@@ -16,6 +16,7 @@
     "alpha-release",
     "docs-update-create-hua-ux-readme",
     "docs-update-hua-ux-cli-commands",
+    "feat-detect-package-manager",
     "fix-create-hua-ux-final",
     "fix-create-hua-ux-npm-versions",
     "fix-create-hua-ux-template-copy",
