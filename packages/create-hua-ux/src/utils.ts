@@ -1073,10 +1073,11 @@ export function displayNextSteps(
   const displayPath = relativePath || path.basename(projectPath);
 
   const packageManager = detectPackageManager();
+  const devCommand = packageManager === 'npm' ? 'npm run dev' : `${packageManager} dev`;
   console.log(chalk.cyan(`\n📚 Next Steps:`));
   console.log(chalk.white(`  cd ${displayPath}`));
   console.log(chalk.white(`  ${packageManager} install`));
-  console.log(chalk.white(`  ${packageManager} dev`));
+  console.log(chalk.white(`  ${devCommand}`));
 
   if (aiContextOptions?.claudeSkills) {
     console.log(chalk.cyan(`\n💡 Claude Skills enabled:`));

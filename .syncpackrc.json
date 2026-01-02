@@ -5,7 +5,7 @@
       "label": "Align @hua-labs packages across workspace",
       "packages": ["**"],
       "dependencies": ["@hua-labs/**"],
-      "dependencyTypes": ["prod", "peer"],
+      "dependencyTypes": ["prod", "peer", "dev"],
       "pinVersion": "workspace:*"
     },
     {
