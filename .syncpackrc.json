@@ -1,0 +1,49 @@
+{
+  "$schema": "https://unpkg.com/syncpack@13.0.4/dist/schema.json",
+  "versionGroups": [
+    {
+      "label": "Align @hua-labs packages across workspace",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["prod", "peer"],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "Align React ecosystem",
+      "packages": ["**"],
+      "dependencies": ["react", "react-dom"],
+      "dependencyTypes": ["prod", "peer", "dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align TypeScript",
+      "packages": ["**"],
+      "dependencies": ["typescript"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align @types packages",
+      "packages": ["**"],
+      "dependencies": ["@types/**"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align zustand",
+      "packages": ["**"],
+      "dependencies": ["zustand"],
+      "dependencyTypes": ["prod", "peer", "dev"],
+      "policy": "sameRange"
+    }
+  ],
+  "semverGroups": [
+    {
+      "label": "Use caret ranges for external deps",
+      "packages": ["**"],
+      "dependencies": ["**"],
+      "dependencyTypes": ["prod", "dev"],
+      "range": "^"
+    }
+  ]
+}

@@ -58,7 +58,7 @@
   },
   "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
   "devDependencies": {
-    "@hua-labs/i18n-core-zustand": "workspace:*",
+    "@hua-labs/i18n-core-zustand": "1.1.0-alpha.1",
     "@types/node": "^25.0.3",
     "typescript": "^5.9.3"
   }

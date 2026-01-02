@@ -5,7 +5,15 @@
       "Bash(cat:*)",
       "Bash(gh pr edit:*)",
       "Bash(gh pr merge:*)",
-      "Bash(gh pr view:*)"
+      "Bash(gh pr view:*)",
+      "Bash(npm view:*)",
+      "Bash(gh run list:*)",
+      "Bash(pnpm install:*)",
+      "Bash(gt create:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh pr ready:*)",
+      "Bash(npx syncpack:*)"
     ]
   }
 }

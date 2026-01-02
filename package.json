@@ -16,12 +16,16 @@
     "publish": "turbo run publish",
     "version": "changeset version",
     "release": "changeset publish",
-    "release:dry": "changeset publish --dry-run"
+    "release:dry": "changeset publish --dry-run",
+    "deps:check": "syncpack list-mismatches",
+    "deps:fix": "syncpack fix-mismatches",
+    "deps:format": "syncpack format"
   },
   "devDependencies": {
-    "changesets": "^1.0.2",
-    "turbo": "^2.5.8",
     "@changesets/cli": "^2.29.5",
+    "changesets": "^1.0.2",
+    "syncpack": "^13.0.4",
+    "turbo": "^2.5.8",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.24.0",
