@@ -4,7 +4,8 @@
       "Bash(pnpm build:*)",
       "Bash(cat:*)",
       "Bash(gh pr edit:*)",
-      "Bash(gh pr merge:*)"
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr view:*)"
     ]
   }
 }
