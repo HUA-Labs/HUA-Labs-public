@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Created with hua-ux",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export default function RootLayout({
   // Dynamic language setting (use header set by middleware)
   // middleware.ts에서 'x-language' 헤더를 설정하면 여기서 읽을 수 있습니다.
   // If middleware.ts sets 'x-language' header, it can be read here.
-  const headersList = headers();
+  const headersList = await headers();
   const language = headersList.get('x-language') || 'ko'; // 기본값: 'ko'
 
   return (
