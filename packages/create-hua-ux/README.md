@@ -238,6 +238,54 @@ The translation API route includes proper error handling with type distinction a
 
 자세한 내용은 [프레임워크 레이어 문서](../hua-ux/src/framework/README.md)를 참고하세요.
 
+### Getting old template version?
+
+If you're experiencing errors that seem to be from an outdated version of the template (e.g., missing `async/await` in Next.js 16 APIs), this is likely due to npx cache.
+
+**Symptoms**:
+- Error: `headersList.get is not a function` in `app/layout.tsx`
+- Missing `async` keyword in route handlers or layouts
+- Old package versions in generated `package.json`
+
+**Solution - Clear npx cache**:
+
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Windows - Clear npx cache
+del /s /q "%LOCALAPPDATA%\npm-cache"
+rmdir /s /q "%APPDATA%\npm-cache"
+
+# macOS/Linux - Clear npx cache
+rm -rf ~/.npm/_npx
+
+# Then create project with latest version
+npm create hua-ux@latest my-app
+```
+
+**Prevention - Always use @latest**:
+
+```bash
+# Good - forces latest version
+npm create hua-ux@latest my-app
+
+# Bad - might use cached version
+npm create hua-ux my-app
+```
+
+**Verification**:
+
+After creating a project, verify you have the latest template by checking:
+
+```bash
+cd my-app
+cat app/layout.tsx | grep "async function RootLayout"
+# Should see: export default async function RootLayout
+```
+
+For more details, see [npx cache investigation devlog](../../docs/devlogs/DEVLOG_2026-01-03_NPX_CACHE_ISSUE_INVESTIGATION.md).
+
 ## License
 
 MIT
