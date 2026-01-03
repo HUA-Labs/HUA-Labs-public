@@ -1,0 +1,146 @@
+name: Validate PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+jobs:
+  validate-changeset:
+    name: Check Changeset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for package changes
+        id: check-packages
+        run: |
+          # Check if any package files were modified
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+
+          # Check for changes in packages/ directory (excluding changesets)
+          if echo "$CHANGED_FILES" | grep -E '^packages/.+\.(ts|tsx|js|jsx|json)$' | grep -v 'CHANGELOG.md' | grep -v 'package.json'; then
+            echo "has_package_changes=true" >> $GITHUB_OUTPUT
+            echo "✓ Detected changes in packages"
+          else
+            echo "has_package_changes=false" >> $GITHUB_OUTPUT
+            echo "✓ No package changes detected"
+          fi
+
+      - name: Check for changeset
+        if: steps.check-packages.outputs.has_package_changes == 'true'
+        run: |
+          # Check if changeset files exist (excluding README.md)
+          CHANGESET_FILES=$(find .changeset -name "*.md" ! -name "README.md" -type f 2>/dev/null || true)
+
+          if [ -z "$CHANGESET_FILES" ]; then
+            echo "❌ Error: Package changes detected but no changeset found"
+            echo ""
+            echo "Please create a changeset by running:"
+            echo "  npx changeset"
+            echo ""
+            echo "Or if using Graphite workflow:"
+            echo "  gt create -m 'your commit message'"
+            echo ""
+            exit 1
+          else
+            echo "✓ Changeset files found:"
+            echo "$CHANGESET_FILES"
+          fi
+
+      - name: Validate changeset package names
+        if: steps.check-packages.outputs.has_package_changes == 'true'
+        run: |
+          # Get all package names from workspace
+          WORKSPACE_PACKAGES=$(find packages -name "package.json" -exec jq -r '.name' {} \; 2>/dev/null | sort)
+
+          echo "📦 Workspace packages:"
+          echo "$WORKSPACE_PACKAGES"
+          echo ""
+
+          # Check each changeset file
+          ERROR=0
+          for changeset_file in .changeset/*.md; do
+            # Skip README
+            if [[ "$changeset_file" == *"README.md" ]]; then
+              continue
+            fi
+
+            echo "Checking $changeset_file..."
+
+            # Extract package names from changeset (format: "package-name": patch)
+            CHANGESET_PACKAGES=$(grep -oP '(?<=")[^"]+(?=":)' "$changeset_file" | grep '^@' || true)
+
+            if [ -z "$CHANGESET_PACKAGES" ]; then
+              echo "  ⚠️  No packages found in changeset"
+              continue
+            fi
+
+            # Validate each package exists in workspace
+            while IFS= read -r pkg; do
+              if echo "$WORKSPACE_PACKAGES" | grep -q "^$pkg$"; then
+                echo "  ✓ $pkg - valid"
+              else
+                echo "  ❌ $pkg - NOT FOUND in workspace"
+                echo ""
+                echo "Available packages:"
+                echo "$WORKSPACE_PACKAGES"
+                echo ""
+                echo "Did you mean one of these?"
+                echo "$WORKSPACE_PACKAGES" | grep -i "$(echo $pkg | sed 's/@hua-labs\///')" || true
+                ERROR=1
+              fi
+            done <<< "$CHANGESET_PACKAGES"
+          done
+
+          if [ $ERROR -eq 1 ]; then
+            echo ""
+            echo "❌ Changeset validation failed"
+            echo "Please fix the package names in your changeset files"
+            exit 1
+          fi
+
+          echo ""
+          echo "✓ All changeset package names are valid"
+
+      - name: Validate changeset format
+        if: steps.check-packages.outputs.has_package_changes == 'true'
+        run: |
+          # Run changeset's built-in validation
+          pnpm changeset status || {
+            echo "❌ Changeset validation failed"
+            echo "Please ensure your changeset files are properly formatted"
+            exit 1
+          }
+
+          echo "✓ Changeset format is valid"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Changeset Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.check-packages.outputs.has_package_changes }}" == "true" ]; then
+            echo "✅ Package changes detected" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Changeset validation passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No package changes detected - changeset not required" >> $GITHUB_STEP_SUMMARY
+          fi

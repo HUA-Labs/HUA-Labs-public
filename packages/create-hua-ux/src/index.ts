@@ -6,6 +6,7 @@
 
 import { createProject } from './create-project';
 import { promptProjectName, promptAiContextOptions, type AiContextOptions } from './utils';
+import { checkVersion } from './version-check';
 
 /**
  * Parse CLI arguments for AI context options and other flags
@@ -69,6 +70,13 @@ function parseAiContextOptions(): {
 }
 
 export async function main(): Promise<void> {
+  // Check version (skip in CI/test environments)
+  if (!process.env.CI && !process.env.NON_INTERACTIVE) {
+    await checkVersion().catch(() => {
+      // Silently continue if version check fails
+    });
+  }
+
   // Check for doctor command
   const args = process.argv.slice(2);
   if (args[0] === 'doctor') {
