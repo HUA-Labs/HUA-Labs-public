@@ -240,7 +240,7 @@ The translation API route includes proper error handling with type distinction a
 
 ### Getting old template version?
 
-If you're experiencing errors that seem to be from an old version of the template (e.g., missing `async/await` in Next.js 16 APIs), this is likely due to npx cache.
+If you're experiencing errors that seem to be from an outdated version of the template (e.g., missing `async/await` in Next.js 16 APIs), this is likely due to npx cache.
 
 **Symptoms**:
 - Error: `headersList.get is not a function` in `app/layout.tsx`
