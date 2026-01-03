@@ -23,6 +23,12 @@
       "import": "./dist/presets/index.js",
       "require": "./dist/presets/index.js",
       "default": "./dist/presets/index.js"
+    },
+    "./framework/seo/geo": {
+      "types": "./dist/framework/seo/geo/index.d.ts",
+      "import": "./dist/framework/seo/geo/index.js",
+      "require": "./dist/framework/seo/geo/index.js",
+      "default": "./dist/framework/seo/geo/index.js"
     }
   },
   "files": [

@@ -5,7 +5,29 @@ import { HuaUxLayout } from "@hua-labs/hua-ux/framework";
 
 export const metadata: Metadata = {
   title: "HUA UX App",
-  description: "Created with hua-ux",
+  description: "Created with @hua-labs/hua-ux - AI-first React framework",
+  icons: {
+    icon: '/favicon.ico',
+  },
+  keywords: [
+    "nextjs",
+    "react",
+    "typescript",
+    "hua-ux",
+    "i18n",
+    "internationalization",
+    "accessibility",
+    "motion",
+    "animation",
+  ],
+  authors: [{ name: "HUA Labs" }],
+  creator: "HUA Labs",
+  publisher: "HUA Labs",
+  openGraph: {
+    title: "HUA UX App",
+    description: "Created with @hua-labs/hua-ux - AI-first React framework",
+    type: "website",
+  },
 };
 
 export default async function RootLayout({

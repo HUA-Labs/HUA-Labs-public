@@ -1,0 +1,20 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- HUA Labs Logo -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Circle -->
+  <circle cx="60" cy="60" r="55" stroke="url(#gradient)" stroke-width="3" fill="none"/>
+
+  <!-- Letter H -->
+  <path d="M 35 35 L 35 85 M 35 60 L 55 60 M 55 35 L 55 85"
+        stroke="url(#gradient)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Letter U -->
+  <path d="M 65 35 L 65 70 Q 65 80 75 80 Q 85 80 85 70 L 85 35"
+        stroke="url(#gradient)" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>
