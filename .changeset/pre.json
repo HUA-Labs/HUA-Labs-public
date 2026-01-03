@@ -26,6 +26,7 @@
     "fix-framework-readme-links",
     "fix-hua-ux-critical-issues",
     "fix-hua-ux-exports",
+    "fix-hua-ux-use-client",
     "fix-package-exports",
     "rename-create-hua-ux-package",
     "type-safety-improvements",
