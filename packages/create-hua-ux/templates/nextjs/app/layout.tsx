@@ -5,10 +5,32 @@ import { HuaUxLayout } from "@hua-labs/hua-ux/framework";
 
 export const metadata: Metadata = {
   title: "HUA UX App",
-  description: "Created with hua-ux",
+  description: "Created with @hua-labs/hua-ux - AI-first React framework",
+  icons: {
+    icon: '/favicon.ico',
+  },
+  keywords: [
+    "nextjs",
+    "react",
+    "typescript",
+    "hua-ux",
+    "i18n",
+    "internationalization",
+    "accessibility",
+    "motion",
+    "animation",
+  ],
+  authors: [{ name: "HUA Labs" }],
+  creator: "HUA Labs",
+  publisher: "HUA Labs",
+  openGraph: {
+    title: "HUA UX App",
+    description: "Created with @hua-labs/hua-ux - AI-first React framework",
+    type: "website",
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,7 +39,7 @@ export default function RootLayout({
   // Dynamic language setting (use header set by middleware)
   // middleware.ts에서 'x-language' 헤더를 설정하면 여기서 읽을 수 있습니다.
   // If middleware.ts sets 'x-language' header, it can be read here.
-  const headersList = headers();
+  const headersList = await headers();
   const language = headersList.get('x-language') || 'ko'; // 기본값: 'ko'
 
   return (
