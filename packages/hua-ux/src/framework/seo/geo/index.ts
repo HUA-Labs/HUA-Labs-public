@@ -17,6 +17,16 @@ export {
   openGraphToObject,
 } from './generateGEOMetadata';
 
+// Server Component helpers (Next.js 15/16)
+export {
+  generateGEOForMetadata,
+  generateGEOScripts,
+  getGEOMetadata,
+  generateGEOForMetadataAsync,
+  combineGEOConfigs,
+  createGEOFromEnv,
+} from './server';
+
 // Structured data helpers
 export {
   generateSoftwareApplicationLD,
