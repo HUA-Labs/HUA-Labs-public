@@ -1,0 +1,214 @@
+name: E2E Test (Fresh Install)
+
+on:
+  pull_request:
+    paths:
+      - 'packages/create-hua-ux/**'
+      - '.github/workflows/e2e-test.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/create-hua-ux/**'
+  workflow_dispatch:
+
+jobs:
+  test-fresh-install:
+    name: Test on ${{ matrix.os }} with ${{ matrix.package-manager }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        package-manager: [npm, pnpm]
+        node-version: [22]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build create-hua-ux
+        run: |
+          cd packages/create-hua-ux
+          pnpm build
+
+      - name: Create temp directory (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p /tmp/hua-test-${{ github.run_id }}
+          echo "TEST_DIR=/tmp/hua-test-${{ github.run_id }}" >> $GITHUB_ENV
+
+      - name: Create temp directory (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          New-Item -ItemType Directory -Path "$env:TEMP\hua-test-${{ github.run_id }}" -Force
+          echo "TEST_DIR=$env:TEMP\hua-test-${{ github.run_id }}" >> $env:GITHUB_ENV
+        shell: pwsh
+
+      - name: Test project creation
+        run: |
+          cd ${{ env.TEST_DIR }}
+          node ${{ github.workspace }}/packages/create-hua-ux/dist/bin/create-hua-ux.js test-app
+        env:
+          NON_INTERACTIVE: "1"
+          CI: "true"
+
+      - name: Verify package.json (no workspace protocol)
+        run: |
+          cd ${{ env.TEST_DIR }}/test-app
+
+          # Check for workspace: protocol (should NOT exist)
+          if grep -q "workspace:" package.json; then
+            echo "❌ Error: workspace: protocol found in package.json"
+            cat package.json
+            exit 1
+          fi
+
+          echo "✓ No workspace protocol found"
+        shell: bash
+
+      - name: Install dependencies
+        run: |
+          cd ${{ env.TEST_DIR }}/test-app
+
+          if [ "${{ matrix.package-manager }}" == "npm" ]; then
+            npm install
+          else
+            pnpm install
+          fi
+        shell: bash
+
+      - name: Verify Next.js 16 async APIs
+        run: |
+          cd ${{ env.TEST_DIR }}/test-app
+
+          # Check app/layout.tsx
+          if ! grep -q "async function RootLayout" app/layout.tsx; then
+            echo "❌ Error: app/layout.tsx missing 'async function RootLayout'"
+            exit 1
+          fi
+
+          if ! grep -q "await headers()" app/layout.tsx; then
+            echo "❌ Error: app/layout.tsx missing 'await headers()'"
+            exit 1
+          fi
+
+          # Check API route
+          if ! grep -q "await params" app/api/translations/*/*/route.ts; then
+            echo "❌ Error: API route missing 'await params'"
+            exit 1
+          fi
+
+          echo "✓ Next.js 16 async APIs verified"
+        shell: bash
+
+      - name: Build project
+        run: |
+          cd ${{ env.TEST_DIR }}/test-app
+
+          if [ "${{ matrix.package-manager }}" == "npm" ]; then
+            npm run build
+          else
+            pnpm build
+          fi
+        shell: bash
+        timeout-minutes: 10
+
+      - name: Test dev server startup (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd ${{ env.TEST_DIR }}/test-app
+
+          # Start dev server in background
+          if [ "${{ matrix.package-manager }}" == "npm" ]; then
+            npm run dev &
+          else
+            pnpm dev &
+          fi
+
+          DEV_PID=$!
+
+          # Wait for server to start (max 30 seconds)
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null 2>&1; then
+              echo "✓ Dev server started successfully"
+              kill $DEV_PID
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "❌ Dev server failed to start"
+          kill $DEV_PID || true
+          exit 1
+        shell: bash
+        timeout-minutes: 2
+
+      - name: Test dev server startup (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd ${{ env.TEST_DIR }}\test-app
+
+          # Start dev server in background
+          if ("${{ matrix.package-manager }}" -eq "npm") {
+            Start-Process npm -ArgumentList "run", "dev" -NoNewWindow
+          } else {
+            Start-Process pnpm -ArgumentList "dev" -NoNewWindow
+          }
+
+          # Wait for server to start (max 30 seconds)
+          for ($i = 1; $i -le 30; $i++) {
+            try {
+              $response = Invoke-WebRequest -Uri "http://localhost:3000" -UseBasicParsing -TimeoutSec 1
+              Write-Output "✓ Dev server started successfully"
+              Get-Process node | Stop-Process -Force
+              exit 0
+            } catch {
+              Start-Sleep -Seconds 1
+            }
+          }
+
+          Write-Output "❌ Dev server failed to start"
+          Get-Process node | Stop-Process -Force
+          exit 1
+        shell: pwsh
+        timeout-minutes: 2
+
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ "${{ runner.os }}" != "Windows" ]; then
+            rm -rf ${{ env.TEST_DIR }}
+          else
+            Remove-Item -Recurse -Force "${{ env.TEST_DIR }}" -ErrorAction SilentlyContinue
+          fi
+        shell: bash
+
+  summary:
+    name: E2E Test Summary
+    runs-on: ubuntu-latest
+    needs: test-fresh-install
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test-fresh-install.result }}" == "success" ]; then
+            echo "✅ All E2E tests passed"
+            exit 0
+          else
+            echo "❌ Some E2E tests failed"
+            exit 1
+          fi

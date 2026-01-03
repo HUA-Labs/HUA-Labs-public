@@ -42,6 +42,14 @@ export {
 export { GEO_PRESETS } from './presets';
 export type { GEOPreset } from './presets';
 
+// Validator
+export {
+  validateJsonLd,
+  validateGEOMetadata as validateGEOMetadataStructure,
+  formatValidationResult,
+} from './validator';
+export type { ValidationError, ValidationResult } from './validator';
+
 // Test utilities
 export {
   validateGEOMetadata,

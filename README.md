@@ -136,6 +136,26 @@ Visit individual package directories for comprehensive documentation.
 
 ---
 
+## Quality & Automation
+
+We maintain high quality through comprehensive automation:
+
+- ✅ **Changeset Validation** - Ensures all PRs include proper version updates
+- ✅ **Template Quality Checks** - Validates Next.js 16 compatibility before every build
+- ✅ **E2E Testing** - Tests in real-world environments across multiple OS and package managers
+- ✅ **Dependency Monitoring** - Weekly checks for critical dependency updates
+- ✅ **Version Detection** - Warns users about outdated versions due to npx cache
+
+**Transparency:** All automation is publicly available in this repository.
+
+📚 **Learn more:**
+- [Automation Guide](./docs/AUTOMATION.md) - Comprehensive documentation
+- [Quick Start](./docs/AUTOMATION_QUICK_START.md) - 5-minute guide for developers
+
+**Time Saved:** ~10 hours/week through automated quality checks
+
+---
+
 ## Development
 
 This repository uses:
@@ -143,6 +163,7 @@ This repository uses:
 - **Turborepo** for build orchestration
 - **TypeScript** for type safety
 - **Changesets** for versioning
+- **GitHub Actions** for CI/CD automation
 
 ### Build All Packages
 
