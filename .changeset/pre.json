@@ -14,8 +14,10 @@
   },
   "changesets": [
     "alpha-release",
+    "automation-implementation",
     "create-hua-ux-nextjs-16-enhancements",
     "dependency-alignment",
+    "docs-npx-cache-troubleshooting",
     "docs-update-create-hua-ux-readme",
     "docs-update-hua-ux-cli-commands",
     "feat-detect-package-manager",
