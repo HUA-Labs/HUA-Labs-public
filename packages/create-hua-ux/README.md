@@ -7,10 +7,13 @@ hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 [![npm downloads](https://img.shields.io/npm/dw/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![node version](https://img.shields.io/node/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![license](https://img.shields.io/npm/l/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
+
+[English](#english) | [한국어](#korean)
 
 ## English
 
