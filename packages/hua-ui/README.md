@@ -1,7 +1,7 @@
-# @hua-labs/ui
+﻿# @hua-labs/ui
 
 Modern React UI component library with 70+ production-ready components.
-70개 이상의 프로덕션 준비 완료 React UI 컴포넌트 라이브러리.
+70媛??댁긽???꾨줈?뺤뀡 以鍮??꾨즺 React UI 而댄룷?뚰듃 ?쇱씠釉뚮윭由?
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
@@ -9,11 +9,11 @@ Modern React UI component library with 70+ production-ready components.
 [![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **?좑툘 Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
 
-[English](#english) | [한국어](#korean)
+[English](#english) | [?쒓뎅??(#korean)
 
 ## English
 
@@ -52,88 +52,88 @@ npm install react react-dom
 npm install @phosphor-icons/react
 ```
 
-### 엔트리 포인트
+### ?뷀듃由??ъ씤??
 
-HUA UI는 **Core**, **Form**, **Advanced** 엔트리로 나뉩니다. 필요한 컴포넌트만 선택적으로 import하여 번들 크기를 최적화할 수 있습니다.
+HUA UI??**Core**, **Form**, **Advanced** ?뷀듃由щ줈 ?섎돥?덈떎. ?꾩슂??而댄룷?뚰듃留??좏깮?곸쑝濡?import?섏뿬 踰덈뱾 ?ш린瑜?理쒖쟻?뷀븷 ???덉뒿?덈떎.
 
-| Entry | Path | 설명 |
+| Entry | Path | ?ㅻ챸 |
 |-------|------|------|
-| Core | `@hua-labs/ui` | 버튼/레이아웃/데이터 표시 등 기본 컴포넌트와 유틸 (대부분의 일반적인 앱 개발 가능) |
-| Form | `@hua-labs/ui/form` | 모든 폼 컴포넌트 (Input, Select, DatePicker, Upload, Autocomplete 등) |
-| Navigation | `@hua-labs/ui/navigation` | 대규모 앱 구조에 필요한 네비게이션 (PageNavigation, PageTransition) |
-| Feedback | `@hua-labs/ui/feedback` | 글로벌 상태 관리가 필요한 Toast (ToastProvider, useToast) |
-| Advanced (all) | `@hua-labs/ui/advanced` | 대시보드 위젯 + 고급 모션 전체 |
-| Dashboard widgets | `@hua-labs/ui/advanced/dashboard` | StatCard, TransactionsTable, TrendChart 등 데이터 위젯 |
-| Motion/Experimental | `@hua-labs/ui/advanced/motion` | AdvancedPageTransition 등 모션/실험 기능 |
+| Core | `@hua-labs/ui` | 踰꾪듉/?덉씠?꾩썐/?곗씠???쒖떆 ??湲곕낯 而댄룷?뚰듃? ?좏떥 (?遺遺꾩쓽 ?쇰컲?곸씤 ??媛쒕컻 媛?? |
+| Form | `@hua-labs/ui/form` | 紐⑤뱺 ??而댄룷?뚰듃 (Input, Select, DatePicker, Upload, Autocomplete ?? |
+| Navigation | `@hua-labs/ui/navigation` | ?洹쒕え ??援ъ“???꾩슂???ㅻ퉬寃뚯씠??(PageNavigation, PageTransition) |
+| Feedback | `@hua-labs/ui/feedback` | 湲濡쒕쾶 ?곹깭 愿由ш? ?꾩슂??Toast (ToastProvider, useToast) |
+| Advanced (all) | `@hua-labs/ui/advanced` | ??쒕낫???꾩젽 + 怨좉툒 紐⑥뀡 ?꾩껜 |
+| Dashboard widgets | `@hua-labs/ui/advanced/dashboard` | StatCard, TransactionsTable, TrendChart ???곗씠???꾩젽 |
+| Motion/Experimental | `@hua-labs/ui/advanced/motion` | AdvancedPageTransition ??紐⑥뀡/?ㅽ뿕 湲곕뒫 |
 
 ```tsx
-// Core 컴포넌트 (가장 자주 사용되는 컴포넌트들)
+// Core 而댄룷?뚰듃 (媛???먯＜ ?ъ슜?섎뒗 而댄룷?뚰듃??
 import { Button, Card, Table, Badge, Alert, Modal, Drawer } from '@hua-labs/ui';
 
-// Form 컴포넌트만 (번들 최적화)
+// Form 而댄룷?뚰듃留?(踰덈뱾 理쒖쟻??
 import { Input, Select, DatePicker, Form } from '@hua-labs/ui/form';
 
-// Navigation 컴포넌트 (대규모 앱에서만 필요)
+// Navigation 而댄룷?뚰듃 (?洹쒕え ?깆뿉?쒕쭔 ?꾩슂)
 import { PageNavigation, PageTransition } from '@hua-labs/ui/navigation';
 
-// Feedback 컴포넌트 (Toast - 글로벌 상태 관리)
+// Feedback 而댄룷?뚰듃 (Toast - 湲濡쒕쾶 ?곹깭 愿由?
 import { ToastProvider, useToast } from '@hua-labs/ui/feedback';
 import '@hua-labs/ui/styles/toast.css';
 
-// Advanced 전체
+// Advanced ?꾩껜
 import { StatCard, DashboardSidebar } from '@hua-labs/ui/advanced';
 
-// 필요한 영역만 선택적으로
+// ?꾩슂???곸뿭留??좏깮?곸쑝濡?
 import { TransactionsTable } from '@hua-labs/ui/advanced/dashboard';
 import { AdvancedPageTransition } from '@hua-labs/ui/advanced/motion';
 ```
 
-**참고**: 서브패키지 분리 분석 문서는 [`docs/SUBPACKAGE_ANALYSIS.md`](./docs/SUBPACKAGE_ANALYSIS.md)를 참고하세요.
+**李멸퀬**: ?쒕툕?⑦궎吏 遺꾨━ 遺꾩꽍 臾몄꽌??瑜?李멸퀬?섏꽭??
 
 ## Bundle Optimization
 
-HUA UI는 모듈 단위 번들링과 tree-shaking을 지원합니다. 필요한 컴포넌트만 선택적으로 import하여 번들 크기를 최적화할 수 있습니다.
+HUA UI??紐⑤뱢 ?⑥쐞 踰덈뱾留곴낵 tree-shaking??吏?먰빀?덈떎. ?꾩슂??而댄룷?뚰듃留??좏깮?곸쑝濡?import?섏뿬 踰덈뱾 ?ш린瑜?理쒖쟻?뷀븷 ???덉뒿?덈떎.
 
-### 번들 최적화 전략
+### 踰덈뱾 理쒖쟻???꾨왂
 
-- **Core**: 가장 자주 사용하는 80% 컴포넌트 포함 (대부분의 일반적인 앱 개발 가능)
-- **Form / Navigation / Feedback**: 필요한 경우에만 선택적으로 import
-- **Advanced / Dashboard / Motion**: 대규모 앱에서만 사용하는 특수 컴포넌트
+- **Core**: 媛???먯＜ ?ъ슜?섎뒗 80% 而댄룷?뚰듃 ?ы븿 (?遺遺꾩쓽 ?쇰컲?곸씤 ??媛쒕컻 媛??
+- **Form / Navigation / Feedback**: ?꾩슂??寃쎌슦?먮쭔 ?좏깮?곸쑝濡?import
+- **Advanced / Dashboard / Motion**: ?洹쒕え ?깆뿉?쒕쭔 ?ъ슜?섎뒗 ?뱀닔 而댄룷?뚰듃
 
-### 사용 예시
+### ?ъ슜 ?덉떆
 
 #### Next.js (Turbopack)
 
 ```tsx
-// 권장: 필요한 서브패키지만 import (tree-shaking 자동 적용)
+// 沅뚯옣: ?꾩슂???쒕툕?⑦궎吏留?import (tree-shaking ?먮룞 ?곸슜)
 import { Input, Select, DatePicker } from '@hua-labs/ui/form';
 import { PageTransition } from '@hua-labs/ui/navigation';
 import { ToastProvider, useToast } from '@hua-labs/ui/feedback';
 
-// Core 전체를 불러오지 않으므로 번들 크기 최적화
+// Core ?꾩껜瑜?遺덈윭?ㅼ? ?딆쑝誘濡?踰덈뱾 ?ш린 理쒖쟻??
 ```
 
 #### Vite / Webpack
 
 ```tsx
-// 권장: 서브패키지 사용
+// 沅뚯옣: ?쒕툕?⑦궎吏 ?ъ슜
 import { Input } from '@hua-labs/ui/form';
 import { PageTransition } from '@hua-labs/ui/navigation';
 
-// 비권장: Core에서 모든 컴포넌트 import (번들 크기 증가)
+// 鍮꾧텒?? Core?먯꽌 紐⑤뱺 而댄룷?뚰듃 import (踰덈뱾 ?ш린 利앷?)
 import { Input, PageTransition, ToastProvider } from '@hua-labs/ui';
 ```
 
 ### Tree-shaking
 
-모든 엔트리 포인트는 ESM 형식으로 제공되며, 최신 번들러(Next.js Turbopack, Vite, Webpack 5+)에서 tree-shaking이 자동으로 적용됩니다.
+紐⑤뱺 ?뷀듃由??ъ씤?몃뒗 ESM ?뺤떇?쇰줈 ?쒓났?섎ŉ, 理쒖떊 踰덈뱾??Next.js Turbopack, Vite, Webpack 5+)?먯꽌 tree-shaking???먮룞?쇰줈 ?곸슜?⑸땲??
 
-**최적화 팁**:
-- 필요한 컴포넌트만 import
-- 서브패키지 활용 (Form, Navigation, Feedback)
-- Advanced 컴포넌트는 실제로 사용할 때만 import
+**理쒖쟻????*:
+- ?꾩슂??而댄룷?뚰듃留?import
+- ?쒕툕?⑦궎吏 ?쒖슜 (Form, Navigation, Feedback)
+- Advanced 而댄룷?뚰듃???ㅼ젣濡??ъ슜???뚮쭔 import
 
-**참고**: Core에서도 모든 컴포넌트를 import할 수 있습니다 (하위 호환성). 서브패키지는 번들 크기 최적화를 위한 선택사항입니다. Next.js + Turbopack 환경에서 tree-shaking이 자동 적용됩니다.
+**李멸퀬**: Core?먯꽌??紐⑤뱺 而댄룷?뚰듃瑜?import?????덉뒿?덈떎 (?섏쐞 ?명솚??. ?쒕툕?⑦궎吏??踰덈뱾 ?ш린 理쒖쟻?붾? ?꾪븳 ?좏깮?ы빆?낅땲?? Next.js + Turbopack ?섍꼍?먯꽌 tree-shaking???먮룞 ?곸슜?⑸땲??
 
 ## Quick Start
 
@@ -160,19 +160,19 @@ function App() {
 }
 ```
 
-### CSS 스타일 import (Toast 컴포넌트 사용 시)
+### CSS ?ㅽ???import (Toast 而댄룷?뚰듃 ?ъ슜 ??
 
-Toast 컴포넌트의 애니메이션을 사용하려면 CSS 파일을 import해야 합니다:
+Toast 而댄룷?뚰듃???좊땲硫붿씠?섏쓣 ?ъ슜?섎젮硫?CSS ?뚯씪??import?댁빞 ?⑸땲??
 
 ```css
-/* globals.css 또는 메인 CSS 파일에 추가 */
+/* globals.css ?먮뒗 硫붿씤 CSS ?뚯씪??異붽? */
 @import '@hua-labs/ui/styles/toast.css';
 ```
 
-또는 JavaScript/TypeScript에서:
+?먮뒗 JavaScript/TypeScript?먯꽌:
 
 ```tsx
-// app/layout.tsx 또는 _app.tsx
+// app/layout.tsx ?먮뒗 _app.tsx
 import '@hua-labs/ui/styles/toast.css';
 ```
 
@@ -945,16 +945,16 @@ const className = cn("px-2", "py-1");
 
 ### formatRelativeTime
 
-Format a date as relative time (e.g., "방금 전", "5분 전", "2시간 전", "3일 전"). Returns absolute date for dates older than 7 days.
+Format a date as relative time (e.g., "諛⑷툑 ??, "5遺???, "2?쒓컙 ??, "3????). Returns absolute date for dates older than 7 days.
 
 ```tsx
 import { formatRelativeTime } from '@hua-labs/ui';
 
-formatRelativeTime(new Date()) // "방금 전"
-formatRelativeTime(new Date(Date.now() - 5 * 60000)) // "5분 전"
-formatRelativeTime(new Date(Date.now() - 2 * 3600000)) // "2시간 전"
-formatRelativeTime(new Date(Date.now() - 3 * 86400000)) // "3일 전"
-formatRelativeTime(new Date("2024-01-01")) // "2024. 1. 1." (7일 이상 경과)
+formatRelativeTime(new Date()) // "諛⑷툑 ??
+formatRelativeTime(new Date(Date.now() - 5 * 60000)) // "5遺???
+formatRelativeTime(new Date(Date.now() - 2 * 3600000)) // "2?쒓컙 ??
+formatRelativeTime(new Date(Date.now() - 3 * 86400000)) // "3????
+formatRelativeTime(new Date("2024-01-01")) // "2024. 1. 1." (7???댁긽 寃쎄낵)
 ```
 
 ## Icon Support
@@ -1040,16 +1040,15 @@ pnpm test
 
 MIT License
 
-## 문서
+## 臾몄꽌
 
-- [아키텍처 문서](./docs/ARCHITECTURE.md) - 전체 아키텍처 및 설계 원칙
-- [패키지 구조](./docs/PACKAGE_STRUCTURE.md) - 디렉토리 구조 및 파일 조직
-- [개발 가이드](./docs/DEVELOPMENT_GUIDE.md) - 컴포넌트 추가 및 개발 가이드
-- [모노레포/멀티레포 호환성](./docs/MONOREPO_COMPATIBILITY.md) - 모노레포 및 멀티레포 환경 호환성
-- [서브패키지 분석](./docs/SUBPACKAGE_ANALYSIS.md) - 서브패키지 분리 전략
-- [아이콘 시스템](./docs/ICON_SYSTEM.md) - 아이콘 시스템 가이드
-- [개선 사항](./docs/IMPROVEMENTS_2025-12-06.md) - 개선 이력
+- [?꾪궎?띿쿂 臾몄꽌](./docs/ARCHITECTURE.md) - ?꾩껜 ?꾪궎?띿쿂 諛??ㅺ퀎 ?먯튃
+- [?⑦궎吏 援ъ“](./docs/PACKAGE_STRUCTURE.md) - ?붾젆?좊━ 援ъ“ 諛??뚯씪 議곗쭅
+- [媛쒕컻 媛?대뱶](./docs/DEVELOPMENT_GUIDE.md) - 而댄룷?뚰듃 異붽? 諛?媛쒕컻 媛?대뱶
+- [紐⑤끂?덊룷/硫?곕젅???명솚??(./docs/MONOREPO_COMPATIBILITY.md) - 紐⑤끂?덊룷 諛?硫?곕젅???섍꼍 ?명솚??
+- [?꾩씠肄??쒖뒪??(./docs/ICON_SYSTEM.md) - ?꾩씠肄??쒖뒪??媛?대뱶
 
 ## Repository
 
 https://github.com/HUA-Labs/HUA-Labs-public
+

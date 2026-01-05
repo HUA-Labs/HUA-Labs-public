@@ -1,7 +1,7 @@
-# @hua-labs/motion-core
+﻿# @hua-labs/motion-core
 
 30+ production-tested React animation hooks. Zero dependencies, SSR-ready.
-프로덕션 검증 완료 React 애니메이션 훅 30개 이상. 의존성 없음, SSR 지원.
+?꾨줈?뺤뀡 寃利??꾨즺 React ?좊땲硫붿씠????30媛??댁긽. ?섏〈???놁쓬, SSR 吏??
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/motion-core.svg)](https://www.npmjs.com/package/@hua-labs/motion-core)
@@ -9,11 +9,11 @@
 [![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **?좑툘 Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
 
-[English](#english) | [한국어](#korean)
+[English](#english) | [?쒓뎅??(#korean)
 
 ## English
 
@@ -226,13 +226,13 @@ const fadeIn: BaseMotionReturn<HTMLDivElement> = useFadeIn({
 
 ## Related Packages
 
-- **[@hua-labs/motion-advanced](../../hua-motion-advanced)** - Advanced motion hooks and orchestration
-- **[@hua-labs/motion](../../hua-motion)** - Unified package (Core + Advanced re-export)
+- ** - Advanced motion hooks and orchestration
+- ** - Unified package (Core + Advanced re-export)
 
 ## Roadmap
 
-- **Motion Core** - Essential hooks ✅ (Current)
-- **Motion Advanced** - Complex animations ✅ (Available)
+- **Motion Core** - Essential hooks ??(Current)
+- **Motion Advanced** - Complex animations ??(Available)
 - **Motion Enterprise** - Team solutions (Planned)
 
 ### Documentation
@@ -251,31 +251,31 @@ const fadeIn: BaseMotionReturn<HTMLDivElement> = useFadeIn({
 
 ## Korean
 
-### 개요
+### 媛쒖슂
 
-React를 위한 프로덕션 준비 완료 모션 훅 30개 이상의 컬렉션입니다. 외부 의존성 없이 부드러운 60fps 애니메이션을 제공하는 ref 기반 엔진으로 구축되었습니다. 모든 훅은 TypeScript 네이티브이며 SSR과 호환됩니다.
+React瑜??꾪븳 ?꾨줈?뺤뀡 以鍮??꾨즺 紐⑥뀡 ??30媛??댁긽??而щ젆?섏엯?덈떎. ?몃? ?섏〈???놁씠 遺?쒕윭??60fps ?좊땲硫붿씠?섏쓣 ?쒓났?섎뒗 ref 湲곕컲 ?붿쭊?쇰줈 援ъ텞?섏뿀?듬땲?? 紐⑤뱺 ?낆? TypeScript ?ㅼ씠?곕툕?대ŉ SSR怨??명솚?⑸땲??
 
-### 주요 기능
+### 二쇱슂 湲곕뒫
 
-- **30개 이상의 최적화된 훅** - 페이드, 슬라이드, 스케일, 스크롤, 패럴랙스, 제스처 애니메이션
-- **성능 우선** - 일관된 60fps를 위한 직접 ref 조작
-- **의존성 없음** - 순수 JavaScript 모션 엔진 (~15KB gzipped)
-- **TypeScript 네이티브** - 타입 추론이 포함된 완전한 타입 안전성
-- **SSR 호환** - Next.js, Remix 및 모든 SSR 프레임워크와 작동
-- **검증 완료** - 517개 테스트 케이스로 74% 이상 커버리지
+- **30媛??댁긽??理쒖쟻?붾맂 ??* - ?섏씠?? ?щ씪?대뱶, ?ㅼ??? ?ㅽ겕濡? ?⑤윺?숈뒪, ?쒖뒪泥??좊땲硫붿씠??
+- **?깅뒫 ?곗꽑** - ?쇨???60fps瑜??꾪븳 吏곸젒 ref 議곗옉
+- **?섏〈???놁쓬** - ?쒖닔 JavaScript 紐⑥뀡 ?붿쭊 (~15KB gzipped)
+- **TypeScript ?ㅼ씠?곕툕** - ???異붾줎???ы븿???꾩쟾??????덉쟾??
+- **SSR ?명솚** - Next.js, Remix 諛?紐⑤뱺 SSR ?꾨젅?꾩썙?ъ? ?묐룞
+- **寃利??꾨즺** - 517媛??뚯뒪??耳?댁뒪濡?74% ?댁긽 而ㅻ쾭由ъ?
 
-### 설치
+### ?ㅼ튂
 
 ```bash
 npm install @hua-labs/motion-core
 ```
 
-### 문서
+### 臾몄꽌
 
-- [상세 가이드](./DETAILED_GUIDE.md) - 완전한 API 레퍼런스 및 고급 사용법
+- [?곸꽭 媛?대뱶](./DETAILED_GUIDE.md) - ?꾩쟾??API ?덊띁?곗뒪 諛?怨좉툒 ?ъ슜踰?
 
 ---
 
 ## License
 
-MIT © HUA Labs
+MIT 짤 HUA Labs
