@@ -1,6 +1,5 @@
-﻿---
-\
-create-hua-ux\: patch
+---
+"create-hua-ux": patch
 ---
 
 fix(create-hua-ux): use relative path in generated version.ts file
