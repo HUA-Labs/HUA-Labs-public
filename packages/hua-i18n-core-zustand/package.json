@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "zustand": "^5.0.0",
-    "react": ">=18.0.0"
+    "react": ">=19.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

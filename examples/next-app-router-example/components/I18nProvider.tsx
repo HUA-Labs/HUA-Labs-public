@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 interface I18nProviderProps {
   children: React.ReactNode;
-  ssrTranslations?: Record<string, Record<string, any>>;
+  ssrTranslations?: Record<string, Record<string, Record<string, string>>>;
 }
 
 /**

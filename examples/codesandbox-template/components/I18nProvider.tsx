@@ -33,8 +33,10 @@ export function I18nProvider({ children, initialLanguage = 'ko' }: I18nProviderP
   // 모든 언어의 번역을 포함하여 초기 로드 시 깜빡임 방지
   const I18nProviderComponent = useMemo(() => {
     const allTranslations = getInitialTranslations();
+    // initialLanguage는 향후 언어 초기화에 사용될 수 있음
+    void initialLanguage;
     return createClientI18nProvider(useAppStore, allTranslations);
-  }, []);
+  }, [initialLanguage]);
 
   return <I18nProviderComponent>{children}</I18nProviderComponent>;
 }
