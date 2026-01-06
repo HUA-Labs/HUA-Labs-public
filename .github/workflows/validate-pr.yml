@@ -35,8 +35,9 @@ jobs:
           # Check if any package files were modified
           CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
 
-          # Check for changes in packages/ directory (excluding changesets)
-          if echo "$CHANGED_FILES" | grep -E '^packages/.+\.(ts|tsx|js|jsx|json)$' | grep -v 'CHANGELOG.md' | grep -v 'package.json'; then
+          # Check for changes in packages/ directory (excluding changesets and CHANGELOG)
+          # Include: .ts, .tsx, .js, .jsx, .json, .md (README, docs), but exclude CHANGELOG.md
+          if echo "$CHANGED_FILES" | grep -E '^packages/.+\.(ts|tsx|js|jsx|json|md)$' | grep -v 'CHANGELOG.md'; then
             echo "has_package_changes=true" >> $GITHUB_OUTPUT
             echo "✓ Detected changes in packages"
           else
