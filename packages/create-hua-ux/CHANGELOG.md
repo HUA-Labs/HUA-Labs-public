@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0-alpha.15
+
+### Patch Changes
+
+- b2226bb: fix(create-hua-ux): use relative path in generated version.ts file
+
+  - Replace absolute path with relative path in generated comment
+  - Improves portability across different development environments
+  - Addresses CodeRabbit review comment
+
 ## 1.0.0-alpha.14
 
 ### Patch Changes
