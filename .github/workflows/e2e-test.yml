@@ -21,6 +21,10 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         package-manager: [npm, pnpm]
         node-version: [22]
+    env:
+      # TEST_DIR is set conditionally in Create temp directory steps
+      # It will be set to either Unix or Windows path depending on runner.os
+      TEST_DIR: ''
 
     steps:
       - name: Checkout code
@@ -54,14 +58,18 @@ jobs:
       - name: Create temp directory (Windows)
         if: runner.os == 'Windows'
         run: |
-          New-Item -ItemType Directory -Path "$env:TEMP\hua-test-${{ github.run_id }}" -Force
-          echo "TEST_DIR=$env:TEMP\hua-test-${{ github.run_id }}" >> $env:GITHUB_ENV
+          $testDir = "$env:TEMP\hua-test-${{ github.run_id }}"
+          New-Item -ItemType Directory -Path $testDir -Force
+          # Convert backslash to forward slash for bash compatibility
+          $testDirBash = $testDir -replace '\\', '/'
+          echo "TEST_DIR=$testDirBash" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Test project creation
         run: |
           cd ${{ env.TEST_DIR }}
           node ${{ github.workspace }}/packages/create-hua-ux/dist/bin/create-hua-ux.js test-app
+        shell: bash
         env:
           NON_INTERACTIVE: "1"
           CI: "true"

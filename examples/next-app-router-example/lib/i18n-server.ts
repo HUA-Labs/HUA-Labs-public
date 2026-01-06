@@ -16,8 +16,8 @@ type TranslationValue =
   | string
   | number
   | boolean
-  | TranslationValue[]
-  | { [key: string]: TranslationValue };
+  | readonly TranslationValue[]
+  | { readonly [key: string]: TranslationValue };
 
 /**
  * Load translations from JSON files
