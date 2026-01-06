@@ -65,6 +65,7 @@ jobs:
         env:
           NON_INTERACTIVE: "1"
           CI: "true"
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Verify package.json (no workspace protocol)
         run: |
@@ -79,6 +80,8 @@ jobs:
 
           echo "✓ No workspace protocol found"
         shell: bash
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Install dependencies
         run: |
@@ -90,6 +93,8 @@ jobs:
             pnpm install
           fi
         shell: bash
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Verify Next.js 16 async APIs
         run: |
@@ -114,6 +119,8 @@ jobs:
 
           echo "✓ Next.js 16 async APIs verified"
         shell: bash
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Build project
         run: |
@@ -126,6 +133,8 @@ jobs:
           fi
         shell: bash
         timeout-minutes: 10
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Test dev server startup (Unix)
         if: runner.os != 'Windows'
@@ -156,6 +165,8 @@ jobs:
           exit 1
         shell: bash
         timeout-minutes: 2
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Test dev server startup (Windows)
         if: runner.os == 'Windows'
@@ -186,6 +197,8 @@ jobs:
           exit 1
         shell: pwsh
         timeout-minutes: 2
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
       - name: Cleanup
         if: always()
@@ -196,6 +209,8 @@ jobs:
             Remove-Item -Recurse -Force "${{ env.TEST_DIR }}" -ErrorAction SilentlyContinue
           fi
         shell: bash
+        env:
+          TEST_DIR: ${{ env.TEST_DIR }}
 
   summary:
     name: E2E Test Summary
