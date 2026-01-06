@@ -9,7 +9,7 @@ import type { LicenseFeature } from './types';
 /**
  * 구매 링크 (향후 실제 링크로 변경)
  */
-const PURCHASE_URL = 'https://hua-labs.com/pricing';
+const PURCHASE_URL = ''; // TODO: Add purchase link when domain is available
 
 /**
  * 라이선스 에러 메시지 생성
@@ -52,8 +52,6 @@ export function createLicenseError(
       `💡 해결 방법 / Solution:`,
       `   - ${requiredLicense === 'enterprise' ? 'Enterprise' : 'Pro'} 라이선스를 구매하세요.`,
       `   - Purchase a ${requiredLicense === 'enterprise' ? 'Enterprise' : 'Pro'} license.`,
-      `   - 구매 링크: ${PURCHASE_URL}`,
-      `   - Purchase link: ${PURCHASE_URL}`,
       '',
       `📖 가이드 / Guide: https://github.com/HUA-Labs/hua-platform/tree/main/packages/hua-ux/docs`,
     ],

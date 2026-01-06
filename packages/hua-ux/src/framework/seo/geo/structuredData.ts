@@ -242,8 +242,8 @@ export function generateVideoLD(video: {
  * ```tsx
  * const orgLd = generateOrganizationLD({
  *   name: 'hua-labs',
- *   url: 'https://hua-labs.dev',
- *   logo: 'https://hua-labs.dev/logo.png',
+ *   url: 'https://example.com', // TODO: Update when domain is available
+ *   logo: 'https://example.com/logo.png', // TODO: Update when domain is available
  *   description: 'Privacy-first development tools',
  * });
  * ```
