@@ -1049,4 +1049,4 @@ MIT License
 
 ## Repository
 
-https://github.com/HUA-Labs/HUA-Labs-public
+<https://github.com/HUA-Labs/HUA-Labs-public>
