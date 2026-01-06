@@ -340,12 +340,57 @@ function getHuaUxVersion(): string {
 }
 
 /**
+ * Get package version from npm registry
+ * 
+ * npm 레지스트리에서 패키지의 최신 버전을 가져옵니다.
+ * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
+ */
+function getPackageVersionFromNpm(packageName: string, fallbackVersion: string = '^0.1.0'): string {
+  // 모노레포 내부에서는 workspace 버전 사용
+  if (process.env.HUA_UX_WORKSPACE_VERSION === 'workspace') {
+    return 'workspace:*';
+  }
+  
+  // pnpm-workspace.yaml 파일 존재 여부로 모노레포 감지
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    let currentDir = process.cwd();
+    const maxDepth = 10;
+    
+    for (let i = 0; i < maxDepth; i++) {
+      const workspaceFile = path.join(currentDir, 'pnpm-workspace.yaml');
+      if (fs.existsSync(workspaceFile)) {
+        return 'workspace:*';
+      }
+      const parentDir = path.dirname(currentDir);
+      if (parentDir === currentDir) break;
+      currentDir = parentDir;
+    }
+  } catch (error) {
+    // 무시
+  }
+  
+  // npm 레지스트리에서 버전 가져오기
+  try {
+    const { execSync } = require('child_process');
+    const version = execSync(`npm view ${packageName} version`, { encoding: 'utf-8' }).trim();
+    return `^${version}`;
+  } catch (error) {
+    // npm 레지스트리에서 가져올 수 없는 경우 fallback 버전 사용
+    return fallbackVersion;
+  }
+}
+
+/**
  * Get hua-ux related package version
  * 
  * hua-ux와 관련된 패키지들의 버전을 반환합니다.
- * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
+ * 각 패키지의 실제 npm 레지스트리 버전을 가져옵니다.
  */
 function getHuaUxRelatedPackageVersion(): string {
+  // 기본적으로 hua-ux 버전을 사용하되, 각 패키지별로 실제 npm 버전을 가져올 수 있도록
+  // 개별 패키지 버전을 가져오는 함수로 대체
   return getHuaUxVersion();
 }
 
@@ -376,8 +421,8 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
-      '@hua-labs/i18n-core-zustand': getHuaUxRelatedPackageVersion(),
-      '@hua-labs/state': getHuaUxRelatedPackageVersion(),
+      '@hua-labs/i18n-core-zustand': getPackageVersionFromNpm('@hua-labs/i18n-core-zustand', getHuaUxVersion()),
+      '@hua-labs/state': getPackageVersionFromNpm('@hua-labs/state', getHuaUxVersion()),
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
