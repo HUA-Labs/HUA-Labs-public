@@ -6,7 +6,7 @@ Ship UX faster: UI + Motion + i18n, pre-wired.
 [![npm version](https://img.shields.io/npm/v/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
 [![license](https://img.shields.io/npm/l/@hua-labs/hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
-[![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
@@ -21,38 +21,43 @@ Ship UX faster: UI + Motion + i18n, pre-wired.
 
 hua-ux is a high-level, batteries-included framework for React product teams. It unifies UI components, animation hooks, and internationalization into a cohesive ecosystem, enabling production-ready setup in minutes instead of hours.
 
-## ??hua-ux?멸??
+### Features
 
-?꾨줈?뺥듃 ???留ㅻ쾲 UI 而댄룷?뚰듃, 紐⑥뀡 ?쇱씠釉뚮윭由? i18n ?ㅼ젙??泥섏쓬遺??援ъ꽦?섎뒗 寃껋? ?쒓컙 ??퉬?낅땲?? **hua-ux**??????媛吏瑜??섎굹???⑦궎吏濡??듯빀?섏뿬, 5遺??덉뿉 ?꾨줈?뺥듃??諛붾줈 ?곸슜?????덈룄濡??ㅺ퀎?섏뿀?듬땲??
+- **Pre-wired Integration**: UI, Motion, and i18n components pre-configured and ready to use
+- **Framework Layer**: Next.js-optimized framework layer with automatic provider setup
+- **Type Safety**: Full TypeScript support with type inference
+- **SSR Ready**: Works seamlessly with Next.js App Router
+- **Accessibility**: WCAG 2.1 compliant components and utilities (useFocusManagement, useFocusTrap, SkipToContent, LiveRegion)
+- **Loading UX**: Built-in loading state management (useDelayedLoading, useLoadingState, SuspenseWrapper)
+- **Error Handling**: ErrorBoundary built into HuaUxPage
+- **Branding**: White-labeling support with SSR-compatible CSS variable injection
+- **GEO Support**: Generative Engine Optimization for AI search engines
 
-**?듭떖 媛移?**
-- ??**媛蹂띻퀬 諛붾줈 遺숇뒗??*: Framer Motion ?鍮?媛蹂띻퀬, Next.js??諛붾줈 ?듯빀 媛??
-- ??**????덉쟾**: TypeScript濡?紐⑤뱺 寃껋씠 ????덉쟾?섍쾶 ?쒓났
-- ??**SSR 吏??*: Next.js App Router? ?꾨꼍?섍쾶 ?묐룞
-- ??**?듯빀 寃쏀뿕**: UI, Motion, i18n???섎굹???앺깭怨꾩뿉???묐룞
-- ??**?먮윭 泥섎━ ?먮룞??*: ErrorBoundary媛 HuaUxPage??湲곕낯 ?댁옣
-- ??**?묎렐???곗꽑**: WCAG 2.1 以?? ?ㅽ겕由?由щ뜑 吏?? ?ㅻ낫???먯깋 理쒖쟻??(useFocusManagement, useFocusTrap, SkipToContent, LiveRegion)
-- ??**濡쒕뵫 UX 理쒖쟻??*: 源쒕묀??諛⑹?, Skeleton UI, Suspense ?먮룞??(useDelayedLoading, useLoadingState, SuspenseWrapper)
-
-## 5遺??쒖옉
-
-### 1. ?ㅼ튂
+### Installation
 
 ```bash
-pnpm add @hua-labs/hua-ux zustand
-# or
 npm install @hua-labs/hua-ux zustand
 # or
 yarn add @hua-labs/hua-ux zustand
+# or
+pnpm add @hua-labs/hua-ux zustand
 ```
 
-### 2. 湲곕낯 ?ㅼ젙
+### Peer Dependencies
 
-**??媛吏 ?ъ슜 諛⑸쾿???덉뒿?덈떎:**
+```bash
+# Required
+npm install react react-dom next
 
-#### 諛⑸쾿 1: ?꾨젅?꾩썙???덉씠???ъ슜 (沅뚯옣) 狩?
+# Optional (for Zustand state management)
+npm install zustand
+```
 
-?꾨젅?꾩썙???덉씠?대? ?ъ슜?섎㈃ ?먮룞?쇰줈 紐⑤뱺 Provider媛 ?ㅼ젙?⑸땲??
+### Quick Start
+
+#### Method 1: Framework Layer (Recommended)
+
+Use the framework layer for automatic provider setup:
 
 ```tsx
 // hua-ux.config.ts
@@ -85,11 +90,11 @@ export default function RootLayout({ children }) {
 }
 ```
 
-**?μ젏**: ?ㅼ젙 ?뚯씪留뚯쑝濡?紐⑤뱺 Provider ?먮룞 ?ㅼ젙, 媛꾨떒??
+**Benefits**: Automatic provider setup, minimal configuration
 
-#### 諛⑸쾿 2: 吏곸젒 ?ъ슜 (?몃????쒖뼱)
+#### Method 2: Manual Setup (Advanced)
 
-???몃????쒖뼱媛 ?꾩슂??寃쎌슦 吏곸젒 ?ㅼ젙?????덉뒿?덈떎:
+For advanced use cases, set up providers manually:
 
 ```tsx
 // store/useAppStore.ts
@@ -119,9 +124,7 @@ export const useAppStore = create<AppState>()(
 // lib/i18n-setup.ts
 import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore } from '@hua-labs/state';
-import { useAppStore } from '../store/useAppStore';
 
-// createI18nStore濡??몄뼱 ?곹깭 愿由??ㅽ넗???앹꽦
 const i18nStore = createI18nStore({
   defaultLanguage: 'ko',
   supportedLanguages: ['ko', 'en'],
@@ -129,7 +132,6 @@ const i18nStore = createI18nStore({
   ssr: true,
 });
 
-// createZustandI18n?쇰줈 i18n Provider ?앹꽦
 export const I18nProvider = createZustandI18n(i18nStore, {
   fallbackLanguage: 'en',
   namespaces: ['common'],
@@ -154,13 +156,13 @@ export default function RootLayout({ children }) {
 }
 ```
 
-**?μ젏**: ?몃????쒖뼱 媛?? 而ㅼ뒪? ?ㅼ젙 ?⑹씠
+**Benefits**: Full control over provider setup
 
-**?몄젣 ?ъ슜?섎굹??**
-- **?꾨젅?꾩썙???덉씠??*: 鍮좊Ⅸ ?쒖옉, ?쒖? ?ㅼ젙?쇰줈 異⑸텇??寃쎌슦
-- **吏곸젒 ?ъ슜**: 而ㅼ뒪? Provider 議고빀, ?뱀닔???붽뎄?ы빆???덈뒗 寃쎌슦
+**When to use each**:
+- **Framework Layer**: Quick start, minimal setup
+- **Manual Setup**: Custom store structure, multiple providers
 
-### 3. ?ъ슜?섍린
+### Usage Example
 
 ```tsx
 // app/page.tsx
@@ -172,31 +174,27 @@ import { useTranslation } from '@hua-labs/hua-ux';
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const fadeInRef = useFadeIn();
-  const slideUpRef = useSlideUp();
+  const fadeIn = useFadeIn();
+  const slideUp = useSlideUp();
 
   return (
     <div>
-      <Card ref={fadeInRef}>
-        <h1>{t('common:welcome')}</h1>
-        <Button ref={slideUpRef}>Get Started</Button>
-      </Card>
+      <div ref={fadeIn.ref} style={fadeIn.style}>
+        <Card>
+          <h1>{t('common:welcome')}</h1>
+        </Card>
+      </div>
+      <div ref={slideUp.ref} style={slideUp.style}>
+        <Button>Get Started</Button>
+      </div>
     </div>
   );
 }
 ```
 
-**Showcase ?섏씠吏**:
-- `/` - ??(3媛?Showcase 留곹겕)
-- `/ui` - UI 而댄룷?뚰듃 ?곕え
-- `/motion` - Motion ???곕え
-- `/i18n` - ?ㅺ뎅??吏???곕え
+### Project Scaffolding
 
-?먮뒗 瑜?李멸퀬?섏꽭??
-
-## ?꾨줈?앺듃 ?앹꽦
-
-?ㅼ틦?대뵫 ?꾧뎄瑜??ъ슜?섏뿬 ???꾨줈?앺듃瑜??앹꽦?????덉뒿?덈떎:
+Use the CLI tool to create a new project:
 
 ```bash
 npm create hua-ux my-app
@@ -210,75 +208,256 @@ pnpm install
 pnpm dev
 ```
 
-?먯꽭???댁슜? [create-hua-ux README](../create-hua-ux/README.md)瑜?李멸퀬?섏꽭??
+For more details, see [create-hua-ux README](../create-hua-ux/README.md).
 
-## ?⑦궎吏 援ъ“
+### Entry Points
 
-**hua-ux**???ㅼ쓬 ?⑦궎吏?ㅼ쓣 ?듯빀?⑸땲??
+hua-ux provides the following entry points:
 
-- **`@hua-labs/ui`** - UI 而댄룷?뚰듃 ?쇱씠釉뚮윭由?
-  - Button, Card, Input, Modal ??50+ 而댄룷?뚰듃
-  - ?쇨????ㅽ??쇰쭅 ?쒖뒪??
-  - ?ㅽ겕 紐⑤뱶 吏??
+| Entry | Path | Description |
+|-------|------|-------------|
+| Core | `@hua-labs/hua-ux` | All UI, Motion, i18n, and State components (re-exports) |
+| Framework | `@hua-labs/hua-ux/framework` | Framework layer with automatic provider setup |
+| Presets | `@hua-labs/hua-ux/presets` | Pre-configured presets (product, marketing) |
+| GEO | `@hua-labs/hua-ux/framework/seo/geo` | Generative Engine Optimization utilities |
 
-- **`@hua-labs/motion-core`** - Motion ???쇱씠釉뚮윭由?
-  - `useFadeIn`, `useSlideUp`, `useScaleIn` ??湲곕낯 紐⑥뀡
-  - `useHoverMotion`, `useScrollReveal` ???명꽣?숈뀡
-  - ?꾨━???쒖뒪?쒖쑝濡?鍮좊Ⅸ ?ㅼ젙
+### Core Packages
 
-- **`@hua-labs/i18n-core`** - i18n ?듭떖 湲곕뒫
-  - ????덉쟾??踰덉뿭 ?쒖뒪??
-  - SSR/CSR 吏??
-  - ?ㅼ엫?ㅽ럹?댁뒪 湲곕컲 踰덉뿭 愿由?
+hua-ux includes the following packages:
 
-- **`@hua-labs/i18n-core-zustand`** - Zustand ?대뙌??
-  - Zustand? ?꾨꼍???듯빀
-  - ?섏씠?쒕젅?댁뀡 ?먮윭 諛⑹?
-  - ?몄뼱 ?곹깭 ?먮룞 ?숆린??
+- **`@hua-labs/ui`** - UI component library
+  - Button, Card, Input, Modal, and 70+ components
+  - Dark mode support
+  - Accessible components
 
-- **`@hua-labs/state`** - ?듯빀 ?곹깭愿由?(?꾨젅?꾩썙???꾩슜)
-  - Zustand 湲곕컲 ?곹깭愿由?
-  - SSR/Persistence 吏??
-  - i18n ?듯빀 ?ㅽ넗???쒓났
+- **`@hua-labs/motion-core`** - Motion hooks library
+  - `useFadeIn`, `useSlideUp`, `useScaleIn` and 30+ hooks
+  - `useHoverMotion`, `useScrollReveal` for interactions
+  - Zero dependencies, SSR-ready
 
-## ?쒕툕?⑦궎吏
+- **`@hua-labs/i18n-core`** - i18n core functionality
+  - Type-safe translation system
+  - SSR/CSR support
+  - Multiple translation loader strategies
 
-### `@hua-labs/hua-ux/framework`
+- **`@hua-labs/i18n-core-zustand`** - Zustand adapter
+  - Seamless Zustand integration
+  - Language state synchronization
+  - Built-in state management
 
-?꾨젅?꾩썙???덉씠??- Next.js瑜?媛먯떥??援ъ“? 洹쒖튃??媛뺤젣?섎뒗 ?덉씠??
+- **`@hua-labs/state`** - State management (framework layer)
+  - Zustand-based state management
+  - SSR/Persistence support
+  - i18n integration ready
 
-**二쇱슂 湲곕뒫**:
-- `HuaUxLayout`: ?먮룞 ?꾨줈諛붿씠???ㅼ젙
-- `HuaUxPage`: ?섏씠吏 ?섑띁 (?먮룞 紐⑥뀡)
-- `defineConfig`: ????덉쟾???ㅼ젙 ?쒖뒪??
-- `useData`, `fetchData`: ?곗씠???섏묶 ?좏떥由ы떚
-- `createI18nMiddleware`: i18n 誘몃뱾?⑥뼱 (Edge Runtime)
+### Framework Layer
 
-?먯꽭???댁슜? [?꾨젅?꾩썙???덉씠??臾몄꽌](./src/framework/README.md)瑜?李멸퀬?섏꽭??
+The framework layer (`@hua-labs/hua-ux/framework`) provides Next.js-optimized components and utilities:
 
-### `@hua-labs/hua-ux/presets`
+**Key Features**:
+- `HuaUxLayout`: Automatic provider setup
+- `HuaUxPage`: Page wrapper with built-in features
+- `WelcomePage`: Default welcome page for new projects (shows framework features and quick links)
+- `defineConfig`: Type-safe configuration system
+- `useData`, `fetchData`: Data fetching utilities
+- `createI18nMiddleware`: i18n middleware (Edge Runtime)
 
-?ъ쟾 援ъ꽦??Presets
+#### WelcomePage Component
 
-**?쒓났?섎뒗 Presets**:
-- `productPreset`: ?쒗뭹 ?섏씠吏??(鍮좊Ⅸ ?꾪솚, 理쒖냼 ?쒕젅??
-- `marketingPreset`: ?쒕뵫 ?섏씠吏??(?쒕씪留덊떛??紐⑥뀡, 湲??쒕젅??
+The `WelcomePage` component provides a default welcome page for new projects:
+
+```tsx
+import { WelcomePage } from '@hua-labs/hua-ux/framework';
+
+export default function HomePage() {
+  return (
+    <WelcomePage
+      projectName="My App"
+      showFeatures={true}
+      showQuickLinks={true}
+    />
+  );
+}
+```
+
+**Props**:
+- `projectName`: Project name to display (default: "My App")
+- `showFeatures`: Show framework features grid (default: true)
+- `showQuickLinks`: Show quick links (default: true)
+
+For more details, see [Framework Layer Documentation](./src/framework/README.md).
+
+### Presets
+
+Pre-configured presets for common use cases:
+
+**Available Presets**:
+- `productPreset`: Product pages (quick navigation, minimal animations)
+- `marketingPreset`: Marketing pages (eye-catching animations, smooth transitions)
 
 ```tsx
 import { productPreset, marketingPreset } from '@hua-labs/hua-ux/presets';
 ```
 
-## ?꾨젅?꾩썙???덉씠???ъ슜?섍린
+### Key Features
 
-?꾨젅?꾩썙???덉씠?대? ?ъ슜?섎㈃ ??媛꾨떒?섍쾶 ?ㅼ젙?????덉뒿?덈떎:
+#### Unified Motion Hook
 
-### 1. ?ㅼ젙 ?뚯씪 ?앹꽦
+**useMotion Hook** - Unified motion hook that works with all motion hooks:
+
+```tsx
+import { useMotion } from '@hua-labs/hua-ux/framework';
+
+const motion = useMotion({
+  type: 'fadeIn',
+  duration: 600,
+  autoStart: false,
+});
+
+return <div ref={motion.ref} style={motion.style}>Content</div>;
+```
+
+**HuaUxPage with Motion** - Automatic motion application without manual setup
+
+#### Built-in ErrorBoundary
+
+**HuaUxPage includes ErrorBoundary** - All pages automatically handle errors
+
+**Custom Error Reporter** - Works with Sentry, LogRocket, etc.
+
+```tsx
+// In Next.js app to set error reporter
+window.__ERROR_REPORTER__ = (error, errorInfo) => {
+  Sentry.captureException(error, {
+    contexts: { react: errorInfo },
+  });
+};
+```
+
+```tsx
+// ErrorBoundary is automatically applied
+<HuaUxPage title="Home">
+  <MyComponent /> {/* Errors are caught and fallback UI is shown */}
+</HuaUxPage>
+```
+
+**Custom fallback UI**:
+```tsx
+<HuaUxPage
+  title="Home"
+  errorBoundaryFallback={(error, reset) => (
+    <div>
+      <h1>Error: {error.message}</h1>
+      <button onClick={reset}>Try Again</button>
+    </div>
+  )}
+>
+  <MyComponent />
+</HuaUxPage>
+```
+
+**Standalone usage** (without HuaUxPage):
+```tsx
+import { ErrorBoundary } from '@hua-labs/hua-ux/framework';
+
+<ErrorBoundary>
+  <MyComponent />
+</ErrorBoundary>
+```
+
+#### Branding (White Labeling)
+
+**SSR-compatible CSS variable injection** - Apply branding CSS variables at build time to prevent FOUC
+
+```tsx
+// hua-ux.config.ts
+export default defineConfig({
+  branding: {
+    colors: {
+      primary: '#3B82F6',
+      secondary: '#8B5CF6',
+    },
+  },
+});
+```
+
+All components automatically use branding when configured.
+
+#### GEO (Generative Engine Optimization)
+
+**AI search engine optimization** - Optimized for ChatGPT, Claude, Gemini, Perplexity to discover and index your app
+
+For detailed GEO usage, see [Framework Layer Documentation](./src/framework/README.md).
+
+### Documentation
+
+- [Framework Layer Documentation](./src/framework/README.md) - Complete framework layer guide
+- [Detailed Guide](./DETAILED_GUIDE.md) - Advanced usage and examples
+
+### Related Packages
+
+- [`@hua-labs/ui`](../hua-ui/README.md) - UI component library
+- [`@hua-labs/motion-core`](../hua-motion-core/README.md) - Animation hooks
+- [`@hua-labs/i18n-core`](../hua-i18n-core/README.md) - Internationalization core
+- [`create-hua-ux`](../create-hua-ux/README.md) - Project scaffolding tool
+
+### Requirements
+
+- React >= 19.0.0
+- React DOM >= 19.0.0
+- Next.js >= 13.0.0 (optional, but recommended)
+- Zustand (optional, for state management)
+
+## Korean
+
+### 개요
+
+hua-ux는 React 제품 팀을 위한 고수준의 통합 프레임워크입니다. UI 컴포넌트, 애니메이션 훅, 국제화를 하나의 생태계로 통합하여 몇 시간이 걸리던 프로덕션 준비를 몇 분 만에 완료할 수 있게 합니다.
+
+### 주요 기능
+
+- **사전 통합**: UI, Motion, i18n 컴포넌트가 사전 구성되어 바로 사용 가능
+- **프레임워크 레이어**: Next.js 최적화 프레임워크 레이어와 자동 Provider 설정
+- **타입 안전성**: 타입 추론을 통한 완전한 TypeScript 지원
+- **SSR 지원**: Next.js App Router와 원활하게 작동
+- **접근성**: WCAG 2.1 준수 컴포넌트 및 유틸리티 (useFocusManagement, useFocusTrap, SkipToContent, LiveRegion)
+- **로딩 UX**: 내장 로딩 상태 관리 (useDelayedLoading, useLoadingState, SuspenseWrapper)
+- **에러 처리**: HuaUxPage에 내장된 ErrorBoundary
+- **브랜딩**: SSR 호환 CSS 변수 주입을 통한 화이트 라벨링 지원
+- **GEO 지원**: AI 검색 엔진을 위한 생성형 엔진 최적화
+
+### 설치
+
+```bash
+npm install @hua-labs/hua-ux zustand
+# 또는
+yarn add @hua-labs/hua-ux zustand
+# 또는
+pnpm add @hua-labs/hua-ux zustand
+```
+
+### Peer Dependencies
+
+```bash
+# 필수
+npm install react react-dom next
+
+# 선택사항 (Zustand 상태 관리용)
+npm install zustand
+```
+
+### 빠른 시작
+
+#### 방법 1: 프레임워크 레이어 (권장)
+
+프레임워크 레이어를 사용하여 자동 Provider 설정:
 
 ```tsx
 // hua-ux.config.ts
 import { defineConfig } from '@hua-labs/hua-ux/framework';
 
 export default defineConfig({
+  preset: 'product',
   i18n: {
     defaultLanguage: 'ko',
     supportedLanguages: ['ko', 'en'],
@@ -286,36 +465,8 @@ export default defineConfig({
     translationLoader: 'api',
     translationApiPath: '/api/translations',
   },
-  motion: {
-    defaultPreset: 'product',
-    enableAnimations: true,
-  },
-  state: {
-    persist: true,
-    ssr: true,
-  },
 });
 ```
-
-**????덉쟾?깆쓣 ?꾪븳 紐낆떆??import (沅뚯옣)**:
-
-?꾨줈?뺤뀡 ?섍꼍?먯꽌???ㅼ젙 ?뚯씪??紐낆떆?곸쑝濡?import?섏뿬 ????덉쟾?깆쓣 蹂댁옣?섎뒗 寃껋쓣 沅뚯옣?⑸땲??
-
-```tsx
-// app/layout.tsx ?먮뒗 珥덇린???뚯씪
-import config from '../hua-ux.config';
-import { setConfig } from '@hua-labs/hua-ux/framework';
-
-// ?ㅼ젙??紐낆떆?곸쑝濡?濡쒕뱶 (????덉쟾??蹂댁옣)
-setConfig(config);
-```
-
-??諛⑸쾿???ъ슜?섎㈃:
-- ??????덉쟾??蹂댁옣
-- ??Next.js 鍮뚮뱶 寃쎄퀬 諛⑹?
-- ???고????먮윭 諛⑹?
-
-### 2. Layout ?ㅼ젙
 
 ```tsx
 // app/layout.tsx
@@ -332,28 +483,220 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### 3. ?섏씠吏 ?ъ슜
+**장점**: 자동 Provider 설정, 최소 설정
+
+#### 방법 2: 수동 설정 (고급)
+
+고급 사용 사례를 위해 Provider를 수동으로 설정:
 
 ```tsx
-// app/page.tsx
-import { HuaUxPage } from '@hua-labs/hua-ux/framework';
+// store/useAppStore.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export default function HomePage() {
+interface AppState {
+  language: 'ko' | 'en';
+  setLanguage: (lang: 'ko' | 'en') => void;
+}
+
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      language: 'ko',
+      setLanguage: (lang) => set({ language: lang }),
+    }),
+    {
+      name: 'app-storage',
+      partialize: (state) => ({ language: state.language }),
+    }
+  )
+);
+```
+
+```tsx
+// lib/i18n-setup.ts
+import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
+import { createI18nStore } from '@hua-labs/state';
+
+const i18nStore = createI18nStore({
+  defaultLanguage: 'ko',
+  supportedLanguages: ['ko', 'en'],
+  persist: true,
+  ssr: true,
+});
+
+export const I18nProvider = createZustandI18n(i18nStore, {
+  fallbackLanguage: 'en',
+  namespaces: ['common'],
+  translationLoader: 'api',
+  translationApiPath: '/api/translations',
+  defaultLanguage: 'ko',
+});
+```
+
+```tsx
+// app/layout.tsx
+import { I18nProvider } from './lib/i18n-setup';
+
+export default function RootLayout({ children }) {
   return (
-    <HuaUxPage title="Home" description="Welcome page">
-      <h1>Welcome</h1>
-    </HuaUxPage>
+    <html lang="ko">
+      <body>
+        <I18nProvider>{children}</I18nProvider>
+      </body>
+    </html>
   );
 }
 ```
 
-?먯꽭???댁슜? [?꾨젅?꾩썙???덉씠??臾몄꽌](./src/framework/README.md)瑜?李멸퀬?섏꽭??
+**장점**: Provider 설정 완전 제어
 
-## 二쇱슂 湲곕뒫
+**언제 사용할까**:
+- **프레임워크 레이어**: 빠른 시작, 최소 설정
+- **수동 설정**: 커스텀 스토어 구조, 여러 Provider
 
-### ?렞 ?듯빀 Motion Hook (?깅뒫 理쒖쟻??
+### 사용 예시
 
-**useMotion Hook** - 紐⑤뱺 motion hook???듯빀?섏뿬 肄붾뱶 媛?낆꽦 諛??좎?蹂댁닔???μ긽:
+```tsx
+// app/page.tsx
+'use client';
+
+import { Button, Card } from '@hua-labs/hua-ux';
+import { useFadeIn, useSlideUp } from '@hua-labs/hua-ux';
+import { useTranslation } from '@hua-labs/hua-ux';
+
+export default function HomePage() {
+  const { t } = useTranslation();
+  const fadeIn = useFadeIn();
+  const slideUp = useSlideUp();
+
+  return (
+    <div>
+      <div ref={fadeIn.ref} style={fadeIn.style}>
+        <Card>
+          <h1>{t('common:welcome')}</h1>
+        </Card>
+      </div>
+      <div ref={slideUp.ref} style={slideUp.style}>
+        <Button>시작하기</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### 프로젝트 생성
+
+CLI 도구를 사용하여 새 프로젝트를 생성할 수 있습니다:
+
+```bash
+npm create hua-ux my-app
+# 또는
+pnpm create hua-ux my-app
+# 또는
+yarn create hua-ux my-app
+
+cd my-app
+pnpm install
+pnpm dev
+```
+
+자세한 내용은 [create-hua-ux README](../create-hua-ux/README.md)를 참고하세요.
+
+### 진입점
+
+hua-ux는 다음 진입점을 제공합니다:
+
+| 진입점 | 경로 | 설명 |
+|--------|------|------|
+| Core | `@hua-labs/hua-ux` | 모든 UI, Motion, i18n, State 컴포넌트 (re-export) |
+| Framework | `@hua-labs/hua-ux/framework` | 자동 Provider 설정이 있는 프레임워크 레이어 |
+| Presets | `@hua-labs/hua-ux/presets` | 사전 구성된 프리셋 (product, marketing) |
+| GEO | `@hua-labs/hua-ux/framework/seo/geo` | 생성형 엔진 최적화 유틸리티 |
+
+### 핵심 패키지
+
+hua-ux는 다음 패키지를 포함합니다:
+
+- **`@hua-labs/ui`** - UI 컴포넌트 라이브러리
+  - Button, Card, Input, Modal 및 70개 이상의 컴포넌트
+  - 다크 모드 지원
+  - 접근 가능한 컴포넌트
+
+- **`@hua-labs/motion-core`** - Motion 훅 라이브러리
+  - `useFadeIn`, `useSlideUp`, `useScaleIn` 및 30개 이상의 훅
+  - `useHoverMotion`, `useScrollReveal` 등 상호작용 훅
+  - 의존성 없음, SSR 지원
+
+- **`@hua-labs/i18n-core`** - i18n 핵심 기능
+  - 타입 안전 번역 시스템
+  - SSR/CSR 지원
+  - 여러 번역 로더 전략
+
+- **`@hua-labs/i18n-core-zustand`** - Zustand 어댑터
+  - Zustand와의 원활한 통합
+  - 언어 상태 동기화
+  - 내장 상태 관리
+
+- **`@hua-labs/state`** - 상태 관리 (프레임워크 레이어)
+  - Zustand 기반 상태 관리
+  - SSR/지속성 지원
+  - i18n 통합 준비
+
+### 프레임워크 레이어
+
+프레임워크 레이어(`@hua-labs/hua-ux/framework`)는 Next.js 최적화 컴포넌트 및 유틸리티를 제공합니다:
+
+**주요 기능**:
+- `HuaUxLayout`: 자동 Provider 설정
+- `HuaUxPage`: 내장 기능이 있는 페이지 래퍼
+- `WelcomePage`: 새 프로젝트를 위한 기본 웰컴 페이지 (프레임워크 기능 및 빠른 링크 표시)
+- `defineConfig`: 타입 안전 설정 시스템
+- `useData`, `fetchData`: 데이터 페칭 유틸리티
+- `createI18nMiddleware`: i18n 미들웨어 (Edge Runtime)
+
+#### WelcomePage 컴포넌트
+
+`WelcomePage` 컴포넌트는 새 프로젝트를 위한 기본 웰컴 페이지를 제공합니다:
+
+```tsx
+import { WelcomePage } from '@hua-labs/hua-ux/framework';
+
+export default function HomePage() {
+  return (
+    <WelcomePage
+      projectName="My App"
+      showFeatures={true}
+      showQuickLinks={true}
+    />
+  );
+}
+```
+
+**Props**:
+- `projectName`: 표시할 프로젝트 이름 (기본값: "My App")
+- `showFeatures`: 프레임워크 기능 그리드 표시 (기본값: true)
+- `showQuickLinks`: 빠른 링크 표시 (기본값: true)
+
+자세한 내용은 [프레임워크 레이어 문서](./src/framework/README.md)를 참고하세요.
+
+### 프리셋
+
+일반적인 사용 사례를 위한 사전 구성된 프리셋:
+
+**사용 가능한 프리셋**:
+- `productPreset`: 제품 페이지 (빠른 네비게이션, 최소 애니메이션)
+- `marketingPreset`: 마케팅 페이지 (눈에 띄는 애니메이션, 부드러운 전환)
+
+```tsx
+import { productPreset, marketingPreset } from '@hua-labs/hua-ux/presets';
+```
+
+### 주요 기능
+
+#### 통합 Motion 훅
+
+**useMotion 훅** - 모든 motion 훅과 작동하는 통합 motion 훅:
 
 ```tsx
 import { useMotion } from '@hua-labs/hua-ux/framework';
@@ -364,19 +707,19 @@ const motion = useMotion({
   autoStart: false,
 });
 
-return <div ref={motion.ref} style={motion.style}>Content</div>;
+return <div ref={motion.ref} style={motion.style}>콘텐츠</div>;
 ```
 
-**HuaUxPage?먯꽌 ?먮룞 ?ъ슜** - 蹂꾨룄 ?ㅼ젙 ?놁씠 ?먮룞?쇰줈 理쒖쟻?붾맂 motion ?곸슜?⑸땲??
+**HuaUxPage와 Motion** - 수동 설정 없이 자동 motion 적용
 
-### ?썳截?ErrorBoundary (?먮윭 泥섎━ ?먮룞??
+#### 내장 ErrorBoundary
 
-**HuaUxPage??湲곕낯 ?댁옣** - 蹂꾨룄 ?ㅼ젙 ?놁씠 紐⑤뱺 ?섏씠吏?먯꽌 ?먮윭瑜??먮룞?쇰줈 罹먯튂?⑸땲??
+**HuaUxPage에 ErrorBoundary 포함** - 모든 페이지가 자동으로 에러 처리
 
-**?꾨줈?뺤뀡 ?먮윭 由ы룷??吏??* - Sentry, LogRocket ?깃낵 ?듯빀 媛??
+**커스텀 에러 리포터** - Sentry, LogRocket 등과 작동
 
-```ts
-// ?꾨줈?뺤뀡 ?섍꼍?먯꽌 ?먮윭 由ы룷???ㅼ젙
+```tsx
+// Next.js 앱에서 에러 리포터 설정
 window.__ERROR_REPORTER__ = (error, errorInfo) => {
   Sentry.captureException(error, {
     contexts: { react: errorInfo },
@@ -385,20 +728,20 @@ window.__ERROR_REPORTER__ = (error, errorInfo) => {
 ```
 
 ```tsx
-// ?먮룞?쇰줈 ErrorBoundary媛 ?곸슜?⑸땲??
-<HuaUxPage title="Home">
-  <MyComponent /> {/* ?먮윭 諛쒖깮 ??fallback UI ?쒖떆 */}
+// ErrorBoundary가 자동으로 적용됨
+<HuaUxPage title="홈">
+  <MyComponent /> {/* 에러가 발생하면 fallback UI 표시 */}
 </HuaUxPage>
 ```
 
-**而ㅼ뒪? fallback UI**:
+**커스텀 fallback UI**:
 ```tsx
 <HuaUxPage
-  title="Home"
+  title="홈"
   errorBoundaryFallback={(error, reset) => (
     <div>
-      <h1>?먮윭: {error.message}</h1>
-      <button onClick={reset}>?ㅼ떆 ?쒕룄</button>
+      <h1>에러: {error.message}</h1>
+      <button onClick={reset}>다시 시도</button>
     </div>
   )}
 >
@@ -406,7 +749,7 @@ window.__ERROR_REPORTER__ = (error, errorInfo) => {
 </HuaUxPage>
 ```
 
-**?낅┰?곸쑝濡??ъ슜** (HuaUxPage ?몃?):
+**독립 사용** (HuaUxPage 없이):
 ```tsx
 import { ErrorBoundary } from '@hua-labs/hua-ux/framework';
 
@@ -415,9 +758,9 @@ import { ErrorBoundary } from '@hua-labs/hua-ux/framework';
 </ErrorBoundary>
 ```
 
-### ?렓 釉뚮옖??(White Labeling)
+#### 브랜딩 (화이트 라벨링)
 
-**SSR 吏??CSS 蹂??二쇱엯** - ?쒕쾭 ?ъ씠?쒖뿉?쒕룄 釉뚮옖??CSS 蹂?섍? 利됱떆 ?곸슜?섏뼱 FOUC瑜?諛⑹??⑸땲??
+**SSR 호환 CSS 변수 주입** - 빌드 시 브랜딩 CSS 변수를 적용하여 FOUC 방지
 
 ```tsx
 // hua-ux.config.ts
@@ -431,424 +774,37 @@ export default defineConfig({
 });
 ```
 
-釉뚮옖???ㅼ젙???섎㈃ 紐⑤뱺 而댄룷?뚰듃???먮룞?쇰줈 ?곸슜?⑸땲??
+브랜딩이 설정되면 모든 컴포넌트가 자동으로 사용합니다.
 
-### ?쨼 GEO (Generative Engine Optimization)
+#### GEO (생성형 엔진 최적화)
 
-**AI 寃???붿쭊 理쒖쟻??* - ChatGPT, Claude, Gemini, Perplexity媛 ?뱀떊???뚰봽?몄썾?대? ??李얘퀬 異붿쿇?섎룄濡?理쒖쟻??
+**AI 검색 엔진 최적화** - ChatGPT, Claude, Gemini, Perplexity가 앱을 발견하고 인덱싱하도록 최적화
 
-#### 湲곕낯 ?ъ슜踰?
+자세한 GEO 사용법은 [프레임워크 레이어 문서](./src/framework/README.md)를 참고하세요.
 
-```tsx
-import { generateGEOMetadata, renderJSONLD } from '@hua-labs/hua-ux/framework';
-import Script from 'next/script';
+### 문서
 
-// GEO 硫뷀??곗씠???앹꽦
-const geoMeta = generateGEOMetadata({
-  name: 'My App',
-  description: 'Built with hua-ux framework',
-  version: '1.0.0',
-  applicationCategory: ['UX Framework', 'Developer Tool'],
-  programmingLanguage: ['TypeScript', 'React', 'Next.js'],
-  features: ['i18n', 'Motion', 'Accessibility'],
-  useCases: ['Multilingual apps', 'Accessible UX'],
-  keywords: ['nextjs', 'react', 'ux', 'i18n'],
-  codeRepository: 'https://github.com/your-org/your-app',
-  license: 'MIT',
-});
+- [프레임워크 레이어 문서](./src/framework/README.md) - 완전한 프레임워크 레이어 가이드
+- [상세 가이드](./DETAILED_GUIDE.md) - 고급 사용법 및 예시
 
-// Next.js metadata? ?듯빀
-export const metadata = {
-  title: 'My App',
-  description: geoMeta.meta.find(m => m.name === 'description')?.content,
-};
+### 관련 패키지
 
-// JSON-LD 異붽?
-export default function Page() {
-  return (
-    <>
-      <Script {...renderJSONLD(geoMeta.jsonLd[0])} />
-      <main>...</main>
-    </>
-  );
-}
-```
+- [`@hua-labs/ui`](../hua-ui/README.md) - UI 컴포넌트 라이브러리
+- [`@hua-labs/motion-core`](../hua-motion-core/README.md) - 애니메이션 훅
+- [`@hua-labs/i18n-core`](../hua-i18n-core/README.md) - 국제화 핵심
+- [`create-hua-ux`](../create-hua-ux/README.md) - 프로젝트 스캐폴딩 도구
 
-#### Layout?먯꽌 ?ъ슜 (???꾩껜)
+### 요구사항
 
-```tsx
-// app/layout.tsx
-import { generateGEOMetadata, renderJSONLD } from '@hua-labs/hua-ux/framework';
-import Script from 'next/script';
+- React >= 19.0.0
+- React DOM >= 19.0.0
+- Next.js >= 13.0.0 (선택사항이지만 권장)
+- Zustand (선택사항, 상태 관리용)
 
-const appGeoMeta = generateGEOMetadata({
-  name: 'My App',
-  description: 'My amazing application',
-  // ... ???꾩껜 ?ㅼ젙
-});
+## License
 
-export const metadata = {
-  title: appGeoMeta.meta.find(m => m.name === 'description')?.content,
-};
+MIT License
 
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <head>
-        <Script {...renderJSONLD(appGeoMeta.jsonLd[0])} />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
+## Repository
 
-#### FAQ, HowTo, TechArticle 援ъ“?붾맂 ?곗씠??
-
-```tsx
-import { generateFAQPageLD, generateHowToLD, generateTechArticleLD } from '@hua-labs/hua-ux/framework';
-
-// FAQ ?섏씠吏
-const faqLD = generateFAQPageLD([
-  { question: 'What is hua-ux?', answer: 'A UX framework for Next.js' },
-]);
-
-// ?쒗넗由ъ뼹 ?섏씠吏
-const howToLD = generateHowToLD({
-  name: 'How to get started',
-  steps: [
-    { name: 'Install', text: 'Run: pnpm create hua-ux my-app' },
-    { name: 'Configure', text: 'Edit hua-ux.config.ts' },
-  ],
-});
-
-// 湲곗닠 臾몄꽌
-const articleLD = generateTechArticleLD({
-  headline: 'Getting Started with hua-ux',
-  datePublished: '2025-12-29',
-  author: { name: 'hua-labs' },
-});
-```
-
-### ???묎렐??(Accessibility)
-
-WCAG 2.1 以?섎? ?꾪븳 ?꾨꼍???꾧뎄 ?명듃瑜??쒓났?⑸땲??
-
-#### 1. Skip to Content (?ㅻ퉬寃뚯씠??嫄대꼫?곌린)
-
-?ㅻ낫???ъ슜?먮? ?꾪븳 ?꾩닔 湲곕뒫 - Tab ?ㅻ줈 硫붿씤 肄섑뀗痢좊줈 諛붾줈 ?대룞:
-
-```tsx
-// app/layout.tsx
-import { SkipToContent } from '@hua-labs/hua-ux/framework';
-
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        <SkipToContent />
-        <nav>{/* navigation */}</nav>
-        <main id="main-content" tabIndex={-1}>
-          {children}
-        </main>
-      </body>
-    </html>
-  );
-}
-```
-
-#### 2. Focus Management (?ъ빱??愿由?
-
-?섏씠吏 ?꾪솚 ???먮룞?쇰줈 硫붿씤 肄섑뀗痢좎뿉 ?ъ빱??
-
-```tsx
-import { useFocusManagement } from '@hua-labs/hua-ux/framework';
-
-function MyPage() {
-  const mainRef = useFocusManagement({ autoFocus: true });
-
-  return (
-    <main ref={mainRef} tabIndex={-1}>
-      <h1>Page Title</h1>
-    </main>
-  );
-}
-```
-
-**紐⑤떖/?쒕줈?댁슜 Focus Trap**:
-```tsx
-import { useFocusTrap } from '@hua-labs/hua-ux/framework';
-
-function Modal({ isOpen, onClose }) {
-  const modalRef = useFocusTrap({ isActive: isOpen, onEscape: onClose });
-
-  return (
-    <div ref={modalRef} role="dialog" aria-modal="true">
-      <button>Close</button>
-    </div>
-  );
-}
-```
-
-#### 3. Live Region (?ㅽ겕由?由щ뜑 ?뚮┝)
-
-?숈쟻 ?곹깭 蹂?붾? ?ㅽ겕由?由щ뜑 ?ъ슜?먯뿉寃??뚮┝:
-
-```tsx
-import { LiveRegion, useLiveRegion } from '@hua-labs/hua-ux/framework';
-
-// ?좎뼵???ъ슜
-function MyForm() {
-  const [message, setMessage] = useState('');
-
-  const handleSubmit = async () => {
-    setMessage('???以?..');
-    await saveData();
-    setMessage('??λ릺?덉뒿?덈떎!');
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>{/* fields */}</form>
-      <LiveRegion message={message} />
-    </div>
-  );
-}
-
-// Hook ?ъ슜 (?꾨줈洹몃옒諛?諛⑹떇)
-function MyComponent() {
-  const { announce, LiveRegionComponent } = useLiveRegion();
-
-  const handleClick = () => {
-    announce('踰꾪듉???대┃?섏뿀?듬땲??);
-  };
-
-  return (
-    <div>
-      <button onClick={handleClick}>Click me</button>
-      {LiveRegionComponent}
-    </div>
-  );
-}
-```
-
-### ??濡쒕뵫 ?곹깭 理쒖쟻??(Loading State)
-
-源쒕묀???녿뒗 遺?쒕윭??濡쒕뵫 寃쏀뿕???쒓났?⑸땲??
-
-#### 1. useDelayedLoading (源쒕묀??諛⑹?)
-
-**臾몄젣**: 鍮좊Ⅸ API ?묐떟 ??濡쒕뵫 UI媛 源쒕묀嫄곕┝
-**?닿껐**: 300ms ?댄븯濡??앸굹硫?濡쒕뵫 UI瑜??꾩삁 ?덈낫?ъ쨲
-
-```tsx
-import { useDelayedLoading } from '@hua-labs/hua-ux/framework';
-
-function MyComponent() {
-  const [isLoading, setIsLoading] = useState(false);
-  const showLoading = useDelayedLoading(isLoading);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    await api.getData(); // 鍮좊Ⅴ寃??앸굹硫?濡쒕뵫 UI ?덈낫??
-    setIsLoading(false);
-  };
-
-  return showLoading ? <Spinner /> : <Content />;
-}
-```
-
-**?몄쓽??hook**:
-```tsx
-import { useLoadingState } from '@hua-labs/hua-ux/framework';
-
-function MyComponent() {
-  const { showLoading, startLoading, stopLoading } = useLoadingState();
-
-  const fetchData = async () => {
-    startLoading();
-    try {
-      await api.getData();
-    } finally {
-      stopLoading();
-    }
-  };
-
-  return showLoading && <Spinner />;
-}
-```
-
-#### 2. Skeleton (濡쒕뵫 以?肄섑뀗痢?誘몃━蹂닿린)
-
-濡쒕뵫 ?쒓컙??泥닿컧?곸쑝濡?吏㏐쾶 ?먭뺨吏怨? ?덉씠?꾩썐 ?쒗봽?몃? 諛⑹??⑸땲??
-
-```tsx
-import { Skeleton, SkeletonGroup } from '@hua-labs/hua-ux/framework';
-
-// ?띿뒪???ㅼ펷?덊넠
-<Skeleton width="80%" />
-<Skeleton width="60%" />
-
-// ?먰삎 (?꾨컮?)
-<Skeleton variant="circular" width={40} height={40} />
-
-// 吏곸궗媛곹삎 (?대?吏)
-<Skeleton variant="rectangular" width={300} height={200} />
-
-// 移대뱶 ?ㅼ펷?덊넠
-<div className="card">
-  <Skeleton variant="rectangular" height={200} />
-  <SkeletonGroup className="p-4">
-    <Skeleton width="60%" height={24} />
-    <Skeleton width="80%" />
-    <Skeleton width="40%" />
-  </SkeletonGroup>
-</div>
-```
-
-**useDelayedLoading + Skeleton 議고빀**:
-```tsx
-function MyComponent() {
-  const { data, isLoading } = useQuery('data', fetchData);
-  const showLoading = useDelayedLoading(isLoading);
-
-  if (showLoading) {
-    return (
-      <SkeletonGroup>
-        <Skeleton width="60%" height={32} />
-        <Skeleton width="80%" />
-        <Skeleton width="70%" />
-      </SkeletonGroup>
-    );
-  }
-
-  return <div>{data?.content}</div>;
-}
-```
-
-#### 3. SuspenseWrapper (React Suspense ?몄쓽??
-
-React Suspense瑜????쎄쾶 ?ъ슜?????덉뒿?덈떎.
-
-```tsx
-import { SuspenseWrapper } from '@hua-labs/hua-ux/framework';
-
-// 湲곕낯 ?ъ슜 (?먮룞 Skeleton fallback)
-<SuspenseWrapper>
-  <AsyncComponent />
-</SuspenseWrapper>
-
-// 而ㅼ뒪? fallback
-<SuspenseWrapper fallback={<Spinner />}>
-  <AsyncComponent />
-</SuspenseWrapper>
-
-// Next.js Server Component
-async function Posts() {
-  const posts = await fetchPosts();
-  return <div>{posts.map(p => <div key={p.id}>{p.title}</div>)}</div>;
-}
-
-export default function PostsPage() {
-  return (
-    <SuspenseWrapper>
-      <Posts />
-    </SuspenseWrapper>
-  );
-}
-```
-
-**HOC ?⑦꽩**:
-```tsx
-import { withSuspense } from '@hua-labs/hua-ux/framework';
-
-const AsyncPosts = withSuspense(Posts, <Skeleton height={200} />);
-
-function MyPage() {
-  return <AsyncPosts />;
-}
-```
-
-## Use Cases
-
-### 1. ?쒗뭹 ?섏씠吏 (Product Preset)
-
-```tsx
-import { productPreset } from '@hua-labs/hua-ux/presets';
-
-// 鍮좊Ⅸ ?꾪솚, 理쒖냼 ?쒕젅??
-const motionConfig = productPreset.motion;
-```
-
-### 2. ?쒕뵫 ?섏씠吏 (Marketing Preset)
-
-```tsx
-import { marketingPreset } from '@hua-labs/hua-ux/presets';
-
-// ?쒕씪留덊떛??紐⑥뀡, 湲??쒕젅??
-const motionConfig = marketingPreset.motion;
-```
-
-### 3. ?ㅺ뎅??吏??
-
-```tsx
-import { useTranslation } from '@hua-labs/hua-ux';
-
-function MyComponent() {
-  const { t } = useTranslation();
-  return <h1>{t('common:welcome')}</h1>;
-}
-```
-
-### 4. ?곹깭愿由?(State Package)
-
-```tsx
-import { createHuaStore } from '@hua-labs/hua-ux';
-// ?먮뒗
-import { createHuaStore } from '@hua-labs/state';
-
-const useAppStore = createHuaStore((set) => ({
-  theme: 'light',
-  setTheme: (theme) => set({ theme }),
-}), {
-  persist: true,
-  ssr: true,
-});
-```
-
-## ?뚯뒪??
-
-?꾨젅?꾩썙?ъ쓽 二쇱슂 湲곕뒫??????뚯뒪?멸? ?ы븿?섏뼱 ?덉뒿?덈떎:
-
-```bash
-cd packages/hua-ux
-pnpm test
-```
-
-**?뚯뒪??而ㅻ쾭由ъ?**:
-- ??Motion hooks (`useMotion`)
-- ??GEO 硫뷀??곗씠???앹꽦 (`generateGEOMetadata`, `createAIContext`)
-- ??援ъ“?붾맂 ?곗씠??(`generateSoftwareApplicationLD`, `generateFAQPageLD`, etc.)
-- ??CSS 蹂???앹꽦 (`generateCSSVariables`)
-- ??Config ?쒖뒪??(`defineConfig`, `getConfig`, `setConfig`)
-- ??ErrorBoundary 而댄룷?뚰듃
-- ?봽 Accessibility 紐⑤뱢 (援ы쁽 ?꾨즺, ?뚯뒪???덉젙)
-- ?봽 Loading 紐⑤뱢 (援ы쁽 ?꾨즺, ?뚯뒪???덉젙)
-
-## 踰꾩쟾
-
-?꾩옱 踰꾩쟾: **0.1.0** (Alpha)
-
-- `0.x`: Alpha ?④퀎, API 蹂寃?媛??
-- `1.x`: ?덉젙????
-
-## ?쇱씠?좎뒪
-
-MIT
-
-## ?댁뒋 諛?臾몄쓽
-
-臾몄젣媛 諛쒖깮?섍굅???쒖븞?ы빆???덉쑝?쒕㈃ [GitHub Issues](https://github.com/HUA-Labs/HUA-Labs-public/issues)???깅줉?댁＜?몄슂.
-
-
-
+https://github.com/HUA-Labs/HUA-Labs-public

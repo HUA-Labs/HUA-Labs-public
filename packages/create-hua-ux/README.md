@@ -7,7 +7,8 @@ hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
 [![npm downloads](https://img.shields.io/npm/dw/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![node version](https://img.shields.io/node/v/create-hua-ux.svg)](https://www.npmjs.com/package/create-hua-ux)
 [![license](https://img.shields.io/npm/l/create-hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
@@ -129,6 +130,7 @@ pnpm dev
 #### Project Structure
 - **Organized directories**: `app/`, `components/`, `lib/`, `store/`, `translations/`
 - **Framework configuration**: `hua-ux.config.ts` with sensible defaults
+- **Welcome page**: Default `WelcomePage` component showing framework features and quick links
 - **Example components**: Using `HuaUxLayout` and `HuaUxPage` with translation keys
 
 #### Internationalization
@@ -154,11 +156,12 @@ pnpm dev
 my-app/
 ├── app/
 │   ├── layout.tsx          # Root layout with HuaUxLayout
-│   ├── page.tsx            # Home page with HuaUxPage
+│   ├── page.tsx            # Home page with WelcomePage component
 │   ├── globals.css         # Tailwind CSS
 │   └── api/
 │       └── translations/   # i18n API route
 ├── components/             # Your components
+│   └── LanguageToggle.tsx  # Language switcher component
 ├── lib/
 │   └── i18n-setup.ts      # i18n configuration
 ├── store/
@@ -171,6 +174,32 @@ my-app/
 ├── tailwind.config.js
 └── tsconfig.json
 ```
+
+### Welcome Page
+
+The generated project includes a `WelcomePage` component that displays:
+- Project name and framework information
+- Framework features (UI Components, i18n, Motion, AI-First)
+- Quick links (Documentation, Examples, GitHub)
+- Language toggle button
+
+You can customize the welcome page by editing `app/page.tsx`:
+
+```tsx
+import { WelcomePage } from "@hua-labs/hua-ux/framework";
+
+export default function HomePage() {
+  return (
+    <WelcomePage
+      projectName="My App"
+      showFeatures={true}
+      showQuickLinks={true}
+    />
+  );
+}
+```
+
+To replace it with your own content, simply replace the `WelcomePage` component with your custom page.
 
 ### Next Steps
 
@@ -367,6 +396,7 @@ pnpm dev
 #### 프로젝트 구조
 - **구성된 디렉토리**: `app/`, `components/`, `lib/`, `store/`, `translations/`
 - **프레임워크 구성**: 합리적인 기본값이 있는 `hua-ux.config.ts`
+- **웰컴 페이지**: 프레임워크 기능과 빠른 링크를 보여주는 기본 `WelcomePage` 컴포넌트
 - **예제 컴포넌트**: 번역 키를 사용하는 `HuaUxLayout` 및 `HuaUxPage`
 
 #### 국제화
@@ -392,11 +422,12 @@ pnpm dev
 my-app/
 ├── app/
 │   ├── layout.tsx          # Root layout with HuaUxLayout
-│   ├── page.tsx            # Home page with HuaUxPage
+│   ├── page.tsx            # Home page with WelcomePage component
 │   ├── globals.css         # Tailwind CSS
 │   └── api/
 │       └── translations/   # i18n API route
 ├── components/             # Your components
+│   └── LanguageToggle.tsx  # Language switcher component
 ├── lib/
 │   └── i18n-setup.ts      # i18n configuration
 ├── store/
@@ -409,6 +440,32 @@ my-app/
 ├── tailwind.config.js
 └── tsconfig.json
 ```
+
+### 웰컴 페이지
+
+생성된 프로젝트에는 다음을 표시하는 `WelcomePage` 컴포넌트가 포함되어 있습니다:
+- 프로젝트 이름 및 프레임워크 정보
+- 프레임워크 기능 (UI 컴포넌트, i18n, Motion, AI-First)
+- 빠른 링크 (문서, 예제, GitHub)
+- 언어 전환 버튼
+
+`app/page.tsx`를 편집하여 웰컴 페이지를 사용자 지정할 수 있습니다:
+
+```tsx
+import { WelcomePage } from "@hua-labs/hua-ux/framework";
+
+export default function HomePage() {
+  return (
+    <WelcomePage
+      projectName="My App"
+      showFeatures={true}
+      showQuickLinks={true}
+    />
+  );
+}
+```
+
+자신만의 콘텐츠로 교체하려면 `WelcomePage` 컴포넌트를 사용자 지정 페이지로 교체하면 됩니다.
 
 ### 다음 단계
 

@@ -6,8 +6,8 @@ Translation loaders with caching and preloading for @hua-labs/i18n-core.
 [![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-loaders.svg)](https://www.npmjs.com/package/@hua-labs/i18n-loaders)
 [![npm downloads](https://img.shields.io/npm/dm/@hua-labs/i18n-loaders.svg)](https://www.npmjs.com/package/@hua-labs/i18n-loaders)
 [![license](https://img.shields.io/npm/l/@hua-labs/i18n-loaders.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
-[![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
@@ -428,6 +428,103 @@ See [API Loader Guide](./docs/API_LOADER.md) for detailed error handling documen
 
 - [API Loader Guide](./docs/API_LOADER.md) - Detailed API loader documentation and error handling
 
+### Requirements
+
+- React >= 19.0.0
+- React DOM >= 19.0.0
+
 ## License
 
 MIT License
+
+## Repository
+
+https://github.com/HUA-Labs/HUA-Labs-public
+
+## Korean
+
+### 개요
+내장 캐싱 및 프리로딩 기능을 갖춘 프로덕션 레디 번역 로더입니다. @hua-labs/i18n-core와 원활하게 작동하도록 설계되었습니다.
+
+### 주요 기능
+
+- API 기반 번역 로더 (`createApiTranslationLoader`)
+- 내장 TTL/전역 캐시/중복 요청 방지
+- 네임스페이스 프리로딩 및 폴백 언어 워밍업
+- 기본 번역 (JSON) 병합 (SUM API 스타일)
+- 서버 및 클라이언트 모두에서 작동
+- **프로덕션 테스트 완료**: 현재 SUM API에서 사용 중
+
+### 설치
+
+```bash
+pnpm add @hua-labs/i18n-loaders
+# 또는
+npm install @hua-labs/i18n-loaders
+```
+
+### 빠른 시작
+
+```ts
+import { createCoreI18n } from '@hua-labs/i18n-core';
+import { createApiTranslationLoader } from '@hua-labs/i18n-loaders';
+
+const loadTranslations = createApiTranslationLoader({
+  translationApiPath: '/api/translations',
+  cacheTtlMs: 60_000, // 1분
+  enableGlobalCache: true
+});
+
+export const I18nProvider = createCoreI18n({
+  defaultLanguage: 'ko',
+  fallbackLanguage: 'en',
+  namespaces: ['common', 'dashboard'],
+  translationLoader: 'custom',
+  loadTranslations
+});
+```
+
+### API 레퍼런스
+
+#### createApiTranslationLoader
+
+API 기반 번역 로더를 생성합니다. TTL 캐싱, 중복 요청 방지, 전역 캐시를 포함합니다.
+
+#### preloadNamespaces
+
+여러 네임스페이스를 병렬로 프리로드합니다.
+
+#### warmFallbackLanguages
+
+폴백 언어를 미리 워밍업합니다.
+
+#### withDefaultTranslations
+
+기본 번역을 API 번역과 병합합니다. API가 실패하면 기본 번역을 사용합니다.
+
+### 캐싱 동작
+
+- **TTL 캐시**: 각 번역은 `cacheTtlMs` 기간 동안 캐시됩니다
+- **중복 요청 방지**: 동일한 번역이 로딩 중이면 기존 Promise를 재사용합니다
+- **전역 캐시**: 동일한 로더 인스턴스가 모든 컴포넌트에서 캐시를 공유합니다
+
+### 에러 처리
+
+- **자동 재시도**: 네트워크 오류는 지수 백오프로 자동 재시도됩니다 (`retryCount` 및 `retryDelay`로 구성 가능)
+- 모든 재시도가 소진된 후 API 요청 실패 시 오류를 throw합니다
+- `withDefaultTranslations`를 사용할 때 기본 번역으로 폴백합니다
+
+자세한 내용은 [API 로더 가이드](./docs/API_LOADER.md)를 참고하세요.
+
+### 요구사항
+
+- React >= 19.0.0
+- React DOM >= 19.0.0
+
+## License
+
+MIT License
+
+## Repository
+
+https://github.com/HUA-Labs/HUA-Labs-public
