@@ -1,4 +1,4 @@
-﻿# @hua-labs/motion-core
+# @hua-labs/motion-core
 
 30+ production-tested React animation hooks. Zero dependencies, SSR-ready.
 ?꾨줈?뺤뀡 寃利??꾨즺 React ?좊땲硫붿씠????30媛??댁긽. ?섏〈???놁쓬, SSR 吏??
@@ -9,11 +9,11 @@
 [![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-> **?좑툘 Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
 
-[English](#english) | [?쒓뎅??(#korean)
+[English](#english) | [한국어](#korean)
 
 ## English
 

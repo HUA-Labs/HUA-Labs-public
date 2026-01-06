@@ -1,7 +1,7 @@
-﻿# @hua-labs/hua-ux
+# @hua-labs/hua-ux
 
 Ship UX faster: UI + Motion + i18n, pre-wired.
-鍮좊Ⅸ UX 媛쒕컻???꾪븳 UI, Motion, i18n ?듯빀 ?꾨젅?꾩썙??
+더 빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/hua-ux.svg)](https://www.npmjs.com/package/@hua-labs/hua-ux)
@@ -9,11 +9,11 @@ Ship UX faster: UI + Motion + i18n, pre-wired.
 [![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-> **?좑툘 Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
 
-[English](#english) | [?쒓뎅??(#korean)
+[English](#english) | [한국어](#korean)
 
 ## English
 

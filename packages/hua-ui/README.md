@@ -1,7 +1,7 @@
-﻿# @hua-labs/ui
+# @hua-labs/ui
 
 Modern React UI component library with 70+ production-ready components.
-70媛??댁긽???꾨줈?뺤뀡 以鍮??꾨즺 React UI 而댄룷?뚰듃 ?쇱씠釉뚮윭由?
+70개 이상의 프로덕션 레디 React UI 컴포넌트 라이브러리
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
 [![npm downloads](https://img.shields.io/npm/dw/@hua-labs/ui.svg)](https://www.npmjs.com/package/@hua-labs/ui)
@@ -9,11 +9,11 @@ Modern React UI component library with 70+ production-ready components.
 [![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
-> **?좑툘 Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
+> **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
 
-[English](#english) | [?쒓뎅??(#korean)
+[English](#english) | [한국어](#korean)
 
 ## English
 
