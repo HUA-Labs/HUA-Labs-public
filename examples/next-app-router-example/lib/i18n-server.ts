@@ -12,7 +12,12 @@ import type { SupportedLanguage } from './store';
  * Translation value can be a string, nested object, or array
  * Supports various JSON structures in translation files
  */
-type TranslationValue = string | number | boolean | TranslationValue[] | Record<string, TranslationValue>;
+type TranslationValue =
+  | string
+  | number
+  | boolean
+  | TranslationValue[]
+  | { [key: string]: TranslationValue };
 
 /**
  * Load translations from JSON files
