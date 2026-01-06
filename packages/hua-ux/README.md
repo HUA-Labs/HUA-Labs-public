@@ -179,14 +179,12 @@ export default function HomePage() {
 
   return (
     <div>
-      <div ref={fadeIn.ref} style={fadeIn.style}>
-        <Card>
-          <h1>{t('common:welcome')}</h1>
-        </Card>
-      </div>
-      <div ref={slideUp.ref} style={slideUp.style}>
-        <Button>Get Started</Button>
-      </div>
+      <Card ref={fadeIn.ref} style={fadeIn.style}>
+        <h1>{t('common:welcome')}</h1>
+      </Card>
+      <Button ref={slideUp.ref} style={slideUp.style}>
+        Get Started
+      </Button>
     </div>
   );
 }
@@ -572,14 +570,12 @@ export default function HomePage() {
 
   return (
     <div>
-      <div ref={fadeIn.ref} style={fadeIn.style}>
-        <Card>
-          <h1>{t('common:welcome')}</h1>
-        </Card>
-      </div>
-      <div ref={slideUp.ref} style={slideUp.style}>
-        <Button>시작하기</Button>
-      </div>
+      <Card ref={fadeIn.ref} style={fadeIn.style}>
+        <h1>{t('common:welcome')}</h1>
+      </Card>
+      <Button ref={slideUp.ref} style={slideUp.style}>
+        시작하기
+      </Button>
     </div>
   );
 }
