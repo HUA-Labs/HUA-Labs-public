@@ -33,13 +33,13 @@ export function Example1_BasicGEO() {
     applicationCategory: ['UX Framework', 'Developer Tool'],
     programmingLanguage: ['TypeScript', 'React', 'Next.js'],
     applicationType: 'DeveloperApplication',
-    url: 'https://hua-labs.dev',
-    documentationUrl: 'https://hua-labs.dev/docs/hua-ux',
-    codeRepository: 'https://github.com/hua-labs/hua',
+    url: 'https://github.com/HUA-Labs/HUA-Labs-public', // TODO: Update when domain is available
+    documentationUrl: 'https://github.com/HUA-Labs/HUA-Labs-public', // TODO: Update when domain is available
+    codeRepository: 'https://github.com/HUA-Labs/HUA-Labs-public',
     license: 'MIT',
     author: {
       name: 'hua-labs',
-      url: 'https://hua-labs.dev',
+      url: 'https://github.com/HUA-Labs/HUA-Labs-public', // TODO: Update when domain is available
     },
     features: [
       'Privacy-first architecture (no tracking, no analytics by default)',

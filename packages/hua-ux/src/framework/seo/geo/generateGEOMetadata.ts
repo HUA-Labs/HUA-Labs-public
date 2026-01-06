@@ -65,11 +65,11 @@ import { generateSoftwareApplicationLD } from './structuredData';
  *     'privacy',
  *   ],
  *   codeRepository: 'https://github.com/hua-labs/hua',
- *   documentationUrl: 'https://hua-labs.dev/docs/hua-ux',
+ *   documentationUrl: 'https://github.com/HUA-Labs/HUA-Labs-public', // TODO: Update when domain is available
  *   license: 'MIT',
  *   author: {
  *     name: 'hua-labs',
- *     url: 'https://hua-labs.dev',
+ *     url: 'https://github.com/HUA-Labs/HUA-Labs-public', // TODO: Update when domain is available
  *   },
  * });
  * ```
