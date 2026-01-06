@@ -69,8 +69,8 @@ npm install @hua-labs/motion-core
 
 ```json
 {
-  "react": ">=16.8.0",
-  "react-dom": ">=16.8.0"
+  "react": ">=19.0.0",
+  "react-dom": ">=19.0.0"
 }
 ```
 
@@ -609,8 +609,8 @@ npm install @hua-labs/motion-core
 
 ```json
 {
-  "react": ">=16.8.0",
-  "react-dom": ">=16.8.0"
+  "react": ">=19.0.0",
+  "react-dom": ">=19.0.0"
 }
 ```
 

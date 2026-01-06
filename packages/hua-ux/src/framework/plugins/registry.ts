@@ -47,8 +47,7 @@ class PluginRegistry {
         if (!plugin.checkLicense()) {
           throw new Error(
             `[hua-ux] ❌ Plugin "${plugin.name}" requires a valid ${plugin.license} license.\n` +
-            `[hua-ux] ❌ Please purchase a ${plugin.license} license.\n\n` +
-            `💡 Purchase link: https://hua-labs.com/pricing`
+            `[hua-ux] ❌ Please purchase a ${plugin.license} license.`
           );
         }
       } else {

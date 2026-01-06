@@ -9,12 +9,18 @@ import { join } from 'path';
 import type { SupportedLanguage } from './store';
 
 /**
+ * Translation value can be a string, nested object, or array
+ * Supports various JSON structures in translation files
+ */
+type TranslationValue = string | number | boolean | TranslationValue[] | Record<string, TranslationValue>;
+
+/**
  * Load translations from JSON files
  * This function loads all namespaces for a given language
  */
 async function loadTranslationsFromFiles(language: SupportedLanguage) {
   const namespaces = ['common', 'pages', 'examples'];
-  const translations: Record<string, Record<string, string>> = {};
+  const translations: Record<string, Record<string, TranslationValue>> = {};
 
   for (const namespace of namespaces) {
     try {

@@ -41,21 +41,23 @@ const getSSRTranslations = async (language: SupportedLanguage) => {
  * 
  * @param store - Zustand store (language와 setLanguage 메서드 필요)
  * @param ssrTranslations - SSR에서 로드한 초기 번역 데이터 (선택사항)
+ * @param defaultLanguage - 초기 언어 설정 (기본값: 'ko')
  * @returns React Provider 컴포넌트
  * 
  * @example
  * ```tsx
- * const I18nProvider = createClientI18nProvider(useAppStore, ssrTranslations);
+ * const I18nProvider = createClientI18nProvider(useAppStore, ssrTranslations, 'en');
  * ```
  */
 export function createClientI18nProvider(
   store: typeof useAppStore,
-  ssrTranslations?: Record<string, Record<string, Record<string, string>>> | null
+  ssrTranslations?: Record<string, Record<string, Record<string, string>>> | null,
+  defaultLanguage: SupportedLanguage = 'ko'
 ) {
   // 타입 단언: ZustandLanguageStore는 string을 받지만, 실제로는 'ko' | 'en'만 사용
   // persist 미들웨어로 인한 타입 호환성을 위해 단언 필요
   return createZustandI18n(store as UseBoundStore<StoreApi<ZustandLanguageStore>>, {
-    defaultLanguage: 'ko',
+    defaultLanguage,
     fallbackLanguage: 'en',
     namespaces: ['common'],
     initialTranslations: ssrTranslations || undefined,
