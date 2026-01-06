@@ -33,8 +33,8 @@ export function I18nProvider({ children, initialLanguage = 'ko' }: I18nProviderP
   // initialLanguage가 변경되면 Provider를 재생성하여 초기 언어를 반영
   const I18nProviderComponent = useMemo(() => {
     const allTranslations = getInitialTranslations();
-    return createClientI18nProvider(useAppStore, allTranslations);
-  }, []);
+    return createClientI18nProvider(useAppStore, allTranslations, initialLanguage);
+  }, [initialLanguage]);
 
   return <I18nProviderComponent>{children}</I18nProviderComponent>;
 }
