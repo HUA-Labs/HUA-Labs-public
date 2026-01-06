@@ -46,11 +46,47 @@ async function loadTranslationsFromFiles(language: SupportedLanguage) {
  * Loads from JSON files in translations directory
  * 
  * This function should only be used in Server Components or API routes.
+ * 
+ * Returns translations in the format expected by I18nProvider:
+ * Record<language, Record<namespace, Record<key, string>>>
  */
-export async function loadSSRTranslations(language: SupportedLanguage = 'ko') {
+export async function loadSSRTranslations(
+  language: SupportedLanguage = 'ko'
+): Promise<Record<string, Record<string, Record<string, string>>> {
   const translations = await loadTranslationsFromFiles(language);
+  
+  // Convert TranslationValue to string for I18nProvider compatibility
+  const stringTranslations: Record<string, Record<string, string>> = {};
+  
+  for (const [namespace, namespaceTranslations] of Object.entries(translations)) {
+    stringTranslations[namespace] = flattenTranslations(namespaceTranslations);
+  }
+  
   return {
-    [language]: translations,
+    [language]: stringTranslations,
   };
 }
 
+/**
+ * Flatten nested translation objects to string values
+ * Handles nested objects and arrays by converting them to JSON strings
+ */
+function flattenTranslations(
+  translations: Record<string, TranslationValue>
+): Record<string, string> {
+  const result: Record<string, string> = {};
+  
+  for (const [key, value] of Object.entries(translations)) {
+    if (typeof value === 'string') {
+      result[key] = value;
+    } else if (typeof value === 'number' || typeof value === 'boolean') {
+      result[key] = String(value);
+    } else if (Array.isArray(value)) {
+      result[key] = JSON.stringify(value);
+    } else if (typeof value === 'object' && value !== null) {
+      result[key] = JSON.stringify(value);
+    }
+  }
+  
+  return result;
+}
