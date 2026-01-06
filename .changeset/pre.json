@@ -32,6 +32,7 @@
     "fix-hua-ux-exports",
     "fix-hua-ux-use-client",
     "fix-package-exports",
+    "provenance-and-docs",
     "rename-create-hua-ux-package",
     "type-safety-improvements",
     "zustand-v5-upgrade"
