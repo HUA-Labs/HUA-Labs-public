@@ -3,12 +3,16 @@ name: E2E Test (Fresh Install)
 on:
   pull_request:
     paths:
-      - 'packages/create-hua-ux/**'
+      - 'packages/create-hua-ux/src/**'
+      - 'packages/create-hua-ux/templates/**'
+      - 'packages/create-hua-ux/package.json'
       - '.github/workflows/e2e-test.yml'
   push:
     branches: [main]
     paths:
-      - 'packages/create-hua-ux/**'
+      - 'packages/create-hua-ux/src/**'
+      - 'packages/create-hua-ux/templates/**'
+      - 'packages/create-hua-ux/package.json'
   workflow_dispatch:
 
 jobs:
