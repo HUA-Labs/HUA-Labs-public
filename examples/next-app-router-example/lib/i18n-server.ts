@@ -52,7 +52,7 @@ async function loadTranslationsFromFiles(language: SupportedLanguage) {
  */
 export async function loadSSRTranslations(
   language: SupportedLanguage = 'ko'
-): Promise<Record<string, Record<string, Record<string, string>>> {
+): Promise<Record<string, Record<string, Record<string, string>>>> {
   const translations = await loadTranslationsFromFiles(language);
   
   // Convert TranslationValue to string for I18nProvider compatibility
