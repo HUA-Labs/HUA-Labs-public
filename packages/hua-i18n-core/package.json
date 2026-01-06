@@ -35,7 +35,7 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=19.0.0"
   },
   "keywords": [
     "hua-labs",

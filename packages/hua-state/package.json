@@ -31,8 +31,8 @@
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0",
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0",
     "zustand": ">=5.0.0",
     "@hua-labs/i18n-core-zustand": ">=1.1.0-alpha.2"
   },
