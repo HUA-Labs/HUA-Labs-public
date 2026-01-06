@@ -1,9 +1,8 @@
-﻿---
-\
-@hua-labs/ui\: patch
+---
+"@hua-labs/ui": patch
 ---
 
-docs(ui): update icon system documentation (Untitled ??Iconsax)
+docs(ui): update icon system documentation (Untitled → Iconsax)
 
 - Replace all mentions of 'Untitled' with 'Iconsax' in icon documentation
 - Update README_ICONS.md and ICON_SYSTEM.md
