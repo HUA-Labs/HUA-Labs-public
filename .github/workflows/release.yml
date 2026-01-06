@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write # Git 커밋 및 릴리즈 노트 생성을 위해 필요
   pull-requests: write # PR 업데이트를 위해 필요 (Changesets가 사용)
+  id-token: write # npm provenance (출처증명)를 위해 필요
 
 jobs:
   release:
@@ -40,6 +41,7 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
           echo "access=public" >> .npmrc # 퍼블릭 접근 설정 추가 (기존 설정)
           echo "registry=https://registry.npmjs.org/" >> .npmrc # npm 레지스트리 설정 추가 (기존 설정)
+          echo "provenance=true" >> .npmrc # npm provenance (출처증명) 활성화
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # GitHub Secrets에 저장된 npm 토큰 사용
 

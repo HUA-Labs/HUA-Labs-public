@@ -104,8 +104,8 @@
   "peerDependencies": {
     "@hua-labs/motion-core": "workspace:*",
     "@phosphor-icons/react": "*",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
   },
   "keywords": [
     "hua-labs",

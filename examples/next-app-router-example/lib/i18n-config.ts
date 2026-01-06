@@ -27,7 +27,7 @@ const apiLoader = createApiTranslationLoader({
  * This provider handles both SSR and CSR translations
  */
 export function createClientI18nProvider(
-  ssrTranslations?: Record<string, Record<string, any>>
+  ssrTranslations?: Record<string, Record<string, Record<string, string>>>
 ) {
   // 타입 단언: ZustandLanguageStore는 string을 받지만, 실제로는 'ko' | 'en'만 사용
   // persist 미들웨어로 인한 타입 호환성을 위해 단언 필요

@@ -14,7 +14,7 @@ import type { SupportedLanguage } from './store';
  */
 async function loadTranslationsFromFiles(language: SupportedLanguage) {
   const namespaces = ['common', 'pages', 'examples'];
-  const translations: Record<string, any> = {};
+  const translations: Record<string, Record<string, string>> = {};
 
   for (const namespace of namespaces) {
     try {
