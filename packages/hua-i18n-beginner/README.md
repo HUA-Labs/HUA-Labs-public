@@ -6,8 +6,8 @@ Beginner-friendly i18n SDK for React. Simple setup, no complexity.
 [![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-beginner.svg)](https://www.npmjs.com/package/@hua-labs/i18n-beginner)
 [![npm downloads](https://img.shields.io/npm/dm/@hua-labs/i18n-beginner.svg)](https://www.npmjs.com/package/@hua-labs/i18n-beginner)
 [![license](https://img.shields.io/npm/l/@hua-labs/i18n-beginner.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
-[![React](https://img.shields.io/badge/React-16.8%2B-blue)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
