@@ -2,8 +2,8 @@
  * This file is auto-generated at build time.
  * Do not edit manually.
  * 
- * Generated from: ../../hua-ux/package.json
- * Source version: 0.1.0
+ * Generated from: C:\HUA-Labs-public\packages\hua-ux\package.json
+ * Source version: 0.1.0-alpha.10
  */
 
-export const HUA_UX_VERSION = '^0.1.0';
+export const HUA_UX_VERSION = '^0.1.0-alpha.10';

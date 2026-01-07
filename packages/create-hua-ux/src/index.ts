@@ -6,6 +6,7 @@
 
 import { createProject } from './create-project';
 import { promptProjectName, promptAiContextOptions, type AiContextOptions } from './utils';
+import { checkVersion } from './version-check';
 
 /**
  * Parse CLI arguments for AI context options and other flags
@@ -24,6 +25,7 @@ function parseAiContextOptions(): {
     '--lang': 'both',
     '--dry-run': false,
     '--install': false,
+    '--non-interactive': false,
   };
 
   // Simple flag parsing
@@ -33,7 +35,8 @@ function parseAiContextOptions(): {
   if (args.includes('--claude-skills')) flags['--claude-skills'] = true;
   if (args.includes('--dry-run')) flags['--dry-run'] = true;
   if (args.includes('--install')) flags['--install'] = true;
-  
+  if (args.includes('--non-interactive')) flags['--non-interactive'] = true;
+
   const langIndex = args.indexOf('--lang');
   if (langIndex !== -1 && args[langIndex + 1]) {
     const lang = args[langIndex + 1];
@@ -46,6 +49,7 @@ function parseAiContextOptions(): {
     options?: AiContextOptions;
     dryRun?: boolean;
     install?: boolean;
+    nonInteractive?: boolean;
   } = {};
 
   // If any flags are set, return parsed options
@@ -59,12 +63,20 @@ function parseAiContextOptions(): {
     };
     result.dryRun = flags['--dry-run'];
     result.install = flags['--install'];
+    result.nonInteractive = flags['--non-interactive'];
   }
 
   return result;
 }
 
 export async function main(): Promise<void> {
+  // Check version (skip in CI/test environments)
+  if (!process.env.CI && !process.env.NON_INTERACTIVE) {
+    await checkVersion().catch(() => {
+      // Silently continue if version check fails
+    });
+  }
+
   // Check for doctor command
   const args = process.argv.slice(2);
   if (args[0] === 'doctor') {
@@ -76,14 +88,14 @@ export async function main(): Promise<void> {
 
   // Get project name from args (first non-flag argument)
   const projectName = args.find(arg => !arg.startsWith('--'));
-  
+
   if (!projectName) {
     try {
       const name = await promptProjectName();
       if (!name) {
         const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
         console.error(isEn ? 'Project name is required' : 'Project name is required / 프로젝트 이름이 필요합니다');
-        console.error('Usage: npx tsx src/index.ts <project-name> [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--english-only]');
+        console.error('Usage: npx @hua-labs/create-hua-ux <project-name> [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--non-interactive] [--english-only]');
         process.exit(1);
       }
       // AI context generation options
@@ -95,17 +107,17 @@ export async function main(): Promise<void> {
       });
       return;
     } catch (error) {
-      const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
-      console.error(isEn ? 'Project name is required' : 'Project name is required / 프로젝트 이름이 필요합니다');
-      console.error('Usage: npx tsx src/index.ts <project-name> [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--english-only]');
-      process.exit(1);
+      if (error instanceof Error && error.message.includes('User force closed')) {
+        process.exit(0);
+      }
+      throw error;
     }
   }
 
   // Parse CLI options or prompt
   const parsed = parseAiContextOptions();
   let aiContextOptions: AiContextOptions;
-  
+
   if (parsed.options) {
     // Use CLI options if provided
     aiContextOptions = parsed.options;
@@ -136,10 +148,10 @@ export async function main(): Promise<void> {
     const { resolveProjectPath } = await import('./create-project');
     const projectPath = resolveProjectPath(projectName);
     const chalk = (await import('chalk')).default;
-    
+
     console.log(chalk.blue('\n📦 Installing dependencies...'));
     try {
-      execSync('pnpm install', { 
+      execSync('pnpm install', {
         cwd: projectPath,
         stdio: 'inherit',
       });
