@@ -17,6 +17,16 @@ export {
   openGraphToObject,
 } from './generateGEOMetadata';
 
+// Server Component helpers (Next.js 15/16)
+export {
+  generateGEOForMetadata,
+  generateGEOScripts,
+  getGEOMetadata,
+  generateGEOForMetadataAsync,
+  combineGEOConfigs,
+  createGEOFromEnv,
+} from './server';
+
 // Structured data helpers
 export {
   generateSoftwareApplicationLD,
@@ -31,6 +41,14 @@ export {
 // Presets
 export { GEO_PRESETS } from './presets';
 export type { GEOPreset } from './presets';
+
+// Validator
+export {
+  validateJsonLd,
+  validateGEOMetadata as validateGEOMetadataStructure,
+  formatValidationResult,
+} from './validator';
+export type { ValidationError, ValidationResult } from './validator';
 
 // Test utilities
 export {

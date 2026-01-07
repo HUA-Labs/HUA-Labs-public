@@ -1,8 +1,10 @@
 /**
  * @hua-labs/hua-ux/framework
- * 
+ *
  * Framework layer for hua-ux
  */
+
+'use client';
 
 // Components
 export { HuaUxLayout } from './components/HuaUxLayout';
@@ -10,6 +12,8 @@ export { HuaUxPage } from './components/HuaUxPage';
 export { UnifiedProviders } from './components/Providers';
 export { BrandedButton } from './components/BrandedButton';
 export { BrandedCard } from './components/BrandedCard';
+export { WelcomePage } from './components/WelcomePage';
+export type { WelcomePageProps } from './components/WelcomePage';
 export { ErrorBoundary } from './components/ErrorBoundary';
 export type { ErrorBoundaryProps } from './components/ErrorBoundary';
 

@@ -10,8 +10,8 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import type { HuaUxConfig } from '../types';
 import { getConfig } from '../config';
-import { createZustandI18n } from '@hua-labs/i18n-core-zustand';
-import { createI18nStore } from '@hua-labs/state';
+import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
+import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
 
 /**
@@ -43,15 +43,19 @@ function createProviders(config: HuaUxConfig) {
       ssr: config.state?.ssr ?? true,
     });
 
-    const I18nProvider = createZustandI18n(i18nStore, {
-      fallbackLanguage: config.i18n.fallbackLanguage || 'en',
-      namespaces: config.i18n.namespaces || ['common'],
-      translationLoader: config.i18n.translationLoader || 'api',
-      translationApiPath: config.i18n.translationApiPath || '/api/translations',
-      defaultLanguage: config.i18n.defaultLanguage,
-      loadTranslations: config.i18n.loadTranslations,
-      debug: config.i18n.debug,
-    });
+    // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
+    const I18nProvider = createZustandI18n(
+      i18nStore as UseBoundStore<StoreApi<ZustandLanguageStore>>,
+      {
+        fallbackLanguage: config.i18n.fallbackLanguage || 'en',
+        namespaces: config.i18n.namespaces || ['common'],
+        translationLoader: config.i18n.translationLoader || 'api',
+        translationApiPath: config.i18n.translationApiPath || '/api/translations',
+        defaultLanguage: config.i18n.defaultLanguage,
+        loadTranslations: config.i18n.loadTranslations,
+        debug: config.i18n.debug,
+      }
+    );
 
     providers.push(I18nProvider);
   }
@@ -64,7 +68,7 @@ function createProviders(config: HuaUxConfig) {
       (acc, Provider) => <Provider>{acc}</Provider>,
       children
     );
-    
+
     return wrapped;
   };
 }
