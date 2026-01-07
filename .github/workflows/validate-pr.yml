@@ -33,11 +33,20 @@ jobs:
           # Check if any package files were modified
           CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
 
-          # Check for changes in packages/ directory (excluding changesets and CHANGELOG)
-          # Include: .ts, .tsx, .js, .jsx, .json, .md (README, docs), but exclude CHANGELOG.md
-          if echo "$CHANGED_FILES" | grep -E '^packages/.+\.(ts|tsx|js|jsx|json|md)$' | grep -v 'CHANGELOG.md'; then
+          # Check for changes in packages/ directory
+          # Include .ts, .tsx, .js, .jsx files and package.json (but exclude CHANGELOG.md)
+          PACKAGE_CODE_CHANGES=$(echo "$CHANGED_FILES" | grep -E '^packages/.+\.(ts|tsx|js|jsx)$' || true)
+          PACKAGE_JSON_CHANGES=$(echo "$CHANGED_FILES" | grep -E '^packages/.+/package\.json$' || true)
+          
+          if [ -n "$PACKAGE_CODE_CHANGES" ] || [ -n "$PACKAGE_JSON_CHANGES" ]; then
             echo "has_package_changes=true" >> $GITHUB_OUTPUT
             echo "✓ Detected changes in packages"
+            if [ -n "$PACKAGE_CODE_CHANGES" ]; then
+              echo "  - Code changes: $(echo "$PACKAGE_CODE_CHANGES" | wc -l) files"
+            fi
+            if [ -n "$PACKAGE_JSON_CHANGES" ]; then
+              echo "  - package.json changes: $(echo "$PACKAGE_JSON_CHANGES" | wc -l) files"
+            fi
           else
             echo "has_package_changes=false" >> $GITHUB_OUTPUT
             echo "✓ No package changes detected"
