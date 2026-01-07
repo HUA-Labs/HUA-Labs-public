@@ -41,8 +41,10 @@ export const HUA_UX_VERSION = '^${defaultVersion}';
   // 버전 앞에 ^ 추가 (예: 0.1.0 -> ^0.1.0)
   const versionWithCaret = `^${version}`;
 
-  // TypeScript 파일 생성
+  // 상대 경로 계산 (포트 가능성을 위해)
   const relativePath = path.relative(path.dirname(VERSION_OUTPUT), HUA_UX_PACKAGE_JSON).replace(/\\/g, '/');
+
+  // TypeScript 파일 생성
   const content = `/**
  * This file is auto-generated at build time.
  * Do not edit manually.

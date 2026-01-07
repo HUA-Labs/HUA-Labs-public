@@ -1,15 +1,29 @@
 /**
  * create-hua-ux - Utilities
- * 
+ *
  * Utility functions for project creation
  */
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
+import { promisify } from 'util';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
+
+const execAsync = promisify(exec);
+
+/**
+ * Detect which package manager was used to run the CLI
+ */
+function detectPackageManager(): 'npm' | 'pnpm' | 'yarn' {
+  const userAgent = process.env.npm_config_user_agent || '';
+
+  if (userAgent.startsWith('pnpm')) return 'pnpm';
+  if (userAgent.startsWith('yarn')) return 'yarn';
+  return 'npm';
+}
 import {
   NEXTJS_VERSION,
   REACT_VERSION,
@@ -23,6 +37,7 @@ import {
   AUTOPREFIXER_VERSION,
   POSTCSS_VERSION,
   TAILWIND_VERSION,
+  PHOSPHOR_ICONS_VERSION,
 } from './constants/versions';
 
 // Resolve template directory
@@ -38,22 +53,22 @@ export interface AiContextOptions {
    * Generate .cursorrules file
    */
   cursorrules: boolean;
-  
+
   /**
    * Generate ai-context.md file
    */
   aiContext: boolean;
-  
+
   /**
    * Generate .claude/project-context.md file
    */
   claudeContext: boolean;
-  
+
   /**
    * Generate .claude/skills/ files
    */
   claudeSkills: boolean;
-  
+
   /**
    * Language for documentation (ko, en, both)
    */
@@ -80,7 +95,7 @@ function t(key: 'projectNamePrompt' | 'projectNameRequired' | 'selectAiContext' 
     };
     return messages[key] || key;
   }
-  
+
   // Bilingual (Korean + English)
   const messages: Record<string, string> = {
     projectNamePrompt: 'What is your project name? / 프로젝트 이름을 입력하세요:',
@@ -129,8 +144,13 @@ export async function promptProjectName(): Promise<string> {
  * In PowerShell, isTTY might be undefined, so we use a more lenient check.
  */
 function isInteractive(): boolean {
-  // Explicitly non-interactive
+  // Explicitly non-interactive via environment variable
   if (process.env.CI || process.env.NON_INTERACTIVE) {
+    return false;
+  }
+
+  // Explicitly non-interactive via CLI flag
+  if (process.argv.includes('--non-interactive')) {
     return false;
   }
 
@@ -139,16 +159,27 @@ function isInteractive(): boolean {
   // If undefined, we assume it might be interactive (PowerShell can be interactive)
   const stdinTTY = process.stdin.isTTY;
   const stdoutTTY = process.stdout.isTTY;
-  
+
   // If both are explicitly false, definitely not interactive
   if (stdinTTY === false && stdoutTTY === false) {
     return false;
   }
-  
+
   // If either is true, or both are undefined (PowerShell case), assume interactive
   // This allows inquirer to attempt to use prompts
   // Inquirer will handle the actual TTY check internally
   return stdinTTY !== false && stdoutTTY !== false;
+}
+
+/**
+ * Check if directory is empty
+ */
+export async function isEmptyDir(dirPath: string): Promise<boolean> {
+  if (!(await fs.pathExists(dirPath))) {
+    return true;
+  }
+  const files = await fs.readdir(dirPath);
+  return files.length === 0;
 }
 
 /**
@@ -171,45 +202,45 @@ export async function promptAiContextOptions(): Promise<AiContextOptions> {
   try {
     const isEn = isEnglishOnly();
     const answers = await inquirer.prompt([
-    {
-      type: 'checkbox',
-      name: 'options',
-      message: t('selectAiContext'),
-      choices: [
-        {
-          name: isEn ? '.cursorrules (Cursor IDE rules)' : '.cursorrules (Cursor IDE rules) / Cursor IDE 규칙',
-          value: 'cursorrules',
-          checked: true,
-        },
-        {
-          name: isEn ? 'ai-context.md (General AI context)' : 'ai-context.md (General AI context) / 범용 AI 컨텍스트',
-          value: 'aiContext',
-          checked: true,
-        },
-        {
-          name: isEn ? '.claude/project-context.md (Claude context)' : '.claude/project-context.md (Claude context) / Claude 컨텍스트',
-          value: 'claudeContext',
-          checked: true,
-        },
-        {
-          name: isEn ? '.claude/skills/ (Claude skills)' : '.claude/skills/ (Claude skills) / Claude 스킬',
-          value: 'claudeSkills',
-          checked: false,
-        },
-      ],
-    },
-    {
-      type: 'list',
-      name: 'language',
-      message: t('documentationLanguage'),
-      choices: [
-        { name: isEn ? 'Korean only' : 'Korean only / 한국어만', value: 'ko' },
-        { name: isEn ? 'English only' : 'English only / 영어만', value: 'en' },
-        { name: isEn ? 'Both Korean and English' : 'Both Korean and English / 한국어와 영어 모두', value: 'both' },
-      ],
-      default: 'both',
-    },
-  ]);
+      {
+        type: 'checkbox',
+        name: 'options',
+        message: t('selectAiContext'),
+        choices: [
+          {
+            name: isEn ? '.cursorrules (Cursor IDE rules)' : '.cursorrules (Cursor IDE rules) / Cursor IDE 규칙',
+            value: 'cursorrules',
+            checked: true,
+          },
+          {
+            name: isEn ? 'ai-context.md (General AI context)' : 'ai-context.md (General AI context) / 범용 AI 컨텍스트',
+            value: 'aiContext',
+            checked: true,
+          },
+          {
+            name: isEn ? '.claude/project-context.md (Claude context)' : '.claude/project-context.md (Claude context) / Claude 컨텍스트',
+            value: 'claudeContext',
+            checked: true,
+          },
+          {
+            name: isEn ? '.claude/skills/ (Claude skills)' : '.claude/skills/ (Claude skills) / Claude 스킬',
+            value: 'claudeSkills',
+            checked: false,
+          },
+        ],
+      },
+      {
+        type: 'list',
+        name: 'language',
+        message: t('documentationLanguage'),
+        choices: [
+          { name: isEn ? 'Korean only' : 'Korean only / 한국어만', value: 'ko' },
+          { name: isEn ? 'English only' : 'English only / 영어만', value: 'en' },
+          { name: isEn ? 'Both Korean and English' : 'Both Korean and English / 한국어와 영어 모두', value: 'both' },
+        ],
+        default: 'both',
+      },
+    ]);
 
     return {
       cursorrules: answers.options.includes('cursorrules'),
@@ -244,21 +275,23 @@ export async function copyTemplate(
 ): Promise<void> {
   await fs.copy(TEMPLATE_DIR, projectPath, {
     filter: (src: string) => {
-      // Skip node_modules and .git
-      if (src.includes('node_modules') || src.includes('.git')) {
+      // Use relative path to avoid issues with template being inside node_modules
+      const relativePath = path.relative(TEMPLATE_DIR, src);
+
+      // Skip node_modules and .git within the template
+      if (relativePath.includes('node_modules') || relativePath.includes('.git')) {
         return false;
       }
-      
+
       // Conditionally skip AI context files
       if (options?.skipAiContext) {
-        const relativePath = path.relative(TEMPLATE_DIR, src);
         if (relativePath === '.cursorrules' ||
-            relativePath === 'ai-context.md' ||
-            relativePath.startsWith('.claude')) {
+          relativePath === 'ai-context.md' ||
+          relativePath.startsWith('.claude')) {
           return false;
         }
       }
-      
+
       return true;
     },
   });
@@ -281,14 +314,14 @@ function getHuaUxVersion(): string {
   if (process.env.HUA_UX_WORKSPACE_VERSION === 'workspace') {
     return 'workspace:*';
   }
-  
+
   // 2. pnpm-workspace.yaml 파일 존재 여부로 모노레포 감지 (더 견고한 방법)
   try {
     const fs = require('fs');
     const path = require('path');
     let currentDir = process.cwd();
     const maxDepth = 10; // 최대 10단계 상위 디렉토리까지 확인
-    
+
     for (let i = 0; i < maxDepth; i++) {
       const workspaceFile = path.join(currentDir, 'pnpm-workspace.yaml');
       if (fs.existsSync(workspaceFile)) {
@@ -301,19 +334,19 @@ function getHuaUxVersion(): string {
   } catch (error) {
     // fs 모듈을 사용할 수 없는 경우 (Edge Runtime 등) 무시
   }
-  
+
   // 3. 하위 호환성: 폴더 이름 기반 감지 (기존 방식)
   const cwd = process.cwd();
   if (cwd.includes('hua-platform') && !cwd.includes('node_modules')) {
     return 'workspace:*';
   }
-  
+
   // 4. hua-ux 패키지의 package.json에서 버전 읽기 (자동화)
   // create-hua-ux 패키지에서 hua-ux 패키지의 package.json을 읽어서 버전 추출
   try {
     const fs = require('fs');
     const path = require('path');
-    
+
     // create-hua-ux의 위치에서 hua-ux 패키지 찾기
     // __dirname은 dist/utils.js 또는 src/utils.ts의 위치
     // dist/utils.js인 경우: packages/create-hua-ux/dist/utils.js
@@ -321,7 +354,7 @@ function getHuaUxVersion(): string {
     const currentFile = __dirname;
     const createHuaUxRoot = path.resolve(currentFile, '../..');
     const huaUxPackageJson = path.join(createHuaUxRoot, '../hua-ux/package.json');
-    
+
     if (fs.existsSync(huaUxPackageJson)) {
       const huaUxPackage = JSON.parse(fs.readFileSync(huaUxPackageJson, 'utf-8'));
       const version = huaUxPackage.version;
@@ -333,64 +366,53 @@ function getHuaUxVersion(): string {
   } catch (error) {
     // 파일을 읽을 수 없는 경우 무시하고 다음 단계로
   }
-  
+
   // 5. 빌드 시점에 생성된 버전 상수 사용 (npm 배포 후)
   // 빌드 스크립트에서 hua-ux 패키지의 버전을 읽어서 생성한 상수
   return HUA_UX_VERSION;
 }
 
 /**
- * Get package version from npm registry
- * 
- * npm 레지스트리에서 패키지의 최신 버전을 가져옵니다.
- * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
+ * npm registry에서 패키지의 최신 alpha 버전을 가져옵니다.
+ * @param packageName - 조회할 패키지 이름 (예: '@hua-labs/i18n-core-zustand')
+ * @returns 최신 alpha 버전 (예: '^1.1.0-alpha.1') 또는 실패 시 'latest'
  */
-function getPackageVersionFromNpm(packageName: string, fallbackVersion: string = '^0.1.0'): string {
-  // 모노레포 내부에서는 workspace 버전 사용
-  if (process.env.HUA_UX_WORKSPACE_VERSION === 'workspace') {
-    return 'workspace:*';
-  }
-  
-  // pnpm-workspace.yaml 파일 존재 여부로 모노레포 감지
+async function fetchLatestAlphaVersion(packageName: string): Promise<string> {
   try {
-    const fs = require('fs');
-    const path = require('path');
-    let currentDir = process.cwd();
-    const maxDepth = 10;
-    
-    for (let i = 0; i < maxDepth; i++) {
-      const workspaceFile = path.join(currentDir, 'pnpm-workspace.yaml');
-      if (fs.existsSync(workspaceFile)) {
-        return 'workspace:*';
-      }
-      const parentDir = path.dirname(currentDir);
-      if (parentDir === currentDir) break;
-      currentDir = parentDir;
+    // npm view 명령으로 모든 버전 조회 (async)
+    const { stdout } = await execAsync(
+      `npm view ${packageName} versions --json`,
+      { encoding: 'utf-8' }
+    );
+
+    const versions = JSON.parse(stdout);
+    const versionArray = Array.isArray(versions) ? versions : [versions];
+
+    // alpha 버전 필터링 및 최신 버전 찾기
+    const alphaVersions = versionArray.filter((v: string) => v.includes('-alpha.'));
+
+    if (alphaVersions.length > 0) {
+      // 최신 alpha 버전 반환 (배열의 마지막)
+      const latestAlpha = alphaVersions[alphaVersions.length - 1];
+      return `^${latestAlpha}`;
     }
+
+    // alpha 버전이 없으면 최신 버전 사용
+    const latestVersion = versionArray[versionArray.length - 1];
+    return `^${latestVersion}`;
   } catch (error) {
-    // 무시
-  }
-  
-  // npm 레지스트리에서 버전 가져오기
-  try {
-    const { execSync } = require('child_process');
-    const version = execSync(`npm view ${packageName} version`, { encoding: 'utf-8' }).trim();
-    return `^${version}`;
-  } catch (error) {
-    // npm 레지스트리에서 가져올 수 없는 경우 fallback 버전 사용
-    return fallbackVersion;
+    console.warn(chalk.yellow(`⚠️  Failed to fetch version for ${packageName}, using 'latest'`));
+    return 'latest';
   }
 }
 
 /**
  * Get hua-ux related package version
- * 
+ *
  * hua-ux와 관련된 패키지들의 버전을 반환합니다.
- * 각 패키지의 실제 npm 레지스트리 버전을 가져옵니다.
+ * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
  */
 function getHuaUxRelatedPackageVersion(): string {
-  // 기본적으로 hua-ux 버전을 사용하되, 각 패키지별로 실제 npm 버전을 가져올 수 있도록
-  // 개별 패키지 버전을 가져오는 함수로 대체
   return getHuaUxVersion();
 }
 
@@ -402,11 +424,20 @@ export async function generatePackageJson(
   projectName: string
 ): Promise<void> {
   const packageJsonPath = path.join(projectPath, 'package.json');
-  
+
   // 기존 package.json이 있다면 삭제 (템플릿에서 복사된 파일이 있을 수 있음)
   if (await fs.pathExists(packageJsonPath)) {
     await fs.remove(packageJsonPath);
   }
+
+  // npm registry에서 최신 alpha 버전 조회 (병렬 실행으로 성능 최적화)
+  console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
+  const [i18nCoreVersion, i18nCoreZustandVersion, motionCoreVersion, stateVersion] = await Promise.all([
+    fetchLatestAlphaVersion('@hua-labs/i18n-core'),
+    fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand'),
+    fetchLatestAlphaVersion('@hua-labs/motion-core'),
+    fetchLatestAlphaVersion('@hua-labs/state'),
+  ]);
 
   const packageJson = {
     name: projectName,
@@ -421,8 +452,11 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
-      '@hua-labs/i18n-core-zustand': getPackageVersionFromNpm('@hua-labs/i18n-core-zustand', getHuaUxVersion()),
-      '@hua-labs/state': getPackageVersionFromNpm('@hua-labs/state', getHuaUxVersion()),
+      '@hua-labs/i18n-core': i18nCoreVersion,
+      '@hua-labs/i18n-core-zustand': i18nCoreZustandVersion,
+      '@hua-labs/motion-core': motionCoreVersion,
+      '@hua-labs/state': stateVersion,
+      '@phosphor-icons/react': PHOSPHOR_ICONS_VERSION,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
@@ -579,7 +613,7 @@ export async function generateAiContextFiles(
     claudeSkills: false,
     language: 'both',
   };
-  
+
   // 옵션에 따라 파일 삭제 (생성하지 않을 파일)
   if (!opts.cursorrules) {
     const cursorrulesPath = path.join(projectPath, '.cursorrules');
@@ -587,28 +621,28 @@ export async function generateAiContextFiles(
       await fs.remove(cursorrulesPath);
     }
   }
-  
+
   if (!opts.aiContext) {
     const aiContextPath = path.join(projectPath, 'ai-context.md');
     if (await fs.pathExists(aiContextPath)) {
       await fs.remove(aiContextPath);
     }
   }
-  
+
   if (!opts.claudeContext) {
     const claudeContextPath = path.join(projectPath, '.claude', 'project-context.md');
     if (await fs.pathExists(claudeContextPath)) {
       await fs.remove(claudeContextPath);
     }
   }
-  
+
   if (!opts.claudeSkills) {
     const claudeSkillsPath = path.join(projectPath, '.claude', 'skills');
     if (await fs.pathExists(claudeSkillsPath)) {
       await fs.remove(claudeSkillsPath);
     }
   }
-  
+
   // 프로젝트별 커스터마이징
   if (projectName) {
     // ai-context.md에 프로젝트 이름 추가
@@ -624,7 +658,7 @@ export async function generateAiContextFiles(
         await fs.writeFile(aiContextPath, content, 'utf-8');
       }
     }
-    
+
     // .claude/project-context.md에도 프로젝트 이름 추가
     if (opts.claudeContext) {
       const claudeContextPath = path.join(projectPath, '.claude', 'project-context.md');
@@ -638,7 +672,7 @@ export async function generateAiContextFiles(
       }
     }
   }
-  
+
   // package.json에서 실제 설치된 패키지 버전 정보 추출하여 컨텍스트에 추가
   const packageJsonPath = path.join(projectPath, 'package.json');
   if (await fs.pathExists(packageJsonPath)) {
@@ -646,36 +680,36 @@ export async function generateAiContextFiles(
       const packageJson = await fs.readJSON(packageJsonPath);
       const dependencies = packageJson.dependencies || {};
       const devDependencies = packageJson.devDependencies || {};
-      
+
       // 버전 정보를 ai-context.md에 추가
       if (opts.aiContext) {
         const aiContextPath = path.join(projectPath, 'ai-context.md');
         if (await fs.pathExists(aiContextPath)) {
           let content = await fs.readFile(aiContextPath, 'utf-8');
-          
+
           // 의존성 정보 섹션 추가
           const depsSection = `
 ## 설치된 패키지 버전 / Installed Package Versions
 
 ### 핵심 의존성 / Core Dependencies
 ${Object.entries(dependencies)
-  .filter(([name]) => name.startsWith('@hua-labs/') || name === 'next' || name === 'react')
-  .map(([name, version]) => `- \`${name}\`: ${version}`)
-  .join('\n')}
+              .filter(([name]) => name.startsWith('@hua-labs/') || name === 'next' || name === 'react')
+              .map(([name, version]) => `- \`${name}\`: ${version}`)
+              .join('\n')}
 
 ### 개발 의존성 / Dev Dependencies
 ${Object.entries(devDependencies)
-  .filter(([name]) => name.includes('typescript') || name.includes('tailwind') || name.includes('@types'))
-  .map(([name, version]) => `- \`${name}\`: ${version}`)
-  .join('\n')}
+              .filter(([name]) => name.includes('typescript') || name.includes('tailwind') || name.includes('@types'))
+              .map(([name, version]) => `- \`${name}\`: ${version}`)
+              .join('\n')}
 `;
-          
+
           // 참고 자료 섹션 앞에 추가
           content = content.replace(
             /## 참고 자료/,
             `${depsSection}\n## 참고 자료`
           );
-          
+
           await fs.writeFile(aiContextPath, content, 'utf-8');
         }
       }
@@ -698,17 +732,17 @@ export async function checkPrerequisites(): Promise<void> {
 
   // 1. Node.js version check
   const nodeVersion = process.version;
-  const requiredVersion = '18.0.0';
-  
+  const requiredVersion = '22.0.0';
+
   // Simple version comparison (major.minor.patch)
   const parseVersion = (v: string): number[] => {
     return v.replace(/^v/, '').split('.').map(Number);
   };
-  
+
   const compareVersions = (v1: string, v2: string): number => {
     const v1Parts = parseVersion(v1);
     const v2Parts = parseVersion(v2);
-    
+
     for (let i = 0; i < 3; i++) {
       if (v1Parts[i] > v2Parts[i]) return 1;
       if (v1Parts[i] < v2Parts[i]) return -1;
@@ -757,7 +791,7 @@ export async function checkPrerequisites(): Promise<void> {
     const errorMessage = isEn
       ? `Prerequisites check failed:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 Tips:\n  - Update Node.js: https://nodejs.org/\n  - Install pnpm: npm install -g pnpm`
       : `사전 검증 실패:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 팁:\n  - Node.js 업데이트: https://nodejs.org/\n  - pnpm 설치: npm install -g pnpm`;
-    
+
     throw new Error(errorMessage);
   }
 }
@@ -787,9 +821,12 @@ export async function validateTemplate(): Promise<void> {
     'app/page.tsx',
     'app/globals.css',
     'lib/i18n-setup.ts',
+    'lib/utils.ts',
     'store/useAppStore.ts',
     'translations/ko/common.json',
     'translations/en/common.json',
+    'ai-context.md',
+    '.cursorrules',
   ];
 
   const missingFiles: string[] = [];
@@ -827,12 +864,12 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   } else {
     try {
       const packageJson = await fs.readJSON(packageJsonPath);
-      
+
       // lint 스크립트 검증
       if (packageJson.scripts?.lint !== 'next lint') {
         errors.push(`package.json의 lint 스크립트가 올바르지 않습니다. 예상: "next lint", 실제: "${packageJson.scripts?.lint}"`);
       }
-      
+
       // 필수 의존성 검증
       const requiredDeps = ['@hua-labs/hua-ux', 'next', 'react', 'react-dom'];
       for (const dep of requiredDeps) {
@@ -880,7 +917,7 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   // 에러가 있으면 예외 발생
   if (errors.length > 0) {
     const isEn = isEnglishOnly();
-    throw new Error(isEn 
+    throw new Error(isEn
       ? `Project validation failed:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 Tips:\n  - Check file permissions\n  - Ensure disk space is available\n  - Try running again`
       : `프로젝트 검증 실패:\n${errors.map(e => `  ❌ ${e}`).join('\n')}\n\n💡 팁:\n  - 파일 권한 확인\n  - 디스크 공간 확인\n  - 다시 실행해보세요`);
   }
@@ -945,7 +982,7 @@ export async function generateSummary(
 }> {
   let directories = 0;
   let files = 0;
-  
+
   const countItems = async (dirPath: string): Promise<void> => {
     try {
       const items = await fs.readdir(dirPath, { withFileTypes: true });
@@ -957,7 +994,7 @@ export async function generateSummary(
         if (item.name === 'node_modules' || item.name === '.git') {
           continue;
         }
-        
+
         const itemPath = path.join(dirPath, item.name);
         if (item.isDirectory()) {
           directories++;
@@ -970,9 +1007,9 @@ export async function generateSummary(
       // Ignore permission errors or other issues
     }
   };
-  
+
   await countItems(projectPath);
-  
+
   const aiContextFiles: string[] = [];
   if (aiContextOptions) {
     if (aiContextOptions.cursorrules) aiContextFiles.push('.cursorrules');
@@ -980,7 +1017,7 @@ export async function generateSummary(
     if (aiContextOptions.claudeContext) aiContextFiles.push('.claude/project-context.md');
     if (aiContextOptions.claudeSkills) aiContextFiles.push('.claude/skills/');
   }
-  
+
   const languages: string[] = [];
   if (aiContextOptions?.language === 'ko' || aiContextOptions?.language === 'both') {
     languages.push('ko');
@@ -988,7 +1025,7 @@ export async function generateSummary(
   if (aiContextOptions?.language === 'en' || aiContextOptions?.language === 'both') {
     languages.push('en');
   }
-  
+
   return {
     directories,
     files,
@@ -1007,17 +1044,17 @@ export function displaySummary(summary: {
   languages: string[];
 }): void {
   const isEn = isEnglishOnly();
-  
+
   console.log(chalk.cyan('\n📊 Summary:'));
   console.log(chalk.white(`  📁 Directories: ${summary.directories}`));
   console.log(chalk.white(`  📄 Files: ${summary.files}`));
-  
+
   if (summary.aiContextFiles.length > 0) {
     console.log(chalk.white(`  🤖 AI Context: ${summary.aiContextFiles.join(', ')}`));
   } else {
     console.log(chalk.gray(`  🤖 AI Context: None`));
   }
-  
+
   if (summary.languages.length > 0) {
     console.log(chalk.white(`  🌐 Languages: ${summary.languages.join(', ')}`));
   }
@@ -1033,12 +1070,14 @@ export function displayNextSteps(
   const isEn = isEnglishOnly();
   const relativePath = path.relative(process.cwd(), projectPath);
   const displayPath = relativePath || path.basename(projectPath);
-  
+
+  const packageManager = detectPackageManager();
+  const devCommand = packageManager === 'npm' ? 'npm run dev' : `${packageManager} dev`;
   console.log(chalk.cyan(`\n📚 Next Steps:`));
   console.log(chalk.white(`  cd ${displayPath}`));
-  console.log(chalk.white(`  pnpm install`));
-  console.log(chalk.white(`  pnpm dev`));
-  
+  console.log(chalk.white(`  ${packageManager} install`));
+  console.log(chalk.white(`  ${devCommand}`));
+
   if (aiContextOptions?.claudeSkills) {
     console.log(chalk.cyan(`\n💡 Claude Skills enabled:`));
     console.log(chalk.white(
@@ -1047,7 +1086,7 @@ export function displayNextSteps(
         : '  .claude/skills/에서 프레임워크 사용 가이드를 확인하세요'
     ));
   }
-  
+
   if (aiContextOptions?.language === 'both') {
     console.log(chalk.cyan(`\n🌐 Bilingual mode:`));
     console.log(chalk.white(

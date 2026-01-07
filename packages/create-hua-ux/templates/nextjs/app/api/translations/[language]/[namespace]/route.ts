@@ -17,9 +17,9 @@ import { join } from 'path';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { language: string; namespace: string } }
+  { params }: { params: Promise<{ language: string; namespace: string }> }
 ) {
-  const { language, namespace } = params;
+  const { language, namespace } = await params;
 
   // 언어 검증
   // Validate language

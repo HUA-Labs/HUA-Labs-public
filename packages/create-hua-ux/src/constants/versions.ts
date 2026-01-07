@@ -8,17 +8,17 @@
 /**
  * Next.js version
  */
-export const NEXTJS_VERSION = '16.0.10';
+export const NEXTJS_VERSION = '16.1.1';
 
 /**
  * React version
  */
-export const REACT_VERSION = '19.2.1';
+export const REACT_VERSION = '19.2.3';
 
 /**
  * React DOM version (should match React version)
  */
-export const REACT_DOM_VERSION = '19.2.1';
+export const REACT_DOM_VERSION = '19.2.3';
 
 /**
  * Zustand version
@@ -33,7 +33,7 @@ export const TYPESCRIPT_VERSION = '^5.9.3';
 /**
  * Node.js types version
  */
-export const TYPES_NODE_VERSION = '^22.0.0';
+export const TYPES_NODE_VERSION = '^25.0.3';
 
 /**
  * React types version
@@ -64,3 +64,8 @@ export const POSTCSS_VERSION = '^8.5.6';
  * Tailwind CSS version
  */
 export const TAILWIND_VERSION = '^4.1.13';
+
+/**
+ * Phosphor Icons version
+ */
+export const PHOSPHOR_ICONS_VERSION = '^2.1.10';
