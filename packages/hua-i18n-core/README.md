@@ -4,11 +4,16 @@ Type-safe i18n library with SSR/CSR support and state management integration.
 SSR/CSR 지원 및 상태 관리 통합 기능을 갖춘 타입 안전 i18n 라이브러리.
 
 [![npm version](https://img.shields.io/npm/v/@hua-labs/i18n-core.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core)
+[![npm downloads](https://img.shields.io/npm/dw/@hua-labs/i18n-core.svg)](https://www.npmjs.com/package/@hua-labs/i18n-core)
 [![license](https://img.shields.io/npm/l/@hua-labs/i18n-core.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
+[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 > **⚠️ Alpha Release**: This package is currently in alpha. APIs may change before the stable release.
 
 ---
+
+[English](#english) | [한국어](#korean)
 
 ## English
 
@@ -26,13 +31,7 @@ Built to address common challenges in React internationalization: language trans
 - **Small bundle**: ~2.8KB gzipped, zero dependencies (React only)
 - **Framework agnostic**: Works with Next.js, Remix, Vite, and more
 
-
-## Examples
-
-- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start template
-- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example
-
-## Installation
+### Installation
 
 ```bash
 npm install @hua-labs/i18n-core
@@ -60,7 +59,12 @@ pnpm add @hua-labs/i18n-core
 - **Memory leak prevention**: LRU cache for Translator instances to prevent memory accumulation
 - **Production-optimized**: Console logs are automatically suppressed in production mode
 
-## Quick Start
+### Examples
+
+- **[CodeSandbox Template](../../examples/codesandbox-template/)** - Quick start template
+- **[Next.js Example](../../examples/next-app-router-example/)** - Complete Next.js App Router example
+
+### Quick Start
 
 ### Basic Setup
 
@@ -643,3 +647,89 @@ This package has been refactored for better maintainability:
 ## License
 
 MIT
+
+## Korean
+
+### 개요
+React 애플리케이션을 위한 경량 프로덕션 레디 i18n 라이브러리입니다. 지능형 캐싱을 통해 깜빡임 없는 언어 전환을 제공하고, 내장된 상태 관리 통합과 함께 원활한 SSR/CSR 지원을 제공합니다.
+
+### 왜 i18n-core인가?
+
+React 국제화에서 흔히 발생하는 문제인 언어 전환 시 깜빡임과 SSR hydration 불일치를 해결하기 위해 구축되었습니다.
+
+**주요 장점:**
+- **깜빡임 없음**: 언어 전환 중 이전 언어 번역을 자동으로 표시
+- **SSR 우선**: 내장 hydration 처리, 불일치 문제 없음
+- **상태 관리 통합**: Zustand 일급 지원
+- **작은 번들**: ~2.8KB gzipped, 의존성 없음 (React만)
+- **프레임워크 독립적**: Next.js, Remix, Vite 등과 작동
+
+### 설치
+
+```bash
+npm install @hua-labs/i18n-core
+# 또는
+yarn add @hua-labs/i18n-core
+# 또는
+pnpm add @hua-labs/i18n-core
+```
+
+### 주요 기능
+
+- 경량 핵심 번역 기능
+- 여러 번역 로더 전략 (API, 정적 파일, 커스텀)
+- 네임스페이스 지연 로딩 지원
+- 초기 번역을 통한 SSR/SSG 지원
+- TypeScript 지원
+- 외부 의존성 없음 (React 제외)
+- 내장 캐싱
+- 에러 처리 및 폴백 지원
+- 개발용 디버그 모드
+- **언어 변경 깜빡임 방지**: 언어 전환 중 이전 언어 번역을 자동으로 표시
+- **상태 관리 통합**: `@hua-labs/i18n-core-zustand`를 통해 Zustand와 원활하게 작동
+- **원시 값 접근**: `getRawValue`를 통해 번역에서 배열, 객체 또는 모든 비문자열 값 가져오기
+
+### 빠른 시작
+
+```tsx
+// app/layout.tsx (Next.js App Router)
+import { createCoreI18n } from '@hua-labs/i18n-core';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {createCoreI18n({
+          defaultLanguage: 'ko',
+          fallbackLanguage: 'en',
+          namespaces: ['common', 'pages']
+        })({ children })}
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+import { useTranslation } from '@hua-labs/i18n-core';
+
+function MyComponent() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('common:welcome')}</h1>
+      <p>{t('pages:home.title')}</p>
+    </div>
+  );
+}
+```
+
+### 관련 패키지
+
+- `@hua-labs/i18n-core-zustand`: Zustand 상태 관리 통합 어댑터
+- `@hua-labs/i18n-loaders`: 프로덕션 레디 로더, 캐싱 및 프리로딩 헬퍼
+- `@hua-labs/i18n-advanced`: 복수형, 날짜 포맷팅 등의 고급 기능
+- `@hua-labs/i18n-debug`: 디버그 도구 및 개발 헬퍼
+
+자세한 내용은 [상세 가이드](./DETAILED_GUIDE.md)를 참고하세요.

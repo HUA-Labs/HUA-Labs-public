@@ -1,33 +1,40 @@
 {
   "name": "@hua-labs/hua-ux",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.12",
   "description": "HUA UX - Ship UX faster: UI + motion + i18n, pre-wired. A framework for React product teams.",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./src/index.ts",
-      "require": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./framework": {
       "types": "./dist/framework/index.d.ts",
-      "import": "./src/framework/index.ts",
-      "require": "./src/framework/index.ts",
+      "import": "./dist/framework/index.js",
+      "require": "./dist/framework/index.js",
       "default": "./dist/framework/index.js"
     },
     "./presets": {
       "types": "./dist/presets/index.d.ts",
-      "import": "./src/presets/index.ts",
-      "require": "./src/presets/index.ts",
+      "import": "./dist/presets/index.js",
+      "require": "./dist/presets/index.js",
       "default": "./dist/presets/index.js"
+    },
+    "./framework/seo/geo": {
+      "types": "./dist/framework/seo/geo/index.d.ts",
+      "import": "./dist/framework/seo/geo/index.js",
+      "require": "./dist/framework/seo/geo/index.js",
+      "default": "./dist/framework/seo/geo/index.js"
     }
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md"
   ],
   "scripts": {
     "build": "node ../../node_modules/typescript/lib/tsc.js",
@@ -48,8 +55,8 @@
   },
   "peerDependencies": {
     "next": ">=13.0.0",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
   },
   "peerDependenciesMeta": {
     "next": {
@@ -81,6 +88,10 @@
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
   "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",

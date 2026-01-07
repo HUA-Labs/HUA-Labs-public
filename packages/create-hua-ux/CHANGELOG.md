@@ -1,5 +1,192 @@
 # Changelog
 
+## 1.0.0-alpha.15
+
+### Patch Changes
+
+- b2226bb: fix(create-hua-ux): use relative path in generated version.ts file
+
+  - Replace absolute path with relative path in generated comment
+  - Improves portability across different development environments
+  - Addresses CodeRabbit review comment
+
+## 1.0.0-alpha.14
+
+### Patch Changes
+
+- d997d6b: # npm Provenance & Documentation Improvements
+
+  ## npm Provenance (출처증명)
+
+  - Add npm provenance support for all packages
+  - Configure `.npmrc` with `provenance=true`
+  - Add `id-token: write` permission to release workflow
+  - Enhance supply chain security with package attestations
+
+  ## Documentation Enhancements
+
+  - **Badges**: Standardize badges across all package READMEs
+
+    - Add npm downloads badge to all packages
+    - Add TypeScript badge to all packages
+    - Ensure consistent badge formatting
+
+  - **Bilingual Support**: Improve Korean-English navigation
+    - Add language navigation links to all READMEs
+    - Format: `[English](#english) | [한국어](#korean)`
+    - Maintain consistent bilingual structure
+
+  ## Affected Packages
+
+  All 9 packages receive patch updates for documentation and provenance:
+
+  - @hua-labs/hua-ux
+  - @hua-labs/ui
+  - @hua-labs/motion-core
+  - @hua-labs/i18n-core
+  - @hua-labs/i18n-core-zustand
+  - @hua-labs/i18n-loaders
+  - @hua-labs/i18n-beginner
+  - @hua-labs/state
+  - create-hua-ux
+
+## 1.0.0-alpha.13
+
+### Patch Changes
+
+- a061538: feat: add comprehensive automation for quality and reliability
+
+  ## create-hua-ux
+
+  - Add template validation script that runs before every build
+  - Validate Next.js 16 async API patterns in templates
+  - Add version checker CLI to detect npx cache issues
+  - Warn users with OS-specific cache clear instructions
+  - Prevent outdated templates from reaching users
+
+  ## @hua-labs/hua-ux
+
+  - Add GEO metadata validator for Schema.org compliance
+  - Validate JSON-LD structure and required fields
+  - Provide clear validation errors and warnings
+  - Export validator functions from framework/seo/geo
+
+  ## Infrastructure
+
+  - Add PR validation workflow (changeset checks, package name validation)
+  - Add E2E testing workflow (6 OS/package-manager combinations)
+  - Add dependency monitoring workflow (weekly updates for Next.js, React, TypeScript)
+  - Add comprehensive automation documentation (guides, troubleshooting, best practices)
+
+  **Impact:** Saves ~10 hours/week through automated quality checks and error prevention
+
+- ce397a1: docs(create-hua-ux): Add npx cache troubleshooting section to README. Provides clear guidance for users who receive outdated templates due to npx cache, including symptoms, cache clearing commands for Windows/macOS/Linux, prevention tips using @latest flag, and verification steps.
+
+## 1.0.0-alpha.12
+
+### Patch Changes
+
+- 3286dff: feat(hua-ux/geo): add Next.js 16 server component helpers
+
+  Adds Next.js 16 Server Component optimized GEO (Generative Engine Optimization) helpers to make AI search engines (ChatGPT, Claude, Gemini, Perplexity) easily discover and recommend your app.
+
+  **Key Features:**
+
+  - ✅ Full Next.js 16 async API support (`headers()`, `params`, `searchParams`)
+  - ✅ Seamless integration with Next.js Metadata API
+  - ✅ App-level + page-level GEO merging
+  - ✅ Environment variable support for dynamic deployments
+  - ✅ Type-safe with full TypeScript support
+
+  **create-hua-ux update:**
+
+  - Updated Next.js templates to use the new Next.js 16 async APIs and GEO helpers.
+
+## 1.0.0-alpha.11
+
+### Patch Changes
+
+- 50db3b9: feat(create-hua-ux): enhance template with Next.js 16 compatibility and improved UX
+
+  **create-hua-ux:**
+
+  - Fix Next.js 16 async APIs (`await headers()`, `await params`)
+  - Add LanguageToggle component with Globe icon and fade-in-up motion
+  - Replace basic template with WelcomePage component featuring:
+    - Feature cards (UI, i18n, Motion, AI-First)
+    - Quick links (Documentation, Examples, GitHub)
+    - Gradient header with project name
+  - Add public assets:
+    - logo.svg (HUA Labs brand logo)
+    - favicon.ico
+    - next.svg
+  - Enhance metadata with keywords, authors, OpenGraph
+
+  **@hua-labs/hua-ux:**
+
+  - Add `framework/seo/geo` export path for server-side GEO support (preparation for future release)
+
+  **Fixes:**
+
+  - Resolves "headersList.get is not a function" runtime error
+  - Resolves "params must be unwrapped with await" API route error
+  - Resolves template validation failures
+
+  **Compatibility:**
+
+  - Next.js 16.1.1+
+  - React 19.2.3+
+  - Full backward compatibility maintained
+
+## 1.0.0-alpha.10
+
+### Patch Changes
+
+- ddfd7d8: fix(create-hua-ux): add missing lib/utils.ts template and fix validation
+
+  - Add `lib/utils.ts` template file with cn() utility function for className merging
+  - Remove `public/favicon.ico` from required files validation (users add this after Next.js setup)
+  - Fixes template validation errors when creating new projects
+
+## 1.0.0-alpha.9
+
+### Patch Changes
+
+- f7d08f1: chore: align external dependency versions across all packages
+
+  - Introduce syncpack for automated dependency version management
+  - Align @types/node to ^25.0.3 across all packages
+  - Align TypeScript to ^5.9.3 across all packages
+  - Align React ecosystem packages to consistent versions
+  - Add dependency management scripts: deps:check, deps:fix, deps:format
+
+  This ensures consistent behavior across the monorepo and prevents version conflicts.
+
+- f7d08f1: fix(create-hua-ux): add missing peer dependencies to generated projects
+
+  - Add @hua-labs/i18n-core to dependencies (fixes MODULE NOT FOUND error)
+  - Add @hua-labs/motion-core to dependencies (required by @hua-labs/ui for animations)
+  - Add @phosphor-icons/react to dependencies (required by @hua-labs/ui for icons)
+  - Fetch latest alpha versions from npm registry for all hua-labs packages
+  - Add PHOSPHOR_ICONS_VERSION constant (^2.1.10)
+
+  This ensures all peer dependencies are satisfied and UI components work out of the box.
+
+## 1.0.0-alpha.8
+
+### Minor Changes
+
+- e648340: feat(create-hua-ux): Detect and display package manager used by user
+
+  - Added automatic package manager detection (npm, pnpm, yarn)
+  - Next Steps now shows the correct commands based on how the CLI was invoked
+  - Instead of hardcoded `pnpm install`, shows:
+    - `npm install` when using `npm create hua-ux`
+    - `pnpm install` when using `pnpm create hua-ux`
+    - `yarn install` when using `yarn create hua-ux`
+
+  Better UX as users can copy-paste commands that match their package manager preference.
+
 ## 1.0.0-alpha.7
 
 ### Patch Changes

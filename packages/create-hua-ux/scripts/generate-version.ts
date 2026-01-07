@@ -17,11 +17,12 @@ function generateVersionFile(): void {
     console.warn(`⚠️  ${HUA_UX_PACKAGE_JSON} not found. Using default version.`);
     // 기본 버전으로 파일 생성
     const defaultVersion = '0.1.0';
+    const relativePath = path.relative(path.dirname(VERSION_OUTPUT), HUA_UX_PACKAGE_JSON).replace(/\\/g, '/');
     const content = `/**
  * This file is auto-generated at build time.
  * Do not edit manually.
  * 
- * Generated from: ${HUA_UX_PACKAGE_JSON}
+ * Generated from: ${relativePath}
  */
 
 export const HUA_UX_VERSION = '^${defaultVersion}';
@@ -40,12 +41,15 @@ export const HUA_UX_VERSION = '^${defaultVersion}';
   // 버전 앞에 ^ 추가 (예: 0.1.0 -> ^0.1.0)
   const versionWithCaret = `^${version}`;
 
+  // 상대 경로 계산 (포트 가능성을 위해)
+  const relativePath = path.relative(path.dirname(VERSION_OUTPUT), HUA_UX_PACKAGE_JSON).replace(/\\/g, '/');
+
   // TypeScript 파일 생성
   const content = `/**
  * This file is auto-generated at build time.
  * Do not edit manually.
  * 
- * Generated from: ${HUA_UX_PACKAGE_JSON}
+ * Generated from: ${relativePath}
  * Source version: ${version}
  */
 

@@ -1,6 +1,6 @@
 {
   "name": "create-hua-ux",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.15",
   "description": "Scaffolding tool for creating hua-ux projects",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -12,11 +12,12 @@
     "templates"
   ],
   "scripts": {
-    "prebuild": "tsx scripts/generate-version.ts",
+    "prebuild": "tsx scripts/generate-version.ts && tsx scripts/validate-template.ts",
     "build": "node ../../node_modules/typescript/lib/tsc.js",
     "dev": "tsx src/index.ts",
     "test": "tsx src/index.ts test-project",
     "test:cli": "bash scripts/test-cli.sh",
+    "validate:template": "tsx scripts/validate-template.ts",
     "clean": "rm -rf dist",
     "prepublishOnly": "pnpm run build"
   },
@@ -28,7 +29,7 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
-    "@types/node": "^22.0.0",
+    "@types/node": "^25.0.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
@@ -52,5 +53,9 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

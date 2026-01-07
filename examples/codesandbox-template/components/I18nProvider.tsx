@@ -29,12 +29,12 @@ const getInitialTranslations = () => {
  * @param initialLanguage - 초기 언어 (기본값: 'ko')
  */
 export function I18nProvider({ children, initialLanguage = 'ko' }: I18nProviderProps) {
-  // useMemo를 사용하여 Provider 컴포넌트를 한 번만 생성
-  // 모든 언어의 번역을 포함하여 초기 로드 시 깜빡임 방지
+  // useMemo를 사용하여 Provider 컴포넌트를 생성
+  // initialLanguage가 변경되면 Provider를 재생성하여 초기 언어를 반영
   const I18nProviderComponent = useMemo(() => {
     const allTranslations = getInitialTranslations();
-    return createClientI18nProvider(useAppStore, allTranslations);
-  }, []);
+    return createClientI18nProvider(useAppStore, allTranslations, initialLanguage);
+  }, [initialLanguage]);
 
   return <I18nProviderComponent>{children}</I18nProviderComponent>;
 }

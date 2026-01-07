@@ -1,6 +1,6 @@
 /**
  * create-hua-ux - Utilities
- * 
+ *
  * Utility functions for project creation
  */
 
@@ -13,6 +13,17 @@ import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
 
 const execAsync = promisify(exec);
+
+/**
+ * Detect which package manager was used to run the CLI
+ */
+function detectPackageManager(): 'npm' | 'pnpm' | 'yarn' {
+  const userAgent = process.env.npm_config_user_agent || '';
+
+  if (userAgent.startsWith('pnpm')) return 'pnpm';
+  if (userAgent.startsWith('yarn')) return 'yarn';
+  return 'npm';
+}
 import {
   NEXTJS_VERSION,
   REACT_VERSION,
@@ -26,6 +37,7 @@ import {
   AUTOPREFIXER_VERSION,
   POSTCSS_VERSION,
   TAILWIND_VERSION,
+  PHOSPHOR_ICONS_VERSION,
 } from './constants/versions';
 
 // Resolve template directory
@@ -420,8 +432,10 @@ export async function generatePackageJson(
 
   // npm registry에서 최신 alpha 버전 조회 (병렬 실행으로 성능 최적화)
   console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
-  const [i18nCoreZustandVersion, stateVersion] = await Promise.all([
+  const [i18nCoreVersion, i18nCoreZustandVersion, motionCoreVersion, stateVersion] = await Promise.all([
+    fetchLatestAlphaVersion('@hua-labs/i18n-core'),
     fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand'),
+    fetchLatestAlphaVersion('@hua-labs/motion-core'),
     fetchLatestAlphaVersion('@hua-labs/state'),
   ]);
 
@@ -438,8 +452,11 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
+      '@hua-labs/i18n-core': i18nCoreVersion,
       '@hua-labs/i18n-core-zustand': i18nCoreZustandVersion,
+      '@hua-labs/motion-core': motionCoreVersion,
       '@hua-labs/state': stateVersion,
+      '@phosphor-icons/react': PHOSPHOR_ICONS_VERSION,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
@@ -804,9 +821,12 @@ export async function validateTemplate(): Promise<void> {
     'app/page.tsx',
     'app/globals.css',
     'lib/i18n-setup.ts',
+    'lib/utils.ts',
     'store/useAppStore.ts',
     'translations/ko/common.json',
     'translations/en/common.json',
+    'ai-context.md',
+    '.cursorrules',
   ];
 
   const missingFiles: string[] = [];
@@ -1051,10 +1071,12 @@ export function displayNextSteps(
   const relativePath = path.relative(process.cwd(), projectPath);
   const displayPath = relativePath || path.basename(projectPath);
 
+  const packageManager = detectPackageManager();
+  const devCommand = packageManager === 'npm' ? 'npm run dev' : `${packageManager} dev`;
   console.log(chalk.cyan(`\n📚 Next Steps:`));
   console.log(chalk.white(`  cd ${displayPath}`));
-  console.log(chalk.white(`  pnpm install`));
-  console.log(chalk.white(`  pnpm dev`));
+  console.log(chalk.white(`  ${packageManager} install`));
+  console.log(chalk.white(`  ${devCommand}`));
 
   if (aiContextOptions?.claudeSkills) {
     console.log(chalk.cyan(`\n💡 Claude Skills enabled:`));

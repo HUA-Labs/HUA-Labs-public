@@ -1,0 +1,63 @@
+{
+  "$schema": "https://unpkg.com/syncpack@13.0.4/dist/schema.json",
+  "versionGroups": [
+    {
+      "label": "Align @hua-labs packages across workspace (exclude peerDependencies)",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["prod", "dev"],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "Ignore @hua-labs packages in peerDependencies (allow version ranges for published packages)",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["peer"],
+      "isIgnored": true
+    },
+    {
+      "label": "Align React ecosystem",
+      "packages": ["**"],
+      "dependencies": ["react", "react-dom"],
+      "dependencyTypes": ["prod", "peer", "dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align TypeScript",
+      "packages": ["**"],
+      "dependencies": ["typescript"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align @types packages",
+      "packages": ["**"],
+      "dependencies": ["@types/**"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Align zustand",
+      "packages": ["**"],
+      "dependencies": ["zustand"],
+      "dependencyTypes": ["prod", "peer", "dev"],
+      "policy": "sameRange"
+    }
+  ],
+  "semverGroups": [
+    {
+      "label": "Use caret ranges for external deps",
+      "packages": ["**"],
+      "dependencies": ["**"],
+      "dependencyTypes": ["prod", "dev"],
+      "range": "^"
+    },
+    {
+      "label": "Allow version ranges in peerDependencies for @hua-labs packages",
+      "packages": ["**"],
+      "dependencies": ["@hua-labs/**"],
+      "dependencyTypes": ["peer"],
+      "range": ">="
+    }
+  ]
+}

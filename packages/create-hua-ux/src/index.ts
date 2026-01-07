@@ -6,6 +6,7 @@
 
 import { createProject } from './create-project';
 import { promptProjectName, promptAiContextOptions, type AiContextOptions } from './utils';
+import { checkVersion } from './version-check';
 
 /**
  * Parse CLI arguments for AI context options and other flags
@@ -69,6 +70,13 @@ function parseAiContextOptions(): {
 }
 
 export async function main(): Promise<void> {
+  // Check version (skip in CI/test environments)
+  if (!process.env.CI && !process.env.NON_INTERACTIVE) {
+    await checkVersion().catch(() => {
+      // Silently continue if version check fails
+    });
+  }
+
   // Check for doctor command
   const args = process.argv.slice(2);
   if (args[0] === 'doctor') {
@@ -99,10 +107,10 @@ export async function main(): Promise<void> {
       });
       return;
     } catch (error) {
-      const isEn = process.env.LANG === 'en' || process.env.CLI_LANG === 'en' || process.argv.includes('--english-only');
-      console.error(isEn ? 'Project name is required' : 'Project name is required / 프로젝트 이름이 필요합니다');
-      console.error('Usage: npx @hua-labs/create-hua-ux <project-name> [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--non-interactive] [--english-only]');
-      process.exit(1);
+      if (error instanceof Error && error.message.includes('User force closed')) {
+        process.exit(0);
+      }
+      throw error;
     }
   }
 

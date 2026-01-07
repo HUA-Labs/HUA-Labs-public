@@ -1,0 +1,177 @@
+name: Dependency Monitor
+
+on:
+  schedule:
+    # Run every Monday at 9:00 UTC (6:00 PM KST)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-dependencies:
+    name: Check for dependency updates
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check critical dependencies
+        id: check-deps
+        run: |
+          # Critical dependencies to monitor
+          CRITICAL_DEPS=(
+            "next"
+            "react"
+            "react-dom"
+            "typescript"
+          )
+
+          echo "updates<<EOF" >> $GITHUB_OUTPUT
+
+          for dep in "${CRITICAL_DEPS[@]}"; do
+            echo "Checking $dep..."
+
+            # Get current version from template package.json
+            CURRENT=$(jq -r ".dependencies[\"$dep\"] // .devDependencies[\"$dep\"] // \"not-found\"" packages/create-hua-ux/templates/nextjs/package.json | tr -d '^~')
+
+            if [ "$CURRENT" == "not-found" ]; then
+              echo "  ⊝ Not in template dependencies"
+              continue
+            fi
+
+            # Get latest version from npm
+            LATEST=$(npm view $dep version 2>/dev/null)
+
+            if [ -z "$LATEST" ]; then
+              echo "  ⚠️  Could not fetch latest version"
+              continue
+            fi
+
+            echo "  Current: $CURRENT"
+            echo "  Latest:  $LATEST"
+
+            # Simple version comparison
+            if [ "$CURRENT" != "$LATEST" ]; then
+              echo "## 📦 $dep" >> updates.md
+              echo "" >> updates.md
+              echo "**Current:** $CURRENT" >> updates.md
+              echo "**Latest:** $LATEST" >> updates.md
+              echo "" >> updates.md
+
+              # Get changelog/release notes
+              REPO_URL=$(npm view $dep repository.url 2>/dev/null | sed 's/git+//;s/.git$//')
+              if [ -n "$REPO_URL" ]; then
+                echo "**Repository:** $REPO_URL" >> updates.md
+                echo "" >> updates.md
+              fi
+
+              # Get description of latest version
+              DESC=$(npm view $dep@$LATEST description 2>/dev/null)
+              if [ -n "$DESC" ]; then
+                echo "**Description:** $DESC" >> updates.md
+                echo "" >> updates.md
+              fi
+
+              echo "---" >> updates.md
+              echo "" >> updates.md
+            fi
+          done
+
+          # Check if updates file exists and has content
+          if [ -f updates.md ] && [ -s updates.md ]; then
+            cat updates.md >> $GITHUB_OUTPUT
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Issue for updates
+        if: steps.check-deps.outputs.has_updates == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const updates = process.env.UPDATES;
+            const date = new Date().toISOString().split('T')[0];
+
+            const issueBody = `# Dependency Updates Available - ${date}
+
+            The following critical dependencies have new versions available:
+
+            ${updates}
+
+            ## Action Items
+
+            - [ ] Review changelog and breaking changes for each dependency
+            - [ ] Test compatibility with our templates and framework
+            - [ ] Update \`packages/create-hua-ux/templates/nextjs/package.json\` if compatible
+            - [ ] Update \`packages/hua-ux/package.json\` peer dependencies if needed
+            - [ ] Run E2E tests to verify everything works
+            - [ ] Update documentation if there are breaking changes
+            - [ ] Create PR with dependency updates
+
+            ## Resources
+
+            - [Next.js Releases](https://github.com/vercel/next.js/releases)
+            - [React Releases](https://github.com/facebook/react/releases)
+            - [TypeScript Releases](https://github.com/microsoft/TypeScript/releases)
+
+            ---
+
+            🤖 This issue was automatically created by the Dependency Monitor workflow.
+            `;
+
+            // Check if similar issue already exists
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies',
+              per_page: 5,
+            });
+
+            const similarIssue = existingIssues.find(issue =>
+              issue.title.includes('Dependency Updates Available')
+            );
+
+            if (similarIssue) {
+              // Update existing issue with new information
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: similarIssue.number,
+                body: `## New Update Check - ${date}\n\n${updates}\n\n---\n\n🤖 Updated by Dependency Monitor workflow.`,
+              });
+
+              console.log(`Updated existing issue #${similarIssue.number}`);
+            } else {
+              // Create new issue
+              const { data: newIssue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Dependency Updates Available - ${date}`,
+                body: issueBody,
+                labels: ['dependencies', 'needs-review'],
+              });
+
+              console.log(`Created new issue #${newIssue.number}`);
+            }
+        env:
+          UPDATES: ${{ steps.check-deps.outputs.updates }}
+
+      - name: Summary
+        run: |
+          if [ "${{ steps.check-deps.outputs.has_updates }}" == "true" ]; then
+            echo "✅ Dependency updates found and issue created/updated"
+          else
+            echo "✅ All dependencies are up to date"
+          fi

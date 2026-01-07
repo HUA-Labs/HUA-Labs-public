@@ -76,7 +76,8 @@ export function checkLicense(feature: LicenseFeature): LicenseCheckResult {
   
   // 기능 확인
   const requiredLicenses = FEATURE_LICENSE_MAP[feature];
-  if (!requiredLicenses.includes(license.type)) {
+  // If feature is not in the map (e.g., plugin features), skip this check
+  if (requiredLicenses && !requiredLicenses.includes(license.type)) {
     return {
       valid: false,
       reason: `Feature "${feature}" requires one of: ${requiredLicenses.join(', ')}`,
