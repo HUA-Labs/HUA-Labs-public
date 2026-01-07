@@ -1,4 +1,4 @@
-﻿# create-hua-ux
+# create-hua-ux
 
 Scaffolding tool for creating hua-ux projects.
 hua-ux 프로젝트 생성을 위한 스캐폴딩 도구입니다.
