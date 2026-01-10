@@ -15,6 +15,33 @@ import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/st
 import { BrandingProvider } from '../branding/context';
 
 /**
+ * 언어 코드 배열을 LanguageConfig 배열로 변환
+ * 
+ * i18n-core는 LanguageConfig[] 형식을 기대하지만,
+ * hua-ux config는 편의를 위해 string[] 형식을 사용합니다.
+ */
+function toLanguageConfigs(languages: string[]): { code: string; name: string; nativeName: string }[] {
+  const languageMap: Record<string, { name: string; nativeName: string }> = {
+    ko: { name: 'Korean', nativeName: '한국어' },
+    en: { name: 'English', nativeName: 'English' },
+    ja: { name: 'Japanese', nativeName: '日本語' },
+    zh: { name: 'Chinese', nativeName: '中文' },
+    es: { name: 'Spanish', nativeName: 'Español' },
+    fr: { name: 'French', nativeName: 'Français' },
+    de: { name: 'German', nativeName: 'Deutsch' },
+    pt: { name: 'Portuguese', nativeName: 'Português' },
+    it: { name: 'Italian', nativeName: 'Italiano' },
+    ru: { name: 'Russian', nativeName: 'Русский' },
+  };
+
+  return languages.map(code => ({
+    code,
+    name: languageMap[code]?.name || code,
+    nativeName: languageMap[code]?.nativeName || code,
+  }));
+}
+
+/**
  * Create providers based on configuration
  * 
  * Provider 체인을 생성합니다. Branding Provider는 가장 바깥쪽에 위치하여
@@ -54,6 +81,8 @@ function createProviders(config: HuaUxConfig) {
         defaultLanguage: config.i18n.defaultLanguage,
         loadTranslations: config.i18n.loadTranslations,
         debug: config.i18n.debug,
+        initialTranslations: config.i18n.initialTranslations,
+        supportedLanguages: config.i18n.supportedLanguages,
       }
     );
 

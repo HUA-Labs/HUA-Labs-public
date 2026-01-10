@@ -184,6 +184,31 @@ export interface HuaUxConfig {
      * Enable debug mode to see detailed Translator logs.
      */
     debug?: boolean;
+    
+    /**
+     * Initial translations for SSR / SSR용 초기 번역 데이터
+     * 
+     * 서버 사이드에서 미리 로드한 번역 데이터를 전달하여
+     * 첫 로딩 시 missing key 문제를 방지합니다.
+     * 
+     * Pass pre-loaded translation data from server-side to prevent
+     * missing key issues on first load.
+     * 
+     * @example
+     * ```ts
+     * // layout.tsx (Server Component)
+     * export default async function RootLayout({ children }) {
+     *   const initialTranslations = await loadSSRTranslations();
+     *   
+     *   return (
+     *     <HuaUxLayout config={{ i18n: { initialTranslations } }}>
+     *       {children}
+     *     </HuaUxLayout>
+     *   );
+     * }
+     * ```
+     */
+    initialTranslations?: Record<string, Record<string, Record<string, string>>>;
   };
 
   /**

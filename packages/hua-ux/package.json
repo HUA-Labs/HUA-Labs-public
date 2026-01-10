@@ -18,6 +18,12 @@
       "require": "./dist/framework/index.js",
       "default": "./dist/framework/index.js"
     },
+    "./framework/server": {
+      "types": "./dist/framework/server.d.ts",
+      "import": "./dist/framework/server.js",
+      "require": "./dist/framework/server.js",
+      "default": "./dist/framework/server.js"
+    },
     "./presets": {
       "types": "./dist/presets/index.d.ts",
       "import": "./dist/presets/index.js",
@@ -56,7 +62,8 @@
   "peerDependencies": {
     "next": ">=13.0.0",
     "react": ">=19.0.0",
-    "react-dom": ">=19.0.0"
+    "react-dom": ">=19.0.0",
+    "server-only": "^0.0.1"
   },
   "peerDependenciesMeta": {
     "next": {
@@ -101,6 +108,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "jsdom": "^27.2.0",
+    "server-only": "^0.0.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.14"
   }
