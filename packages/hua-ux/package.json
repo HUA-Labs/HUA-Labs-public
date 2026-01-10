@@ -18,11 +18,19 @@
       "require": "./dist/framework/index.js",
       "default": "./dist/framework/index.js"
     },
+<<<<<<< HEAD
     "./framework/server": {
       "types": "./dist/framework/server.d.ts",
       "import": "./dist/framework/server.js",
       "require": "./dist/framework/server.js",
       "default": "./dist/framework/server.js"
+=======
+    "./framework/config": {
+      "types": "./dist/framework/config.d.ts",
+      "import": "./dist/framework/config.js",
+      "require": "./dist/framework/config.js",
+      "default": "./dist/framework/config.js"
+>>>>>>> 6a15a7d (fix(packages/hua-ux): add framework/config entry point for server-side defineConfig usage)
     },
     "./presets": {
       "types": "./dist/presets/index.d.ts",
