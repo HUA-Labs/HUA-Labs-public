@@ -1,7 +1,7 @@
 /**
  * @hua-labs/hua-ux/framework - Providers
- * 
- * Unified providers for i18n, motion, and state
+ *
+ * Unified providers for i18n, motion, icons, and state
  */
 
 'use client';
@@ -13,6 +13,7 @@ import { getConfig } from '../config';
 import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
+import { IconProvider } from '@hua-labs/ui';
 
 /**
  * 언어 코드 배열을 LanguageConfig 배열로 변환
@@ -60,6 +61,21 @@ function createProviders(config: HuaUxConfig) {
       <BrandingProvider branding={config.branding || null}>{children}</BrandingProvider>
     ));
   }
+
+  // Icon Provider (기본값 적용)
+  // Icon Provider (with defaults)
+  const iconConfig = config.icons || {};
+  providers.push(({ children }) => (
+    <IconProvider
+      set={iconConfig.set || 'phosphor'}
+      weight={iconConfig.weight || 'regular'}
+      size={iconConfig.size || 20}
+      color={iconConfig.color || 'currentColor'}
+      strokeWidth={iconConfig.strokeWidth || 1.25}
+    >
+      {children}
+    </IconProvider>
+  ));
 
   // i18n Provider
   if (config.i18n) {

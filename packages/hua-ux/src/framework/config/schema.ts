@@ -12,7 +12,7 @@ import type { HuaUxConfig, Preset } from '../types';
  * Preset을 사용하지 않을 때의 기본값입니다.
  * Preset을 사용하면 이 값은 무시되고 Preset 값이 사용됩니다.
  */
-export const defaultConfig: Required<Omit<HuaUxConfig, 'branding' | 'plugins' | 'license'>> & { 
+export const defaultConfig: Required<Omit<HuaUxConfig, 'branding' | 'plugins' | 'license'>> & {
   branding?: HuaUxConfig['branding'];
   plugins?: HuaUxConfig['plugins'];
   license?: HuaUxConfig['license'];
@@ -25,6 +25,12 @@ export const defaultConfig: Required<Omit<HuaUxConfig, 'branding' | 'plugins' | 
     namespaces: ['common'],
     translationLoader: 'api',
     translationApiPath: '/api/translations',
+  },
+  icons: {
+    set: 'phosphor',
+    weight: 'regular',
+    size: 20,
+    color: 'currentColor',
   },
   motion: {
     defaultPreset: 'product',
