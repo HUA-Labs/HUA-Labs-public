@@ -34,6 +34,7 @@
     "fix-hua-ux-exports",
     "fix-hua-ux-use-client",
     "fix-package-exports",
+    "hua-ecosystem-major-update",
     "provenance-and-docs",
     "release-i18n-packages-alpha",
     "rename-create-hua-ux-package",
