@@ -2,44 +2,44 @@
   "name": "@hua-labs/hua-ux",
   "version": "0.1.0-alpha.12",
   "description": "HUA UX - Ship UX faster: UI + motion + i18n, pre-wired. A framework for React product teams.",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/index.d.mts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
     "./framework": {
-      "types": "./dist/framework/index.d.ts",
+      "types": "./dist/framework/index.d.mts",
       "import": "./dist/framework/index.js",
-      "require": "./dist/framework/index.js",
+      "require": "./dist/framework/index.cjs",
       "default": "./dist/framework/index.js"
     },
     "./framework/server": {
-      "types": "./dist/framework/server.d.ts",
+      "types": "./dist/framework/server.d.mts",
       "import": "./dist/framework/server.js",
-      "require": "./dist/framework/server.js",
+      "require": "./dist/framework/server.cjs",
       "default": "./dist/framework/server.js"
     },
     "./framework/config": {
-      "types": "./dist/framework/config.d.ts",
+      "types": "./dist/framework/config.d.mts",
       "import": "./dist/framework/config.js",
-      "require": "./dist/framework/config.js",
+      "require": "./dist/framework/config.cjs",
       "default": "./dist/framework/config.js"
     },
     "./presets": {
-      "types": "./dist/presets/index.d.ts",
+      "types": "./dist/presets/index.d.mts",
       "import": "./dist/presets/index.js",
-      "require": "./dist/presets/index.js",
+      "require": "./dist/presets/index.cjs",
       "default": "./dist/presets/index.js"
     },
     "./framework/seo/geo": {
-      "types": "./dist/framework/seo/geo/index.d.ts",
+      "types": "./dist/framework/seo/geo/index.d.mts",
       "import": "./dist/framework/seo/geo/index.js",
-      "require": "./dist/framework/seo/geo/index.js",
+      "require": "./dist/framework/seo/geo/index.cjs",
       "default": "./dist/framework/seo/geo/index.js"
     }
   },
@@ -49,11 +49,12 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node ../../node_modules/typescript/lib/tsc.js",
-    "dev": "node ../../node_modules/typescript/lib/tsc.js --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "lint": "echo 'Skipping lint for hua-ux (ESLint 8, needs separate config)'",
     "type-check": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage"
@@ -115,6 +116,7 @@
     "@vitejs/plugin-react": "^5.1.1",
     "jsdom": "^27.2.0",
     "server-only": "^0.0.1",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.14"
   }
