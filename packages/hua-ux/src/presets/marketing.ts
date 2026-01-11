@@ -82,6 +82,20 @@ export const marketingPreset = {
   i18n: {
     defaultLanguage: 'ko',
     supportedLanguages: ['ko', 'en']
+  },
+
+  /**
+   * Icon Configuration
+   *
+   * - Phosphor Icons (기본값)
+   * - Bold weight (임팩트 있는 스타일)
+   * - 24px 기본 크기 (마케팅용으로 크게)
+   */
+  icons: {
+    set: 'phosphor' as const,
+    weight: 'bold' as const,
+    size: 24,
+    color: 'currentColor'
   }
 } as const
 

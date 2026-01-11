@@ -25,6 +25,10 @@ export type { HuaUxConfig, PresetName } from './types';
 export { useData, fetchData } from './utils/data-fetching';
 export type { DataFetchResult } from './utils/data-fetching';
 
+// SSR Translations는 서버 전용이므로 별도 export에서 제공
+// SSR Translations are server-only, exported separately
+// export { getSSRTranslations } from './utils/ssr-translations';
+
 // Middleware
 export { createI18nMiddleware } from './middleware/i18n';
 export type { I18nMiddlewareConfig } from './middleware/i18n';
