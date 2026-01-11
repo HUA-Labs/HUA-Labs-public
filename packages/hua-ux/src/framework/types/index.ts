@@ -184,6 +184,31 @@ export interface HuaUxConfig {
      * Enable debug mode to see detailed Translator logs.
      */
     debug?: boolean;
+    
+    /**
+     * Initial translations for SSR / SSR용 초기 번역 데이터
+     * 
+     * 서버 사이드에서 미리 로드한 번역 데이터를 전달하여
+     * 첫 로딩 시 missing key 문제를 방지합니다.
+     * 
+     * Pass pre-loaded translation data from server-side to prevent
+     * missing key issues on first load.
+     * 
+     * @example
+     * ```ts
+     * // layout.tsx (Server Component)
+     * export default async function RootLayout({ children }) {
+     *   const initialTranslations = await loadSSRTranslations();
+     *   
+     *   return (
+     *     <HuaUxLayout config={{ i18n: { initialTranslations } }}>
+     *       {children}
+     *     </HuaUxLayout>
+     *   );
+     * }
+     * ```
+     */
+    initialTranslations?: Record<string, Record<string, Record<string, string>>>;
   };
 
   /**
@@ -340,6 +365,81 @@ export interface HuaUxConfig {
      * Use only in development. Use `apiKey` in production.
      */
     type?: 'free' | 'pro' | 'enterprise';
+  };
+
+  /**
+   * Icon configuration / 아이콘 설정
+   *
+   * 전역 아이콘 설정을 정의합니다. IconProvider를 통해 자동 적용됩니다.
+   * Define global icon settings. Automatically applied via IconProvider.
+   *
+   * @example
+   * ```ts
+   * export default defineConfig({
+   *   preset: 'product',
+   *   icons: {
+   *     set: 'phosphor',
+   *     weight: 'regular',
+   *     size: 20,
+   *   },
+   * });
+   * ```
+   */
+  icons?: {
+    /**
+     * Icon set / 아이콘 세트
+     *
+     * - 'phosphor': Phosphor Icons (기본값, 6가지 weight 지원)
+     * - 'lucide': Lucide Icons (심플하고 일관된 스타일)
+     *
+     * @coming-soon 'iconsax': Iconsax Icons
+     */
+    set?: 'phosphor' | 'lucide';
+
+    /**
+     * Phosphor icon weight / Phosphor 아이콘 두께
+     *
+     * Phosphor 아이콘 세트 사용 시 적용됩니다.
+     * Applied when using Phosphor icon set.
+     *
+     * - 'thin': 얇은 선
+     * - 'light': 가벼운 선
+     * - 'regular': 기본 (기본값)
+     * - 'bold': 굵은 선
+     * - 'duotone': 두 가지 톤
+     * - 'fill': 채우기
+     */
+    weight?: 'thin' | 'light' | 'regular' | 'bold' | 'duotone' | 'fill';
+
+    /**
+     * Default icon size / 기본 아이콘 크기
+     *
+     * 픽셀 단위의 기본 아이콘 크기입니다.
+     * Default icon size in pixels.
+     *
+     * @default 20
+     */
+    size?: number;
+
+    /**
+     * Default icon color / 기본 아이콘 색상
+     *
+     * CSS 색상 값 또는 'currentColor'를 사용할 수 있습니다.
+     * Can use CSS color value or 'currentColor'.
+     *
+     * @default 'currentColor'
+     */
+    color?: string;
+
+    /**
+     * Stroke width (Lucide only) / 선 두께 (Lucide 전용)
+     *
+     * Lucide 아이콘 세트 사용 시 적용됩니다.
+     * Applied when using Lucide icon set.
+     *
+     * @default 1.25
+     */
+    strokeWidth?: number;
   };
 
   /**

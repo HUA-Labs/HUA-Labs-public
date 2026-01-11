@@ -18,6 +18,18 @@
       "require": "./dist/framework/index.js",
       "default": "./dist/framework/index.js"
     },
+    "./framework/server": {
+      "types": "./dist/framework/server.d.ts",
+      "import": "./dist/framework/server.js",
+      "require": "./dist/framework/server.js",
+      "default": "./dist/framework/server.js"
+    },
+    "./framework/config": {
+      "types": "./dist/framework/config.d.ts",
+      "import": "./dist/framework/config.js",
+      "require": "./dist/framework/config.js",
+      "default": "./dist/framework/config.js"
+    },
     "./presets": {
       "types": "./dist/presets/index.d.ts",
       "import": "./dist/presets/index.js",
@@ -42,6 +54,7 @@
     "clean": "rm -rf dist",
     "lint": "echo 'Skipping lint for hua-ux (ESLint 8, needs separate config)'",
     "type-check": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage"
@@ -56,7 +69,8 @@
   "peerDependencies": {
     "next": ">=13.0.0",
     "react": ">=19.0.0",
-    "react-dom": ">=19.0.0"
+    "react-dom": ">=19.0.0",
+    "server-only": "^0.0.1"
   },
   "peerDependenciesMeta": {
     "next": {

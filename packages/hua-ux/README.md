@@ -208,6 +208,32 @@ pnpm dev
 
 For more details, see [create-hua-ux README](../create-hua-ux/README.md).
 
+### Tailwind CSS Configuration
+
+If you're using Tailwind CSS v4, you need to configure `@source` directives to scan the UI package classes:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+
+/* Scan hua-ux packages for Tailwind classes */
+@source "../node_modules/@hua-labs/hua-ux/src/**/*.{ts,tsx}";
+@source "../node_modules/@hua-labs/ui/src/**/*.{ts,tsx}";
+```
+
+> **Note**: The path is relative to your CSS file location. Adjust the path based on your project structure.
+
+For monorepo setups with workspace packages:
+
+```css
+/* apps/my-app/app/globals.css */
+@import "tailwindcss";
+
+/* Monorepo: packages are in ../../packages/ */
+@source "../../../packages/hua-ui/src/**/*.{ts,tsx}";
+@source "../../../packages/hua-ux/src/**/*.{ts,tsx}";
+```
+
 ### Entry Points
 
 hua-ux provides the following entry points:
@@ -598,6 +624,32 @@ pnpm dev
 ```
 
 자세한 내용은 [create-hua-ux README](../create-hua-ux/README.md)를 참고하세요.
+
+### Tailwind CSS 설정
+
+Tailwind CSS v4를 사용하는 경우, UI 패키지 클래스를 스캔하도록 `@source` 디렉티브를 설정해야 합니다:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+
+/* hua-ux 패키지 Tailwind 클래스 스캔 */
+@source "../node_modules/@hua-labs/hua-ux/src/**/*.{ts,tsx}";
+@source "../node_modules/@hua-labs/ui/src/**/*.{ts,tsx}";
+```
+
+> **참고**: 경로는 CSS 파일 위치 기준 상대 경로입니다. 프로젝트 구조에 맞게 조정하세요.
+
+모노레포 워크스페이스 패키지 설정:
+
+```css
+/* apps/my-app/app/globals.css */
+@import "tailwindcss";
+
+/* 모노레포: 패키지가 ../../packages/에 있는 경우 */
+@source "../../../packages/hua-ui/src/**/*.{ts,tsx}";
+@source "../../../packages/hua-ux/src/**/*.{ts,tsx}";
+```
 
 ### 진입점
 
