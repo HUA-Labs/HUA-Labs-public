@@ -75,6 +75,20 @@ export const productPreset = {
   i18n: {
     defaultLanguage: 'ko',
     supportedLanguages: ['ko', 'en']
+  },
+
+  /**
+   * Icon Configuration
+   *
+   * - Phosphor Icons (기본값)
+   * - Regular weight (깔끔한 스타일)
+   * - 20px 기본 크기
+   */
+  icons: {
+    set: 'phosphor' as const,
+    weight: 'regular' as const,
+    size: 20,
+    color: 'currentColor'
   }
 } as const
 

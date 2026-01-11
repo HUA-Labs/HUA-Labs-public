@@ -1,7 +1,7 @@
 /**
  * @hua-labs/hua-ux/framework - Providers
- * 
- * Unified providers for i18n, motion, and state
+ *
+ * Unified providers for i18n, motion, icons, and state
  */
 
 'use client';
@@ -13,6 +13,34 @@ import { getConfig } from '../config';
 import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
+import { IconProvider } from '@hua-labs/ui';
+
+/**
+ * 언어 코드 배열을 LanguageConfig 배열로 변환
+ * 
+ * i18n-core는 LanguageConfig[] 형식을 기대하지만,
+ * hua-ux config는 편의를 위해 string[] 형식을 사용합니다.
+ */
+function toLanguageConfigs(languages: string[]): { code: string; name: string; nativeName: string }[] {
+  const languageMap: Record<string, { name: string; nativeName: string }> = {
+    ko: { name: 'Korean', nativeName: '한국어' },
+    en: { name: 'English', nativeName: 'English' },
+    ja: { name: 'Japanese', nativeName: '日本語' },
+    zh: { name: 'Chinese', nativeName: '中文' },
+    es: { name: 'Spanish', nativeName: 'Español' },
+    fr: { name: 'French', nativeName: 'Français' },
+    de: { name: 'German', nativeName: 'Deutsch' },
+    pt: { name: 'Portuguese', nativeName: 'Português' },
+    it: { name: 'Italian', nativeName: 'Italiano' },
+    ru: { name: 'Russian', nativeName: 'Русский' },
+  };
+
+  return languages.map(code => ({
+    code,
+    name: languageMap[code]?.name || code,
+    nativeName: languageMap[code]?.nativeName || code,
+  }));
+}
 
 /**
  * Create providers based on configuration
@@ -34,6 +62,21 @@ function createProviders(config: HuaUxConfig) {
     ));
   }
 
+  // Icon Provider (기본값 적용)
+  // Icon Provider (with defaults)
+  const iconConfig = config.icons || {};
+  providers.push(({ children }) => (
+    <IconProvider
+      set={iconConfig.set || 'phosphor'}
+      weight={iconConfig.weight || 'regular'}
+      size={iconConfig.size || 20}
+      color={iconConfig.color || 'currentColor'}
+      strokeWidth={iconConfig.strokeWidth || 1.25}
+    >
+      {children}
+    </IconProvider>
+  ));
+
   // i18n Provider
   if (config.i18n) {
     const i18nStore = createI18nStore({
@@ -54,6 +97,8 @@ function createProviders(config: HuaUxConfig) {
         defaultLanguage: config.i18n.defaultLanguage,
         loadTranslations: config.i18n.loadTranslations,
         debug: config.i18n.debug,
+        initialTranslations: config.i18n.initialTranslations,
+        supportedLanguages: config.i18n.supportedLanguages,
       }
     );
 

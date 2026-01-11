@@ -1,0 +1,8 @@
+/**
+ * @hua-labs/hua-ux/framework/server
+ * 
+ * 서버 전용 유틸리티 (Server-only utilities)
+ * 이 모듈의 함수들은 서버 컴포넌트나 API 라우트에서만 사용할 수 있습니다.
+ */
+
+export { getSSRTranslations } from './utils/ssr-translations';
