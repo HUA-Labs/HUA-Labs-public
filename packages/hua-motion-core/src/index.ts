@@ -1,3 +1,5 @@
+"use client";
+
 // ========================================
 // HUA Motion Core - 메인 export 파일
 // ========================================
@@ -62,6 +64,10 @@ export { useBounceIn } from './hooks/useBounceIn'
 export { usePulse } from './hooks/usePulse'
 export { useSpringMotion } from './hooks/useSpringMotion'
 export { useGradient } from './hooks/useGradient'
+
+// 스태거 모션 (여러 아이템 순차 애니메이션)
+export { useStaggerMotion } from './hooks/useStaggerMotion'
+export type { StaggerMotionOptions, StaggerMotionReturn, StaggerMotionType } from './hooks/useStaggerMotion'
 
 // 기본 인터랙션 (hover, click, focus)
 export { useHoverMotion } from './hooks/useHoverMotion'
