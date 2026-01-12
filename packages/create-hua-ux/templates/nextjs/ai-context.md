@@ -48,6 +48,59 @@ Project Root/
 └── hua-ux.config.ts        # Framework configuration
 ```
 
+## Styling (Tailwind CSS v4)
+
+### Critical: @theme Directive
+
+This project uses **Tailwind CSS v4** which requires `@theme` directive for color utilities.
+
+**globals.css** imports the HUA-UI recommended theme:
+```css
+@import "tailwindcss";
+@import "@hua-labs/ui/styles/recommended-theme.css";
+```
+
+### Available CSS Variables
+
+The theme provides these CSS variables (usable as Tailwind classes):
+
+| Variable | Light Mode | Dark Mode | Tailwind Class |
+|----------|------------|-----------|----------------|
+| `--background` | Light gray | Dark gray | `bg-background` |
+| `--foreground` | Dark text | Light text | `text-foreground` |
+| `--primary` | HUA Teal | HUA Teal | `bg-primary`, `text-primary` |
+| `--secondary` | Light gray | Dark gray | `bg-secondary` |
+| `--muted` | Muted gray | Muted gray | `bg-muted`, `text-muted-foreground` |
+| `--accent` | Light teal | Dark teal | `bg-accent` |
+| `--destructive` | Red | Red | `bg-destructive` |
+| `--border` | Border gray | Border gray | `border-border` |
+| `--card` | White | Dark | `bg-card` |
+
+### Common Styling Patterns
+
+```tsx
+// Background and text
+<div className="bg-background text-foreground">
+
+// Cards
+<div className="bg-card text-card-foreground border border-border rounded-lg">
+
+// Muted text
+<p className="text-muted-foreground">
+
+// Primary button
+<button className="bg-primary text-primary-foreground">
+
+// Destructive/error
+<div className="bg-destructive text-destructive-foreground">
+```
+
+### Troubleshooting
+
+**"bg-primary not working"**: Make sure `@import "@hua-labs/ui/styles/recommended-theme.css"` exists in globals.css
+
+**Dark mode not working**: Add `dark` class to `<html>` element or use `ThemeProvider` from `@hua-labs/ui`
+
 ## Available Components and Hooks
 
 ### @hua-labs/ui Components
