@@ -548,6 +548,16 @@ cat app/layout.tsx | grep "async function RootLayout"
 
 자세한 내용은 [DETAILED_GUIDE.md](./DETAILED_GUIDE.md)를 참조하세요.
 
+### Requirements
+
+- Node.js >= 22.0.0
+- pnpm, npm, or yarn
+
+### 요구사항
+
+- Node.js >= 22.0.0
+- pnpm, npm, 또는 yarn
+
 ## License
 
 MIT
