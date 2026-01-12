@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.16
+
+### Patch Changes
+
+- docs: README updates and AI context files
+
+  - motion-core: Add missing Korean translations (useSlideDown, stagger hooks)
+  - hua-ux: Add AI context files for IDE integration
+  - create-hua-ux: Update README with additional information
+
+- Updated dependencies
+  - @hua-labs/motion-core@2.1.0-alpha.5
+
 ## 0.1.0-alpha.15
 
 ### Patch Changes
