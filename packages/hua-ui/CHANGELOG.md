@@ -1,5 +1,17 @@
 # @hua-labs/ui
 
+## 1.1.0-alpha.3
+
+### Patch Changes
+
+- 674d922: fix(ui): Update lucide-react to support React 19
+
+  Updated lucide-react from ^0.263.1 to ^0.562.0 which includes official React 19 support. This resolves peer dependency warnings when using @hua-labs/ui with React 19.
+
+- d5aa3be: fix(ui): Remove unused Jest dependencies in favor of Vitest
+
+  Removed jest, @types/jest, and @testing-library/jest-dom from devDependencies since the package uses Vitest as its test framework.
+
 ## 1.1.0-alpha.2
 
 ### Minor Changes

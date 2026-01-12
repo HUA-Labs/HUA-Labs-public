@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-alpha.14
+
+### Patch Changes
+
+- Updated dependencies [a14cae1]
+- Updated dependencies [674d922]
+- Updated dependencies [d5aa3be]
+  - @hua-labs/i18n-core-zustand@1.1.0-alpha.3
+  - @hua-labs/ui@1.1.0-alpha.3
+
 ## 0.1.0-alpha.13
 
 ### Patch Changes
