@@ -3,7 +3,7 @@
  * Do not edit manually.
  * 
  * Generated from: ../../hua-ux/package.json
- * Source version: 0.1.0-alpha.12
+ * Source version: 0.1.0-alpha.16
  */
 
-export const HUA_UX_VERSION = '^0.1.0-alpha.12';
+export const HUA_UX_VERSION = '^0.1.0-alpha.16';
