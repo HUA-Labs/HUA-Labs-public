@@ -23,12 +23,12 @@ A collection of React animation hooks built on a ref-based engine. Provides smoo
 
 ### Features
 
-- **25+ Animation Hooks** - Fade, slide, scale, scroll, and interaction animations
+- **30+ Animation Hooks** - Fade, slide, scale, scroll, and interaction animations
 - **Performance Optimized** - Direct ref manipulation for consistent performance
 - **Zero Dependencies** - Pure JavaScript motion engine
 - **TypeScript Native** - Full type safety with inferred types
 - **SSR Compatible** - Works with Next.js, Remix, and SSR frameworks
-- **Tested** - Test coverage with 517 test cases
+- **Tested** - Comprehensive test coverage
 
 ### Installation
 
@@ -68,6 +68,7 @@ function MyComponent() {
 #### Basic Motion Hooks
 - `useFadeIn` - Fade in animation
 - `useSlideUp` - Slide up animation
+- `useSlideDown` - Slide down animation
 - `useSlideLeft` - Slide left animation
 - `useSlideRight` - Slide right animation
 - `useScaleIn` - Scale in animation
@@ -75,6 +76,11 @@ function MyComponent() {
 - `usePulse` - Pulse animation
 - `useSpringMotion` - Spring physics animations
 - `useGradient` - Gradient animations
+
+#### Stagger & List Hooks
+- `useStaggerMotion` - Staggered animations for multiple items
+- `useCardList` - Card list animations
+- `useSkeleton` - Skeleton loading animations
 
 #### Interaction Hooks
 - `useHoverMotion` - Hover-triggered animations
@@ -137,12 +143,12 @@ ref 기반 엔진으로 구축된 React 애니메이션 훅 컬렉션입니다. 
 
 ### 주요 기능
 
-- **25개 이상의 애니메이션 훅** - 페이드, 슬라이드, 스케일, 스크롤 및 상호작용 애니메이션
+- **30개 이상의 애니메이션 훅** - 페이드, 슬라이드, 스케일, 스크롤 및 상호작용 애니메이션
 - **성능 최적화** - 일관된 성능을 위한 직접 ref 조작
 - **의존성 없음** - 순수 JavaScript 모션 엔진
 - **TypeScript 네이티브** - 타입 추론을 통한 완전한 타입 안전성
 - **SSR 호환** - Next.js, Remix 및 SSR 프레임워크와 작동
-- **테스트 완료** - 517개 테스트 케이스로 테스트 커버리지
+- **테스트 완료** - 포괄적인 테스트 커버리지
 
 ### 설치
 
@@ -182,6 +188,7 @@ function MyComponent() {
 #### 기본 모션 훅
 - `useFadeIn` - 페이드 인 애니메이션
 - `useSlideUp` - 슬라이드 업 애니메이션
+- `useSlideDown` - 슬라이드 다운 애니메이션
 - `useSlideLeft` - 슬라이드 왼쪽 애니메이션
 - `useSlideRight` - 슬라이드 오른쪽 애니메이션
 - `useScaleIn` - 스케일 인 애니메이션
@@ -189,6 +196,11 @@ function MyComponent() {
 - `usePulse` - 펄스 애니메이션
 - `useSpringMotion` - 스프링 물리 애니메이션
 - `useGradient` - 그라디언트 애니메이션
+
+#### 스태거 및 리스트 훅
+- `useStaggerMotion` - 여러 항목에 대한 스태거 애니메이션
+- `useCardList` - 카드 리스트 애니메이션
+- `useSkeleton` - 스켈레톤 로딩 애니메이션
 
 #### 상호작용 훅
 - `useHoverMotion` - 호버 트리거 애니메이션

@@ -46,6 +46,7 @@
   "files": [
     "dist",
     "src",
+    "ai-context",
     "README.md"
   ],
   "scripts": {
