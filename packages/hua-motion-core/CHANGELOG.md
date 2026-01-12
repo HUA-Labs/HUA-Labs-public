@@ -1,5 +1,39 @@
 # @hua-labs/motion-core
 
+## 2.1.0-alpha.4
+
+### Minor Changes
+
+- da2b2d3: feat: useStaggerMotion hook, WelcomePage redesign, i18n 10 languages
+
+  ### @hua-labs/motion-core
+
+  - Add `useStaggerMotion` hook for animating multiple items with staggered timing
+  - Supports fadeIn, slideUp, slideLeft, slideRight, scaleIn motion types
+  - Configurable staggerDelay, initialDelay, duration, threshold options
+
+  ### @hua-labs/hua-ux
+
+  - Redesign WelcomePage with Next.js-style layout
+  - Add HUA logo, code block UI, Quick Links cards
+  - Add footer with HUA Labs, Docs, GitHub, email links
+  - Apply useFadeIn, useSlideUp motion animations
+
+  ### @hua-labs/i18n-core
+
+  - Expand default languages from 2 to 10
+  - Added: en-IN, ja, zh, zh-TW, es, ru, de, fr
+
+  ### @hua-labs/ui
+
+  - Export recommended-theme.css for Tailwind v4 @theme directive
+
+  ### create-hua-ux
+
+  - Update template globals.css to import recommended-theme.css
+  - Add fadeIn, slideUp CSS animations
+  - Add Tailwind CSS v4 styling documentation to ai-context.md
+
 ## 2.1.0-alpha.3
 
 ### Patch Changes
@@ -84,6 +118,7 @@
 - 950a40d: # HUA Motion Core v2.0.0 - React 19 compatibility and essential motion hooks
 
   **React 19 Migration:**
+
   - Updated peerDependencies to React >=19.0.0
   - Refactored type definitions for React 19 compatibility
   - Updated ref handling to work with React 19's stricter element types
@@ -91,16 +126,19 @@
   - Updated style types to support React 19's new CSS properties
 
   **Breaking Changes:**
+
   - Minimum React version: 19.0.0 (previously >=16.8.0)
   - Type definitions updated for React 19's stricter typing
 
   **Migration Guide:**
+
   - If you're using React 18 or earlier, stay on v1.x
   - For React 19 projects, upgrade to v2.x
   - No code changes required for most use cases
   - TypeScript users may need to update type annotations if using custom element types
 
   **Other Changes:**
+
   - 25 essential motion hooks for React applications
   - Full TypeScript support with comprehensive type definitions
   - Zero external dependencies, lightweight and performant
