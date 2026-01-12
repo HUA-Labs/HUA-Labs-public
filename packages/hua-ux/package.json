@@ -49,7 +49,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/add-use-client.mjs",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "lint": "echo 'Skipping lint for hua-ux (ESLint 8, needs separate config)'",
