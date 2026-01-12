@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation, useLanguageChange } from '@hua-labs/i18n-core';
 import { Button } from '@hua-labs/hua-ux';
 import { Globe } from '@phosphor-icons/react';
 import { useMotion } from '@hua-labs/hua-ux/framework';
@@ -11,14 +11,16 @@ import { useMotion } from '@hua-labs/hua-ux/framework';
  * Allows users to switch between available languages
  */
 export function LanguageToggle() {
-  const { currentLanguage, changeLanguage, availableLanguages } = useTranslation();
-  const { ref, isVisible } = useMotion('fade-in-up');
+  const { currentLanguage } = useTranslation();
+  const { changeLanguage, supportedLanguages } = useLanguageChange();
+  const motion = useMotion({ type: 'fadeIn', duration: 300 });
 
   const handleToggle = () => {
     // Toggle between available languages
-    const currentIndex = availableLanguages.indexOf(currentLanguage);
-    const nextIndex = (currentIndex + 1) % availableLanguages.length;
-    changeLanguage(availableLanguages[nextIndex]);
+    const codes = supportedLanguages.map(lang => lang.code);
+    const currentIndex = codes.indexOf(currentLanguage);
+    const nextIndex = (currentIndex + 1) % codes.length;
+    changeLanguage(codes[nextIndex]);
   };
 
   const languageLabels: Record<string, string> = {
@@ -27,7 +29,7 @@ export function LanguageToggle() {
   };
 
   return (
-    <div ref={ref} className={isVisible ? 'opacity-100' : 'opacity-0'}>
+    <div ref={motion.ref} style={motion.style}>
       <Button
         variant="outline"
         size="sm"
