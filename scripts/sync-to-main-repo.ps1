@@ -77,8 +77,8 @@ if ($PublicBranch -ne "main" -and $PublicBranch -ne "develop") {
     }
 }
 
-# 변경사항 확인
-$PublicStatus = git status --porcelain
+# 변경사항 확인 (untracked files 제외)
+$PublicStatus = git status --porcelain | Where-Object { $_ -notmatch '^\?\?' }
 if ($PublicStatus) {
     Write-ColorOutput "Red" "❌ 퍼블릭 레포에 커밋되지 않은 변경사항이 있습니다:"
     Write-Output $PublicStatus
@@ -96,7 +96,8 @@ Push-Location $MainRepoPath
 $MainBranch = git branch --show-current
 Write-Output "현재 브랜치: $MainBranch"
 
-$MainStatus = git status --porcelain
+# 변경사항 확인 (untracked files 제외)
+$MainStatus = git status --porcelain | Where-Object { $_ -notmatch '^\?\?' }
 if ($MainStatus) {
     Write-ColorOutput "Yellow" "⚠️  메인 레포에 커밋되지 않은 변경사항이 있습니다:"
     Write-Output $MainStatus
