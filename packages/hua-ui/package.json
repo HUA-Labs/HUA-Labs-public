@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/ui",
-  "version": "2.0.0-alpha.7",
+  "version": "2.0.0-alpha.8",
   "description": "HUA Labs - Modern React UI Component Library - Beautiful, accessible, and customizable components for React applications",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -108,7 +108,7 @@
     "vitest": "^4.0.14"
   },
   "peerDependencies": {
-    "@hua-labs/motion-core": ">=2.0.0-0",
+    "@hua-labs/motion-core": ">=2.1.0-alpha.6",
     "@phosphor-icons/react": "*",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
