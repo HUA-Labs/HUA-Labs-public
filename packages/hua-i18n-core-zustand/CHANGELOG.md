@@ -1,5 +1,12 @@
 # @hua-labs/i18n-core-zustand
 
+## 1.1.0-alpha.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @hua-labs/i18n-core@1.1.0-alpha.4
+
 ## 1.1.0-alpha.4
 
 ### Patch Changes

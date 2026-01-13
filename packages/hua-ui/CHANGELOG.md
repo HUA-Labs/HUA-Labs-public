@@ -1,5 +1,21 @@
 # @hua-labs/ui
 
+## 1.1.0-alpha.2
+
+### Minor Changes
+
+- feat: Motion hooks, Logo component, FormControl/NumberInput
+
+  - Motion hooks: useInView, useMouse, useReducedMotion, useScrollProgress, useWindowSize
+  - Logo component for branding
+  - FormControl, NumberInput components
+  - Various README and template updates
+
+### Patch Changes
+
+- Updated dependencies
+  - @hua-labs/motion-core@2.1.0-alpha.4
+
 ## 2.0.0-alpha.8
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.0-alpha.16
+
+### Patch Changes
+
+- feat: Motion hooks, Logo component, FormControl/NumberInput
+
+  - Motion hooks: useInView, useMouse, useReducedMotion, useScrollProgress, useWindowSize
+  - Logo component for branding
+  - FormControl, NumberInput components
+  - Various README and template updates
+
 ## 1.0.0-alpha.15
 
 ### Patch Changes
