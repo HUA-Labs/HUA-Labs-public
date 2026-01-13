@@ -6,42 +6,18 @@ export { usePageTransition } from './usePageTransition'
 export { usePageTransitionManager } from './usePageTransitionManager'
 
 // ============================================
-// Visual Effect Components (Premium)
-// 비주얼 이펙트 컴포넌트 (프리미엄)
+// Premium Visual Effect Components
+// 프리미엄 비주얼 이펙트 컴포넌트
 // ============================================
-
-// Parallax - 스크롤 기반 패럴렉스 효과
-export { Parallax } from "./Parallax";
-export type { ParallaxProps } from "./Parallax";
-
-// Marquee - 무한 스크롤 애니메이션
-export { Marquee } from "./Marquee";
-export type { MarqueeProps } from "./Marquee";
-
-// GlowCard - 마우스 따라다니는 글로우 카드
-export { GlowCard } from "./GlowCard";
-export type { GlowCardProps } from "./GlowCard";
-
-// SpotlightCard - 스포트라이트 효과 카드
-export { SpotlightCard } from "./SpotlightCard";
-export type { SpotlightCardProps } from "./SpotlightCard";
-
-// TextReveal - 스크롤 기반 텍스트 공개
-export { TextReveal } from "./TextReveal";
-export type { TextRevealProps } from "./TextReveal";
-
-// AnimatedGradient - 애니메이션 그라디언트 배경
-export { AnimatedGradient } from "./AnimatedGradient";
-export type { AnimatedGradientProps } from "./AnimatedGradient";
-
-// TiltCard - 3D 틸트 효과 카드
-export { TiltCard } from "./TiltCard";
-export type { TiltCardProps } from "./TiltCard";
-
-// VideoBackground - 비디오 배경 (YouTube, Vimeo, 네이티브)
-export { VideoBackground } from "./VideoBackground";
-export type { VideoBackgroundProps } from "./VideoBackground";
-
-// Carousel - 슬라이드 캐러셀
-export { Carousel } from "./Carousel";
-export type { CarouselProps } from "./Carousel";
+// Available in @hua-labs/ui-pro (private package)
+// @hua-labs/ui-pro에서 사용 가능 (비공개 패키지)
+//
+// - Parallax
+// - Marquee
+// - GlowCard
+// - SpotlightCard
+// - TextReveal
+// - AnimatedGradient
+// - TiltCard
+// - VideoBackground
+// - Carousel
