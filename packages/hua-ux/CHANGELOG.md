@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha.17
+
+### Patch Changes
+
+- Updated dependencies [32d6797]
+- Updated dependencies [662f42e]
+  - @hua-labs/ui@2.0.0-alpha.8
+  - @hua-labs/motion-core@2.1.0-alpha.6
+
 ## 0.1.0-alpha.16
 
 ### Patch Changes

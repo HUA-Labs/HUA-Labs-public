@@ -1,5 +1,14 @@
 # @hua-labs/motion-core
 
+## 2.1.0-alpha.6
+
+### Patch Changes
+
+- 662f42e: docs(motion-core): sync Korean README with English section
+
+  - Add useSlideDown to Korean basic motion hooks
+  - Add stagger/list hooks section in Korean
+
 ## 2.1.0-alpha.5
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @hua-labs/ui
 
+## 2.0.0-alpha.8
+
+### Patch Changes
+
+- 32d6797: fix: add "use client" directive to dist bundles for Next.js 16 Turbopack compatibility
+
+  - Added post-build script to prepend "use client" to all bundled JS files
+  - Updated exports to use dist files instead of src for proper npm publishing
+  - Fixes "You're importing a component that needs useState/createContext" errors when using with Next.js App Router
+
+- Updated dependencies [662f42e]
+  - @hua-labs/motion-core@2.1.0-alpha.6
+
 ## 2.0.0-alpha.7
 
 ### Patch Changes
