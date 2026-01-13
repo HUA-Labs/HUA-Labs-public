@@ -1,5 +1,12 @@
 # @hua-labs/i18n-loaders
 
+## 1.1.0-alpha.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @hua-labs/i18n-core@1.1.0-alpha.4
+
 ## 1.1.0-alpha.6
 
 ### Patch Changes

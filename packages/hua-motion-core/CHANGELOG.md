@@ -1,5 +1,25 @@
 # @hua-labs/motion-core
 
+## 2.1.0-alpha.4
+
+### Patch Changes
+
+- feat: Motion hooks, Logo component, FormControl/NumberInput
+
+  - Motion hooks: useInView, useMouse, useReducedMotion, useScrollProgress, useWindowSize
+  - Logo component for branding
+  - FormControl, NumberInput components
+  - Various README and template updates
+
+## 2.1.0-alpha.6
+
+### Patch Changes
+
+- 662f42e: docs(motion-core): sync Korean README with English section
+
+  - Add useSlideDown to Korean basic motion hooks
+  - Add stagger/list hooks section in Korean
+
 ## 2.1.0-alpha.5
 
 ### Patch Changes

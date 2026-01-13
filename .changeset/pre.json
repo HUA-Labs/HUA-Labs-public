@@ -12,5 +12,9 @@
     "@hua-labs/ui": "1.0.0",
     "@hua-labs/hua-ux": "0.1.0"
   },
-  "changesets": []
+  "changesets": [
+    "fix-use-client-directive",
+    "readme-korean-sync",
+    "sync-2026-01-14"
+  ]
 }

@@ -1,82 +1,15 @@
 # Changelog
 
-## 1.0.0-alpha.18
-
-### Patch Changes
-
-- docs: README updates and AI context files
-
-  - motion-core: Add missing Korean translations (useSlideDown, stagger hooks)
-  - hua-ux: Add AI context files for IDE integration
-  - create-hua-ux: Update README with additional information
-
-## 1.0.0-alpha.17
-
-### Patch Changes
-
-- da2b2d3: feat: useStaggerMotion hook, WelcomePage redesign, i18n 10 languages
-
-  ### @hua-labs/motion-core
-
-  - Add `useStaggerMotion` hook for animating multiple items with staggered timing
-  - Supports fadeIn, slideUp, slideLeft, slideRight, scaleIn motion types
-  - Configurable staggerDelay, initialDelay, duration, threshold options
-
-  ### @hua-labs/hua-ux
-
-  - Redesign WelcomePage with Next.js-style layout
-  - Add HUA logo, code block UI, Quick Links cards
-  - Add footer with HUA Labs, Docs, GitHub, email links
-  - Apply useFadeIn, useSlideUp motion animations
-
-  ### @hua-labs/i18n-core
-
-  - Expand default languages from 2 to 10
-  - Added: en-IN, ja, zh, zh-TW, es, ru, de, fr
-
-  ### @hua-labs/ui
-
-  - Export recommended-theme.css for Tailwind v4 @theme directive
-
-  ### create-hua-ux
-
-  - Update template globals.css to import recommended-theme.css
-  - Add fadeIn, slideUp CSS animations
-  - Add Tailwind CSS v4 styling documentation to ai-context.md
-
 ## 1.0.0-alpha.16
 
 ### Patch Changes
 
-- 35d7058: feat: HUA ecosystem major update
+- feat: Motion hooks, Logo component, FormControl/NumberInput
 
-  **@hua-labs/ui**
-
-  - Add 331 Iconsax icons with dynamic loading system
-  - Add SDUI (Server-Driven UI) registry and types
-  - Add ColorPicker component
-  - Add CodeBlock component
-  - Add motion utilities (easing, keyframes)
-  - Add recommended-theme.css
-
-  **@hua-labs/i18n-core**
-
-  - Fix React version requirement (>= 19.0.0)
-  - Add Coming Soon tags to unreleased related packages
-
-  **@hua-labs/hua-ux**
-
-  - Update framework with SSR improvements
-  - Add server utilities for translations
-
-  **@hua-labs/state**
-
-  - Add onStoreRehydrated export
-  - SSR support improvements
-
-  **create-hua-ux**
-
-  - Version sync
+  - Motion hooks: useInView, useMouse, useReducedMotion, useScrollProgress, useWindowSize
+  - Logo component for branding
+  - FormControl, NumberInput components
+  - Various README and template updates
 
 ## 1.0.0-alpha.15
 

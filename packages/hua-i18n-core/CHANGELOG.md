@@ -1,5 +1,16 @@
 # @hua-labs/i18n-core
 
+## 1.1.0-alpha.4
+
+### Patch Changes
+
+- feat: Motion hooks, Logo component, FormControl/NumberInput
+
+  - Motion hooks: useInView, useMouse, useReducedMotion, useScrollProgress, useWindowSize
+  - Logo component for branding
+  - FormControl, NumberInput components
+  - Various README and template updates
+
 ## 1.1.0-alpha.5
 
 ### Minor Changes

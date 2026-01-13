@@ -302,8 +302,8 @@ importers:
   packages/hua-ui:
     dependencies:
       '@hua-labs/motion-core':
-        specifier: ^2.0.0
-        version: 2.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^2.1.0-alpha.4
+        version: 2.1.0-alpha.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       clsx:
         specifier: ^2.0.0
         version: 2.1.1
@@ -989,11 +989,11 @@ packages:
       '@exodus/crypto':
         optional: true
 
-  '@hua-labs/motion-core@2.0.0':
-    resolution: {integrity: sha512-bt88uVhXfi8c/iaRWO5s4awItrqC6FCxg/NKxooX2wKQ7LAOmgJv98I2MBAQHrYTTNC2c8YG4p4HYu5cysGccA==}
+  '@hua-labs/motion-core@2.1.0-alpha.6':
+    resolution: {integrity: sha512-vcLstHzcNvzxUSlr7mRatVE5hvtJFkGCcGRmM6wiX2DIKyX+AxtVUa8QNMfG5+feiEFgT+7QvhACGc5m23eBEA==}
     peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
+      react: '>=19.0.0'
+      react-dom: '>=19.0.0'
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -5368,7 +5368,7 @@ snapshots:
 
   '@exodus/bytes@1.7.0': {}
 
-  '@hua-labs/motion-core@2.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@hua-labs/motion-core@2.1.0-alpha.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)

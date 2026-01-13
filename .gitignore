@@ -124,6 +124,8 @@ tmp/
 temp/
 **/tmp/
 **/temp/
+tmpclaude-*
+**/tmpclaude-*
 
 # Local development
 .local/
