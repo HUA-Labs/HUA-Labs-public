@@ -5,10 +5,10 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { useMotion } from '@hua-labs/hua-ux/framework';
 
 export default function HomePage() {
-  const { ref, isVisible } = useMotion('fade-in');
+  const motion = useMotion({ type: 'fadeIn', duration: 400 });
 
   return (
-    <div ref={ref} className={isVisible ? 'opacity-100' : 'opacity-0'}>
+    <div ref={motion.ref} style={motion.style}>
       {/* Language Toggle - Fixed position at top right */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageToggle />
