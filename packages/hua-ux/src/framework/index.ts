@@ -129,7 +129,7 @@ export type {
 
 // Motion Hooks (Core)
 // useUnifiedMotion: motion-core 기반 통합 모션 훅
-export { useMotion as useUnifiedMotion } from './hooks/useMotion';
+export { useMotion, useMotion as useUnifiedMotion } from './hooks/useMotion';
 export type { MotionType, UseMotionOptions } from './hooks/useMotion';
 
 // Core Motion Hooks (from motion-core)
