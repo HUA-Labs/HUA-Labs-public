@@ -112,6 +112,8 @@ export {
   DrawerContent,
   DrawerFooter,
   BottomSheet,
+  BottomSheetHeader,
+  BottomSheetContent,
   ConfirmModal,
   // UI Components - Form
   Form,
@@ -166,6 +168,7 @@ export {
   ScrollToTop,
   ThemeProvider,
   ThemeToggle,
+  Toggle,
   useTheme,
   // Icons and Types
   iconCategories,
