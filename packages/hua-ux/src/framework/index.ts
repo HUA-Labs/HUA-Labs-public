@@ -122,9 +122,38 @@ export type {
   SuspenseWrapperProps,
 } from './loading';
 
-// Motion Hooks
-export { useMotion } from './hooks/useMotion';
+// Motion Hooks (Advanced - Premium)
+// useMotion: fade/slide/scale/rotate 지원하는 고급 모션 훅
+export { useMotion } from '@hua-labs/motion-advanced';
+export type { MotionConfig, MotionState } from '@hua-labs/motion-advanced';
+
+// Motion Hooks (Core)
+// useUnifiedMotion: motion-core 기반 통합 모션 훅
+export { useMotion as useUnifiedMotion } from './hooks/useMotion';
 export type { MotionType, UseMotionOptions } from './hooks/useMotion';
+
+// Core Motion Hooks (from motion-core)
+export {
+  useFadeIn,
+  useSlideUp,
+  useSlideLeft,
+  useSlideRight,
+  useScaleIn,
+  useBounceIn,
+  usePulse,
+  useSpringMotion,
+  useGradient,
+  useHoverMotion,
+  useClickToggle,
+  useFocusToggle,
+  useScrollReveal,
+  useScrollProgress,
+  useMotionState,
+  useRepeat,
+  useToggleMotion,
+  useGesture,
+  useGestureMotion,
+} from '@hua-labs/motion-core';
 
 // Types
 export type { HuaUxLayoutProps, HuaUxPageProps } from './types';

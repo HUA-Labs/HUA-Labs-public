@@ -62,6 +62,7 @@
   "dependencies": {
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-core-zustand": "workspace:*",
+    "@hua-labs/motion-advanced": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
     "@hua-labs/state": "workspace:*",
     "@hua-labs/ui": "workspace:*"
