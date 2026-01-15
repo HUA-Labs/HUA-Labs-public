@@ -255,7 +255,9 @@ export {
   FeatureCard,
   HeroSection,
   InfoCard,
-  // Dashboard widgets
+  // Dashboard components
+  SectionHeader,
+  StatsPanel,
   SummaryCard,
   ProgressCard,
   ProfileCard,
