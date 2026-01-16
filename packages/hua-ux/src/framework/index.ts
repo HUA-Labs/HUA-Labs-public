@@ -123,13 +123,13 @@ export type {
 } from './loading';
 
 // Motion Hooks (Advanced - Premium)
-// useMotion: fade/slide/scale/rotate 지원하는 고급 모션 훅
-export { useMotion } from '@hua-labs/motion-advanced';
-export type { MotionConfig, MotionState } from '@hua-labs/motion-advanced';
+// NOTE: motion-advanced는 Pro 패키지로 별도 설치 필요
+// import { useMotion } from '@hua-labs/motion-advanced'
+// 미배포 상태라 re-export 비활성화
 
 // Motion Hooks (Core)
 // useUnifiedMotion: motion-core 기반 통합 모션 훅
-export { useMotion as useUnifiedMotion } from './hooks/useMotion';
+export { useMotion, useMotion as useUnifiedMotion } from './hooks/useMotion';
 export type { MotionType, UseMotionOptions } from './hooks/useMotion';
 
 // Core Motion Hooks (from motion-core)
