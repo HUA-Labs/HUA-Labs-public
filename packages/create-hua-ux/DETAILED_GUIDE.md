@@ -8,7 +8,7 @@ HUA UX 프로젝트 구성을 위한 스캐폴딩 및 자동화 도구 기술 �
 ## English
 
 ### Operational Overview
-The CLI tool automates the setup of HUA UX framework projects, including configuration files and AI-specific context optimization.
+The CLI tool automates the setup of HUA Framework projects, including configuration files and AI-specific context optimization.
 
 ### CLI Interface and Parameters
 
