@@ -186,6 +186,26 @@ export interface HuaUxConfig {
     debug?: boolean;
     
     /**
+     * Auto-update HTML lang attribute / HTML lang 속성 자동 업데이트
+     * 
+     * 언어 변경 시 `<html lang="...">` 속성을 자동으로 업데이트합니다.
+     * Automatically updates the `<html lang="...">` attribute when language changes.
+     * 
+     * @default false
+     * 
+     * @example
+     * ```ts
+     * export default defineConfig({
+     *   preset: 'product',
+     *   i18n: {
+     *     autoUpdateHtmlLang: true,  // 언어 변경 시 html[lang] 자동 업데이트
+     *   },
+     * });
+     * ```
+     */
+    autoUpdateHtmlLang?: boolean;
+    
+    /**
      * Initial translations for SSR / SSR용 초기 번역 데이터
      * 
      * 서버 사이드에서 미리 로드한 번역 데이터를 전달하여
