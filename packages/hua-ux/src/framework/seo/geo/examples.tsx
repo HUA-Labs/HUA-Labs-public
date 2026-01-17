@@ -26,7 +26,7 @@ import { generateFAQPageLD, generateHowToLD } from './structuredData';
 export function Example1_BasicGEO() {
   const geoMetadata = generateGEOMetadata({
     name: 'hua-ux',
-    alternateName: ['@hua-labs/hua-ux', 'hua UX framework'],
+    alternateName: ['@hua-labs/hua-ux', 'HUA Framework'],
     description:
       'Privacy-first UX framework for Next.js with built-in i18n, motion, and accessibility',
     version: '1.0.0',
