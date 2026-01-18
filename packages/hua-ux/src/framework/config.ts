@@ -8,5 +8,6 @@
  * framework/index.ts has 'use client' directive.
  */
 
-export { defineConfig, loadConfig, getConfig, setConfig, resetConfig } from './config/index';
+// Client-safe exports only - loadConfig is server-only, import from '@hua-labs/hua-ux/framework/server'
+export { defineConfig, getConfig, setConfig, resetConfig } from './config/index';
 export type { HuaUxConfig, PresetName } from './types';

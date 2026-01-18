@@ -53,8 +53,8 @@ export default function HomePage() {
 'use client';
 
 import { HuaUxPage } from "@hua-labs/hua-ux/framework";
-import { Button, Card } from "@hua-labs/hua-ux";
-import { useTranslation } from '@hua-labs/i18n-core';
+import { Button, Card } from "@hua-labs/hua-ux/ui";
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export function HomePageContent() {
   const { t } = useTranslation('common');
