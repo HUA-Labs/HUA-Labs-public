@@ -240,6 +240,30 @@ export interface HuaUxConfig {
      * Store must have getState().language, getState().setLanguage, subscribe.
      */
     languageStore?: unknown;
+
+    /**
+     * Zustand persist storage key / Zustand persist 스토리지 키
+     *
+     * languageStore 사용 시, 해당 스토어의 persist 스토리지 키를 지정합니다.
+     * 하이드레이션 완료 감지에 사용됩니다.
+     *
+     * When using languageStore, specify the persist storage key of that store.
+     * Used for rehydration completion detection.
+     *
+     * @default 'hua-i18n-storage'
+     *
+     * @example
+     * ```ts
+     * // useAppStore의 persist 키가 'sum-diary-app-storage'인 경우
+     * export default defineConfig({
+     *   i18n: {
+     *     languageStore: useAppStore,
+     *     storageKey: 'sum-diary-app-storage',  // useAppStore의 persist name과 일치
+     *   },
+     * });
+     * ```
+     */
+    storageKey?: string;
   };
 
   /**

@@ -101,6 +101,7 @@ function createProviders(config: HuaUxConfig) {
         debug: config.i18n.debug,
         initialTranslations: config.i18n.initialTranslations,
         supportedLanguages: config.i18n.supportedLanguages,
+        storageKey: config.i18n.storageKey,
       }
     );
 
