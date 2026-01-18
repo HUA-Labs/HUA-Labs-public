@@ -79,12 +79,14 @@ function createProviders(config: HuaUxConfig) {
 
   // i18n Provider
   if (config.i18n) {
-    const i18nStore = createI18nStore({
-      defaultLanguage: config.i18n.defaultLanguage,
-      supportedLanguages: config.i18n.supportedLanguages,
-      persist: config.state?.persist ?? true,
-      ssr: config.state?.ssr ?? true,
-    });
+    const i18nStore =
+      config.i18n.languageStore ??
+      createI18nStore({
+        defaultLanguage: config.i18n.defaultLanguage,
+        supportedLanguages: config.i18n.supportedLanguages,
+        persist: config.state?.persist ?? true,
+        ssr: config.state?.ssr ?? true,
+      });
 
     // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
     const I18nProvider = createZustandI18n(

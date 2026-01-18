@@ -17,8 +17,9 @@ export type { WelcomePageProps } from './components/WelcomePage';
 export { ErrorBoundary } from './components/ErrorBoundary';
 export type { ErrorBoundaryProps } from './components/ErrorBoundary';
 
-// Configuration
-export { defineConfig, loadConfig, getConfig, setConfig, resetConfig } from './config';
+// Configuration (Client-safe only)
+// loadConfig는 서버 전용 - @hua-labs/hua-ux/framework/server에서 import
+export { defineConfig, getConfig, setConfig, resetConfig } from './config';
 export type { HuaUxConfig, PresetName } from './types';
 
 // Data Fetching

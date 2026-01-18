@@ -229,6 +229,17 @@ export interface HuaUxConfig {
      * ```
      */
     initialTranslations?: Record<string, Record<string, Record<string, string>>>;
+
+    /**
+     * Custom language store / 커스텀 언어 스토어
+     *
+     * createI18nStore 대신 기존 Zustand 스토어(예: useAppStore)를 i18n과 연동할 때 사용.
+     * 스토어에 getState().language, getState().setLanguage, subscribe 가 있어야 함.
+     *
+     * Use an existing Zustand store (e.g. useAppStore) for i18n instead of createI18nStore.
+     * Store must have getState().language, getState().setLanguage, subscribe.
+     */
+    languageStore?: unknown;
   };
 
   /**
