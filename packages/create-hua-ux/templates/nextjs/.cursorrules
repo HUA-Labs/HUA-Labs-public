@@ -96,7 +96,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 1. **Always wrap with `HuaUxPage`**:
   ```tsx
   import { HuaUxPage } from '@hua-labs/hua-ux/framework';
-  import { useTranslation } from '@hua-labs/i18n-core';
+  import { useTranslation } from '@hua-labs/hua-ux/i18n';
   
   export default function MyPage() {
     const { t } = useTranslation('my-page');
@@ -136,9 +136,9 @@ This project uses the **hua-ux framework** for Next.js applications.
   ```tsx
   'use client';
   
-  import { Card, Button } from '@hua-labs/ui';
-  import { useFadeIn } from '@hua-labs/motion-core';
-  import { useTranslation } from '@hua-labs/i18n-core';
+  import { Card, Button } from '@hua-labs/hua-ux/ui';
+  import { useFadeIn } from '@hua-labs/hua-ux/motion';
+  import { useTranslation } from '@hua-labs/hua-ux/i18n';
   
   export function MyComponent() {
     const { t } = useTranslation('my-component');
@@ -241,7 +241,7 @@ This project uses the **hua-ux framework** for Next.js applications.
 ### Page Creation Pattern
 ```tsx
 import { HuaUxPage } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export default function MyPage() {
   const { t } = useTranslation('my-page');
@@ -257,7 +257,7 @@ export default function MyPage() {
 ```tsx
 'use client';
 
-import { Card, Button } from '@hua-labs/ui';
+import { Card, Button } from '@hua-labs/hua-ux/ui';
 import { useMotion } from '@hua-labs/hua-ux/framework';
 
 export function MyComponent() {

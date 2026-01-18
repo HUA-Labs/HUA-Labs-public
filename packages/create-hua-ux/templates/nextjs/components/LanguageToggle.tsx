@@ -1,7 +1,7 @@
 'use client';
 
-import { useTranslation, useLanguageChange } from '@hua-labs/i18n-core';
-import { Button } from '@hua-labs/hua-ux';
+import { useTranslation, useLanguageChange } from '@hua-labs/hua-ux/i18n';
+import { Button } from '@hua-labs/hua-ux/ui';
 import { Globe } from '@phosphor-icons/react';
 import { useMotion } from '@hua-labs/hua-ux/framework';
 
