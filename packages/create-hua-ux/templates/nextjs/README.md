@@ -299,7 +299,7 @@ export default function AnimatedPage() {
 #### 컴포넌트에서 사용 / Using in Components
 
 ```tsx
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export default function MyComponent() {
   const { t } = useTranslation();
@@ -334,7 +334,7 @@ export default function LanguageSwitcher() {
 
 ```tsx
 // store/useAppStore.ts
-import { createHuaStore } from '@hua-labs/state';
+import { createHuaStore } from '@hua-labs/hua-ux/state';
 
 interface AppState {
   count: number;

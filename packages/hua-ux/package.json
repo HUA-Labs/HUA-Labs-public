@@ -41,6 +41,36 @@
       "import": "./dist/framework/seo/geo/index.js",
       "require": "./dist/framework/seo/geo/index.cjs",
       "default": "./dist/framework/seo/geo/index.js"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.mts",
+      "import": "./dist/ui/index.js",
+      "require": "./dist/ui/index.cjs",
+      "default": "./dist/ui/index.js"
+    },
+    "./i18n": {
+      "types": "./dist/i18n/index.d.mts",
+      "import": "./dist/i18n/index.js",
+      "require": "./dist/i18n/index.cjs",
+      "default": "./dist/i18n/index.js"
+    },
+    "./motion": {
+      "types": "./dist/motion/index.d.mts",
+      "import": "./dist/motion/index.js",
+      "require": "./dist/motion/index.cjs",
+      "default": "./dist/motion/index.js"
+    },
+    "./state": {
+      "types": "./dist/state/index.d.mts",
+      "import": "./dist/state/index.js",
+      "require": "./dist/state/index.cjs",
+      "default": "./dist/state/index.js"
+    },
+    "./pro": {
+      "types": "./dist/pro/index.d.mts",
+      "import": "./dist/pro/index.js",
+      "require": "./dist/pro/index.cjs",
+      "default": "./dist/pro/index.js"
     }
   },
   "files": [
@@ -63,6 +93,7 @@
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-core-zustand": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
+    "@hua-labs/pro": "workspace:*",
     "@hua-labs/state": "workspace:*",
     "@hua-labs/ui": "workspace:*"
   },

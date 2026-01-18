@@ -7,6 +7,12 @@ const entry = {
   'framework/config': 'src/framework/config.ts',
   'presets/index': 'src/presets/index.ts',
   'framework/seo/geo/index': 'src/framework/seo/geo/index.ts',
+  // Subpath exports
+  'ui/index': 'src/ui/index.ts',
+  'i18n/index': 'src/i18n/index.ts',
+  'motion/index': 'src/motion/index.ts',
+  'state/index': 'src/state/index.ts',
+  'pro/index': 'src/pro/index.ts',
 };
 
 const shared = {
@@ -28,6 +34,7 @@ const shared = {
     '@hua-labs/i18n-core',
     '@hua-labs/i18n-core-zustand',
     '@hua-labs/state',
+    '@hua-labs/pro',
     // Icon libraries
     '@phosphor-icons/react',
   ],
