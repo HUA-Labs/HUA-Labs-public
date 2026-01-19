@@ -21,7 +21,7 @@ export const REACT_VERSION = '19.2.3';
 export const REACT_DOM_VERSION = '19.2.3';
 
 /**
- * Zustand version
+ * Zustand fallback version (자동 감지 실패 시 사용)
  */
 export const ZUSTAND_VERSION = '^5.0.8';
 

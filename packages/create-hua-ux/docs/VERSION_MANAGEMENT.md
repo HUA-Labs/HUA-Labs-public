@@ -64,7 +64,7 @@ npm publish --access public
 ### 3. 기타 의존성 버전
 
 **현재 상태**:
-- zustand: `^5.0.8`
+- zustand: `@hua-labs/i18n-core-zustand` peerDependencies에 맞춰 자동 선택 (fallback: `^5.0.8`)
 - tailwindcss: `^4.1.13`
 - typescript: `^5.9.3`
 

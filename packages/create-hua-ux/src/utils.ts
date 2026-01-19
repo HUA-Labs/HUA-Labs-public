@@ -75,6 +75,12 @@ export interface AiContextOptions {
   language: 'ko' | 'en' | 'both';
 }
 
+interface MonorepoContext {
+  isMonorepo: boolean;
+  rootDir?: string;
+  projectLocation?: 'root' | 'apps' | 'packages' | 'other';
+}
+
 /**
  * Check if English-only mode is enabled
  */
@@ -392,9 +398,9 @@ async function fetchLatestAlphaVersion(packageName: string): Promise<string> {
     const alphaVersions = versionArray.filter((v: string) => v.includes('-alpha.'));
 
     if (alphaVersions.length > 0) {
-      // 최신 alpha 버전 반환 (배열의 마지막)
+      // 최신 alpha 버전 반환 (배열의 마지막, prerelease는 정확한 버전 고정)
       const latestAlpha = alphaVersions[alphaVersions.length - 1];
-      return `^${latestAlpha}`;
+      return latestAlpha;
     }
 
     // alpha 버전이 없으면 최신 버전 사용
@@ -404,6 +410,228 @@ async function fetchLatestAlphaVersion(packageName: string): Promise<string> {
     console.warn(chalk.yellow(`⚠️  Failed to fetch version for ${packageName}, using 'latest'`));
     return 'latest';
   }
+}
+
+/**
+ * Extract exact semver (예: 1.2.3-alpha.1) from a range 표현 (예: ^1.2.3-alpha.1)
+ */
+function extractExactVersion(versionRange?: string): string | null {
+  if (!versionRange) {
+    return null;
+  }
+
+  if (versionRange.startsWith('workspace') || versionRange === 'latest') {
+    return null;
+  }
+
+  const match = versionRange.match(/(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Fetch peer dependency range (예: ^4.0.0) for a given package/version
+ */
+async function fetchPeerDependencyRange(
+  packageName: string,
+  peerName: string,
+  packageVersion?: string
+): Promise<string | null> {
+  try {
+    const specifier = packageVersion ? `${packageName}@${packageVersion}` : packageName;
+    const { stdout } = await execAsync(
+      `npm view ${specifier} peerDependencies --json`,
+      { encoding: 'utf-8' }
+    );
+
+    const raw = stdout.trim();
+    if (!raw || raw === 'undefined') {
+      return null;
+    }
+
+    const peerDeps = JSON.parse(raw);
+    if (peerDeps && typeof peerDeps === 'object' && peerDeps[peerName]) {
+      return peerDeps[peerName];
+    }
+  } catch (error) {
+    console.warn(
+      chalk.yellow(
+        `⚠️  Failed to fetch peer dependency ${peerName} for ${
+          packageVersion ? `${packageName}@${packageVersion}` : packageName
+        }`
+      )
+    );
+  }
+  return null;
+}
+
+/**
+ * Resolve zustand version range by reading @hua-labs/i18n-core-zustand peer dependency.
+ * Falls back to the default constant when registry lookup fails.
+ */
+interface VersionConstraint {
+  version: { major: number; minor: number; patch: number };
+  operator: string;
+  raw: string;
+}
+
+function parseConstraint(part: string): VersionConstraint | null {
+  const trimmed = part.trim();
+  if (!trimmed) return null;
+
+  const match = trimmed.match(/(\^|>=|>|~)?\s*(\d+)\.(\d+)\.(\d+)/);
+  if (!match) return null;
+
+  const [, operator = '', major, minor, patch] = match;
+  return {
+    version: {
+      major: Number(major),
+      minor: Number(minor),
+      patch: Number(patch),
+    },
+    operator,
+    raw: trimmed,
+  };
+}
+
+function compareConstraints(a: VersionConstraint, b: VersionConstraint): number {
+  if (a.version.major !== b.version.major) {
+    return a.version.major - b.version.major;
+  }
+  if (a.version.minor !== b.version.minor) {
+    return a.version.minor - b.version.minor;
+  }
+  if (a.version.patch !== b.version.patch) {
+    return a.version.patch - b.version.patch;
+  }
+  return 0;
+}
+
+function formatPreferredRange(constraint: VersionConstraint): string {
+  const versionText = `${constraint.version.major}.${constraint.version.minor}.${constraint.version.patch}`;
+  if (constraint.raw.includes('^')) {
+    return `^${versionText}`;
+  }
+  if (constraint.raw.includes('~')) {
+    return `^${versionText}`;
+  }
+  if (constraint.raw.includes('>')) {
+    return `^${versionText}`;
+  }
+  return `^${versionText}`;
+}
+
+function selectPreferredRange(constraints: string[]): string | null {
+  let best: VersionConstraint | null = null;
+
+  for (const constraint of constraints) {
+    const parts = constraint.split('||').map(part => parseConstraint(part)).filter(Boolean) as VersionConstraint[];
+    for (const part of parts) {
+      if (!best || compareConstraints(part, best) > 0) {
+        best = part;
+      }
+    }
+  }
+
+  if (!best) return null;
+  return formatPreferredRange(best);
+}
+
+async function resolveZustandVersion(dependencyVersions: { name: string; version: string }[]): Promise<string> {
+  const constraints: string[] = [];
+
+  for (const dep of dependencyVersions) {
+    const exactVersion = extractExactVersion(dep.version) || undefined;
+    if (exactVersion) {
+      const versionSpecificRange = await fetchPeerDependencyRange(dep.name, 'zustand', exactVersion);
+      if (versionSpecificRange) {
+        constraints.push(versionSpecificRange);
+        continue;
+      }
+    }
+    const latestRange = await fetchPeerDependencyRange(dep.name, 'zustand');
+    if (latestRange) {
+      constraints.push(latestRange);
+    }
+  }
+
+  const preferred = selectPreferredRange(constraints);
+  return preferred || ZUSTAND_VERSION;
+}
+
+/**
+ * Detect monorepo context by looking for workspace markers in parent directories
+ */
+async function detectMonorepoContext(projectPath: string): Promise<MonorepoContext> {
+  const visited = new Set<string>();
+  let currentDir = path.dirname(projectPath);
+
+  const buildResult = (rootDir: string): MonorepoContext => {
+    const relativePath = path.relative(rootDir, projectPath);
+    const segments = relativePath.split(path.sep).filter(Boolean);
+    let projectLocation: MonorepoContext['projectLocation'] = 'other';
+
+    if (segments.length === 0) {
+      projectLocation = 'root';
+    } else if (segments[0] === 'apps') {
+      projectLocation = 'apps';
+    } else if (segments[0] === 'packages') {
+      projectLocation = 'packages';
+    }
+
+    return {
+      isMonorepo: true,
+      rootDir,
+      projectLocation,
+    };
+  };
+
+  for (let depth = 0; depth < 10; depth++) {
+    if (!currentDir || visited.has(currentDir)) {
+      break;
+    }
+    visited.add(currentDir);
+
+    const workspaceFile = path.join(currentDir, 'pnpm-workspace.yaml');
+    if (await fs.pathExists(workspaceFile)) {
+      return buildResult(currentDir);
+    }
+
+    const packageJsonPath = path.join(currentDir, 'package.json');
+    if (await fs.pathExists(packageJsonPath)) {
+      try {
+        const packageJson = await fs.readJSON(packageJsonPath);
+        if (packageJson.workspaces) {
+          return buildResult(currentDir);
+        }
+      } catch {
+        // Ignore JSON parse errors and move up
+      }
+    }
+
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+  }
+
+  // Fallback: check immediate parent for monorepo structure hints
+  const parentDir = path.dirname(projectPath);
+  const hasPackagesDir = await fs.pathExists(path.join(parentDir, 'packages'));
+  const hasAppsDir = await fs.pathExists(path.join(parentDir, 'apps'));
+  if (hasPackagesDir || hasAppsDir) {
+    return buildResult(parentDir);
+  }
+
+  return { isMonorepo: false };
+}
+
+function toPosixRelative(from: string, target: string): string {
+  let relativePath = path.relative(from, target).replace(/\\/g, '/');
+  if (!relativePath.startsWith('.')) {
+    relativePath = `./${relativePath}`;
+  }
+  return relativePath;
 }
 
 /**
@@ -438,13 +666,17 @@ export async function generatePackageJson(
     fetchLatestAlphaVersion('@hua-labs/motion-core'),
     fetchLatestAlphaVersion('@hua-labs/state'),
   ]);
+  const zustandVersion = await resolveZustandVersion([
+    { name: '@hua-labs/i18n-core-zustand', version: i18nCoreZustandVersion },
+    { name: '@hua-labs/state', version: stateVersion },
+  ]);
 
   const packageJson = {
     name: projectName,
     version: '0.1.0',
     private: true,
     scripts: {
-      dev: 'next dev --turbopack',
+      dev: 'next dev --webpack',
       build: 'next build',
       start: 'next start',
       lint: "next lint",
@@ -460,7 +692,7 @@ export async function generatePackageJson(
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
-      zustand: ZUSTAND_VERSION,
+      zustand: zustandVersion,
     },
     devDependencies: {
       '@types/node': TYPES_NODE_VERSION,
@@ -478,10 +710,91 @@ export async function generatePackageJson(
 }
 
 /**
+ * Generate Tailwind config based on monorepo context
+ */
+async function generateTailwindConfig(projectPath: string): Promise<void> {
+  const tailwindConfigPath = path.join(projectPath, 'tailwind.config.js');
+  const context = await detectMonorepoContext(projectPath);
+
+  const contentEntries = new Set<string>([
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './lib/**/*.{ts,tsx}',
+  ]);
+
+  if (context.isMonorepo && context.rootDir) {
+    const packageMappings = [
+      { dir: 'hua-ui', glob: 'src/**/*.{ts,tsx}' },
+      { dir: 'hua-ux', glob: 'src/**/*.{ts,tsx}' },
+      { dir: 'hua-motion-core', glob: 'src/**/*.{ts,tsx}' },
+    ];
+
+    for (const pkg of packageMappings) {
+      const packageDir = path.join(context.rootDir, 'packages', pkg.dir);
+      if (!(await fs.pathExists(packageDir))) {
+        continue;
+      }
+      const absoluteGlob = path.join(packageDir, pkg.glob);
+      contentEntries.add(toPosixRelative(projectPath, absoluteGlob));
+    }
+  } else {
+    [
+      './node_modules/@hua-labs/ui/**/*.{ts,tsx}',
+      './node_modules/@hua-labs/hua-ux/**/*.{ts,tsx}',
+      './node_modules/@hua-labs/motion-core/**/*.{ts,tsx}',
+    ].forEach(entry => contentEntries.add(entry));
+  }
+
+  const safelistEntries = [
+    '{ pattern: /^(bg|text|border)-(?:primary|secondary|accent|neutral|success|warning|danger)(?:-(?:50|100|200|300|400|500|600|700|800|900))?$/ }',
+    '{ pattern: /^(px|py)-(?:0|1|2|3|4|5|6|8|10)$/ }',
+    '{ pattern: /^text-(?:xs|sm|base|lg|xl|2xl)$/ }',
+    '{ pattern: /^rounded-(?:none|sm|md|lg|xl|2xl|3xl|full)$/ }',
+    '{ pattern: /^shadow-(?:sm|md|lg|xl|2xl)$/ }',
+    '{ pattern: /^transition(?:-(?:all|colors|opacity|transform))?$/ }',
+    '{ pattern: /^duration-(?:75|100|150|200|300)$/ }',
+    '{ pattern: /^ease-(?:linear|in|out|in-out)$/ }',
+    "'modal-open'",
+    "'modal-close'",
+    "'modal-backdrop'",
+    "'drawer-open'",
+    "'drawer-side'",
+    "'drawer-content'",
+    "'card-glow'",
+    "'card-gradient'",
+  ];
+
+  const contentArray = Array.from(contentEntries).sort().map(entry => `    '${entry}'`).join(',\n');
+  const safelistArray = safelistEntries.map(entry => `  ${entry}`).join(',\n');
+
+  const configContent = `/**
+ * ⚠️ This file is generated by create-hua-ux.
+ * It ensures Tailwind scans hua-ui/hua-ux sources in both monorepo and standalone installs.
+ */
+const componentSafelist = [
+${safelistArray}
+];
+
+module.exports = {
+  content: [
+${contentArray}
+  ],
+  safelist: componentSafelist,
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+`;
+
+  await fs.writeFile(tailwindConfigPath, configContent, 'utf-8');
+}
+
+/**
  * Generate hua-ux.config.ts
  */
 export async function generateConfig(projectPath: string): Promise<void> {
-  const configContent = `import { defineConfig } from '@hua-labs/hua-ux/framework';
+  const configContent = `import { defineConfig } from '@hua-labs/hua-ux/framework/config';
 
 /**
  * hua-ux 프레임워크 설정
@@ -593,6 +906,16 @@ export default defineConfig({
     path.join(projectPath, 'hua-ux.config.ts'),
     configContent
   );
+
+  try {
+    await generateTailwindConfig(projectPath);
+  } catch (error) {
+    console.warn(
+      chalk.yellow(
+        `⚠️  Failed to generate Tailwind config: ${error instanceof Error ? error.message : String(error)}`
+      )
+    );
+  }
 }
 
 /**
