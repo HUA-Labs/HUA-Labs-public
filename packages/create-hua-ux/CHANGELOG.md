@@ -305,11 +305,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved error messages with user-friendly tips
 - Optimized template copying (conditional copy instead of copy-then-delete)
 - Enhanced project validation with detailed error reporting
+- Default dev script now forces webpack via `next dev --webpack`, avoiding Turbopack so Tailwind/PostCSS styles work out of the box.
 
 ### Fixed
 
 - Template validation now correctly excludes dynamically generated files (package.json)
 - Improved TTY detection for PowerShell compatibility
+- Generated projects now detect the zustand version range from `@hua-labs/i18n-core-zustand` and `@hua-labs/state` peer dependencies to prevent `npm ERR! ERESOLVE` conflicts.
 
 ## [0.1.0] - 2025-12-29
 

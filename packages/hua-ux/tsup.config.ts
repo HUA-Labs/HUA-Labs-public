@@ -31,6 +31,7 @@ const shared = {
     // HUA Labs packages (published separately)
     '@hua-labs/ui',
     '@hua-labs/motion-core',
+    '@hua-labs/motion-advanced',
     '@hua-labs/i18n-core',
     '@hua-labs/i18n-core-zustand',
     '@hua-labs/state',
