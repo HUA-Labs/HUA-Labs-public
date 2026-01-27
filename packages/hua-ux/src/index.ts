@@ -277,6 +277,43 @@ export { BrandedButton as Button, BrandedCard as Card } from './framework'
 // Re-export Button and Card types (they're compatible with BrandedButton and BrandedCard)
 export type { ButtonProps } from '@hua-labs/ui'
 export type { CardProps, CardHeaderProps, CardTitleProps, CardDescriptionProps, CardContentProps, CardFooterProps } from '@hua-labs/ui'
+export type { ActionToolbarProps, ActionButton } from '@hua-labs/ui'
+export type { ProjectIconName, AllIconName } from '@hua-labs/ui'
+export type { IconName } from '@hua-labs/ui'
+export type { NumberInputProps } from '@hua-labs/ui'
+export type { FormControlProps, ValidationRule, ValidationRules, ValidationErrors } from '@hua-labs/ui'
+export type { IconProps, IconProviderProps, IconSet, PhosphorWeight, IconConfig } from '@hua-labs/ui'
+export type { ModalProps } from '@hua-labs/ui'
+export type { BreadcrumbProps, BreadcrumbItemProps, BreadcrumbItemData } from '@hua-labs/ui'
+export type { CodeBlockProps } from '@hua-labs/ui'
+export type { DatePickerProps } from '@hua-labs/ui'
+export type { UploadProps, UploadedFile } from '@hua-labs/ui'
+export type { AutocompleteProps, AutocompleteOption } from '@hua-labs/ui'
+export type { ColorPickerProps } from '@hua-labs/ui'
+export type { ThemeProviderProps, ThemeProviderState } from '@hua-labs/ui'
+export type { ToggleProps } from '@hua-labs/ui'
+export type { Toast } from '@hua-labs/ui'
+export type { SlotProps } from '@hua-labs/ui'
+export type {
+  ColorStyleConfig,
+  ColorStyles,
+  SizeStyles,
+  Rounded,
+  Shadow,
+  HoverEffect,
+} from '@hua-labs/ui'
+export type { MicroMotionConfig, MicroMotionPreset, MicroMotionState } from '@hua-labs/ui'
+export type { Color, Size, BaseVariant, ExtendedVariant } from '@hua-labs/ui'
+export type {
+  UseInViewOptions,
+  UseInViewReturn,
+  UseScrollProgressOptions,
+  UseScrollProgressReturn,
+  UseMouseOptions,
+  UseMouseReturn,
+  UseWindowSizeOptions,
+  UseWindowSizeReturn,
+} from '@hua-labs/ui'
 
 // Re-export Motion hooks
 export * from '@hua-labs/motion-core'

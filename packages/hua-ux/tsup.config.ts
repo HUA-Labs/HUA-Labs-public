@@ -13,6 +13,8 @@ const entry = {
   'motion/index': 'src/motion/index.ts',
   'state/index': 'src/state/index.ts',
   'pro/index': 'src/pro/index.ts',
+  'formatters/index': 'src/formatters/index.ts',
+  'utils/index': 'src/utils/index.ts',
 };
 
 const shared = {
@@ -34,8 +36,10 @@ const shared = {
     '@hua-labs/motion-advanced',
     '@hua-labs/i18n-core',
     '@hua-labs/i18n-core-zustand',
+    '@hua-labs/i18n-formatters',
     '@hua-labs/state',
     '@hua-labs/pro',
+    '@hua-labs/utils',
     // Icon libraries
     '@phosphor-icons/react',
   ],

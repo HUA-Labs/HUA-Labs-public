@@ -71,6 +71,18 @@
       "import": "./dist/pro/index.js",
       "require": "./dist/pro/index.cjs",
       "default": "./dist/pro/index.js"
+    },
+    "./formatters": {
+      "types": "./dist/formatters/index.d.mts",
+      "import": "./dist/formatters/index.js",
+      "require": "./dist/formatters/index.cjs",
+      "default": "./dist/formatters/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.mts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs",
+      "default": "./dist/utils/index.js"
     }
   },
   "files": [
@@ -92,10 +104,12 @@
   "dependencies": {
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-core-zustand": "workspace:*",
+    "@hua-labs/i18n-formatters": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
     "@hua-labs/pro": "workspace:*",
     "@hua-labs/state": "workspace:*",
     "@hua-labs/ui": "workspace:*",
+    "@hua-labs/utils": "workspace:*",
     "@phosphor-icons/react": "^2.1.10"
   },
   "peerDependencies": {

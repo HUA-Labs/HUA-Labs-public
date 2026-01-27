@@ -43,6 +43,10 @@ export const defaultConfig: Required<Omit<HuaUxConfig, 'branding' | 'plugins' | 
   fileStructure: {
     enforce: false,
   },
+  toast: {
+    position: 'top-right',
+    maxToasts: 5,
+  },
   plugins: [],
   license: undefined,
 };

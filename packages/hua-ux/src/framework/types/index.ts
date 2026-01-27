@@ -498,6 +498,39 @@ export interface HuaUxConfig {
   };
 
   /**
+   * Toast configuration / 토스트 알림 설정
+   *
+   * 전역 Toast Provider 설정입니다.
+   * Global Toast Provider settings.
+   *
+   * @example
+   * ```ts
+   * export default defineConfig({
+   *   preset: 'product',
+   *   toast: {
+   *     position: 'bottom-center',
+   *     maxToasts: 3,
+   *   },
+   * });
+   * ```
+   */
+  toast?: {
+    /**
+     * Toast 표시 위치 / Toast display position
+     *
+     * @default 'top-right'
+     */
+    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+
+    /**
+     * 최대 표시 Toast 개수 / Maximum number of toasts to display
+     *
+     * @default 5
+     */
+    maxToasts?: number;
+  };
+
+  /**
    * Branding configuration (White Labeling) / 브랜딩 설정 (화이트 라벨링)
    * 
    * 브랜드 커스터마이징을 위한 설정입니다.

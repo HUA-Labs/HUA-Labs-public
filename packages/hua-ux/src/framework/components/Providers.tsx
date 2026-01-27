@@ -13,7 +13,7 @@ import { getConfig } from '../config';
 import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
-import { IconProvider } from '@hua-labs/ui';
+import { IconProvider, ToastProvider } from '@hua-labs/ui';
 
 /**
  * 언어 코드 배열을 LanguageConfig 배열로 변환
@@ -61,6 +61,18 @@ function createProviders(config: HuaUxConfig) {
       <BrandingProvider branding={config.branding || null}>{children}</BrandingProvider>
     ));
   }
+
+  // Toast Provider (기본값 적용)
+  // Toast Provider (with defaults)
+  const toastConfig = config.toast || {};
+  providers.push(({ children }) => (
+    <ToastProvider
+      position={toastConfig.position || 'top-right'}
+      maxToasts={toastConfig.maxToasts || 5}
+    >
+      {children}
+    </ToastProvider>
+  ));
 
   // Icon Provider (기본값 적용)
   // Icon Provider (with defaults)
