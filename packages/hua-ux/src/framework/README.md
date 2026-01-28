@@ -173,6 +173,75 @@ export default defineConfig({
 });
 ```
 
+### SSR Translations
+
+#### `getSSRTranslations(config, translationsDir?)`
+
+Load translations server-side to prevent language flickering. **Server Component only.**
+
+**Import**: `@hua-labs/hua-ux/framework/server`
+
+**Parameters**:
+- `config`: HuaUxConfig object (reads `i18n.namespaces` and `i18n.supportedLanguages`)
+- `translationsDir`: Path to translations directory (default: `'lib/translations'`)
+
+**Returns**: `Promise<Record<string, Record<string, Record<string, string>>>>`
+
+**File Structure**:
+```
+your-app/
+├── lib/
+│   └── translations/       ← Default location
+│       ├── ko/
+│       │   ├── common.json
+│       │   └── navigation.json
+│       └── en/
+│           ├── common.json
+│           └── navigation.json
+└── app/
+    └── layout.tsx
+```
+
+**Usage**:
+
+```tsx
+// app/layout.tsx (Server Component)
+import { HuaUxLayout } from '@hua-labs/hua-ux/framework';
+import { getSSRTranslations } from '@hua-labs/hua-ux/framework/server';
+import huaUxConfig from '../hua-ux.config';
+
+export default async function RootLayout({ children }) {
+  // Load all translations server-side
+  const initialTranslations = await getSSRTranslations(huaUxConfig);
+
+  // Or with custom path
+  // const initialTranslations = await getSSRTranslations(huaUxConfig, 'app/lib/translations');
+
+  const configWithSSR = {
+    ...huaUxConfig,
+    i18n: {
+      ...huaUxConfig.i18n,
+      initialTranslations,
+    },
+  };
+
+  return (
+    <html lang="ko">
+      <body>
+        <HuaUxLayout config={configWithSSR}>
+          {children}
+        </HuaUxLayout>
+      </body>
+    </html>
+  );
+}
+```
+
+**Why use SSR Translations?**
+- Prevents language flickering on page load
+- SEO: Search engines see translated content immediately
+- Better UX: No flash of wrong language
+
 ### Data Fetching
 
 #### `useData<T>(url, options?)`
