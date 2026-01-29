@@ -43,7 +43,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 onClick={() => handleLanguageChange(lang)}
                 className={cn(
                   "flex-1 px-4 py-2.5 rounded-lg border text-sm font-medium transition-all",
-                  "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                  "focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2",
                   language === lang
                     ? "border-primary bg-primary/10 text-primary"
                     : "border-border bg-background text-foreground hover:bg-muted"
@@ -88,7 +88,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             className={cn(
               "px-4 py-2 rounded-lg text-sm font-medium",
               "bg-primary text-primary-foreground hover:bg-primary/90",
-              "transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+              "transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
             )}
           >
             {t.settings.close}

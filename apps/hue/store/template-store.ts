@@ -349,7 +349,7 @@ const BUILT_IN_TEMPLATES: Template[] = [
               { id: "free-btn", type: "Button", props: { variant: "outline", className: "w-full mt-6" }, children: "시작하기" },
             ]},
             // Pro (highlighted)
-            { id: "plan-pro", type: "Card", props: { className: "p-6 text-center border-primary ring-2 ring-primary" }, children: [
+            { id: "plan-pro", type: "Card", props: { className: "p-6 text-center border-primary ring-1 ring-primary" }, children: [
               { id: "pro-badge", type: "Box", props: { className: "inline-block px-3 py-1 bg-primary text-primary-foreground text-xs rounded-full mb-4" }, children: "인기" },
               { id: "pro-name", type: "Text", props: { className: "font-medium" }, children: "Pro" },
               { id: "pro-price", type: "Text", props: { className: "text-4xl font-bold mt-4" }, children: "₩29,000" },

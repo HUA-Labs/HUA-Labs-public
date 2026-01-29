@@ -123,7 +123,7 @@ function PropertyField({
             id={id}
             value={String(value ?? schema.defaultValue ?? "")}
             onChange={(e) => onChange(e.target.value)}
-            className="w-full h-8 px-2 text-sm bg-background text-foreground border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full h-8 px-2 text-sm bg-background text-foreground border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary/50"
             style={{ colorScheme: "dark light" }}
           >
             {schema.options?.map((opt) => (
@@ -187,7 +187,7 @@ function ChildrenEditor({
         onChange={(e) => onUpdate(e.target.value)}
         placeholder="텍스트 입력..."
         rows={3}
-        className="w-full px-3 py-2 text-sm bg-background border border-input rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className="w-full px-3 py-2 text-sm bg-background border border-input rounded-md resize-y focus:outline-none focus:ring-1 focus:ring-primary/50"
       />
     </div>
   );

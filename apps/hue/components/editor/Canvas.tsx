@@ -464,13 +464,13 @@ function EditorNodeRenderer({ node, parentId, index }: { node: EditorNode; paren
         // 인라인 컴포넌트는 inline-block
         isInline ? "inline-block" : "block",
         // 선택/호버 테두리
-        isSelected && "ring-2 ring-primary ring-offset-1",
+        isSelected && "ring-1 ring-primary ring-offset-1",
         isHovered && !isSelected && "ring-1 ring-primary/50",
         // 컨테이너 점선 테두리
         isContainer && !isSelected && !isHovered && "border border-dashed border-border/50",
         // 드래그 상태
         isDragging && "opacity-50",
-        isDragOver && isContainer && "ring-2 ring-primary/50 bg-primary/5",
+        isDragOver && isContainer && "ring-1 ring-primary/50 bg-primary/5",
         // 조건부 렌더링: 조건 미충족 시 반투명
         nodeHasCondition && !conditionMet && "opacity-30"
       )}

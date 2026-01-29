@@ -26,7 +26,7 @@ export default function LoginPage() {
           {/*
           <button
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-red-500"
           >
             <FaGoogle className="mr-2" />
             Google로 로그인
@@ -34,7 +34,7 @@ export default function LoginPage() {
           */}
           <button
             onClick={handleKakaoLogin}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-md transition"
+            className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-yellow-500 shadow-md transition"
           >
             <FaComment className="mr-2" />
             카카오로 로그인
