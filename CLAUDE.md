@@ -76,3 +76,4 @@ docs/collab/sum-diary/
 - 새 기능 추가 시 → 아키텍처 문서 참고
 - 버그 수정 시 → 해당 레이어 문서 확인
 - 기술 결정 시 → 로드맵/태스크 우선순위 참고
+- 아이콘 이름 참조 → `packages/hua-ui/docs/ICON_REFERENCE.md`
