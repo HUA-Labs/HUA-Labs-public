@@ -43,6 +43,16 @@ packages/
 - `[deploy official]`
 - `[deploy api]`
 
+## UI/UX 개발 원칙
+
+1. **SDK-First**: `hua-ux` 프레임워크 안의 `hua-ui` 패키지 컴포넌트를 최대한 사용
+2. **패키지 우선 수정**: 앱에서 필요한 기능이 패키지에 없으면 패키지를 확장해서 가져오기 (앱에 로컬 핵으로 두지 않기)
+3. **다크/라이트 모드**: 모든 UI에 `dark:` 변형 필수, 배경/텍스트/보더 전부 대응
+4. **반응형**: 375px(모바일) / 768px(태블릿) / 1440px(PC) 세 단계 확인
+5. **i18n-core 방식**: 하드코딩 금지, 반드시 `t('namespace:key')` 사용. 삼항으로 언어 분기하지 않기
+6. **디자인 일관성**: 같은 앱 내 다른 페이지 스타일과 통일 (어드민은 어드민끼리, 사용자는 사용자끼리)
+7. **컬러 테마**: sum-diary는 cyan 기본, 어드민은 기존 어드민 컬러 따라가기
+
 ## 작업 스타일
 
 1. **빌드 확인**: 코드 변경 후 `pnpm build --filter <app>` 돌리기
@@ -77,3 +87,5 @@ docs/collab/sum-diary/
 - 버그 수정 시 → 해당 레이어 문서 확인
 - 기술 결정 시 → 로드맵/태스크 우선순위 참고
 - 아이콘 이름 참조 → `packages/hua-ui/docs/ICON_REFERENCE.md`
+
+<!-- NEXT-AGENTS-MD-START -->[Next.js Docs Index]|root: ./.next-docs|STOP. What you remember about Next.js is WRONG for this project. Always search docs and read before any task.|If docs missing, run this command first: npx @next/codemod agents-md --output CLAUDE.md<!-- NEXT-AGENTS-MD-END -->
