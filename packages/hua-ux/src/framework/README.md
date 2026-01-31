@@ -135,6 +135,37 @@ export function HomePageContent() {
 }
 ```
 
+## Import Paths
+
+| Path | 환경 | 용도 |
+|------|------|------|
+| `@hua-labs/hua-ux/framework` | Client | 컴포넌트, 훅, 클라이언트 런타임 + shared re-export |
+| `@hua-labs/hua-ux/framework/shared` | Server & Client | 타입, 순수 함수 (GEO, metadata, CSS vars 등) |
+| `@hua-labs/hua-ux/framework/server` | Server only | SSR 번역, config 로딩 + shared re-export |
+
+### `framework/shared` — "use client" 없는 순수 export
+
+서버 컴포넌트에서 GEO 메타데이터나 CSS 변수 생성이 필요할 때 사용:
+
+```tsx
+// Server Component에서 안전하게 사용 가능
+import {
+  generateGEOMetadata,
+  generatePageMetadata,
+  generateCSSVariables,
+  createI18nMiddleware,
+} from '@hua-labs/hua-ux/framework/shared';
+
+// 또는 server entrypoint에서 (shared 자동 re-export)
+import {
+  generateGEOMetadata,
+  getSSRTranslations,
+  loadConfig,
+} from '@hua-labs/hua-ux/framework/server';
+```
+
+> **하위호환**: `@hua-labs/hua-ux/framework` (client)에서도 shared의 모든 export를 사용할 수 있음. 기존 import가 깨지지 않음.
+
 ## API
 
 ### Components

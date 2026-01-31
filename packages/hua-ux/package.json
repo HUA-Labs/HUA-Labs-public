@@ -18,6 +18,12 @@
       "require": "./dist/framework/index.cjs",
       "default": "./dist/framework/index.js"
     },
+    "./framework/shared": {
+      "types": "./dist/framework/shared.d.mts",
+      "import": "./dist/framework/shared.js",
+      "require": "./dist/framework/shared.cjs",
+      "default": "./dist/framework/shared.js"
+    },
     "./framework/server": {
       "types": "./dist/framework/server.d.mts",
       "import": "./dist/framework/server.js",

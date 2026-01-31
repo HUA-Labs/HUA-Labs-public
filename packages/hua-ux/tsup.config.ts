@@ -4,6 +4,7 @@ const entry = {
   index: 'src/index.ts',
   'framework/index': 'src/framework/index.ts',
   'framework/server': 'src/framework/server.ts',
+  'framework/shared': 'src/framework/shared.ts',
   'framework/config': 'src/framework/config.ts',
   'presets/index': 'src/presets/index.ts',
   'framework/seo/geo/index': 'src/framework/seo/geo/index.ts',
