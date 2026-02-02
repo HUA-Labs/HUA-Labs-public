@@ -68,7 +68,7 @@ packages/
 작업 전에 참고할 문서들:
 
 ```
-docs/collab/sum-diary/
+docs/collab/
 ├── 00-QUICK-START.md          # 빠른 시작 가이드
 ├── 01-ARCHITECTURE/           # 아키텍처
 │   ├── 01-overview.md         # 전체 구조
