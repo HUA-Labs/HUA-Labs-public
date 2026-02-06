@@ -174,6 +174,257 @@ const analysis = await prisma.analysisResult.findMany({
 
 ---
 
-**작성자**: Auto (AI Assistant)  
-**최종 업데이트**: 2025-12-24
+## usePerformanceMonitor 훅 패턴
+
+### 문제 상황
+
+애니메이션이나 복잡한 UI에서 성능 저하 감지가 어려움
+
+### 해결 방법
+
+#### FPS/메모리/렌더타임 실시간 측정
+
+```typescript
+const usePerformanceMonitor = () => {
+  const [metrics, setMetrics] = useState({
+    fps: 60,
+    memory: 0,
+    renderTime: 0,
+  });
+
+  useEffect(() => {
+    let frameCount = 0;
+    let lastTime = performance.now();
+
+    const measureFPS = () => {
+      frameCount++;
+      const currentTime = performance.now();
+
+      if (currentTime - lastTime >= 1000) {
+        const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+        setMetrics(prev => ({ ...prev, fps }));
+        frameCount = 0;
+        lastTime = currentTime;
+      }
+
+      requestAnimationFrame(measureFPS);
+    };
+
+    const measureMemory = () => {
+      if ('memory' in performance) {
+        const memory = (performance as any).memory;
+        const usedMB = Math.round(memory.usedJSHeapSize / 1024 / 1024);
+        setMetrics(prev => ({ ...prev, memory: usedMB }));
+      }
+    };
+
+    requestAnimationFrame(measureFPS);
+    const interval = setInterval(measureMemory, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return metrics;
+};
+```
+
+### 핵심 포인트
+
+1. **FPS 목표**: 60fps (모바일 30fps)
+2. **메모리 경고**: 100MB 초과 시 경고
+3. **렌더타임**: 16ms 초과 시 프레임 드롭
+
+### 관련 데브로그
+
+- [DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md](../archive/devlogs/2025-08/DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md)
+
+---
+
+## Virtualization (가상 스크롤) 패턴
+
+### 문제 상황
+
+수백~수천 개 아이템 리스트 렌더링 시 성능 저하
+
+### 해결 방법
+
+#### 가시 영역만 렌더링
+
+```typescript
+const VirtualizedList = ({ items, itemHeight = 200 }) => {
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 10 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const scrollTop = containerRef.current.scrollTop;
+        const containerHeight = containerRef.current.clientHeight;
+
+        const start = Math.floor(scrollTop / itemHeight);
+        const end = Math.min(
+          start + Math.ceil(containerHeight / itemHeight) + 1,
+          items.length
+        );
+
+        setVisibleRange({ start, end });
+      }
+    };
+
+    const container = containerRef.current;
+    container?.addEventListener('scroll', handleScroll);
+    return () => container?.removeEventListener('scroll', handleScroll);
+  }, [itemHeight, items.length]);
+
+  return (
+    <div ref={containerRef} style={{ height: '100vh', overflow: 'auto' }}>
+      <div style={{ height: `${items.length * itemHeight}px`, position: 'relative' }}>
+        {items.slice(visibleRange.start, visibleRange.end).map((item, index) => (
+          <div
+            key={item.id}
+            style={{
+              position: 'absolute',
+              top: `${(visibleRange.start + index) * itemHeight}px`,
+              height: `${itemHeight}px`,
+              width: '100%',
+            }}
+          >
+            <ItemComponent {...item} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+```
+
+### 핵심 포인트
+
+1. **DOM 노드 최소화**: 화면에 보이는 것만 렌더링
+2. **스크롤 위치 계산**: `scrollTop / itemHeight`로 시작 인덱스 계산
+3. **버퍼 추가**: +1 아이템으로 스크롤 시 깜빡임 방지
+
+### 관련 데브로그
+
+- [DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md](../archive/devlogs/2025-08/DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md)
+
+---
+
+## Lazy Rendering (지연 렌더링) 패턴
+
+### 문제 상황
+
+페이지 로드 시 모든 컴포넌트를 한 번에 렌더링하면 초기 로딩 느림
+
+### 해결 방법
+
+#### IntersectionObserver 기반 지연 렌더링
+
+```typescript
+const LazyComponent = ({ children, threshold = 0.1, fallback }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // 한 번 보이면 관찰 중단
+        }
+      },
+      { threshold }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return <div ref={ref}>{isVisible ? children : fallback}</div>;
+};
+
+// 사용 예시
+<LazyComponent fallback={<Skeleton />}>
+  <HeavyComponent />
+</LazyComponent>
+```
+
+### 핵심 포인트
+
+1. **threshold**: 0.1 = 10% 보이면 로드
+2. **disconnect**: 로드 후 관찰 중단으로 메모리 절약
+3. **fallback**: 스켈레톤 UI로 레이아웃 시프트 방지
+
+### 관련 데브로그
+
+- [DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md](../archive/devlogs/2025-08/DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md)
+
+---
+
+## Animation Priority (애니메이션 우선순위) 패턴
+
+### 문제 상황
+
+여러 애니메이션이 동시에 실행되면 프레임 드롭 발생
+
+### 해결 방법
+
+#### 우선순위 기반 애니메이션 스케줄링
+
+```typescript
+type AnimationPriority = 'critical' | 'high' | 'medium' | 'low';
+
+const useAnimationScheduler = () => {
+  const queue = useRef<Map<string, () => void>>(new Map());
+
+  const scheduleAnimation = (
+    id: string,
+    animation: () => void,
+    priority: AnimationPriority
+  ) => {
+    queue.current.set(id, animation);
+
+    switch (priority) {
+      case 'critical': // 즉시 실행 (버튼 클릭 피드백)
+        animation();
+        break;
+      case 'high': // 다음 프레임 (호버 효과)
+        requestAnimationFrame(animation);
+        break;
+      case 'medium': // 유휴 시간 (스크롤 애니메이션)
+        requestIdleCallback(animation);
+        break;
+      case 'low': // 지연 실행 (배경 파티클)
+        setTimeout(animation, 100);
+        break;
+    }
+  };
+
+  return { scheduleAnimation };
+};
+
+// 사용 예시
+const { scheduleAnimation } = useAnimationScheduler();
+
+// 버튼 클릭 - 즉시 피드백
+scheduleAnimation('button-click', () => animateButton(), 'critical');
+
+// 파티클 효과 - 낮은 우선순위
+scheduleAnimation('particles', () => updateParticles(), 'low');
+```
+
+### 핵심 포인트
+
+1. **critical**: 사용자 인터랙션 즉시 반응
+2. **requestIdleCallback**: 브라우저 유휴 시간 활용
+3. **우선순위 분리**: 중요한 애니메이션은 항상 60fps 유지
+
+### 관련 데브로그
+
+- [DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md](../archive/devlogs/2025-08/DEVLOG_2025-08-03_PERFORMANCE_ANALYSIS_AND_OPTIMIZATION.md)
+
+---
+
+**작성자**: Auto (AI Assistant)
+**최종 업데이트**: 2026-02-06
 

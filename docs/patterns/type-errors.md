@@ -422,6 +422,108 @@ if (isValidConfig(config)) {
 
 ---
 
-**작성자**: Auto (AI Assistant)  
-**최종 업데이트**: 2025-12-24
+## 9. React 19 forwardRef JSX 타입 호환성 문제
+
+### 문제 상황
+
+React 19 + Next.js 15 환경에서 `forwardRef` 컴포넌트가 JSX로 사용 불가
+
+```
+Type error: 'Icon' cannot be used as a JSX component.
+  Its type 'ForwardRefExoticComponent<...>' is not a valid JSX element type.
+```
+
+### 원인 분석
+
+React 19에서 JSX 타입 시스템이 변경되어 `forwardRef`로 생성된 컴포넌트가 JSX 요소로 인식 안됨
+
+```typescript
+// React 18에서는 정상 작동
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  return <button ref={ref} {...props} />
+})
+
+// React 19에서는 JSX 타입 에러 발생
+<Button>Click me</Button> // ❌ 타입 에러
+```
+
+### 해결 방법
+
+#### 1. 명시적 반환 타입 (부분적 해결)
+
+```typescript
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (props, ref): React.ReactElement => {
+    return <button ref={ref} {...props} />
+  }
+)
+```
+
+#### 2. 빌드 시 타입 체크 우회 (임시 해결)
+
+```javascript
+// next.config.js
+const nextConfig = {
+  typescript: {
+    // ⚠️ 타입 안전성 포기 - 임시 해결책
+    ignoreBuildErrors: true,
+  },
+}
+```
+
+### 리스크 완화 전략
+
+#### 개발 시 타입 체크 유지
+
+```bash
+# 개발 환경에서는 타입 체크 유지
+npm run type-check
+```
+
+#### CI/CD에서 타입 검증
+
+```yaml
+# .github/workflows/type-check.yml
+- name: Type Check
+  run: npm run type-check
+```
+
+#### 런타임 타입 검증 추가
+
+```typescript
+import { z } from 'zod';
+
+const UserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
+
+// 런타임에서 타입 검증
+const validateUser = (data: unknown) => UserSchema.parse(data);
+```
+
+### 롤백 계획
+
+```bash
+# React 18로 다운그레이드
+npm install react@18.2.0 react-dom@18.2.0
+
+# next.config.js에서 ignoreBuildErrors 제거
+```
+
+### 예방 방법
+
+- React 19 마이그레이션 전 충분한 테스트
+- `forwardRef` 컴포넌트 목록 파악
+- UI 라이브러리 React 19 지원 확인
+- 롤백 계획 준비
+
+### 관련 데브로그
+
+- [DEVLOG_2025-07-23_REACT_19_JSX_TYPE_COMPATIBILITY.md](../archive/devlogs/2025-07/DEVLOG_2025-07-23_REACT_19_JSX_TYPE_COMPATIBILITY.md)
+
+---
+
+**작성자**: Auto (AI Assistant)
+**최종 업데이트**: 2026-02-06
 
