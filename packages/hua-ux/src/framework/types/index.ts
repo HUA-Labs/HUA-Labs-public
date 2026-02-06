@@ -446,10 +446,9 @@ export interface HuaUxConfig {
      *
      * - 'phosphor': Phosphor Icons (기본값, 6가지 weight 지원)
      * - 'lucide': Lucide Icons (심플하고 일관된 스타일)
-     *
-     * @coming-soon 'iconsax': Iconsax Icons
+     * - 'iconsax': Iconsax Icons (requires '@hua-labs/ui/iconsax' import)
      */
-    set?: 'phosphor' | 'lucide';
+    set?: 'phosphor' | 'lucide' | 'iconsax';
 
     /**
      * Phosphor icon weight / Phosphor 아이콘 두께
