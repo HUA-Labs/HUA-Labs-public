@@ -10,11 +10,15 @@
     "@hua-labs/motion-core": "1.0.0",
     "@hua-labs/state": "0.1.0",
     "@hua-labs/ui": "1.0.0",
-    "@hua-labs/hua-ux": "0.1.0"
+    "@hua-labs/hua-ux": "0.1.0",
+    "@hua-labs/hooks": "1.0.0",
+    "@hua-labs/utils": "1.0.0",
+    "@hua-labs/i18n-formatters": "1.0.0"
   },
   "changesets": [
     "fix-use-client-directive",
     "readme-korean-sync",
-    "sync-2026-01-14"
+    "sync-2026-01-14",
+    "sync-platform-phase1-3"
   ]
 }

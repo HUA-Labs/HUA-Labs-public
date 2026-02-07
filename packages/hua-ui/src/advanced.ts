@@ -4,8 +4,14 @@
 // Dashboard widgets & data components
 export * from './advanced/dashboard';
 
-// Motion components
-export * from './advanced/motion';
+// Page transition components
+export { AdvancedPageTransition } from './components/advanced/AdvancedPageTransition';
+export { usePageTransition } from './components/advanced/usePageTransition';
+export { usePageTransitionManager } from './components/advanced/usePageTransitionManager';
+
+// Logo component (HUA Labs official branding)
+export { Logo } from './advanced/Logo';
+export type { LogoProps, LogoVariant, LogoSize } from './advanced/Logo';
 
 // Advanced Specialized components
 export { Bookmark } from './components/Bookmark';
@@ -22,3 +28,5 @@ export { Scrollbar } from './components/scrollbar/scrollbar';
 export { FeatureCard } from './components/FeatureCard';
 export { HeroSection } from './components/HeroSection';
 export { InfoCard } from './components/InfoCard';
+export { Timeline } from './components/Timeline';
+export type { TimelineProps, TimelineItem, TimelineStatus } from './components/Timeline';

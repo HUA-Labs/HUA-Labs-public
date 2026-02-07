@@ -9,15 +9,16 @@ import type { ReactNode, HTMLAttributes } from "react";
  * 공통 색상 타입
  * 모든 컴포넌트에서 사용하는 표준 색상 팔레트
  */
-export type Color = 
-  | "blue" 
-  | "purple" 
-  | "green" 
-  | "orange" 
-  | "red" 
-  | "indigo" 
-  | "pink" 
-  | "gray";
+export type Color =
+  | "blue"
+  | "purple"
+  | "green"
+  | "orange"
+  | "red"
+  | "indigo"
+  | "pink"
+  | "gray"
+  | "cyan";
 
 /**
  * 공통 크기 타입
@@ -114,5 +115,52 @@ export interface LoadingProps {
  */
 export interface IconProps {
   icon?: ReactNode;
+}
+
+/**
+ * 모서리 둥글기 타입
+ */
+export type Rounded = "none" | "sm" | "md" | "lg" | "full";
+
+/**
+ * 그림자 타입
+ */
+export type Shadow = "none" | "sm" | "md" | "lg" | "xl";
+
+/**
+ * 패딩 타입
+ */
+export type Padding = "none" | "sm" | "md" | "lg" | "xl";
+
+/**
+ * 상태 Props (인터랙티브 컴포넌트용)
+ */
+export interface StateProps {
+  disabled?: boolean;
+  loading?: boolean;
+}
+
+/**
+ * 폼 상태 Props
+ */
+export interface FormStateProps {
+  error?: boolean;
+  success?: boolean;
+}
+
+/**
+ * 레이아웃 Props (Card 계열 컴포넌트용)
+ */
+export interface LayoutProps {
+  shadow?: Shadow;
+  padding?: Padding;
+  rounded?: Rounded;
+}
+
+/**
+ * 전체 너비 Props
+ */
+export interface FullWidthProps {
+  fullWidth?: boolean;
 }
 

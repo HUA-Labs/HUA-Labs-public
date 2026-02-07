@@ -186,6 +186,26 @@ export interface HuaUxConfig {
     debug?: boolean;
     
     /**
+     * Auto-update HTML lang attribute / HTML lang 속성 자동 업데이트
+     * 
+     * 언어 변경 시 `<html lang="...">` 속성을 자동으로 업데이트합니다.
+     * Automatically updates the `<html lang="...">` attribute when language changes.
+     * 
+     * @default false
+     * 
+     * @example
+     * ```ts
+     * export default defineConfig({
+     *   preset: 'product',
+     *   i18n: {
+     *     autoUpdateHtmlLang: true,  // 언어 변경 시 html[lang] 자동 업데이트
+     *   },
+     * });
+     * ```
+     */
+    autoUpdateHtmlLang?: boolean;
+    
+    /**
      * Initial translations for SSR / SSR용 초기 번역 데이터
      * 
      * 서버 사이드에서 미리 로드한 번역 데이터를 전달하여
@@ -209,6 +229,41 @@ export interface HuaUxConfig {
      * ```
      */
     initialTranslations?: Record<string, Record<string, Record<string, string>>>;
+
+    /**
+     * Custom language store / 커스텀 언어 스토어
+     *
+     * createI18nStore 대신 기존 Zustand 스토어(예: useAppStore)를 i18n과 연동할 때 사용.
+     * 스토어에 getState().language, getState().setLanguage, subscribe 가 있어야 함.
+     *
+     * Use an existing Zustand store (e.g. useAppStore) for i18n instead of createI18nStore.
+     * Store must have getState().language, getState().setLanguage, subscribe.
+     */
+    languageStore?: unknown;
+
+    /**
+     * Zustand persist storage key / Zustand persist 스토리지 키
+     *
+     * languageStore 사용 시, 해당 스토어의 persist 스토리지 키를 지정합니다.
+     * 하이드레이션 완료 감지에 사용됩니다.
+     *
+     * When using languageStore, specify the persist storage key of that store.
+     * Used for rehydration completion detection.
+     *
+     * @default 'hua-i18n-storage'
+     *
+     * @example
+     * ```ts
+     * // useAppStore의 persist 키가 'sum-diary-app-storage'인 경우
+     * export default defineConfig({
+     *   i18n: {
+     *     languageStore: useAppStore,
+     *     storageKey: 'sum-diary-app-storage',  // useAppStore의 persist name과 일치
+     *   },
+     * });
+     * ```
+     */
+    storageKey?: string;
   };
 
   /**
@@ -391,10 +446,9 @@ export interface HuaUxConfig {
      *
      * - 'phosphor': Phosphor Icons (기본값, 6가지 weight 지원)
      * - 'lucide': Lucide Icons (심플하고 일관된 스타일)
-     *
-     * @coming-soon 'iconsax': Iconsax Icons
+     * - 'iconsax': Iconsax Icons (requires '@hua-labs/ui/iconsax' import)
      */
-    set?: 'phosphor' | 'lucide';
+    set?: 'phosphor' | 'lucide' | 'iconsax';
 
     /**
      * Phosphor icon weight / Phosphor 아이콘 두께
@@ -440,6 +494,39 @@ export interface HuaUxConfig {
      * @default 1.25
      */
     strokeWidth?: number;
+  };
+
+  /**
+   * Toast configuration / 토스트 알림 설정
+   *
+   * 전역 Toast Provider 설정입니다.
+   * Global Toast Provider settings.
+   *
+   * @example
+   * ```ts
+   * export default defineConfig({
+   *   preset: 'product',
+   *   toast: {
+   *     position: 'bottom-center',
+   *     maxToasts: 3,
+   *   },
+   * });
+   * ```
+   */
+  toast?: {
+    /**
+     * Toast 표시 위치 / Toast display position
+     *
+     * @default 'top-right'
+     */
+    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+
+    /**
+     * 최대 표시 Toast 개수 / Maximum number of toasts to display
+     *
+     * @default 5
+     */
+    maxToasts?: number;
   };
 
   /**

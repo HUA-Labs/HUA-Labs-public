@@ -23,8 +23,26 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
   const [isVisible, setIsVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [nodeReady, setNodeReady] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const timeoutRef = useRef<number | null>(null)
+  const startRef = useRef<() => void>(() => {})
+
+  // ref가 DOM에 연결되었는지 polling으로 감지
+  useEffect(() => {
+    if (nodeReady) return
+    if (ref.current) {
+      setNodeReady(true)
+      return
+    }
+    const id = setInterval(() => {
+      if (ref.current) {
+        setNodeReady(true)
+        clearInterval(id)
+      }
+    }, 50)
+    return () => clearInterval(id)
+  }, [nodeReady])
 
   // 방향에 따른 초기 위치 계산
   const getInitialTransform = useCallback(() => {
@@ -66,6 +84,9 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     }
   }, [delay, isAnimating, onStart, onComplete])
 
+  // startRef 업데이트 (IntersectionObserver에서 안정적인 참조 사용)
+  startRef.current = start
+
   // 모션 중단 함수
   const stop = useCallback(() => {
     if (timeoutRef.current) {
@@ -92,7 +113,7 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            start()
+            startRef.current()
             if (triggerOnce) {
               observerRef.current?.disconnect()
             }
@@ -109,7 +130,7 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
         observerRef.current.disconnect()
       }
     }
-  }, [autoStart, threshold, triggerOnce, start])
+  }, [autoStart, threshold, triggerOnce, nodeReady])
 
   // 자동 시작이 비활성화된 경우 수동 시작
   useEffect(() => {
@@ -126,12 +147,17 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
   }, [stop])
 
   // 초기 transform 값 메모이제이션
-  const initialTransform = useMemo(() => getInitialTransform(), [direction, distance])
+  const initialTransform = useMemo(() => getInitialTransform(), [getInitialTransform])
+
+  // 최종 transform 값 (방향에 따라 translateX(0) 또는 translateY(0))
+  const finalTransform = useMemo(() => {
+    return direction === 'left' || direction === 'right' ? 'translateX(0)' : 'translateY(0)'
+  }, [direction])
 
   // 스타일 계산 (React 19 호환) - 메모이제이션으로 불필요한 리렌더링 방지
   const style = useMemo(() => ({
     opacity: isVisible ? 1 : 0,
-    transform: isVisible ? 'translateY(0)' : initialTransform,
+    transform: isVisible ? finalTransform : initialTransform,
     transition: `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`,
     '--motion-delay': `${delay}ms`,
     '--motion-duration': `${duration}ms`,
@@ -139,7 +165,7 @@ export function useSlideUp<T extends MotionElement = HTMLDivElement>(
     '--motion-progress': `${progress}`,
     '--motion-direction': direction,
     '--motion-distance': `${distance}px`
-  } as const), [isVisible, initialTransform, duration, easing, delay, progress, direction, distance])
+  } as const), [isVisible, initialTransform, finalTransform, duration, easing, delay, progress, direction, distance])
 
   return {
     ref,

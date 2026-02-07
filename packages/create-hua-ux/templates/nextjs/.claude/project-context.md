@@ -94,6 +94,21 @@ Project Root/
 - `generateGEOMetadata`: GEO metadata generation
 - `createI18nMiddleware`: i18n middleware creation
 
+### @hua-labs/hua-ux/hooks
+
+**Utility Hooks** (import from `@hua-labs/hua-ux/hooks`):
+- `useLoading`: Loading state management with delay support
+- `useAutoScroll`: Auto-scrolling for chat/feed UIs
+- `usePerformanceMonitor`: Performance metrics monitoring
+
+### @hua-labs/hua-ux/loaders
+
+**Translation Loaders** (import from `@hua-labs/hua-ux/loaders`):
+- `createApiTranslationLoader`: API-based translation loading with caching
+- `preloadNamespaces`: Preload translation namespaces for instant display
+- `warmFallbackLanguages`: Pre-warm fallback language translations
+- `withDefaultTranslations`: Provide default translations for offline/SSR
+
 ### @hua-labs/motion-core
 
 **Motion Hooks**:
@@ -114,7 +129,7 @@ Project Root/
 ```tsx
 // app/my-page/page.tsx
 import { HuaUxPage } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export default function MyPage() {
   const { t } = useTranslation('my-page');
@@ -139,9 +154,9 @@ export default function MyPage() {
 // components/MyComponent.tsx
 'use client';
 
-import { Card, Button } from '@hua-labs/ui';
+import { Card, Button } from '@hua-labs/hua-ux/ui';
 import { useMotion } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export function MyComponent() {
   const { t } = useTranslation('my-component');
@@ -180,7 +195,7 @@ export default async function DataPage() {
 'use client';
 
 import { useData } from '@hua-labs/hua-ux/framework';
-import { LoadingSpinner, AlertError } from '@hua-labs/ui';
+import { LoadingSpinner, AlertError } from '@hua-labs/hua-ux/ui';
 
 export function DataComponent() {
   const { data, isLoading, error } = useData<DataType>('/api/data');

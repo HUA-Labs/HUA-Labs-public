@@ -38,7 +38,7 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
         aria-labelledby={`tab-${value}`}
         hidden={!active}
         className={merge(
-          "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2",
           className
         )}
         {...props}
@@ -154,26 +154,34 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            // TabsContent인 경우 active prop을 자동으로 설정
+            // TabsContent인 경우 active prop만 설정 (value는 원래 값 유지)
             if (child.type === TabsContent) {
               const childProps = child.props as TabsContentProps
+              return React.cloneElement(child, {
+                active: childProps.value === currentValue
+              } as Partial<TabsContentProps>)
+            }
+            // TabsList인 경우에만 onValueChange 전달
+            if (child.type === TabsList) {
               return React.cloneElement(child, {
                 value: currentValue,
                 onValueChange: handleTabChange,
                 orientation,
                 variant,
-                size,
-                active: childProps.value === currentValue
-              } as Partial<TabsContentProps>)
+                size
+              } as Partial<TabsListProps>)
             }
-            // 다른 컴포넌트들
-            return React.cloneElement(child, {
-              value: currentValue,
-              onValueChange: handleTabChange,
-              orientation,
-              variant,
-              size
-            } as Partial<TabsTriggerProps | TabsListProps>)
+            // 다른 React 컴포넌트들 (다른 custom wrapper 등)
+            // HTML 요소가 아닌 경우에만 props 전달
+            if (typeof child.type !== 'string') {
+              return React.cloneElement(child, {
+                value: currentValue,
+                onValueChange: handleTabChange,
+                orientation,
+                variant,
+                size
+              } as Record<string, unknown>)
+            }
           }
           return child
         })}
@@ -327,12 +335,17 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
+            // Only pass tab props to non-HTML elements (React components)
+            if (typeof child.type === 'string') {
+              return child
+            }
+            const childProps = child.props as { value?: string }
             return React.cloneElement(child, {
-              value,
               onValueChange,
               orientation,
               variant,
-              size
+              size,
+              active: childProps.value === value
             } as Partial<TabsTriggerProps>)
           }
           return child
@@ -389,28 +402,28 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
       switch (variant) {
         case "pills":
           return merge(
-            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
             active 
               ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md" 
               : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
           )
         case "underline":
           return merge(
-            "inline-flex items-center justify-center whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            "inline-flex items-center justify-center whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
             active 
-              ? "border-blue-500 text-blue-600 dark:text-blue-400" 
+              ? "border-indigo-500 text-indigo-600 dark:text-indigo-400" 
               : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
           )
         case "cards":
           return merge(
-            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
             active 
               ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md" 
               : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
           )
         default:
           return merge(
-            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
             active 
               ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md" 
               : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"

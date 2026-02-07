@@ -12,6 +12,7 @@ import { merge } from "../lib/utils";
  * @property {boolean} [required=false] - 필수 필드 표시 / Required field indicator
  * @property {string} [htmlFor] - 레이블의 for 속성 / Label's for attribute
  * @property {boolean} [showErrorIcon=true] - 에러 아이콘 표시 / Show error icon
+ * @property {boolean} [suppressBrowserValidation=true] - 브라우저 유효성 검사 UI 숨기기 / Hide browser validation UI
  * @property {React.ReactNode} children - 폼 입력 요소 / Form input element
  */
 export interface FormControlProps {
@@ -21,6 +22,7 @@ export interface FormControlProps {
   required?: boolean;
   htmlFor?: string;
   showErrorIcon?: boolean;
+  suppressBrowserValidation?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -58,10 +60,36 @@ function FormControl({
   required = false,
   htmlFor,
   showErrorIcon = true,
+  suppressBrowserValidation = true,
   className,
   children,
 }: FormControlProps) {
   const hasError = !!error;
+
+  // Clone children to add aria-invalid and suppress browser validation
+  const enhancedChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      const childProps: Record<string, unknown> = {
+        "aria-invalid": hasError || undefined,
+        "aria-describedby": hasError ? `${htmlFor}-error` : undefined,
+      };
+
+      // Suppress browser validation tooltip by handling onInvalid
+      if (suppressBrowserValidation) {
+        childProps.onInvalid = (e: React.FormEvent) => {
+          e.preventDefault();
+          // Call original onInvalid if exists
+          const originalOnInvalid = (child.props as Record<string, unknown>).onInvalid;
+          if (typeof originalOnInvalid === "function") {
+            originalOnInvalid(e);
+          }
+        };
+      }
+
+      return React.cloneElement(child, childProps);
+    }
+    return child;
+  });
 
   return (
     <div className={merge("space-y-2", className)}>
@@ -88,14 +116,15 @@ function FormControl({
         <p className="text-sm text-muted-foreground">{description}</p>
       )}
 
-      {/* Input */}
-      <div className="relative">
-        {children}
+      {/* Input - with :invalid styling support */}
+      <div className="relative [&_input:invalid]:border-red-300 [&_input:invalid]:dark:border-red-500/50 [&_select:invalid]:border-red-300 [&_select:invalid]:dark:border-red-500/50 [&_textarea:invalid]:border-red-300 [&_textarea:invalid]:dark:border-red-500/50">
+        {enhancedChildren}
       </div>
 
       {/* Error Message */}
       {hasError && (
         <div
+          id={htmlFor ? `${htmlFor}-error` : undefined}
           className="flex items-start gap-2 text-sm text-red-500 dark:text-red-400"
           role="alert"
           aria-live="polite"
@@ -129,8 +158,40 @@ function FormControl({
  *   if (isValid) { ... }
  * };
  */
+/**
+ * Validation preset types for common field formats
+ */
+type ValidationPreset = "email" | "phone" | "url" | "alphanumeric" | "password";
+
+/**
+ * Preset validation patterns and error messages
+ */
+const VALIDATION_PRESETS: Record<ValidationPreset, { pattern: RegExp; message: string }> = {
+  email: {
+    pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Invalid email format",
+  },
+  phone: {
+    pattern: /^[\d\s\-+()]{10,}$/,
+    message: "Invalid phone number format",
+  },
+  url: {
+    pattern: /^https?:\/\/.+\..+/,
+    message: "Invalid URL format (must start with http:// or https://)",
+  },
+  alphanumeric: {
+    pattern: /^[a-zA-Z0-9]+$/,
+    message: "Only letters and numbers are allowed",
+  },
+  password: {
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    message: "Must contain at least 8 characters with uppercase, lowercase, and number",
+  },
+};
+
 interface ValidationRule {
   value: string | number | boolean;
+  type?: ValidationPreset;
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -140,6 +201,7 @@ interface ValidationRule {
   custom?: (value: string | number | boolean) => string | undefined;
   messages?: {
     required?: string;
+    type?: string;
     minLength?: string;
     maxLength?: string;
     min?: string;
@@ -158,7 +220,7 @@ function useFormValidation(initialErrors: ValidationErrors = {}) {
     const newErrors: ValidationErrors = {};
 
     for (const [field, rule] of Object.entries(rules)) {
-      const { value, required, minLength, maxLength, min, max, pattern, custom, messages = {} } = rule;
+      const { value, type, required, minLength, maxLength, min, max, pattern, custom, messages = {} } = rule;
       const stringValue = String(value);
 
       // Required check
@@ -169,6 +231,15 @@ function useFormValidation(initialErrors: ValidationErrors = {}) {
 
       // Skip other validations if empty and not required
       if (!value || stringValue.trim() === "") continue;
+
+      // Type preset check (email, phone, url, alphanumeric, password)
+      if (type) {
+        const preset = VALIDATION_PRESETS[type];
+        if (preset && !preset.pattern.test(stringValue)) {
+          newErrors[field] = messages.type || preset.message;
+          continue;
+        }
+      }
 
       // MinLength check
       if (minLength !== undefined && stringValue.length < minLength) {
@@ -194,7 +265,7 @@ function useFormValidation(initialErrors: ValidationErrors = {}) {
         continue;
       }
 
-      // Pattern check
+      // Pattern check (for custom patterns, overrides type preset)
       if (pattern && !pattern.test(stringValue)) {
         newErrors[field] = messages.pattern || "Invalid format";
         continue;
@@ -247,5 +318,5 @@ function ErrorIcon({ className }: { className?: string }) {
   );
 }
 
-export { FormControl, useFormValidation };
-export type { ValidationRule, ValidationRules, ValidationErrors };
+export { FormControl, useFormValidation, VALIDATION_PRESETS };
+export type { ValidationRule, ValidationRules, ValidationErrors, ValidationPreset };

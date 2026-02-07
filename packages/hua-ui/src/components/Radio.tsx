@@ -83,17 +83,23 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     }
 
     const variantClasses = {
-      default: "border-gray-300 bg-white text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-blue-400",
-      outline: "border-2 border-gray-200 bg-transparent text-blue-600 focus:ring-blue-500 dark:border-gray-700 dark:focus:ring-blue-400",
-      filled: "border-transparent bg-gray-50 text-blue-600 focus:bg-white focus:ring-blue-500 dark:bg-gray-700 dark:focus:bg-gray-800 dark:focus:ring-blue-400",
-      glass: "border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-blue-400/50 focus:bg-white/20 dark:border-slate-600/50 dark:bg-slate-800/10 dark:focus:ring-blue-400/50 dark:focus:bg-slate-700/20"
+      default: "border-gray-300 bg-white text-indigo-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-ring",
+      outline: "border-2 border-gray-200 bg-transparent text-indigo-600 focus:ring-ring dark:border-gray-700 dark:focus:ring-ring",
+      filled: "border-transparent bg-gray-50 text-indigo-600 focus:bg-white focus:ring-ring dark:bg-gray-700 dark:focus:bg-gray-800 dark:focus:ring-ring",
+      glass: "border-white/30 bg-white/10 backdrop-blur-sm text-white focus:ring-ring/50 focus:bg-white/20 dark:border-slate-600/50 dark:bg-slate-800/10 dark:focus:ring-ring/50 dark:focus:bg-slate-700/20"
     }
 
-    const stateClasses = error 
+    const stateClasses = error
       ? "border-red-500 focus:ring-red-500 dark:border-red-400 dark:focus:ring-red-400"
       : success
       ? "border-green-500 focus:ring-green-500 dark:border-green-400 dark:focus:ring-green-400"
       : ""
+
+    // Support both controlled and uncontrolled modes
+    const isControlled = props.checked !== undefined;
+    const isChecked = props.checked ?? props.defaultChecked ?? false;
+    // Add readOnly if controlled without onChange to suppress React warning
+    const needsReadOnly = isControlled && !props.onChange && !props.readOnly;
 
     return (
       <div className="flex items-start space-x-3">
@@ -106,29 +112,31 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
               className
             )}
             ref={ref}
-            aria-checked={props.checked ?? false}
+            aria-checked={isChecked}
             aria-invalid={error}
             aria-label={!label ? props['aria-label'] : undefined}
             aria-labelledby={label ? labelId : undefined}
             aria-describedby={descriptionId}
             role="radio"
+            readOnly={needsReadOnly || props.readOnly}
             {...props}
           />
           <div
             className={merge(
               "flex items-center justify-center rounded-full border transition-all duration-200 cursor-pointer",
-              "peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-offset-2",
+              "peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-offset-2",
               "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
               sizeClasses[size],
               variantClasses[variant],
               stateClasses,
-              "peer-checked:border-blue-600 dark:peer-checked:border-blue-500"
+              isChecked && "border-primary dark:border-primary"
             )}
           >
             <div
               className={merge(
-                "rounded-full bg-blue-600 dark:bg-blue-500 opacity-0 peer-checked:opacity-100 transition-opacity duration-200",
-                dotSizes[size]
+                "rounded-full bg-primary dark:bg-primary transition-all duration-200",
+                dotSizes[size],
+                isChecked ? "opacity-100 scale-100" : "opacity-0 scale-0"
               )}
             />
           </div>

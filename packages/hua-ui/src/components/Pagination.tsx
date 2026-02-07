@@ -145,21 +145,21 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           return merge(
             "border border-gray-300 dark:border-gray-600",
             isActive 
-              ? "bg-blue-500 border-blue-500 text-white" 
+              ? "bg-primary border-primary text-white" 
               : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           )
         case "minimal":
           return merge(
             "border-0",
             isActive 
-              ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300" 
+              ? "bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300" 
               : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
           )
         default:
           return merge(
             "border-0",
             isActive 
-              ? "bg-blue-500 text-white" 
+              ? "bg-primary text-white" 
               : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
           )
       }
@@ -187,7 +187,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           <button
             onClick={() => handlePageClick(1)}
             className={merge(
-              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
               getSizeClasses(),
               getShapeClasses(),
               getVariantClasses()
@@ -205,7 +205,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           <button
             onClick={() => handlePageClick(currentPage - 1)}
             className={merge(
-              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
               getSizeClasses(),
               getShapeClasses(),
               getVariantClasses()
@@ -232,7 +232,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
               <button
                 onClick={() => handlePageClick(page as number)}
                 className={merge(
-                  "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+                  "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
                   getSizeClasses(),
                   getShapeClasses(),
                   getVariantClasses(page === currentPage)
@@ -251,7 +251,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           <button
             onClick={() => handlePageClick(currentPage + 1)}
             className={merge(
-              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
               getSizeClasses(),
               getShapeClasses(),
               getVariantClasses()
@@ -269,7 +269,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           <button
             onClick={() => handlePageClick(totalPages)}
             className={merge(
-              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+              "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
               getSizeClasses(),
               getShapeClasses(),
               getVariantClasses()

@@ -66,52 +66,71 @@ export function LoadingSpinner({
   }
 
   // LoadingSpinner는 border 색상을 사용하므로 특화 색상 시스템 사용
+  // 다크모드: track(배경)은 밝게, spinner(회전부)는 더 밝게 → 대비 확보
   const spinnerColors: Record<string, string> = {
-    default: "border-gray-300 border-t-gray-600 dark:border-gray-600 dark:border-t-gray-300",
-    primary: "border-blue-300 border-t-blue-600 dark:border-blue-600 dark:border-t-blue-300",
-    secondary: "border-gray-300 border-t-gray-600 dark:border-gray-600 dark:border-t-gray-300",
-    success: "border-green-300 border-t-green-600 dark:border-green-600 dark:border-t-green-300",
-    warning: "border-yellow-300 border-t-yellow-600 dark:border-yellow-600 dark:border-t-yellow-300",
-    error: "border-red-300 border-t-red-600 dark:border-red-600 dark:border-t-red-300",
-    glass: "border-white/30 border-t-white/50 dark:border-slate-600/50 dark:border-t-slate-400/50"
+    default: "border-gray-300 border-t-gray-600 dark:border-gray-500/50 dark:border-t-gray-200",
+    primary: "border-indigo-300 border-t-indigo-600 dark:border-indigo-400/50 dark:border-t-indigo-300",
+    secondary: "border-gray-300 border-t-gray-600 dark:border-gray-500/50 dark:border-t-gray-200",
+    success: "border-green-300 border-t-green-600 dark:border-green-500/50 dark:border-t-green-300",
+    warning: "border-yellow-300 border-t-yellow-600 dark:border-yellow-500/50 dark:border-t-yellow-300",
+    error: "border-red-300 border-t-red-600 dark:border-red-500/50 dark:border-t-red-300",
+    glass: "border-white/50 border-t-white/90 dark:border-slate-400/60 dark:border-t-slate-100"
   }
 
   const renderSpinner = () => {
     switch (variant) {
       case "dots":
+        // 순차 점멸 애니메이션 (... 형태)
         return (
-          <div className="flex space-x-1">
-            <div className="w-2 h-2 bg-current rounded-full animate-bounce" />
-            <div className="w-2 h-2 bg-current rounded-full animate-bounce delay-100" />
-            <div className="w-2 h-2 bg-current rounded-full animate-bounce delay-200" />
-          </div>
+          <>
+            <style>{`
+              @keyframes dotPulse {
+                0%, 80%, 100% { opacity: 0.3; }
+                40% { opacity: 1; }
+              }
+            `}</style>
+            <div className="flex space-x-1 items-center">
+              <div className="w-2 h-2 bg-current rounded-full" style={{ animation: 'dotPulse 1.4s ease-in-out infinite', animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-current rounded-full" style={{ animation: 'dotPulse 1.4s ease-in-out infinite', animationDelay: '200ms' }} />
+              <div className="w-2 h-2 bg-current rounded-full" style={{ animation: 'dotPulse 1.4s ease-in-out infinite', animationDelay: '400ms' }} />
+            </div>
+          </>
         )
       case "bars":
         return (
-          <div className="flex space-x-1 h-full items-end">
-            <div className="w-1 bg-current animate-pulse" style={{ height: '60%' }} />
-            <div className="w-1 bg-current animate-pulse delay-100" style={{ height: '80%' }} />
-            <div className="w-1 bg-current animate-pulse delay-200" style={{ height: '40%' }} />
-            <div className="w-1 bg-current animate-pulse delay-300" style={{ height: '100%' }} />
-            <div className="w-1 bg-current animate-pulse delay-500" style={{ height: '70%' }} />
-          </div>
+          <>
+            <style>{`
+              @keyframes barWave {
+                0%, 40%, 100% { transform: scaleY(0.4); }
+                20% { transform: scaleY(1); }
+              }
+            `}</style>
+            <div className="flex space-x-0.5 h-full items-center">
+              <div className="w-1 h-full bg-current rounded-sm origin-bottom" style={{ animation: 'barWave 1.2s ease-in-out infinite', animationDelay: '0ms' }} />
+              <div className="w-1 h-full bg-current rounded-sm origin-bottom" style={{ animation: 'barWave 1.2s ease-in-out infinite', animationDelay: '100ms' }} />
+              <div className="w-1 h-full bg-current rounded-sm origin-bottom" style={{ animation: 'barWave 1.2s ease-in-out infinite', animationDelay: '200ms' }} />
+              <div className="w-1 h-full bg-current rounded-sm origin-bottom" style={{ animation: 'barWave 1.2s ease-in-out infinite', animationDelay: '300ms' }} />
+              <div className="w-1 h-full bg-current rounded-sm origin-bottom" style={{ animation: 'barWave 1.2s ease-in-out infinite', animationDelay: '400ms' }} />
+            </div>
+          </>
         )
       case "ring":
         return (
           <div className={merge(
-            "animate-spin rounded-full border-2",
+            "w-full h-full animate-spin rounded-full",
+            size === "xl" ? "border-[3px]" : size === "lg" ? "border-[2.5px]" : "border-2",
             spinnerColors[color] || spinnerColors.default
           )} />
         )
       case "ripple":
         return (
-          <div className="relative">
+          <div className="relative w-full h-full">
             <div className={merge(
               "absolute inset-0 rounded-full border-2 animate-ping",
               spinnerColors[color] || spinnerColors.default
             )} />
             <div className={merge(
-              "rounded-full border-2",
+              "w-full h-full rounded-full border-2",
               spinnerColors[color] || spinnerColors.default
             )} />
           </div>
@@ -119,7 +138,8 @@ export function LoadingSpinner({
       default:
         return (
           <div className={merge(
-            "animate-spin rounded-full border-2",
+            "w-full h-full animate-spin rounded-full",
+            size === "xl" ? "border-[3px]" : size === "lg" ? "border-[2.5px]" : "border-2",
             spinnerColors[color] || spinnerColors.default
           )} />
         )

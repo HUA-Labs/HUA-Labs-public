@@ -11,9 +11,6 @@ import { RefObject, CSSProperties } from 'react'
 // React 19에서 더 구체적인 요소 타입 사용 (HTMLElement 제거)
 export type MotionElement = HTMLDivElement | HTMLSpanElement | HTMLButtonElement | HTMLHeadingElement | HTMLParagraphElement | HTMLImageElement
 
-// React 19 호환 Ref 타입 (null을 허용하도록 수정)
-export type MotionRef<T extends MotionElement = HTMLDivElement> = RefObject<T | null>
-
 // React 19 호환 스타일 타입
 export type MotionStyle = CSSProperties & {
   // React 19의 새로운 CSS 속성들 지원
@@ -209,4 +206,125 @@ export interface MotionConfig {
   debug?: boolean
   /** 로그 레벨 */
   logLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug'
+}
+
+// ========================================
+// useInView 타입
+// ========================================
+
+export interface InViewOptions {
+  /** Intersection Observer 임계값 */
+  threshold?: number | number[]
+  /** 루트 마진 */
+  rootMargin?: string
+  /** 한 번만 트리거할지 여부 */
+  triggerOnce?: boolean
+  /** 초기 가시성 상태 */
+  initialInView?: boolean
+}
+
+export interface InViewReturn<T extends HTMLElement = HTMLDivElement> {
+  /** DOM 요소 참조 */
+  ref: RefObject<T | null>
+  /** 요소가 화면에 보이는지 여부 */
+  inView: boolean
+  /** IntersectionObserver 엔트리 */
+  entry: IntersectionObserverEntry | null
+}
+
+// ========================================
+// useMouse 타입
+// ========================================
+
+export interface MouseOptions {
+  /** 타겟 요소 참조 */
+  targetRef?: RefObject<HTMLElement | null>
+  /** 스로틀 시간 (ms) */
+  throttle?: number
+}
+
+export interface MouseReturn {
+  /** 마우스 X 좌표 (viewport 기준) */
+  x: number
+  /** 마우스 Y 좌표 (viewport 기준) */
+  y: number
+  /** 요소 내 상대 X 좌표 (0-1) */
+  elementX: number
+  /** 요소 내 상대 Y 좌표 (0-1) */
+  elementY: number
+  /** 마우스가 타겟 위에 있는지 여부 */
+  isOver: boolean
+}
+
+// ========================================
+// useReducedMotion 타입
+// ========================================
+
+export interface ReducedMotionReturn {
+  /** 사용자가 모션 감소를 선호하는지 여부 */
+  prefersReducedMotion: boolean
+}
+
+// ========================================
+// useWindowSize 타입
+// ========================================
+
+export interface WindowSizeOptions {
+  /** 디바운스 시간 (ms) */
+  debounce?: number
+  /** 초기 너비 */
+  initialWidth?: number
+  /** 초기 높이 */
+  initialHeight?: number
+}
+
+export interface WindowSizeReturn {
+  /** 윈도우 너비 */
+  width: number
+  /** 윈도우 높이 */
+  height: number
+  /** 마운트 여부 (SSR 대응) */
+  isMounted: boolean
+}
+
+// ========================================
+// 훅별 확장 옵션 (WS1: 공유 타입 추가)
+// ========================================
+
+export type ScrollRevealMotionType = 'fadeIn' | 'slideUp' | 'slideLeft' | 'slideRight' | 'scaleIn' | 'bounceIn'
+
+export interface ScrollRevealOptions extends BaseMotionOptions {
+  /** 루트 마진 */
+  rootMargin?: string
+  /** 모션 타입 */
+  motionType?: ScrollRevealMotionType
+}
+
+export interface GradientOptions extends BaseMotionOptions {
+  /** 그라디언트 색상 배열 */
+  colors?: string[]
+  /** 그라디언트 방향 */
+  direction?: 'horizontal' | 'vertical' | 'diagonal'
+  /** 그라디언트 크기 (%) */
+  size?: number
+}
+
+export interface ToggleMotionOptions extends BaseMotionOptions {
+  // BaseMotionOptions의 duration, delay, easing 사용
+}
+
+export interface RepeatOptions extends BaseMotionOptions {
+  /** 반복 효과 타입 */
+  type?: 'pulse' | 'bounce' | 'wave' | 'fade'
+  /** 효과 강도 */
+  intensity?: number
+}
+
+export interface HoverMotionOptions extends BaseMotionOptions {
+  /** 호버 시 스케일 */
+  hoverScale?: number
+  /** 호버 시 Y 오프셋 (px) */
+  hoverY?: number
+  /** 호버 시 투명도 */
+  hoverOpacity?: number
 }

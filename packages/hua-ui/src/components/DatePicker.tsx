@@ -34,6 +34,8 @@ export interface DatePickerProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   locale?: string
   size?: "sm" | "md" | "lg"
   className?: string
+  /** 표시할 날짜 배열 (점으로 표시) / Dates to mark with a dot */
+  markedDates?: Date[]
 }
 
 const sizeClasses = {
@@ -107,6 +109,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       locale = "ko-KR",
       size = "md",
       className,
+      markedDates,
       ...props
     },
     ref
@@ -143,9 +146,57 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
     const daysInMonth = getDaysInMonth(year, month)
     const firstDay = getFirstDayOfMonth(year, month)
 
-    const weekDays = locale === "ko-KR" 
-      ? ["일", "월", "화", "수", "목", "금", "토"]
-      : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    // 로케일별 요일 텍스트
+    const weekDaysMap: Record<string, string[]> = {
+      "ko-KR": ["일", "월", "화", "수", "목", "금", "토"],
+      "ko": ["일", "월", "화", "수", "목", "금", "토"],
+      "ja-JP": ["日", "月", "火", "水", "木", "金", "土"],
+      "ja": ["日", "月", "火", "水", "木", "金", "土"],
+      "en-US": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      "en": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    }
+    const weekDays = weekDaysMap[locale] || weekDaysMap["en"]
+
+    // 로케일별 월 포맷
+    const formatMonth = (year: number, month: number, loc: string): string => {
+      if (loc === "ko-KR" || loc === "ko") {
+        return `${year}년 ${month + 1}월`
+      } else if (loc === "ja-JP" || loc === "ja") {
+        return `${year}年 ${month + 1}月`
+      } else {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"]
+        return `${monthNames[month]} ${year}`
+      }
+    }
+
+    // 로케일별 "오늘" 텍스트
+    const todayTextMap: Record<string, string> = {
+      "ko-KR": "오늘",
+      "ko": "오늘",
+      "ja-JP": "今日",
+      "ja": "今日",
+      "en-US": "Today",
+      "en": "Today",
+    }
+    const todayText = todayTextMap[locale] || "Today"
+
+    // 로케일별 aria-label 텍스트
+    const ariaLabels = {
+      prevMonth: locale.startsWith("ko") ? "이전 달" : locale.startsWith("ja") ? "前月" : "Previous month",
+      nextMonth: locale.startsWith("ko") ? "다음 달" : locale.startsWith("ja") ? "翌月" : "Next month",
+    }
+
+    // 날짜 aria-label 포맷
+    const formatDateAriaLabel = (date: Date, loc: string): string => {
+      if (loc.startsWith("ko")) {
+        return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+      } else if (loc.startsWith("ja")) {
+        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
+      } else {
+        return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      }
+    }
 
     const isDateDisabled = (date: Date): boolean => {
       if (minDate && date < minDate) return true
@@ -168,6 +219,16 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         date.getFullYear() === today.getFullYear() &&
         date.getMonth() === today.getMonth() &&
         date.getDate() === today.getDate()
+      )
+    }
+
+    const isMarkedDate = (date: Date): boolean => {
+      if (!markedDates) return false
+      return markedDates.some(
+        (marked) =>
+          marked.getFullYear() === date.getFullYear() &&
+          marked.getMonth() === date.getMonth() &&
+          marked.getDate() === date.getDate()
       )
     }
 
@@ -196,7 +257,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         disabled={disabled}
         className={merge(
           "flex w-full items-center justify-between rounded-lg border bg-white px-4 py-2 text-left text-sm transition-colors",
-          "hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+          "hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2",
           "dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700",
           error && "border-red-500 focus:ring-red-500",
           disabled && "cursor-not-allowed opacity-50",
@@ -234,18 +295,18 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                   type="button"
                   onClick={handlePrevMonth}
                   className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  aria-label="이전 달"
+                  aria-label={ariaLabels.prevMonth}
                 >
                   <Icon name="chevronLeft" className="h-4 w-4" />
                 </button>
                 <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {year}년 {month + 1}월
+                  {formatMonth(year, month, locale)}
                 </div>
                 <button
                   type="button"
                   onClick={handleNextMonth}
                   className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                  aria-label="다음 달"
+                  aria-label={ariaLabels.nextMonth}
                 >
                   <Icon name="chevronRight" className="h-4 w-4" />
                 </button>
@@ -259,7 +320,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                     className={merge(
                       "text-center text-xs font-medium py-2",
                       index === 0 && "text-red-500 dark:text-red-400",
-                      index === 6 && "text-blue-500 dark:text-blue-400"
+                      index === 6 && "text-indigo-500 dark:text-indigo-400"
                     )}
                   >
                     {day}
@@ -276,7 +337,8 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                   const isDisabled = isDateDisabled(date)
                   const isSelected = isDateSelected(date)
                   const isTodayDate = isToday(date)
-                  const isHovered = hoveredDate && 
+                  const isMarked = isMarkedDate(date)
+                  const isHovered = hoveredDate &&
                     date.getFullYear() === hoveredDate.getFullYear() &&
                     date.getMonth() === hoveredDate.getMonth() &&
                     date.getDate() === hoveredDate.getDate()
@@ -291,17 +353,25 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                       onMouseLeave={() => setHoveredDate(null)}
                       className={merge(
                         "relative h-9 w-9 rounded-lg text-sm font-medium transition-all",
-                        "hover:bg-blue-50 dark:hover:bg-blue-900/20",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1",
+                        "hover:bg-indigo-50 dark:hover:bg-indigo-900/20",
+                        "focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1",
                         !isCurrentMonth && "text-gray-400 dark:text-gray-500",
                         isDisabled && "cursor-not-allowed opacity-30",
-                        isSelected && "bg-blue-600 text-white hover:bg-blue-700 shadow-md",
-                        isTodayDate && !isSelected && "ring-2 ring-blue-500",
-                        isHovered && !isSelected && "bg-blue-100 dark:bg-blue-900/30"
+                        isSelected && "bg-primary text-white hover:bg-primary/80 shadow-md",
+                        isTodayDate && !isSelected && "ring-1 ring-ring",
+                        isHovered && !isSelected && "bg-indigo-100 dark:bg-indigo-900/30"
                       )}
-                      aria-label={`${year}년 ${month + 1}월 ${date.getDate()}일`}
+                      aria-label={formatDateAriaLabel(date, locale)}
                     >
-                      {date.getDate()}
+                      <span className={merge(
+                        "relative z-10",
+                        isMarked && !isSelected && "text-indigo-600 dark:text-indigo-400 font-semibold"
+                      )}>
+                        {date.getDate()}
+                      </span>
+                      {isMarked && !isSelected && (
+                        <span className="absolute inset-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/40" />
+                      )}
                     </button>
                   )
                 })}
@@ -315,7 +385,7 @@ export const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
                   onClick={handleToday}
                   className="w-full"
                 >
-                  오늘
+                  {todayText}
                 </Button>
               </div>
             </div>
