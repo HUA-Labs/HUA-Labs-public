@@ -133,6 +133,17 @@ export function MyComponent() {
 - `useData`: Client data fetching
 - `fetchData`: Server data fetching
 
+### @hua-labs/hua-ux/hooks
+- `useLoading`: Loading state management with delay support
+- `useAutoScroll`: Auto-scrolling for chat/feed UIs
+- `usePerformanceMonitor`: Performance metrics monitoring
+
+### @hua-labs/hua-ux/loaders
+- `createApiTranslationLoader`: API-based translation loading with caching
+- `preloadNamespaces`: Preload translation namespaces
+- `warmFallbackLanguages`: Pre-warm fallback translations
+- `withDefaultTranslations`: Default translations for offline/SSR
+
 ## Configuration File
 
 ### hua-ux.config.ts
