@@ -16,6 +16,8 @@ const entry = {
   'pro/index': 'src/pro/index.ts',
   'formatters/index': 'src/formatters/index.ts',
   'utils/index': 'src/utils/index.ts',
+  'hooks/index': 'src/hooks/index.ts',
+  'loaders/index': 'src/loaders/index.ts',
 };
 
 const shared = {
@@ -34,13 +36,14 @@ const shared = {
     // HUA Labs packages (published separately)
     '@hua-labs/ui',
     '@hua-labs/motion-core',
-    '@hua-labs/motion-advanced',
     '@hua-labs/i18n-core',
     '@hua-labs/i18n-core-zustand',
     '@hua-labs/i18n-formatters',
     '@hua-labs/state',
     '@hua-labs/pro',
     '@hua-labs/utils',
+    '@hua-labs/hooks',
+    '@hua-labs/i18n-loaders',
     // Icon libraries
     '@phosphor-icons/react',
   ],
