@@ -89,6 +89,18 @@
       "import": "./dist/utils/index.js",
       "require": "./dist/utils/index.cjs",
       "default": "./dist/utils/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/index.d.mts",
+      "import": "./dist/hooks/index.js",
+      "require": "./dist/hooks/index.cjs",
+      "default": "./dist/hooks/index.js"
+    },
+    "./loaders": {
+      "types": "./dist/loaders/index.d.mts",
+      "import": "./dist/loaders/index.js",
+      "require": "./dist/loaders/index.cjs",
+      "default": "./dist/loaders/index.js"
     }
   },
   "files": [
@@ -108,9 +120,11 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
+    "@hua-labs/hooks": "workspace:*",
     "@hua-labs/i18n-core": "workspace:*",
     "@hua-labs/i18n-core-zustand": "workspace:*",
     "@hua-labs/i18n-formatters": "workspace:*",
+    "@hua-labs/i18n-loaders": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
     "@hua-labs/pro": "workspace:*",
     "@hua-labs/state": "workspace:*",
