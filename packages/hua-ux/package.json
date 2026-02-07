@@ -2,105 +2,105 @@
   "name": "@hua-labs/hua-ux",
   "version": "0.1.0-alpha.12",
   "description": "HUA UX - Ship UX faster: UI + motion + i18n, pre-wired. A framework for React product teams.",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.mjs"
     },
     "./framework": {
       "types": "./dist/framework/index.d.mts",
-      "import": "./dist/framework/index.js",
-      "require": "./dist/framework/index.cjs",
-      "default": "./dist/framework/index.js"
+      "import": "./dist/framework/index.mjs",
+      "require": "./dist/framework/index.js",
+      "default": "./dist/framework/index.mjs"
     },
     "./framework/shared": {
       "types": "./dist/framework/shared.d.mts",
-      "import": "./dist/framework/shared.js",
-      "require": "./dist/framework/shared.cjs",
-      "default": "./dist/framework/shared.js"
+      "import": "./dist/framework/shared.mjs",
+      "require": "./dist/framework/shared.js",
+      "default": "./dist/framework/shared.mjs"
     },
     "./framework/server": {
       "types": "./dist/framework/server.d.mts",
-      "import": "./dist/framework/server.js",
-      "require": "./dist/framework/server.cjs",
-      "default": "./dist/framework/server.js"
+      "import": "./dist/framework/server.mjs",
+      "require": "./dist/framework/server.js",
+      "default": "./dist/framework/server.mjs"
     },
     "./framework/config": {
       "types": "./dist/framework/config.d.mts",
-      "import": "./dist/framework/config.js",
-      "require": "./dist/framework/config.cjs",
-      "default": "./dist/framework/config.js"
+      "import": "./dist/framework/config.mjs",
+      "require": "./dist/framework/config.js",
+      "default": "./dist/framework/config.mjs"
     },
     "./presets": {
       "types": "./dist/presets/index.d.mts",
-      "import": "./dist/presets/index.js",
-      "require": "./dist/presets/index.cjs",
-      "default": "./dist/presets/index.js"
+      "import": "./dist/presets/index.mjs",
+      "require": "./dist/presets/index.js",
+      "default": "./dist/presets/index.mjs"
     },
     "./framework/seo/geo": {
       "types": "./dist/framework/seo/geo/index.d.mts",
-      "import": "./dist/framework/seo/geo/index.js",
-      "require": "./dist/framework/seo/geo/index.cjs",
-      "default": "./dist/framework/seo/geo/index.js"
+      "import": "./dist/framework/seo/geo/index.mjs",
+      "require": "./dist/framework/seo/geo/index.js",
+      "default": "./dist/framework/seo/geo/index.mjs"
     },
     "./ui": {
       "types": "./dist/ui/index.d.mts",
-      "import": "./dist/ui/index.js",
-      "require": "./dist/ui/index.cjs",
-      "default": "./dist/ui/index.js"
+      "import": "./dist/ui/index.mjs",
+      "require": "./dist/ui/index.js",
+      "default": "./dist/ui/index.mjs"
     },
     "./i18n": {
       "types": "./dist/i18n/index.d.mts",
-      "import": "./dist/i18n/index.js",
-      "require": "./dist/i18n/index.cjs",
-      "default": "./dist/i18n/index.js"
+      "import": "./dist/i18n/index.mjs",
+      "require": "./dist/i18n/index.js",
+      "default": "./dist/i18n/index.mjs"
     },
     "./motion": {
       "types": "./dist/motion/index.d.mts",
-      "import": "./dist/motion/index.js",
-      "require": "./dist/motion/index.cjs",
-      "default": "./dist/motion/index.js"
+      "import": "./dist/motion/index.mjs",
+      "require": "./dist/motion/index.js",
+      "default": "./dist/motion/index.mjs"
     },
     "./state": {
       "types": "./dist/state/index.d.mts",
-      "import": "./dist/state/index.js",
-      "require": "./dist/state/index.cjs",
-      "default": "./dist/state/index.js"
+      "import": "./dist/state/index.mjs",
+      "require": "./dist/state/index.js",
+      "default": "./dist/state/index.mjs"
     },
     "./pro": {
       "types": "./dist/pro/index.d.mts",
-      "import": "./dist/pro/index.js",
-      "require": "./dist/pro/index.cjs",
-      "default": "./dist/pro/index.js"
+      "import": "./dist/pro/index.mjs",
+      "require": "./dist/pro/index.js",
+      "default": "./dist/pro/index.mjs"
     },
     "./formatters": {
       "types": "./dist/formatters/index.d.mts",
-      "import": "./dist/formatters/index.js",
-      "require": "./dist/formatters/index.cjs",
-      "default": "./dist/formatters/index.js"
+      "import": "./dist/formatters/index.mjs",
+      "require": "./dist/formatters/index.js",
+      "default": "./dist/formatters/index.mjs"
     },
     "./utils": {
       "types": "./dist/utils/index.d.mts",
-      "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.cjs",
-      "default": "./dist/utils/index.js"
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js",
+      "default": "./dist/utils/index.mjs"
     },
     "./hooks": {
       "types": "./dist/hooks/index.d.mts",
-      "import": "./dist/hooks/index.js",
-      "require": "./dist/hooks/index.cjs",
-      "default": "./dist/hooks/index.js"
+      "import": "./dist/hooks/index.mjs",
+      "require": "./dist/hooks/index.js",
+      "default": "./dist/hooks/index.mjs"
     },
     "./loaders": {
       "types": "./dist/loaders/index.d.mts",
-      "import": "./dist/loaders/index.js",
-      "require": "./dist/loaders/index.cjs",
-      "default": "./dist/loaders/index.js"
+      "import": "./dist/loaders/index.mjs",
+      "require": "./dist/loaders/index.js",
+      "default": "./dist/loaders/index.mjs"
     }
   },
   "files": [

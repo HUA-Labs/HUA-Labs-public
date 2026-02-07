@@ -63,9 +63,6 @@ export default defineConfig([
     format: ['esm'],
     splitting: true,
     outDir: 'dist',
-    outExtension() {
-      return { js: '.js', dts: '.d.ts' };
-    },
   },
   {
     ...shared,
@@ -73,8 +70,6 @@ export default defineConfig([
     format: ['cjs'],
     splitting: false,
     outDir: 'dist',
-    outExtension() {
-      return { js: '.cjs' };
-    },
+    clean: false,
   },
 ]);

@@ -242,8 +242,29 @@ hua-ux provides the following entry points:
 |-------|------|-------------|
 | Core | `@hua-labs/hua-ux` | All UI, Motion, i18n, and State components (re-exports) |
 | Framework | `@hua-labs/hua-ux/framework` | Framework layer with automatic provider setup |
+| Framework Shared | `@hua-labs/hua-ux/framework/shared` | Shared framework utilities (client/server) |
+| Framework Server | `@hua-labs/hua-ux/framework/server` | Server-only framework utilities |
+| Framework Config | `@hua-labs/hua-ux/framework/config` | Configuration system (`defineConfig`) |
 | Presets | `@hua-labs/hua-ux/presets` | Pre-configured presets (product, marketing) |
 | GEO | `@hua-labs/hua-ux/framework/seo/geo` | Generative Engine Optimization utilities |
+| UI | `@hua-labs/hua-ux/ui` | UI components (`@hua-labs/ui` re-export) |
+| Motion | `@hua-labs/hua-ux/motion` | Motion hooks (`@hua-labs/motion-core` re-export) |
+| i18n | `@hua-labs/hua-ux/i18n` | i18n utilities (core + zustand adapter) |
+| State | `@hua-labs/hua-ux/state` | State management (`@hua-labs/state` re-export) |
+| Pro | `@hua-labs/hua-ux/pro` | Pro features (`@hua-labs/pro` re-export) |
+| Formatters | `@hua-labs/hua-ux/formatters` | i18n formatters (date, number, currency) |
+| Utils | `@hua-labs/hua-ux/utils` | Utility functions (`@hua-labs/utils` re-export) |
+| Hooks | `@hua-labs/hua-ux/hooks` | React hooks (`@hua-labs/hooks` re-export) |
+| Loaders | `@hua-labs/hua-ux/loaders` | Translation loaders (`@hua-labs/i18n-loaders` re-export) |
+
+### Build Output
+
+The package ships dual-format builds (Pattern A):
+- **ESM**: `.mjs` files for modern bundlers and Node.js ESM
+- **CJS**: `.js` files for legacy CommonJS consumers
+- **Types**: `.d.mts` declaration files
+
+This matches the standard output format used across all `@hua-labs/*` packages.
 
 ### Core Packages
 
@@ -659,8 +680,29 @@ hua-ux는 다음 진입점을 제공합니다:
 |--------|------|------|
 | Core | `@hua-labs/hua-ux` | 모든 UI, Motion, i18n, State 컴포넌트 (re-export) |
 | Framework | `@hua-labs/hua-ux/framework` | 자동 Provider 설정이 있는 프레임워크 레이어 |
+| Framework Shared | `@hua-labs/hua-ux/framework/shared` | 공유 프레임워크 유틸리티 (클라이언트/서버) |
+| Framework Server | `@hua-labs/hua-ux/framework/server` | 서버 전용 프레임워크 유틸리티 |
+| Framework Config | `@hua-labs/hua-ux/framework/config` | 설정 시스템 (`defineConfig`) |
 | Presets | `@hua-labs/hua-ux/presets` | 사전 구성된 프리셋 (product, marketing) |
 | GEO | `@hua-labs/hua-ux/framework/seo/geo` | 생성형 엔진 최적화 유틸리티 |
+| UI | `@hua-labs/hua-ux/ui` | UI 컴포넌트 (`@hua-labs/ui` re-export) |
+| Motion | `@hua-labs/hua-ux/motion` | Motion 훅 (`@hua-labs/motion-core` re-export) |
+| i18n | `@hua-labs/hua-ux/i18n` | i18n 유틸리티 (core + zustand 어댑터) |
+| State | `@hua-labs/hua-ux/state` | 상태 관리 (`@hua-labs/state` re-export) |
+| Pro | `@hua-labs/hua-ux/pro` | Pro 기능 (`@hua-labs/pro` re-export) |
+| Formatters | `@hua-labs/hua-ux/formatters` | i18n 포매터 (날짜, 숫자, 통화) |
+| Utils | `@hua-labs/hua-ux/utils` | 유틸리티 함수 (`@hua-labs/utils` re-export) |
+| Hooks | `@hua-labs/hua-ux/hooks` | React 훅 (`@hua-labs/hooks` re-export) |
+| Loaders | `@hua-labs/hua-ux/loaders` | 번역 로더 (`@hua-labs/i18n-loaders` re-export) |
+
+### 빌드 출력
+
+패키지는 듀얼 포맷으로 빌드됩니다 (Pattern A):
+- **ESM**: `.mjs` 파일 — 모던 번들러 및 Node.js ESM용
+- **CJS**: `.js` 파일 — 레거시 CommonJS 소비자용
+- **Types**: `.d.mts` 선언 파일
+
+모든 `@hua-labs/*` 패키지와 동일한 표준 출력 포맷입니다.
 
 ### 핵심 패키지
 
