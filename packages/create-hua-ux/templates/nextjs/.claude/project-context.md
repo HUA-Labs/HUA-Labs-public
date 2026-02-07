@@ -94,6 +94,21 @@ Project Root/
 - `generateGEOMetadata`: GEO metadata generation
 - `createI18nMiddleware`: i18n middleware creation
 
+### @hua-labs/hua-ux/hooks
+
+**Utility Hooks** (import from `@hua-labs/hua-ux/hooks`):
+- `useLoading`: Loading state management with delay support
+- `useAutoScroll`: Auto-scrolling for chat/feed UIs
+- `usePerformanceMonitor`: Performance metrics monitoring
+
+### @hua-labs/hua-ux/loaders
+
+**Translation Loaders** (import from `@hua-labs/hua-ux/loaders`):
+- `createApiTranslationLoader`: API-based translation loading with caching
+- `preloadNamespaces`: Preload translation namespaces for instant display
+- `warmFallbackLanguages`: Pre-warm fallback language translations
+- `withDefaultTranslations`: Provide default translations for offline/SSR
+
 ### @hua-labs/motion-core
 
 **Motion Hooks**:

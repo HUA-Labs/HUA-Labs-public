@@ -158,6 +158,21 @@ The theme provides these CSS variables (usable as Tailwind classes):
 - `defineConfig`: Framework configuration definition
 - `getConfig`: Get configuration
 
+### @hua-labs/hua-ux/hooks
+
+**Utility Hooks** (import from `@hua-labs/hua-ux/hooks`):
+- `useLoading`: Loading state management with delay support
+- `useAutoScroll`: Auto-scrolling for chat/feed UIs
+- `usePerformanceMonitor`: Performance metrics monitoring
+
+### @hua-labs/hua-ux/loaders
+
+**Translation Loaders** (import from `@hua-labs/hua-ux/loaders`):
+- `createApiTranslationLoader`: API-based translation loading with caching
+- `preloadNamespaces`: Preload translation namespaces for instant display
+- `warmFallbackLanguages`: Pre-warm fallback language translations
+- `withDefaultTranslations`: Provide default translations for offline/SSR
+
 ### @hua-labs/motion-core
 
 **Motion Hooks**:
@@ -172,6 +187,37 @@ The theme provides these CSS variables (usable as Tailwind classes):
 - `useLanguage`: Language change hook
 
 ## Key Patterns
+
+### 0. Available Subpath Imports
+
+```tsx
+// Framework core
+import { HuaUxPage, useMotion, fetchData } from '@hua-labs/hua-ux/framework';
+
+// UI components
+import { Button, Card } from '@hua-labs/hua-ux/ui';
+
+// i18n
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
+
+// Motion
+import { useFadeIn, useScrollReveal } from '@hua-labs/hua-ux/motion';
+
+// Utility hooks
+import { useLoading, useAutoScroll } from '@hua-labs/hua-ux/hooks';
+
+// Translation loaders (for advanced i18n setup)
+import { createApiTranslationLoader, preloadNamespaces } from '@hua-labs/hua-ux/loaders';
+
+// State management
+import { createStore } from '@hua-labs/hua-ux/state';
+
+// Formatters
+import { formatDate, formatCurrency } from '@hua-labs/hua-ux/formatters';
+
+// Utilities
+import { cn } from '@hua-labs/hua-ux/utils';
+```
 
 ### 1. Page Creation Pattern
 
