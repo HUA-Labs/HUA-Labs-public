@@ -21,12 +21,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const distDir = join(__dirname, '..', 'dist');
 
-// Only add "use client" to these specific entry points
+// Only add "use client" to ESM entry points (.mjs)
+// CJS files (.js) don't need the directive — adding it can confuse Turbopack
+// into treating CJS as ESM client components, causing "exports is not defined"
 const clientFiles = [
-  'index.js',
-  'index.cjs',
-  'framework/index.js',
-  'framework/index.cjs',
+  'index.mjs',
+  'framework/index.mjs',
 ];
 
 const USE_CLIENT = '"use client";\n';
