@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/ui",
-  "version": "2.0.0-alpha.9",
+  "version": "2.0.0-alpha.10",
   "description": "HUA Labs - Modern React UI Component Library - Beautiful, accessible, and customizable components for React applications",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -76,7 +76,11 @@
       "require": "./dist/iconsax.js"
     }
   },
-  "sideEffects": ["**/*.css", "./dist/iconsax.mjs", "./dist/iconsax.js"],
+  "sideEffects": [
+    "**/*.css",
+    "./dist/iconsax.mjs",
+    "./dist/iconsax.js"
+  ],
   "files": [
     "dist",
     "src/styles"
@@ -137,10 +141,18 @@
     "react-dom": ">=19.0.0"
   },
   "peerDependenciesMeta": {
-    "@dnd-kit/core": { "optional": true },
-    "@dnd-kit/sortable": { "optional": true },
-    "@dnd-kit/utilities": { "optional": true },
-    "@phosphor-icons/react": { "optional": true }
+    "@dnd-kit/core": {
+      "optional": true
+    },
+    "@dnd-kit/sortable": {
+      "optional": true
+    },
+    "@dnd-kit/utilities": {
+      "optional": true
+    },
+    "@phosphor-icons/react": {
+      "optional": true
+    }
   },
   "keywords": [
     "hua-labs",

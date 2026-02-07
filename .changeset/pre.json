@@ -16,8 +16,6 @@
     "@hua-labs/i18n-formatters": "1.0.0"
   },
   "changesets": [
-    "fix-use-client-directive",
-    "readme-korean-sync",
-    "sync-2026-01-14"
+    "sync-platform-phase1-3"
   ]
 }
