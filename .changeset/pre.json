@@ -18,7 +18,6 @@
   "changesets": [
     "fix-use-client-directive",
     "readme-korean-sync",
-    "sync-2026-01-14",
-    "sync-platform-phase1-3"
+    "sync-2026-01-14"
   ]
 }
