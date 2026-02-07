@@ -1,4 +1,4 @@
-import { createI18nStore } from '@hua-labs/state/integrations/i18n';
+import { createI18nStore } from '@hua-labs/hua-ux/state';
 
 export const useAppStore = createI18nStore({
   defaultLanguage: 'ko',

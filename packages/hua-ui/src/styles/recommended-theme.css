@@ -11,8 +11,12 @@
  * @example
  * // globals.css
  * @import "tailwindcss";
- * @import "@hua-labs/hua-ui/styles/recommended-theme.css";
+ * @import "@hua-labs/ui/styles/recommended-theme.css";
+ * // @custom-variant dark 자동 포함됨
  */
+
+/* 프레임워크 필수 설정 (다크모드 등) */
+@import "./base.css";
 
 /* Tailwind v4: @theme으로 색상 유틸리티 활성화 */
 @theme {
@@ -25,8 +29,8 @@
   --color-destructive-foreground: hsl(0 0% 98%);
   --color-muted: hsl(210 15% 94%);
   --color-muted-foreground: hsl(210 10% 40%);
-  --color-accent: hsl(166 60% 92%);
-  --color-accent-foreground: hsl(166 78% 25%);
+  --color-accent: hsl(226 100% 97%); /* indigo-50 */
+  --color-accent-foreground: hsl(234 89% 74%); /* indigo-400 */
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(210 10% 10%);
   --color-popover: hsl(0 0% 100%);
@@ -52,9 +56,9 @@
     --secondary: 210 15% 94%;
     --secondary-foreground: 210 10% 20%;
 
-    /* 악센트 - 밝은 틸 */
-    --accent: 166 60% 92%;
-    --accent-foreground: 166 78% 25%;
+    /* 악센트 - 인디고 */
+    --accent: 226 100% 97%; /* indigo-50 */
+    --accent-foreground: 234 89% 74%; /* indigo-400 */
 
     /* 배경/전경 */
     --background: 210 20% 98%;
@@ -110,14 +114,40 @@
     /* 마이크로 모션 */
     --hua-motion-duration: 180ms;
     --hua-motion-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   }
+
+  /* CodeBlock 신택스 하이라이팅은 별도 파일:
+   * @import '@hua-labs/ui/styles/codeblock.css';
+   */
 
   .dark {
     /* ========================================
      * 다크 모드 컬러
      * ======================================== */
 
-    /* 프라이머리 - 틸 (다크 모드) */
+    /* Tailwind v4 유틸리티 오버라이드 (bg-primary 등) */
+    --color-primary: hsl(166 70% 45%);
+    --color-primary-foreground: hsl(0 0% 100%);
+    --color-secondary: hsl(210 15% 15%);
+    --color-secondary-foreground: hsl(210 10% 90%);
+    --color-destructive: hsl(0 62% 50%);
+    --color-destructive-foreground: hsl(0 0% 98%);
+    --color-muted: hsl(210 15% 15%);
+    --color-muted-foreground: hsl(210 10% 60%);
+    --color-accent: hsl(234 89% 11%);
+    --color-accent-foreground: hsl(226 100% 94%);
+    --color-card: hsl(210 15% 9%);
+    --color-card-foreground: hsl(210 10% 95%);
+    --color-popover: hsl(210 15% 9%);
+    --color-popover-foreground: hsl(210 10% 95%);
+    --color-background: hsl(210 15% 6%);
+    --color-foreground: hsl(210 10% 95%);
+    --color-border: hsl(210 15% 18%);
+    --color-input: hsl(210 15% 18%);
+    --color-ring: hsl(166 70% 45%);
+
+    /* 레거시 CSS vars (hsl(var(--*)) 패턴) */
     --primary: 166 70% 45%;
     --primary-foreground: 0 0% 100%;
 
@@ -125,9 +155,9 @@
     --secondary: 210 15% 15%;
     --secondary-foreground: 210 10% 90%;
 
-    /* 악센트 */
-    --accent: 166 50% 20%;
-    --accent-foreground: 166 70% 60%;
+    /* 악센트 - 인디고 (다크) */
+    --accent: 234 89% 11%; /* indigo-900 */
+    --accent-foreground: 226 100% 94%; /* indigo-100 */
 
     /* 배경/전경 */
     --background: 210 15% 6%;

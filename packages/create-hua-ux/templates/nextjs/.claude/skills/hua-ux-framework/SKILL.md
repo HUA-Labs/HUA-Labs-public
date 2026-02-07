@@ -51,7 +51,7 @@ END IF
 ```tsx
 // app/my-page/page.tsx
 import { HuaUxPage } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export default function MyPage() {
   const { t } = useTranslation('my-page');
@@ -76,9 +76,9 @@ export default function MyPage() {
 // components/MyComponent.tsx
 'use client';
 
-import { Card, Button } from '@hua-labs/ui';
+import { Card, Button } from '@hua-labs/hua-ux/ui';
 import { useMotion } from '@hua-labs/hua-ux/framework';
-import { useTranslation } from '@hua-labs/i18n-core';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
 
 export function MyComponent() {
   const { t } = useTranslation('my-component');
@@ -132,6 +132,17 @@ export function MyComponent() {
 - `useMotion`: Unified motion hook
 - `useData`: Client data fetching
 - `fetchData`: Server data fetching
+
+### @hua-labs/hua-ux/hooks
+- `useLoading`: Loading state management with delay support
+- `useAutoScroll`: Auto-scrolling for chat/feed UIs
+- `usePerformanceMonitor`: Performance metrics monitoring
+
+### @hua-labs/hua-ux/loaders
+- `createApiTranslationLoader`: API-based translation loading with caching
+- `preloadNamespaces`: Preload translation namespaces
+- `warmFallbackLanguages`: Pre-warm fallback translations
+- `withDefaultTranslations`: Default translations for offline/SSR
 
 ## Configuration File
 

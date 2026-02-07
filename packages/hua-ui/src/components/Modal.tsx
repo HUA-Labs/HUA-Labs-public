@@ -21,17 +21,31 @@ import { merge } from "../lib/utils"
  * @property {string} [className] - 모달 컨테이너 추가 CSS 클래스 / Additional CSS class for modal container
  */
 export interface ModalProps {
+  /** 모달 열림/닫힘 상태 / Modal open/close state */
   isOpen: boolean
+  /** 모달 닫기 콜백 함수 / Modal close callback function */
   onClose: () => void
+  /** 모달 내용 / Modal content */
   children: React.ReactNode
+  /** 모달 크기 / Modal size */
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
+  /** 닫기 버튼 표시 여부 / Show close button */
+  closable?: boolean
+  /** @deprecated use closable instead */
   showCloseButton?: boolean
+  /** 오버레이 클릭 시 닫기 여부 / Close on overlay click */
   closeOnOverlayClick?: boolean
+  /** 모달 제목 / Modal title */
   title?: string
+  /** 모달 설명 / Modal description */
   description?: string
+  /** 배경 오버레이 표시 여부 / Show backdrop overlay */
   showBackdrop?: boolean
+  /** 배경 오버레이 추가 CSS 클래스 / Additional CSS class for backdrop */
   backdropClassName?: string
+  /** 모달을 화면 중앙에 배치할지 여부 / Center modal on screen */
   centered?: boolean
+  /** 모달 컨테이너 추가 CSS 클래스 / Additional CSS class for modal container */
   className?: string
 }
 
@@ -98,13 +112,14 @@ function useCombinedRefs<T>(...refs: (React.Ref<T> | undefined)[]): React.RefCal
  * @returns {JSX.Element} Modal 컴포넌트 / Modal component
  */
 export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
-  ({ 
+  ({
   className,
   isOpen,
   onClose,
   children,
   size = "md",
-  showCloseButton = true,
+  closable,
+  showCloseButton,
   closeOnOverlayClick = true,
   title,
   description,
@@ -112,6 +127,8 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
   backdropClassName,
   centered = true
   }, ref) => {
+  // closable과 showCloseButton 둘 다 지원 (closable 우선)
+  const _closable = closable ?? showCloseButton ?? true
   const modalRef = React.useRef<HTMLDivElement>(null)
     const combinedRef = useCombinedRefs(ref, modalRef)
 
@@ -145,14 +162,14 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     }
   }
 
-  // 모달 크기 클래스 (반응형 포함)
+  // 모달 크기 클래스 (max-w 기반, 콘텐츠에 맞게 자연스럽게 축소)
   const sizeClasses = {
-    sm: "md:w-80", // 20rem = 320px
-    md: "md:w-96", // 24rem = 384px
-    lg: "md:w-[32rem]", // 32rem = 512px
-    xl: "md:w-[38rem]", // 38rem = 608px
-    "2xl": "md:w-[50rem]", // 50rem = 800px
-    "3xl": "md:w-[72rem]" // 72rem = 1152px (더 넓게)
+    sm: "max-w-xs", // 320px
+    md: "max-w-sm", // 384px
+    lg: "max-w-md", // 448px
+    xl: "max-w-lg", // 512px
+    "2xl": "max-w-xl", // 576px
+    "3xl": "max-w-2xl" // 672px
   }
 
   // 접근성을 위한 ID 생성
@@ -181,27 +198,26 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
     >
-      {/* 배경 오버레이 */}
+      {/* 배경 오버레이 - pointer-events-none으로 클릭이 뒤로 전달됨 */}
       {showBackdrop && (
         <div className={merge(
-          "fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300",
+          "fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300 pointer-events-none",
           backdropClassName
         )} />
       )}
 
       {/* 센터링 컨테이너 */}
       <div className={merge(
-        "flex min-h-full justify-center p-4",
+        "flex h-full justify-center p-4",
         centered ? "items-center" : "items-start pt-16"
       )}>
         {/* 모달 컨테이너 */}
+        {/* CSS 변수 기반 배경색 (Tailwind v4 dark: + bg-* 충돌 우회) */}
         <div
           ref={combinedRef}
           className={merge(
-            "relative bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transform transition-all duration-300 ease-out",
-            "w-full",
-            sizeClasses[size],
-            "max-w-[calc(100vw-2rem)]"
+            "relative bg-[var(--modal-bg)] rounded-lg shadow-2xl border border-[var(--modal-border)] transform transition-all duration-300 ease-out",
+            sizeClasses[size]
           )}
           style={{
             animation: "modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
@@ -215,10 +231,10 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             <div className="flex items-center justify-between gap-4 mb-2">
               <h2 id={titleId} className="text-xl font-semibold text-gray-900 dark:text-white flex-1 min-w-0">{title}</h2>
               {/* 닫기 버튼 - 타이틀과 같은 계층의 오른쪽 끝 */}
-              {showCloseButton && (
+              {_closable && (
                 <button
                   onClick={onClose}
-                  className="flex-shrink-0 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-110 z-20"
+                  className="flex-shrink-0 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 focus-visible:ring-offset-2 z-20"
                   aria-label="닫기"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,12 +249,12 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             )}
           </div>
         )}
-        
+
         {/* 타이틀이 없을 때만 별도 닫기 버튼 */}
         {!title && showCloseButton && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-110 z-20"
+            className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-all duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 focus-visible:ring-offset-2 z-20"
             aria-label="닫기"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

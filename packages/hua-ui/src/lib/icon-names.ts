@@ -61,10 +61,19 @@ export const iconNames = [
   'clock', 'timer', 'calendar', 'calendarDays',
   
   // UI & Theme
-  'monitor', 'sun', 'moon', 'sparkles', 'lightbulb', 'brain',
+  'monitor', 'sun', 'moon', 'sparkle', 'sparkles', 'lightbulb', 'brain',
+
+  // Device & Platform
+  'globe', 'deviceMobile', 'smartphone', 'floppyDisk',
   
   // Navigation Extended
   'externalLink', 'link', 'moreHorizontal', 'moreVertical',
+
+  // Additional
+  'rocket',
+
+  // Connectivity & Misc
+  'ticket', 'clipboard', 'wifi', 'wifiOff', 'cpu', 'mask',
 ] as const
 
 /**
@@ -77,13 +86,13 @@ export const iconNames = [
  * // Phosphor 아이콘 사용
  * <Icon name="home" provider="phosphor" />  // Phosphor: House
  * 
- * // Untitled 아이콘 사용
- * <Icon name="home" provider="untitled" />  // Untitled: home
+ * // Iconsax 아이콘 사용 (requires '@hua-labs/ui/iconsax' import)
+ * <Icon name="home" provider="iconsax" />  // Iconsax: Home2
  */
 export const iconProviderMapping: Record<string, {
   lucide: string
   phosphor: string
-  untitled: string
+  iconsax?: string
 }> = PROJECT_ICONS
 
 /**
@@ -98,12 +107,12 @@ export function isValidIconName(name: string): name is AllIconName {
  */
 export function getIconNameForProvider(
   iconName: string,
-  provider: 'lucide' | 'phosphor' | 'untitled'
+  provider: 'lucide' | 'phosphor' | 'iconsax'
 ): string | null {
   const mapping = PROJECT_ICONS[iconName as keyof typeof PROJECT_ICONS]
   if (!mapping) return null
-  
-  return mapping[provider] || null
+
+  return (mapping as Record<string, string>)[provider] || null
 }
 
 

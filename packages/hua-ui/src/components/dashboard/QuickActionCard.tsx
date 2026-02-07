@@ -29,6 +29,8 @@ export interface QuickActionCardProps extends React.HTMLAttributes<HTMLAnchorEle
   variant?: "gradient" | "outline" | "solid";
   color?: Color;
   loading?: boolean;
+  /** 우측 상단 뱃지 텍스트 (예: "준비중", "Coming Soon") */
+  badge?: string;
 }
 
 
@@ -81,6 +83,7 @@ export const QuickActionCard = React.forwardRef<
       variant = "gradient",
       color = "blue",
       loading = false,
+      badge,
       className,
       ...props
     },
@@ -102,7 +105,7 @@ export const QuickActionCard = React.forwardRef<
       } else {
         // solid는 별도 처리 (정적 클래스 사용)
         const solidClasses: Record<Color, string> = {
-          blue: "text-white bg-blue-600 hover:bg-blue-700",
+          blue: "text-white bg-primary hover:bg-primary/90",
           purple: "text-white bg-purple-600 hover:bg-purple-700",
           green: "text-white bg-green-600 hover:bg-green-700",
           orange: "text-white bg-orange-600 hover:bg-orange-700",
@@ -110,6 +113,7 @@ export const QuickActionCard = React.forwardRef<
           indigo: "text-white bg-indigo-600 hover:bg-indigo-700",
           pink: "text-white bg-pink-600 hover:bg-pink-700",
           gray: "text-white bg-gray-600 hover:bg-gray-700",
+          cyan: "text-white bg-cyan-600 hover:bg-cyan-700",
         };
         return solidClasses[color];
       }
@@ -117,12 +121,20 @@ export const QuickActionCard = React.forwardRef<
 
     const baseClasses = merge(
       "rounded-2xl p-6 transition-all shadow-lg hover:shadow-xl text-center",
+      badge && "relative",
       variantClass,
       className
     );
 
     const content = (
       <>
+        {/* 뱃지 */}
+        {badge && (
+          <span className="absolute top-2 right-2 text-[10px] font-medium bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded-full">
+            {badge}
+          </span>
+        )}
+
         {/* 아이콘 */}
         {icon && (
           <div className={merge(

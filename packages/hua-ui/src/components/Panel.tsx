@@ -33,7 +33,7 @@ import { Card, CardProps } from "./Card"
  * @property {boolean} [hoverGlow=false] - 호버 시 글로우 효과 / Glow effect on hover
  * @extends {Omit<CardProps, 'variant' | 'style'>}
  */
-export interface PanelProps extends Omit<CardProps, 'variant' | 'style'> {
+export interface PanelProps extends Omit<CardProps, 'variant' | 'style' | 'padding'> {
   // 🆕 Panel 전용 고급 속성들
   style?: "default" | "solid" | "glass" | "outline" | "elevated" | "neon" | "holographic" | "cyberpunk" | "minimal" | "luxury"
   effect?: "none" | "glow" | "shadow" | "gradient" | "animated"
@@ -149,21 +149,21 @@ const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
         case "solid":
           return merge(baseClasses, "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700")
         case "glass":
-          return merge(baseClasses, "bg-white/10 backdrop-blur-md border border-white/20")
+          return merge(baseClasses, "bg-white/60 dark:bg-white/10 backdrop-blur-md border border-gray-200/50 dark:border-white/20")
         case "outline":
           return merge(baseClasses, "bg-transparent border border-gray-300 dark:border-gray-600")
         case "elevated":
           return merge(baseClasses, "bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700")
         case "neon":
-          return merge(baseClasses, "bg-gray-900 border border-cyan-400/30 shadow-lg shadow-cyan-400/20")
+          return merge(baseClasses, "bg-gray-50 dark:bg-gray-900 border border-cyan-300/30 dark:border-cyan-400/30 shadow-lg shadow-cyan-200/20 dark:shadow-cyan-400/20")
         case "holographic":
           return merge(baseClasses, "bg-gradient-to-br from-white/20 via-purple-500/20 to-cyan-500/20 backdrop-blur-sm border border-white/30")
         case "cyberpunk":
-          return merge(baseClasses, "bg-gray-900 border-2 border-pink-500 shadow-lg shadow-pink-500/30")
+          return merge(baseClasses, "bg-white dark:bg-gray-900 border-2 border-pink-400 dark:border-pink-500 shadow-lg shadow-pink-300/30 dark:shadow-pink-500/30")
         case "minimal":
-          return merge(baseClasses, "bg-white border border-gray-200 shadow-sm")
+          return merge(baseClasses, "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm")
         case "luxury":
-          return merge(baseClasses, "bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-xl")
+          return merge(baseClasses, "bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-amber-950 dark:to-yellow-950 border border-amber-200 dark:border-amber-800 shadow-xl")
         default:
           return merge(baseClasses, "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700")
       }
@@ -173,11 +173,11 @@ const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
     const effectClasses = React.useMemo(() => {
       switch (effect) {
         case "glow":
-          return "shadow-2xl shadow-blue-500/20 dark:shadow-cyan-400/20"
+          return "shadow-2xl shadow-indigo-500/20 dark:shadow-cyan-400/20"
         case "shadow":
           return "shadow-xl"
         case "gradient":
-          return "bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-cyan-500/10"
+          return "bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-cyan-500/10"
         case "animated":
           return "animate-pulse"
         default:
@@ -292,7 +292,7 @@ const Panel = React.forwardRef<HTMLDivElement, PanelProps>(
       }
       
       if (hoverGlow) {
-        classes.push("hover:shadow-2xl hover:shadow-blue-500/30")
+        classes.push("hover:shadow-2xl hover:shadow-cyan-500/30")
       }
       
       return classes.join(" ")

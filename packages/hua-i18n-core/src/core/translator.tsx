@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 export interface TranslatorInterface {
-  translate(key: string, language?: string): string;
+  translate(key: string, paramsOrLang?: Record<string, unknown> | string, language?: string): string;
   setLanguage(lang: string): void;
   getCurrentLanguage(): string;
   initialize(): Promise<void>;
@@ -147,9 +147,6 @@ export class Translator implements TranslatorInterface {
       // initialTranslations가 있으면 초기화 완료로 간주 (SSR에서 이미 로드됨)
       // 이렇게 하면 초기화 전 상태에서도 번역을 사용할 수 있음
       this.isInitialized = true;
-      if (this.config.debug) {
-        console.log('✅ [TRANSLATOR] Initial translations loaded from SSR, marked as initialized:', this.loadedNamespaces);
-      }
     }
   }
 
@@ -374,12 +371,23 @@ export class Translator implements TranslatorInterface {
   /**
    * 번역 키를 번역된 텍스트로 변환
    */
-  translate(key: string, language?: string): string {
-    const targetLang = language || this.currentLang;
+  translate(key: string, paramsOrLang?: Record<string, unknown> | string, language?: string): string {
+    // 두 번째 인자 타입으로 분기
+    let params: Record<string, unknown> | undefined;
+    let targetLang: string;
+    if (typeof paramsOrLang === 'string') {
+      targetLang = paramsOrLang;
+    } else if (typeof paramsOrLang === 'object' && paramsOrLang !== null) {
+      params = paramsOrLang;
+      targetLang = language || this.currentLang;
+    } else {
+      targetLang = this.currentLang;
+    }
 
     // 초기화되지 않은 경우 처리
     if (!this.isInitialized) {
-      return this.translateBeforeInitialized(key, targetLang);
+      const raw = this.translateBeforeInitialized(key, targetLang);
+      return params ? this.interpolate(raw, params) : raw;
     }
 
     const { namespace, key: actualKey } = this.parseKey(key);
@@ -388,28 +396,29 @@ export class Translator implements TranslatorInterface {
     let result: string | null = this.findInNamespace(namespace, actualKey, targetLang);
     if (result) {
       this.cacheStats.hits++;
-      return result;
+      return params ? this.interpolate(result, params) : result;
     }
-    
+
     // 2단계: 다른 로드된 언어에서 찾기 (언어 변경 중 깜빡임 방지)
     result = this.findInOtherLanguages(namespace, actualKey, targetLang);
     if (result) {
-      return result;
+      return params ? this.interpolate(result, params) : result;
     }
 
     // 3단계: 폴백 언어에서 찾기
     result = this.findInFallbackLanguage(namespace, actualKey, targetLang);
     if (result) {
-      return result;
+      return params ? this.interpolate(result, params) : result;
     }
 
     // 모든 단계에서 찾지 못한 경우
     this.cacheStats.misses++;
-    
+
     if (this.config.debug) {
-      return this.config.missingKeyHandler?.(key, targetLang, namespace) || key;
+      const missing = this.config.missingKeyHandler?.(key, targetLang, namespace) || key;
+      return params ? this.interpolate(missing, params) : missing;
     }
-    
+
     // 프로덕션에서는 빈 문자열 반환 (미싱 키 노출 방지)
     return '';
   }
@@ -444,11 +453,17 @@ export class Translator implements TranslatorInterface {
     if (this.isStringValue(directValue)) {
       return directValue;
     }
+    if (this.isStringArray(directValue)) {
+      return directValue[Math.floor(Math.random() * directValue.length)];
+    }
 
     // 중첩 키 매칭 (예: "user.profile.name")
     const nestedValue = this.getNestedValue(translations, key);
     if (this.isStringValue(nestedValue)) {
       return nestedValue;
+    }
+    if (this.isStringArray(nestedValue)) {
+      return nestedValue[Math.floor(Math.random() * nestedValue.length)];
     }
 
     if (this.config.debug) {
@@ -459,6 +474,7 @@ export class Translator implements TranslatorInterface {
 
   /**
    * 중첩된 객체에서 값을 가져오기
+   * 배열도 지원: 최종 값이 string[]이면 그대로 반환
    */
   private getNestedValue(obj: unknown, path: string): unknown {
     if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
@@ -466,7 +482,12 @@ export class Translator implements TranslatorInterface {
     }
 
     return path.split('.').reduce((current: unknown, key: string) => {
-      if (current && typeof current === 'object' && !Array.isArray(current) && key in current) {
+      if (current == null) return undefined;
+      if (Array.isArray(current)) {
+        const idx = Number(key);
+        return Number.isInteger(idx) ? current[idx] : undefined;
+      }
+      if (typeof current === 'object' && key in (current as Record<string, unknown>)) {
         return (current as Record<string, unknown>)[key];
       }
       return undefined;
@@ -478,6 +499,14 @@ export class Translator implements TranslatorInterface {
    */
   private isStringValue(value: unknown): value is string {
     return typeof value === 'string' && value.length > 0;
+  }
+
+  /**
+   * string[] 배열인지 확인하는 타입 가드
+   * 배열 값이 t()에 전달되면 랜덤으로 하나를 선택하여 반환
+   */
+  private isStringArray(value: unknown): value is string[] {
+    return Array.isArray(value) && value.length > 0 && value.every(v => typeof v === 'string');
   }
 
   /**
@@ -530,9 +559,14 @@ export class Translator implements TranslatorInterface {
 
   /**
    * 매개변수 보간
+   *
+   * 지원 형식:
+   * - {key} - 단일 중괄호 (일반적인 i18n 형식)
+   * - {{key}} - 이중 중괄호 (하위 호환성)
    */
   private interpolate(text: string, params: Record<string, unknown>): string {
-    return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    // 단일 중괄호 {key} 또는 이중 중괄호 {{key}} 모두 지원
+    return text.replace(/\{\{?(\w+)\}?\}/g, (match, key) => {
       const value = params[key];
       return value !== undefined ? String(value) : match;
     });
@@ -540,15 +574,10 @@ export class Translator implements TranslatorInterface {
 
   /**
    * 매개변수가 있는 번역
+   * @deprecated Use translate(key, params, language) instead
    */
   translateWithParams(key: string, params?: Record<string, unknown>, language?: string): string {
-    const translated = this.translate(key, language);
-
-    if (!params) {
-      return translated;
-    }
-
-    return this.interpolate(translated, params);
+    return this.translate(key, params, language);
   }
 
   /**

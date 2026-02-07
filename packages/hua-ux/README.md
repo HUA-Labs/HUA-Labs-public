@@ -236,14 +236,36 @@ For monorepo setups with workspace packages:
 
 ### Entry Points
 
-hua-ux provides the following entry points:
+hua-ux provides 15 entry points for granular imports and optimal bundle size:
 
 | Entry | Path | Description |
 |-------|------|-------------|
 | Core | `@hua-labs/hua-ux` | All UI, Motion, i18n, and State components (re-exports) |
 | Framework | `@hua-labs/hua-ux/framework` | Framework layer with automatic provider setup |
+| Framework Shared | `@hua-labs/hua-ux/framework/shared` | Shared framework utilities |
+| Framework Server | `@hua-labs/hua-ux/framework/server` | Server-side utilities |
+| Framework Config | `@hua-labs/hua-ux/framework/config` | Configuration utilities |
 | Presets | `@hua-labs/hua-ux/presets` | Pre-configured presets (product, marketing) |
 | GEO | `@hua-labs/hua-ux/framework/seo/geo` | Generative Engine Optimization utilities |
+| UI | `@hua-labs/hua-ux/ui` | UI components only |
+| Motion | `@hua-labs/hua-ux/motion` | Motion hooks only |
+| i18n | `@hua-labs/hua-ux/i18n` | Internationalization only |
+| State | `@hua-labs/hua-ux/state` | State management only |
+| Hooks | `@hua-labs/hua-ux/hooks` | Utility hooks (useLoading, useAutoScroll, etc.) |
+| Loaders | `@hua-labs/hua-ux/loaders` | Translation loaders with caching |
+| Formatters | `@hua-labs/hua-ux/formatters` | Date, number, currency formatters |
+| Utils | `@hua-labs/hua-ux/utils` | Utility functions (cn, merge, etc.) |
+
+```tsx
+// Import everything from core
+import { Button, useFadeIn, useTranslation } from '@hua-labs/hua-ux';
+
+// Or use granular subpath imports for smaller bundles
+import { useFadeIn, useSlideUp } from '@hua-labs/hua-ux/motion';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
+import { useLoading } from '@hua-labs/hua-ux/hooks';
+import { formatDate } from '@hua-labs/hua-ux/formatters';
+```
 
 ### Core Packages
 
@@ -273,6 +295,15 @@ hua-ux includes the following packages:
   - Zustand-based state management
   - SSR/Persistence support
   - i18n integration ready
+
+- **`@hua-labs/hooks`** - Utility hooks
+  - `useLoading`, `useAutoScroll`, `usePerformanceMonitor`
+
+- **`@hua-labs/utils`** - Utility functions
+  - Class merging, formatters, validation, sanitization
+
+- **`@hua-labs/i18n-formatters`** - Formatters
+  - Date, number, currency, relative time formatters
 
 ### Framework Layer
 
@@ -423,6 +454,9 @@ For detailed GEO usage, see [Framework Layer Documentation](./src/framework/READ
 - [`@hua-labs/ui`](../hua-ui/README.md) - UI component library
 - [`@hua-labs/motion-core`](../hua-motion-core/README.md) - Animation hooks
 - [`@hua-labs/i18n-core`](../hua-i18n-core/README.md) - Internationalization core
+- [`@hua-labs/hooks`](../hua-hooks/README.md) - Utility hooks
+- [`@hua-labs/utils`](../hua-utils/README.md) - Utility functions
+- [`@hua-labs/i18n-formatters`](../hua-i18n-formatters/README.md) - Formatters
 - [`create-hua-ux`](../create-hua-ux/README.md) - Project scaffolding tool
 
 ### Requirements
@@ -653,14 +687,36 @@ Tailwind CSS v4를 사용하는 경우, UI 패키지 클래스를 스캔하도�
 
 ### 진입점
 
-hua-ux는 다음 진입점을 제공합니다:
+hua-ux는 세분화된 import와 번들 크기 최적화를 위해 15개의 진입점을 제공합니다:
 
 | 진입점 | 경로 | 설명 |
 |--------|------|------|
 | Core | `@hua-labs/hua-ux` | 모든 UI, Motion, i18n, State 컴포넌트 (re-export) |
 | Framework | `@hua-labs/hua-ux/framework` | 자동 Provider 설정이 있는 프레임워크 레이어 |
+| Framework Shared | `@hua-labs/hua-ux/framework/shared` | 공유 프레임워크 유틸리티 |
+| Framework Server | `@hua-labs/hua-ux/framework/server` | 서버사이드 유틸리티 |
+| Framework Config | `@hua-labs/hua-ux/framework/config` | 설정 유틸리티 |
 | Presets | `@hua-labs/hua-ux/presets` | 사전 구성된 프리셋 (product, marketing) |
 | GEO | `@hua-labs/hua-ux/framework/seo/geo` | 생성형 엔진 최적화 유틸리티 |
+| UI | `@hua-labs/hua-ux/ui` | UI 컴포넌트만 |
+| Motion | `@hua-labs/hua-ux/motion` | Motion 훅만 |
+| i18n | `@hua-labs/hua-ux/i18n` | 국제화만 |
+| State | `@hua-labs/hua-ux/state` | 상태 관리만 |
+| Hooks | `@hua-labs/hua-ux/hooks` | 유틸리티 훅 (useLoading, useAutoScroll 등) |
+| Loaders | `@hua-labs/hua-ux/loaders` | 캐싱이 있는 번역 로더 |
+| Formatters | `@hua-labs/hua-ux/formatters` | 날짜, 숫자, 통화 포맷터 |
+| Utils | `@hua-labs/hua-ux/utils` | 유틸리티 함수 (cn, merge 등) |
+
+```tsx
+// 코어에서 모든 것을 import
+import { Button, useFadeIn, useTranslation } from '@hua-labs/hua-ux';
+
+// 또는 세분화된 서브경로 import로 더 작은 번들
+import { useFadeIn, useSlideUp } from '@hua-labs/hua-ux/motion';
+import { useTranslation } from '@hua-labs/hua-ux/i18n';
+import { useLoading } from '@hua-labs/hua-ux/hooks';
+import { formatDate } from '@hua-labs/hua-ux/formatters';
+```
 
 ### 핵심 패키지
 
@@ -690,6 +746,15 @@ hua-ux는 다음 패키지를 포함합니다:
   - Zustand 기반 상태 관리
   - SSR/지속성 지원
   - i18n 통합 준비
+
+- **`@hua-labs/hooks`** - 유틸리티 훅
+  - `useLoading`, `useAutoScroll`, `usePerformanceMonitor`
+
+- **`@hua-labs/utils`** - 유틸리티 함수
+  - 클래스 병합, 포맷터, 유효성 검사, 새니타이징
+
+- **`@hua-labs/i18n-formatters`** - 포맷터
+  - 날짜, 숫자, 통화, 상대 시간 포맷터
 
 ### 프레임워크 레이어
 
@@ -840,6 +905,9 @@ export default defineConfig({
 - [`@hua-labs/ui`](../hua-ui/README.md) - UI 컴포넌트 라이브러리
 - [`@hua-labs/motion-core`](../hua-motion-core/README.md) - 애니메이션 훅
 - [`@hua-labs/i18n-core`](../hua-i18n-core/README.md) - 국제화 핵심
+- [`@hua-labs/hooks`](../hua-hooks/README.md) - 유틸리티 훅
+- [`@hua-labs/utils`](../hua-utils/README.md) - 유틸리티 함수
+- [`@hua-labs/i18n-formatters`](../hua-i18n-formatters/README.md) - 포맷터
 - [`create-hua-ux`](../create-hua-ux/README.md) - 프로젝트 스캐폴딩 도구
 
 ### 요구사항

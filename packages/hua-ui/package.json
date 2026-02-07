@@ -21,11 +21,6 @@
       "import": "./dist/advanced-dashboard.mjs",
       "require": "./dist/advanced-dashboard.js"
     },
-    "./advanced/motion": {
-      "types": "./dist/advanced-motion.d.ts",
-      "import": "./dist/advanced-motion.mjs",
-      "require": "./dist/advanced-motion.js"
-    },
     "./form": {
       "types": "./dist/form.d.ts",
       "import": "./dist/form.mjs",
@@ -41,30 +36,53 @@
       "import": "./dist/feedback.mjs",
       "require": "./dist/feedback.js"
     },
+    "./overlay": {
+      "types": "./dist/overlay.d.ts",
+      "import": "./dist/overlay.mjs",
+      "require": "./dist/overlay.js"
+    },
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.mjs",
+      "require": "./dist/data.js"
+    },
+    "./interactive": {
+      "types": "./dist/interactive.d.ts",
+      "import": "./dist/interactive.mjs",
+      "require": "./dist/interactive.js"
+    },
     "./sdui": {
       "types": "./dist/sdui.d.ts",
       "import": "./dist/sdui.mjs",
       "require": "./dist/sdui.js"
     },
-    "./components/*": {
-      "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.mjs",
-      "require": "./dist/components/*.js"
-    },
-    "./components/advanced/*": {
-      "types": "./dist/components/advanced/*.d.ts",
-      "import": "./dist/components/advanced/*.mjs",
-      "require": "./dist/components/advanced/*.js"
-    },
+    "./styles/base.css": "./src/styles/base.css",
     "./styles/toast.css": "./src/styles/toast.css",
-    "./styles/recommended-theme.css": "./src/styles/recommended-theme.css"
+    "./styles/codeblock.css": "./src/styles/codeblock.css",
+    "./styles/recommended-theme.css": "./src/styles/recommended-theme.css",
+    "./icons": {
+      "types": "./src/components/icons/index.ts",
+      "import": "./src/components/icons/index.ts",
+      "require": "./src/components/icons/index.ts"
+    },
+    "./icons-bold": {
+      "types": "./src/components/icons-bold/index.ts",
+      "import": "./src/components/icons-bold/index.ts",
+      "require": "./src/components/icons-bold/index.ts"
+    },
+    "./iconsax": {
+      "types": "./dist/iconsax.d.ts",
+      "import": "./dist/iconsax.mjs",
+      "require": "./dist/iconsax.js"
+    }
   },
+  "sideEffects": ["**/*.css", "./dist/iconsax.mjs", "./dist/iconsax.js"],
   "files": [
     "dist",
     "src/styles"
   ],
   "scripts": {
-    "build": "pnpm exec tsup && pnpm exec tsc --emitDeclarationOnly && node scripts/add-use-client.js",
+    "build": "pnpm exec tsup && pnpm exec tsc --emitDeclarationOnly",
     "build:watch": "pnpm exec tsup --watch",
     "dev": "pnpm exec tsup --watch",
     "clean": "rm -rf dist",
@@ -86,6 +104,9 @@
     "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^9.39.1",
     "@phosphor-icons/react": "^2.1.10",
     "@testing-library/react": "^16.3.0",
@@ -108,10 +129,18 @@
     "vitest": "^4.0.14"
   },
   "peerDependencies": {
-    "@hua-labs/motion-core": "^2.1.0-alpha.4",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@phosphor-icons/react": "*",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@dnd-kit/core": { "optional": true },
+    "@dnd-kit/sortable": { "optional": true },
+    "@dnd-kit/utilities": { "optional": true },
+    "@phosphor-icons/react": { "optional": true }
   },
   "keywords": [
     "hua-labs",
@@ -136,5 +165,9 @@
   "bugs": {
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
-  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme"
+  "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }

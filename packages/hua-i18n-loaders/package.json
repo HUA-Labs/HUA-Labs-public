@@ -3,6 +3,7 @@
   "version": "1.1.0-alpha.8",
   "description": "Production-ready loaders, caching, and preloading helpers for @hua-labs/i18n-core.",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
@@ -10,20 +11,20 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
+  "sideEffects": false,
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "test": "echo \"No tests defined\"",
     "lint": "echo 'Skipping lint for hua-i18n-loaders (TypeScript only, linted by tsc)'",
     "type-check": "tsc --noEmit"
   },
-  "sideEffects": false,
   "dependencies": {
     "@hua-labs/i18n-core": "workspace:*"
   },
@@ -35,6 +36,7 @@
     "@types/react": "^19.2.7",
     "eslint": "^9.39.1",
     "react": "^19.2.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
   "keywords": [

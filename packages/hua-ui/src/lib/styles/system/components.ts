@@ -124,7 +124,7 @@ function createButtonVariantStyle(
       return "bg-[var(--color-destructive)] text-[var(--color-destructive-foreground)] hover:opacity-90";
 
     case "outline":
-      return "border-2 border-[var(--color-input)] bg-transparent text-[var(--color-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-foreground)]";
+      return "border-2 border-[var(--color-border)] bg-transparent text-[var(--color-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-foreground)]";
 
     case "secondary":
       return "bg-[var(--color-secondary)] text-[var(--color-secondary-foreground)] hover:opacity-80";
@@ -159,11 +159,12 @@ function createButtonVariantStyle(
  * @returns Size 클래스 문자열
  */
 function createButtonSizeStyle(size: ButtonSize): string {
+  // 버튼 패딩 비율: X:Y = 2:1 ~ 3:1, 4px 배수 기준
   const sizeMap: Record<ButtonSize, string> = {
-    sm: "h-8 px-3 py-1 text-sm",
-    md: "h-10 px-4 py-2 text-base",
-    lg: "h-12 px-6 py-3 text-lg",
-    xl: "h-14 px-8 py-4 text-xl",
+    sm: "h-8 px-4 py-2 text-sm",        // 16:8 = 2:1
+    md: "h-10 px-6 py-2 text-base",     // 24:8 = 3:1
+    lg: "h-12 px-8 py-3 text-lg",       // 32:12 = 2.7:1
+    xl: "h-14 px-10 py-4 text-xl",      // 40:16 = 2.5:1
     icon: "h-10 w-10 p-0",
   };
 
@@ -181,16 +182,16 @@ function createButtonFocusStyle(
   variant: ButtonVariant,
   _theme: Theme
 ): string {
-  const baseFocus = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
+  const baseFocus = "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
 
   switch (variant) {
     case "destructive":
-      return "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-destructive)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
+      return "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-destructive)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]";
 
     case "outline":
     case "ghost":
     case "link":
-      return "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-0";
+      return "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-0";
 
     default:
       return baseFocus;

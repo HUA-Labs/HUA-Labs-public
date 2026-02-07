@@ -10,6 +10,8 @@
  */
 @import "@hua-labs/ui/styles/recommended-theme.css";
 
+/* @custom-variant dark 는 recommended-theme.css에서 자동 포함됨 */
+
 /* Custom CSS animations for WelcomePage */
 @keyframes fadeIn {
   from { opacity: 0; }

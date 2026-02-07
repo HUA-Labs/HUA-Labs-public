@@ -32,10 +32,10 @@ Open-source React development tools for production applications.
   - Modular entry points
 
 **Animation**
-- **[@hua-labs/motion-core](./packages/hua-motion-core)** - 30+ performance-optimized animation hooks
+- **[@hua-labs/motion-core](./packages/hua-motion-core)** - 28+ performance-optimized animation hooks
   - Zero dependencies, ref-based engine
   - SSR-compatible for Next.js and Remix
-  - Consistent 60fps animations
+  - Sensor hooks: useInView, useMouse, useReducedMotion, useWindowSize
 
 **Internationalization**
 - **[@hua-labs/i18n-core](./packages/hua-i18n-core)** - Zero-flicker i18n with SSR support
@@ -52,6 +52,11 @@ Open-source React development tools for production applications.
   - Automatic hydration handling
   - Built-in localStorage persistence
   - i18n store integration
+
+**Utilities**
+- **[@hua-labs/hooks](./packages/hua-hooks)** - Utility hooks (useLoading, useAutoScroll, usePerformanceMonitor)
+- **[@hua-labs/utils](./packages/hua-utils)** - Utility functions (cn, merge, formatters, validation)
+- **[@hua-labs/i18n-formatters](./packages/hua-i18n-formatters)** - Date, number, currency formatters
 
 ---
 

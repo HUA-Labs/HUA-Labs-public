@@ -241,16 +241,18 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     setTimeout(() => onRemove(toast.id), 300)
   }
 
+  // CSS 변수 기반 배경색 (Tailwind v4 dark: variant + bg-color 충돌 우회)
+  // 앱에서 --toast-*-bg 변수 정의 필요
   const getToastStyles = (type: Toast["type"]) => {
     switch (type) {
       case "success":
-        return "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200"
+        return "bg-[var(--toast-success-bg)] border-green-300 dark:border-green-700 text-green-800 dark:text-green-200 shadow-lg shadow-green-100/50 dark:shadow-none"
       case "error":
-        return "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
+        return "bg-[var(--toast-error-bg)] border-red-300 dark:border-red-700 text-red-800 dark:text-red-200 shadow-lg shadow-red-100/50 dark:shadow-none"
       case "warning":
-        return "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-200"
+        return "bg-[var(--toast-warning-bg)] border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200 shadow-lg shadow-yellow-100/50 dark:shadow-none"
       case "info":
-        return "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200"
+        return "bg-[var(--toast-info-bg)] border-indigo-300 dark:border-indigo-700 text-cyan-800 dark:text-cyan-200 shadow-lg shadow-indigo-100/50 dark:shadow-none"
     }
   }
 
@@ -263,7 +265,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
       case "warning":
         return "text-yellow-500 dark:text-yellow-400"
       case "info":
-        return "text-blue-500 dark:text-blue-400"
+        return "text-cyan-500 dark:text-cyan-400"
     }
   }
 
@@ -299,7 +301,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
   return (
     <div
       className={merge(
-        "flex items-start p-4 rounded-xl border shadow-lg backdrop-blur-sm transition-all duration-300 transform",
+        "flex items-start p-4 rounded-xl border backdrop-blur-sm transition-all duration-300 transform",
         getToastStyles(toast.type),
         isVisible
           ? "translate-x-0 opacity-100 scale-100"
@@ -341,7 +343,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
         <button
           onClick={handleRemove}
           className={merge(
-            "inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5",
+            "inline-flex rounded-md p-1.5 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-white/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-2",
             getIconStyles(toast.type)
           )}
           aria-label="닫기"

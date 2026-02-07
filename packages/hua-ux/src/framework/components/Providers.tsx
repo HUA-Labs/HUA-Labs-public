@@ -13,7 +13,7 @@ import { getConfig } from '../config';
 import { createZustandI18n, type ZustandLanguageStore } from '@hua-labs/i18n-core-zustand';
 import { createI18nStore, type UseBoundStore, type StoreApi } from '@hua-labs/state';
 import { BrandingProvider } from '../branding/context';
-import { IconProvider } from '@hua-labs/ui';
+import { IconProvider, ToastProvider } from '@hua-labs/ui';
 
 /**
  * 언어 코드 배열을 LanguageConfig 배열로 변환
@@ -62,6 +62,18 @@ function createProviders(config: HuaUxConfig) {
     ));
   }
 
+  // Toast Provider (기본값 적용)
+  // Toast Provider (with defaults)
+  const toastConfig = config.toast || {};
+  providers.push(({ children }) => (
+    <ToastProvider
+      position={toastConfig.position || 'top-right'}
+      maxToasts={toastConfig.maxToasts || 5}
+    >
+      {children}
+    </ToastProvider>
+  ));
+
   // Icon Provider (기본값 적용)
   // Icon Provider (with defaults)
   const iconConfig = config.icons || {};
@@ -79,12 +91,14 @@ function createProviders(config: HuaUxConfig) {
 
   // i18n Provider
   if (config.i18n) {
-    const i18nStore = createI18nStore({
-      defaultLanguage: config.i18n.defaultLanguage,
-      supportedLanguages: config.i18n.supportedLanguages,
-      persist: config.state?.persist ?? true,
-      ssr: config.state?.ssr ?? true,
-    });
+    const i18nStore =
+      config.i18n.languageStore ??
+      createI18nStore({
+        defaultLanguage: config.i18n.defaultLanguage,
+        supportedLanguages: config.i18n.supportedLanguages,
+        persist: config.state?.persist ?? true,
+        ssr: config.state?.ssr ?? true,
+      });
 
     // Type assertion: I18nStoreState extends ZustandLanguageStore, so this is safe
     const I18nProvider = createZustandI18n(
@@ -99,6 +113,7 @@ function createProviders(config: HuaUxConfig) {
         debug: config.i18n.debug,
         initialTranslations: config.i18n.initialTranslations,
         supportedLanguages: config.i18n.supportedLanguages,
+        storageKey: config.i18n.storageKey,
       }
     );
 

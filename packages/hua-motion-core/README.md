@@ -23,7 +23,7 @@ A collection of React animation hooks built on a ref-based engine. Provides smoo
 
 ### Features
 
-- **25+ Animation Hooks** - Fade, slide, scale, scroll, and interaction animations
+- **28+ Animation Hooks** - Fade, slide, scale, scroll, interaction, and sensor hooks
 - **Performance Optimized** - Direct ref manipulation for consistent performance
 - **Zero Dependencies** - Pure JavaScript motion engine
 - **TypeScript Native** - Full type safety with inferred types
@@ -86,6 +86,12 @@ function MyComponent() {
 - `useScrollReveal` - Scroll-triggered reveal animations
 - `useScrollProgress` - Scroll progress tracking
 
+#### Sensor / Observer Hooks
+- `useInView` - Intersection Observer wrapper
+- `useMouse` - Mouse position tracking
+- `useReducedMotion` - Reduced motion preference detection
+- `useWindowSize` - Window size tracking
+
 #### Utility Hooks
 - `useMotionState` - Motion state management
 - `useRepeat` - Repeating animations
@@ -137,7 +143,7 @@ ref 기반 엔진으로 구축된 React 애니메이션 훅 컬렉션입니다. 
 
 ### 주요 기능
 
-- **25개 이상의 애니메이션 훅** - 페이드, 슬라이드, 스케일, 스크롤 및 상호작용 애니메이션
+- **28개 이상의 애니메이션 훅** - 페이드, 슬라이드, 스케일, 스크롤, 상호작용 및 센서 훅
 - **성능 최적화** - 일관된 성능을 위한 직접 ref 조작
 - **의존성 없음** - 순수 JavaScript 모션 엔진
 - **TypeScript 네이티브** - 타입 추론을 통한 완전한 타입 안전성
@@ -205,6 +211,12 @@ function MyComponent() {
 #### 스크롤 훅
 - `useScrollReveal` - 스크롤 트리거 리빌 애니메이션
 - `useScrollProgress` - 스크롤 진행률 추적
+
+#### 센서 / 옵저버 훅
+- `useInView` - Intersection Observer 래퍼
+- `useMouse` - 마우스 위치 추적
+- `useReducedMotion` - 모션 감소 설정 감지
+- `useWindowSize` - 윈도우 크기 추적
 
 #### 유틸리티 훅
 - `useMotionState` - 모션 상태 관리
