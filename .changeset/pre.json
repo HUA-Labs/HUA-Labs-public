@@ -15,7 +15,6 @@
     "@hua-labs/i18n-formatters": "1.0.0"
   },
   "changesets": [
-    "docs-skeleton-fix",
-    "sync-platform-phase1-3"
+    "cva-phase5-sync"
   ]
 }

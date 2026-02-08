@@ -1,5 +1,18 @@
 # @hua-labs/i18n-loaders
 
+## 1.1.0-alpha.11
+
+### Patch Changes
+
+- CVA Phase 5 migration, README standardization, Skeleton fix
+
+  **hua-ui**: Full CVA migration (73+ components), new advanced components (AnimatedGradient, Carousel, GlowCard, etc.), emotion analysis components, blog editor
+
+  **All packages**: Bilingual README standardization, Skeleton rendering fix (#411)
+
+- Updated dependencies
+  - @hua-labs/i18n-core@1.1.0-alpha.9
+
 ## 1.1.0-alpha.10
 
 ### Patch Changes
