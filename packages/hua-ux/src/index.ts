@@ -93,6 +93,7 @@ export {
 
 // Re-export advanced UI components (LanguageToggle, Emotion*, Scrollbar, etc.)
 // Note: Using explicit exports to avoid naming conflicts with main exports
+// Note: Split into sub-entries to avoid pulling @dnd-kit via Kanban chunk
 export {
   // Advanced Specialized components
   Bookmark,
@@ -108,7 +109,10 @@ export {
   FeatureCard,
   HeroSection,
   InfoCard,
-  // Dashboard components
+} from '@hua-labs/ui/advanced'
+
+// Dashboard components — dedicated sub-entry (avoids Kanban/@dnd-kit)
+export {
   SectionHeader,
   StatsPanel,
   SummaryCard,
@@ -117,10 +121,13 @@ export {
   BarChart,
   MiniBarChart,
   TrendChart,
-  // Motion components
+} from '@hua-labs/ui/advanced/dashboard'
+
+// Motion components — dedicated sub-entry
+export {
   AdvancedPageTransition,
   usePageTransitionManager,
-} from '@hua-labs/ui/advanced'
+} from '@hua-labs/ui/advanced/motion'
 
 // Override Button and Card with branded versions for automatic branding
 // When branding is configured, these components automatically use branding colors
