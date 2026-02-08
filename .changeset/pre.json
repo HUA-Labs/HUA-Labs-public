@@ -15,7 +15,6 @@
     "@hua-labs/hua-ux": "0.1.0-alpha.21"
   },
   "changesets": [
-    "fix-dndkit-chunk",
-    "fix-zustand-peer-dep"
+    "fix-publish-workspace"
   ]
 }
