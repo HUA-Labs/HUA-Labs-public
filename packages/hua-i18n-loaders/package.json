@@ -26,7 +26,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@hua-labs/i18n-core": "1.1.0"
+    "@hua-labs/i18n-core": "workspace:^"
   },
   "peerDependencies": {
     "react": ">=19.0.0"
