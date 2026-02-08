@@ -3,7 +3,7 @@
 @import '../../../../packages/hua-ui/src/styles/toast.css';
 
 /* 프레임워크 필수 설정 (다크모드 등) */
-@import "@hua-labs/ui/styles/base.css";
+@import '../../../../packages/hua-ui/src/styles/base.css';
 
 /* Tailwind v4: 테마 색상 정의 — Teal 기본 */
 @theme {
