@@ -1,5 +1,15 @@
 # @hua-labs/ui
 
+## 2.0.0
+
+### Patch Changes
+
+- 34dcb5c: CVA Phase 5 migration, README standardization, Skeleton fix
+
+  **hua-ui**: Full CVA migration (73+ components), new advanced components (AnimatedGradient, Carousel, GlowCard, etc.), emotion analysis components, blog editor
+
+  **All packages**: Bilingual README standardization, Skeleton rendering fix (#411)
+
 ## 2.0.0-alpha.12
 
 ### Patch Changes

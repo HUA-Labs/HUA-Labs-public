@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.0
+
+### Patch Changes
+
+- 34dcb5c: CVA Phase 5 migration, README standardization, Skeleton fix
+
+  **hua-ui**: Full CVA migration (73+ components), new advanced components (AnimatedGradient, Carousel, GlowCard, etc.), emotion analysis components, blog editor
+
+  **All packages**: Bilingual README standardization, Skeleton rendering fix (#411)
+
+- Updated dependencies [34dcb5c]
+  - @hua-labs/ui@2.0.0
+  - @hua-labs/motion-core@2.1.0
+  - @hua-labs/state@1.0.0
+  - @hua-labs/i18n-core@1.1.0
+  - @hua-labs/i18n-core-zustand@2.0.0
+  - @hua-labs/i18n-loaders@1.1.0
+  - @hua-labs/hooks@1.1.0
+  - @hua-labs/utils@1.1.0
+  - @hua-labs/i18n-formatters@1.1.0
+
 ## 0.1.0-alpha.21
 
 ### Patch Changes
