@@ -9,52 +9,62 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "default": "./dist/index.mjs"
     },
     "./advanced": {
       "types": "./dist/advanced.d.ts",
       "import": "./dist/advanced.mjs",
-      "require": "./dist/advanced.js"
+      "default": "./dist/advanced.mjs"
     },
     "./advanced/dashboard": {
       "types": "./dist/advanced-dashboard.d.ts",
       "import": "./dist/advanced-dashboard.mjs",
-      "require": "./dist/advanced-dashboard.js"
+      "default": "./dist/advanced-dashboard.mjs"
+    },
+    "./advanced/motion": {
+      "types": "./dist/advanced-motion.d.ts",
+      "import": "./dist/advanced-motion.mjs",
+      "default": "./dist/advanced-motion.mjs"
+    },
+    "./advanced/emotion": {
+      "types": "./dist/advanced-emotion.d.ts",
+      "import": "./dist/advanced-emotion.mjs",
+      "default": "./dist/advanced-emotion.mjs"
     },
     "./form": {
       "types": "./dist/form.d.ts",
       "import": "./dist/form.mjs",
-      "require": "./dist/form.js"
+      "default": "./dist/form.mjs"
     },
     "./navigation": {
       "types": "./dist/navigation.d.ts",
       "import": "./dist/navigation.mjs",
-      "require": "./dist/navigation.js"
+      "default": "./dist/navigation.mjs"
     },
     "./feedback": {
       "types": "./dist/feedback.d.ts",
       "import": "./dist/feedback.mjs",
-      "require": "./dist/feedback.js"
+      "default": "./dist/feedback.mjs"
     },
     "./overlay": {
       "types": "./dist/overlay.d.ts",
       "import": "./dist/overlay.mjs",
-      "require": "./dist/overlay.js"
+      "default": "./dist/overlay.mjs"
     },
     "./data": {
       "types": "./dist/data.d.ts",
       "import": "./dist/data.mjs",
-      "require": "./dist/data.js"
+      "default": "./dist/data.mjs"
     },
     "./interactive": {
       "types": "./dist/interactive.d.ts",
       "import": "./dist/interactive.mjs",
-      "require": "./dist/interactive.js"
+      "default": "./dist/interactive.mjs"
     },
     "./sdui": {
       "types": "./dist/sdui.d.ts",
       "import": "./dist/sdui.mjs",
-      "require": "./dist/sdui.js"
+      "default": "./dist/sdui.mjs"
     },
     "./styles/base.css": "./src/styles/base.css",
     "./styles/toast.css": "./src/styles/toast.css",
@@ -63,27 +73,24 @@
     "./icons": {
       "types": "./src/components/icons/index.ts",
       "import": "./src/components/icons/index.ts",
-      "require": "./src/components/icons/index.ts"
+      "default": "./src/components/icons/index.ts"
     },
     "./icons-bold": {
       "types": "./src/components/icons-bold/index.ts",
       "import": "./src/components/icons-bold/index.ts",
-      "require": "./src/components/icons-bold/index.ts"
+      "default": "./src/components/icons-bold/index.ts"
     },
     "./iconsax": {
       "types": "./dist/iconsax.d.ts",
       "import": "./dist/iconsax.mjs",
-      "require": "./dist/iconsax.js"
+      "default": "./dist/iconsax.mjs"
     }
   },
-  "sideEffects": [
-    "**/*.css",
-    "./dist/iconsax.mjs",
-    "./dist/iconsax.js"
-  ],
   "files": [
     "dist",
-    "src/styles"
+    "src/styles",
+    "src/components/icons",
+    "src/components/icons-bold"
   ],
   "scripts": {
     "build": "pnpm exec tsup && pnpm exec tsc --emitDeclarationOnly",
@@ -102,41 +109,38 @@
     "generate:icon-snippets": "tsx scripts/generate-icon-snippets.ts"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.0.0",
-    "lucide-react": "^0.562.0",
     "sugar-high": "^0.9.5",
     "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
-    "@eslint/js": "^9.39.1",
-    "@phosphor-icons/react": "^2.1.10",
-    "@testing-library/react": "^16.3.0",
+    "@eslint/js": "^9.39.2",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^20.0.0",
-    "@types/react": "^19.2.7",
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.3.0",
-    "jsdom": "^27.2.0",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "jsdom": "^27.4.0",
+    "lucide-react": "^0.563.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "rollup-plugin-visualizer": "^6.0.5",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.35.1",
-    "vitest": "^4.0.14"
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@phosphor-icons/react": "*",
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0"
   },
@@ -148,9 +152,6 @@
       "optional": true
     },
     "@dnd-kit/utilities": {
-      "optional": true
-    },
-    "@phosphor-icons/react": {
       "optional": true
     }
   },
@@ -178,6 +179,11 @@
     "url": "https://github.com/HUA-Labs/HUA-Labs-public/issues"
   },
   "homepage": "https://github.com/HUA-Labs/HUA-Labs-public#readme",
+  "sideEffects": [
+    "**/*.css",
+    "./dist/iconsax.mjs",
+    "./dist/iconsax.js"
+  ],
   "publishConfig": {
     "access": "public",
     "provenance": true

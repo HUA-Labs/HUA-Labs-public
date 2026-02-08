@@ -6,6 +6,8 @@ const coreEntry = {
   index: 'src/index.ts',
   advanced: 'src/advanced.ts',
   'advanced-dashboard': 'src/advanced/dashboard.ts',
+  'advanced-motion': 'src/advanced/motion.ts',
+  'advanced-emotion': 'src/components/advanced/emotion/index.ts',
   form: 'src/form.ts',
   navigation: 'src/navigation.ts',
   feedback: 'src/feedback.ts',
@@ -29,9 +31,12 @@ const shared = {
 async function addUseClientDirective() {
   const distDir = join(import.meta.dirname, 'dist');
   const files = await readdir(distDir);
-  const jsFiles = files.filter(f => f.endsWith('.mjs') || f.endsWith('.js'));
+  // Only add "use client" to ESM entry points (.mjs)
+  // CJS files (.js) must NOT have "use client" — Turbopack treats CJS+use-client
+  // as ESM client modules, causing "exports is not defined" at runtime
+  const esmFiles = files.filter(f => f.endsWith('.mjs'));
 
-  for (const file of jsFiles) {
+  for (const file of esmFiles) {
     const filePath = join(distDir, file);
     const content = await readFile(filePath, 'utf-8');
     if (content.startsWith('"use client"') || content.startsWith("'use client'")) continue;
