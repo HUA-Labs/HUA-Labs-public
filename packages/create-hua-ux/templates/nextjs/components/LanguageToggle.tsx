@@ -3,7 +3,6 @@
 import { useTranslation, useLanguageChange } from '@hua-labs/hua-ux/i18n';
 import { Button } from '@hua-labs/hua-ux/ui';
 import { Globe } from '@phosphor-icons/react';
-import { useMotion } from '@hua-labs/hua-ux/framework';
 
 /**
  * LanguageToggle Component
@@ -13,7 +12,6 @@ import { useMotion } from '@hua-labs/hua-ux/framework';
 export function LanguageToggle() {
   const { currentLanguage } = useTranslation();
   const { changeLanguage, supportedLanguages } = useLanguageChange();
-  const motion = useMotion({ type: 'fadeIn', duration: 300 });
 
   const handleToggle = () => {
     // Toggle between available languages
@@ -29,17 +27,15 @@ export function LanguageToggle() {
   };
 
   return (
-    <div ref={motion.ref} style={motion.style}>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleToggle}
-        className="gap-2"
-        aria-label="Toggle language"
-      >
-        <Globe size={16} weight="duotone" />
-        <span>{languageLabels[currentLanguage] || currentLanguage}</span>
-      </Button>
-    </div>
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleToggle}
+      className="gap-2"
+      aria-label="Toggle language"
+    >
+      <Globe size={16} weight="duotone" />
+      <span>{languageLabels[currentLanguage] || currentLanguage}</span>
+    </Button>
   );
 }

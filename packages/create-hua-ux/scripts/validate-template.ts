@@ -52,9 +52,9 @@ const TEMPLATE_CONFIG: TemplateConfig = {
   // Files that must contain specific patterns (Next.js 16 compatibility)
   mustContain: {
     'app/layout.tsx': [
-      'async function RootLayout',
-      'await headers()',
-      'import { headers }',
+      'HuaUxLayout',
+      'hua-ux.config',
+      'getSSRTranslations',
     ],
     'app/api/translations/[language]/[namespace]/route.ts': [
       'async function GET',

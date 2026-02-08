@@ -6,13 +6,10 @@
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { exec, execSync } from 'child_process';
-import { promisify } from 'util';
+import { execSync } from 'child_process';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { HUA_UX_VERSION } from './version';
-
-const execAsync = promisify(exec);
 
 /**
  * Detect which package manager was used to run the CLI
@@ -379,186 +376,6 @@ function getHuaUxVersion(): string {
 }
 
 /**
- * npm registry에서 패키지의 최신 alpha 버전을 가져옵니다.
- * @param packageName - 조회할 패키지 이름 (예: '@hua-labs/i18n-core-zustand')
- * @returns 최신 alpha 버전 (예: '^1.1.0-alpha.1') 또는 실패 시 'latest'
- */
-async function fetchLatestAlphaVersion(packageName: string): Promise<string> {
-  try {
-    // npm view 명령으로 모든 버전 조회 (async)
-    const { stdout } = await execAsync(
-      `npm view ${packageName} versions --json`,
-      { encoding: 'utf-8' }
-    );
-
-    const versions = JSON.parse(stdout);
-    const versionArray = Array.isArray(versions) ? versions : [versions];
-
-    // alpha 버전 필터링 및 최신 버전 찾기
-    const alphaVersions = versionArray.filter((v: string) => v.includes('-alpha.'));
-
-    if (alphaVersions.length > 0) {
-      // 최신 alpha 버전 반환 (배열의 마지막, prerelease는 정확한 버전 고정)
-      const latestAlpha = alphaVersions[alphaVersions.length - 1];
-      return latestAlpha;
-    }
-
-    // alpha 버전이 없으면 최신 버전 사용
-    const latestVersion = versionArray[versionArray.length - 1];
-    return `^${latestVersion}`;
-  } catch (error) {
-    console.warn(chalk.yellow(`⚠️  Failed to fetch version for ${packageName}, using 'latest'`));
-    return 'latest';
-  }
-}
-
-/**
- * Extract exact semver (예: 1.2.3-alpha.1) from a range 표현 (예: ^1.2.3-alpha.1)
- */
-function extractExactVersion(versionRange?: string): string | null {
-  if (!versionRange) {
-    return null;
-  }
-
-  if (versionRange.startsWith('workspace') || versionRange === 'latest') {
-    return null;
-  }
-
-  const match = versionRange.match(/(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)/);
-  return match ? match[1] : null;
-}
-
-/**
- * Fetch peer dependency range (예: ^4.0.0) for a given package/version
- */
-async function fetchPeerDependencyRange(
-  packageName: string,
-  peerName: string,
-  packageVersion?: string
-): Promise<string | null> {
-  try {
-    const specifier = packageVersion ? `${packageName}@${packageVersion}` : packageName;
-    const { stdout } = await execAsync(
-      `npm view ${specifier} peerDependencies --json`,
-      { encoding: 'utf-8' }
-    );
-
-    const raw = stdout.trim();
-    if (!raw || raw === 'undefined') {
-      return null;
-    }
-
-    const peerDeps = JSON.parse(raw);
-    if (peerDeps && typeof peerDeps === 'object' && peerDeps[peerName]) {
-      return peerDeps[peerName];
-    }
-  } catch (error) {
-    console.warn(
-      chalk.yellow(
-        `⚠️  Failed to fetch peer dependency ${peerName} for ${
-          packageVersion ? `${packageName}@${packageVersion}` : packageName
-        }`
-      )
-    );
-  }
-  return null;
-}
-
-/**
- * Resolve zustand version range by reading @hua-labs/i18n-core-zustand peer dependency.
- * Falls back to the default constant when registry lookup fails.
- */
-interface VersionConstraint {
-  version: { major: number; minor: number; patch: number };
-  operator: string;
-  raw: string;
-}
-
-function parseConstraint(part: string): VersionConstraint | null {
-  const trimmed = part.trim();
-  if (!trimmed) return null;
-
-  const match = trimmed.match(/(\^|>=|>|~)?\s*(\d+)\.(\d+)\.(\d+)/);
-  if (!match) return null;
-
-  const [, operator = '', major, minor, patch] = match;
-  return {
-    version: {
-      major: Number(major),
-      minor: Number(minor),
-      patch: Number(patch),
-    },
-    operator,
-    raw: trimmed,
-  };
-}
-
-function compareConstraints(a: VersionConstraint, b: VersionConstraint): number {
-  if (a.version.major !== b.version.major) {
-    return a.version.major - b.version.major;
-  }
-  if (a.version.minor !== b.version.minor) {
-    return a.version.minor - b.version.minor;
-  }
-  if (a.version.patch !== b.version.patch) {
-    return a.version.patch - b.version.patch;
-  }
-  return 0;
-}
-
-function formatPreferredRange(constraint: VersionConstraint): string {
-  const versionText = `${constraint.version.major}.${constraint.version.minor}.${constraint.version.patch}`;
-  if (constraint.raw.includes('^')) {
-    return `^${versionText}`;
-  }
-  if (constraint.raw.includes('~')) {
-    return `^${versionText}`;
-  }
-  if (constraint.raw.includes('>')) {
-    return `^${versionText}`;
-  }
-  return `^${versionText}`;
-}
-
-function selectPreferredRange(constraints: string[]): string | null {
-  let best: VersionConstraint | null = null;
-
-  for (const constraint of constraints) {
-    const parts = constraint.split('||').map(part => parseConstraint(part)).filter(Boolean) as VersionConstraint[];
-    for (const part of parts) {
-      if (!best || compareConstraints(part, best) > 0) {
-        best = part;
-      }
-    }
-  }
-
-  if (!best) return null;
-  return formatPreferredRange(best);
-}
-
-async function resolveZustandVersion(dependencyVersions: { name: string; version: string }[]): Promise<string> {
-  const constraints: string[] = [];
-
-  for (const dep of dependencyVersions) {
-    const exactVersion = extractExactVersion(dep.version) || undefined;
-    if (exactVersion) {
-      const versionSpecificRange = await fetchPeerDependencyRange(dep.name, 'zustand', exactVersion);
-      if (versionSpecificRange) {
-        constraints.push(versionSpecificRange);
-        continue;
-      }
-    }
-    const latestRange = await fetchPeerDependencyRange(dep.name, 'zustand');
-    if (latestRange) {
-      constraints.push(latestRange);
-    }
-  }
-
-  const preferred = selectPreferredRange(constraints);
-  return preferred || ZUSTAND_VERSION;
-}
-
-/**
  * Detect monorepo context by looking for workspace markers in parent directories
  */
 async function detectMonorepoContext(projectPath: string): Promise<MonorepoContext> {
@@ -635,16 +452,6 @@ function toPosixRelative(from: string, target: string): string {
 }
 
 /**
- * Get hua-ux related package version
- *
- * hua-ux와 관련된 패키지들의 버전을 반환합니다.
- * 모노레포 내부에서는 workspace 버전을, 외부에서는 npm 버전을 사용합니다.
- */
-function getHuaUxRelatedPackageVersion(): string {
-  return getHuaUxVersion();
-}
-
-/**
  * Generate package.json
  */
 export async function generatePackageJson(
@@ -658,19 +465,9 @@ export async function generatePackageJson(
     await fs.remove(packageJsonPath);
   }
 
-  // npm registry에서 최신 alpha 버전 조회 (병렬 실행으로 성능 최적화)
-  console.log(chalk.blue('📦 Fetching latest package versions from npm...'));
-  const [i18nCoreVersion, i18nCoreZustandVersion, motionCoreVersion, stateVersion] = await Promise.all([
-    fetchLatestAlphaVersion('@hua-labs/i18n-core'),
-    fetchLatestAlphaVersion('@hua-labs/i18n-core-zustand'),
-    fetchLatestAlphaVersion('@hua-labs/motion-core'),
-    fetchLatestAlphaVersion('@hua-labs/state'),
-  ]);
-  const zustandVersion = await resolveZustandVersion([
-    { name: '@hua-labs/i18n-core-zustand', version: i18nCoreZustandVersion },
-    { name: '@hua-labs/state', version: stateVersion },
-  ]);
-
+  // @hua-labs/hua-ux가 i18n-core, i18n-core-zustand, motion-core, state를
+  // 전부 transitive dependency로 제공하므로 직접 추가하지 않음.
+  // 직접 추가하면 npm이 별도 복사본을 설치하여 React Context 중복 문제 발생.
   const packageJson = {
     name: projectName,
     version: '0.1.0',
@@ -684,15 +481,11 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua-ux': getHuaUxVersion(),
-      '@hua-labs/i18n-core': i18nCoreVersion,
-      '@hua-labs/i18n-core-zustand': i18nCoreZustandVersion,
-      '@hua-labs/motion-core': motionCoreVersion,
-      '@hua-labs/state': stateVersion,
       '@phosphor-icons/react': PHOSPHOR_ICONS_VERSION,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
       'react-dom': REACT_DOM_VERSION,
-      zustand: zustandVersion,
+      zustand: ZUSTAND_VERSION,
     },
     devDependencies: {
       '@types/node': TYPES_NODE_VERSION,
