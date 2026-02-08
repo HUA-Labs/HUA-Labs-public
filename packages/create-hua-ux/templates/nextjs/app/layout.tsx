@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { HuaUxLayout } from "@hua-labs/hua-ux/framework";
+import { getSSRTranslations } from "@hua-labs/hua-ux/framework/server";
 import config from "../hua-ux.config";
 
 export const metadata: Metadata = {
@@ -9,15 +10,22 @@ export const metadata: Metadata = {
   icons: { icon: '/favicon.ico' },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialTranslations = await getSSRTranslations(config);
+
+  const configWithSSR = {
+    ...config,
+    i18n: config.i18n ? { ...config.i18n, initialTranslations } : undefined,
+  };
+
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className="antialiased">
-        <HuaUxLayout config={config}>{children}</HuaUxLayout>
+        <HuaUxLayout config={configWithSSR}>{children}</HuaUxLayout>
       </body>
     </html>
   );

@@ -54,6 +54,7 @@ const TEMPLATE_CONFIG: TemplateConfig = {
     'app/layout.tsx': [
       'HuaUxLayout',
       'hua-ux.config',
+      'getSSRTranslations',
     ],
     'app/api/translations/[language]/[namespace]/route.ts': [
       'async function GET',
