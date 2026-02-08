@@ -6,7 +6,6 @@
 "@hua-labs/i18n-core": patch
 "@hua-labs/i18n-core-zustand": patch
 "@hua-labs/i18n-loaders": patch
-"@hua-labs/i18n-beginner": patch
 "@hua-labs/hooks": minor
 "@hua-labs/utils": minor
 "@hua-labs/i18n-formatters": minor

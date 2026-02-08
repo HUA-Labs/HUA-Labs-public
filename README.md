@@ -45,8 +45,6 @@ Open-source React development tools for production applications.
 
 - **[@hua-labs/i18n-core-zustand](./packages/hua-i18n-core-zustand)** - Zustand adapter for i18n-core
 - **[@hua-labs/i18n-loaders](./packages/hua-i18n-loaders)** - Translation loaders with caching
-- **[@hua-labs/i18n-beginner](./packages/hua-i18n-beginner)** - Simplified i18n for beginners
-
 **State Management**
 - **[@hua-labs/state](./packages/hua-state)** - SSR-safe Zustand wrapper
   - Automatic hydration handling

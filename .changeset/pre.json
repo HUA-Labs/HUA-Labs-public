@@ -3,7 +3,6 @@
   "tag": "alpha",
   "initialVersions": {
     "create-hua-ux": "0.1.0",
-    "@hua-labs/i18n-beginner": "2.0.0",
     "@hua-labs/i18n-core": "2.0.0",
     "@hua-labs/i18n-core-zustand": "2.0.0",
     "@hua-labs/i18n-loaders": "1.0.0",
