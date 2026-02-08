@@ -8,7 +8,7 @@
 /**
  * Next.js version
  */
-export const NEXTJS_VERSION = '16.1.1';
+export const NEXTJS_VERSION = '16.1.6';
 
 /**
  * React version
