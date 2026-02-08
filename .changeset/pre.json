@@ -14,5 +14,7 @@
     "@hua-labs/utils": "1.1.0",
     "@hua-labs/hua-ux": "0.1.0-alpha.21"
   },
-  "changesets": []
+  "changesets": [
+    "fix-dndkit-chunk"
+  ]
 }
