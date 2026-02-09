@@ -1,0 +1,2 @@
+'use strict';var i18nFormatters=require('@hua-labs/i18n-formatters');Object.keys(i18nFormatters).forEach(function(k){if(k!=='default'&&!Object.prototype.hasOwnProperty.call(exports,k))Object.defineProperty(exports,k,{enumerable:true,get:function(){return i18nFormatters[k]}})});//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.js.map

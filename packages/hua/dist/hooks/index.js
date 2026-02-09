@@ -1,0 +1,2 @@
+'use strict';var hooks=require('@hua-labs/hooks');Object.keys(hooks).forEach(function(k){if(k!=='default'&&!Object.prototype.hasOwnProperty.call(exports,k))Object.defineProperty(exports,k,{enumerable:true,get:function(){return hooks[k]}})});//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.js.map
