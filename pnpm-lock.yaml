@@ -184,20 +184,20 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(react@19.2.4)
       '@hua-labs/i18n-core-zustand':
-        specifier: ^2.0.1-alpha.1
-        version: 2.0.1-alpha.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+        specifier: ^2.0.0
+        version: 2.0.0(react@19.2.4)
       '@hua-labs/i18n-formatters':
-        specifier: ^1.1.1-alpha.0
-        version: 1.1.1-alpha.0(react@19.2.4)
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.2.4)
       '@hua-labs/i18n-loaders':
-        specifier: ^1.1.1-alpha.0
-        version: 1.1.1-alpha.0(react@19.2.4)
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.2.4)
       '@hua-labs/motion-core':
         specifier: ^2.1.0
         version: 2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@hua-labs/state':
         specifier: ^1.0.0
-        version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+        version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@hua-labs/ui':
         specifier: ^2.0.0
         version: 2.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(@dnd-kit/utilities@3.2.2(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1169,24 +1169,29 @@ packages:
     peerDependencies:
       react: '>=19.0.0'
 
-  '@hua-labs/i18n-core-zustand@2.0.1-alpha.1':
-    resolution: {integrity: sha512-1foxhAjonWlkOrPzPt9tiHSy/p7glpaFcMEdn0KmD1pJ3zwvDYccDV7IQiwFoUwth9Cd80JsGKAX5OhcMAPUCg==}
+  '@hua-labs/i18n-core-zustand@2.0.0':
+    resolution: {integrity: sha512-+f61TvJ+BYCA0Pf8LXu+U0vSxCgcH9BkQbgdtCbXCERaG/VwWbw94A6MXWSf8mdz7xYav4nApi3QMflYIvqKOA==}
     peerDependencies:
-      react: '>=19.0.0'
-      zustand: ^4.0.0 || ^5.0.0
+      react: '>=16.8.0'
+      zustand: ^4.0.0
 
   '@hua-labs/i18n-core@1.1.0':
     resolution: {integrity: sha512-seXKAKR3tzCvXT62jRfd8yqVfc4sIRSuUZYF9Z4IDokqUULo6eHDL5BJyGV+nlInxGTqUCyw0mimxRwRTfLV/A==}
     peerDependencies:
       react: '>=19.0.0'
 
-  '@hua-labs/i18n-formatters@1.1.1-alpha.0':
-    resolution: {integrity: sha512-5yJGHaTX+Wcw4HOLLsp9thBEqiYroe4fQx6c3HJC5SrpBDskCy8KkFf/RGyJyLqozaEVjePuP8q8VabW8lHVHg==}
+  '@hua-labs/i18n-core@2.0.0':
+    resolution: {integrity: sha512-KzEmP5YawIyplTj6CJjRxR/0gFdWqYrHyxJFphWdcFYtv5pG+AGOT+hx7XRSRLrC8kqbvA8jX88grkBiThODQg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@hua-labs/i18n-formatters@1.1.0':
+    resolution: {integrity: sha512-KL4gy8Z2QXRBCDtnfruHzT7E//O1ug6UkBH62VZ3OnZGMljPXp7U1UHO0xtD05aE+yVtdu2OOw8TjXhgkEjUBQ==}
     peerDependencies:
       react: '>=19.0.0'
 
-  '@hua-labs/i18n-loaders@1.1.1-alpha.0':
-    resolution: {integrity: sha512-3fj3+bWWFR72DCZbCMbUI8U+4542irqNwY6WCfuVe8pEseRl/1R7WQh55OQ59mgSj3OUTiwZ24jep24gUIsvqA==}
+  '@hua-labs/i18n-loaders@1.1.0':
+    resolution: {integrity: sha512-IPCpkEAw5lph/9HbqJLERPuC+opPZKF0svZaQJ2KvXPuQPcVyYY3JVNmMthLIKyFqp93z+QEW8ywt/UDmnU7QQ==}
     peerDependencies:
       react: '>=19.0.0'
 
@@ -5800,27 +5805,27 @@ snapshots:
     dependencies:
       react: 19.2.4
 
-  '@hua-labs/i18n-core-zustand@2.0.1-alpha.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))':
+  '@hua-labs/i18n-core-zustand@2.0.0(react@19.2.4)':
     dependencies:
-      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
-      '@hua-labs/state': 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+      '@hua-labs/i18n-core': 2.0.0(react@19.2.4)
       react: 19.2.4
-      zustand: 5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
-    transitivePeerDependencies:
-      - react-dom
 
   '@hua-labs/i18n-core@1.1.0(react@19.2.4)':
     dependencies:
       react: 19.2.4
 
-  '@hua-labs/i18n-formatters@1.1.1-alpha.0(react@19.2.4)':
+  '@hua-labs/i18n-core@2.0.0(react@19.2.4)':
     dependencies:
-      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
       react: 19.2.4
 
-  '@hua-labs/i18n-loaders@1.1.1-alpha.0(react@19.2.4)':
+  '@hua-labs/i18n-formatters@1.1.0(react@19.2.4)':
     dependencies:
-      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
+      '@hua-labs/i18n-core': link:packages/hua-i18n-core
+      react: 19.2.4
+
+  '@hua-labs/i18n-loaders@1.1.0(react@19.2.4)':
+    dependencies:
+      '@hua-labs/i18n-core': link:packages/hua-i18n-core
       react: 19.2.4
 
   '@hua-labs/motion-core@2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
@@ -5828,11 +5833,10 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@hua-labs/state@1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))':
+  '@hua-labs/state@1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      zustand: 5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
 
   '@hua-labs/ui@2.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(@dnd-kit/utilities@3.2.2(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
@@ -10517,12 +10521,6 @@ snapshots:
       '@types/react': 19.2.13
       react: 19.2.3
       use-sync-external-store: 1.6.0(react@19.2.3)
-
-  zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)):
-    optionalDependencies:
-      '@types/react': 19.2.13
-      react: 19.2.4
-      use-sync-external-store: 1.6.0(react@19.2.4)
 
   zustand@5.0.9(@types/react@19.2.7)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0)):
     optionalDependencies:
