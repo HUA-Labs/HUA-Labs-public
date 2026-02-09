@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repo # 저장소 코드 가져오기
-        uses: actions/checkout@v3 # v4 사용을 권장합니다 (uses: actions/checkout@v4)
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Changesets는 전체 Git 히스토리가 필요할 수 있습니다.
 
@@ -25,10 +25,8 @@ jobs:
         with:
           node-version: '22' # 최신 Node.js 버전
 
-      - name: Setup PNPM # PNPM 설치
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10.24.0 # 최신 pnpm 버전
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies # 프로젝트 종속성 설치
         run: pnpm install --no-frozen-lockfile # lockfile 호환성 문제 해결
