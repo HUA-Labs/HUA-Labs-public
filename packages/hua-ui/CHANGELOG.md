@@ -1,5 +1,7 @@
 # @hua-labs/ui
 
+## 2.0.1
+
 ## 2.0.1-alpha.0
 
 ### Patch Changes
