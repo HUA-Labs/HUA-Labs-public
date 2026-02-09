@@ -1,0 +1,2 @@
+export{e as createI18nMiddleware,b as generateCSSVariables,c as generateCSSVariablesObject,a as generatePageMetadata,d as generateTailwindConfig}from'../chunk-TZDHE2DB.mjs';export{o as createAIContext,h as generateFAQPageLD,m as generateGEOMetadata,j as generateHowToLD,d as generateSoftwareApplicationLD,i as generateTechArticleLD,n as renderJSONLD}from'../chunk-37LUYJNU.mjs';import'../chunk-A6GKDPT3.mjs';//# sourceMappingURL=shared.mjs.map
+//# sourceMappingURL=shared.mjs.map

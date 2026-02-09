@@ -1,0 +1,2 @@
+'use strict';var i18nLoaders=require('@hua-labs/i18n-loaders');Object.keys(i18nLoaders).forEach(function(k){if(k!=='default'&&!Object.prototype.hasOwnProperty.call(exports,k))Object.defineProperty(exports,k,{enumerable:true,get:function(){return i18nLoaders[k]}})});//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.js.map

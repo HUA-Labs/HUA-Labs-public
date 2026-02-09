@@ -119,6 +119,34 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/create-hua:
+    dependencies:
+      chalk:
+        specifier: ^5.6.2
+        version: 5.6.2
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.3.3
+      inquirer:
+        specifier: ^8.0.0
+        version: 8.2.7(@types/node@25.2.1)
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      '@types/inquirer':
+        specifier: ^9.0.7
+        version: 9.0.9
+      '@types/node':
+        specifier: ^25.2.0
+        version: 25.2.1
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/create-hua-ux:
     dependencies:
       chalk:
@@ -146,6 +174,51 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+
+  packages/hua:
+    dependencies:
+      '@hua-labs/hooks':
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.2.4)
+      '@hua-labs/i18n-core':
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.2.4)
+      '@hua-labs/i18n-core-zustand':
+        specifier: ^2.0.1-alpha.1
+        version: 2.0.1-alpha.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+      '@hua-labs/i18n-formatters':
+        specifier: ^1.1.1-alpha.0
+        version: 1.1.1-alpha.0(react@19.2.4)
+      '@hua-labs/i18n-loaders':
+        specifier: ^1.1.1-alpha.0
+        version: 1.1.1-alpha.0(react@19.2.4)
+      '@hua-labs/motion-core':
+        specifier: ^2.1.0
+        version: 2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@hua-labs/state':
+        specifier: ^1.0.0
+        version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+      '@hua-labs/ui':
+        specifier: ^2.0.0
+        version: 2.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(@dnd-kit/utilities@3.2.2(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@hua-labs/utils':
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.2.4)
+      '@phosphor-icons/react':
+        specifier: ^2.1.10
+        version: 2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      next:
+        specifier: '>=13.0.0'
+        version: 16.0.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: '>=19.0.0'
+        version: 19.2.4
+      react-dom:
+        specifier: '>=19.0.0'
+        version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
 
   packages/hua-hooks:
     devDependencies:
@@ -1090,6 +1163,66 @@ packages:
     peerDependenciesMeta:
       '@exodus/crypto':
         optional: true
+
+  '@hua-labs/hooks@1.1.0':
+    resolution: {integrity: sha512-w9jIvql5RMrMZHHO1ghozZuL3qDgqw0g/NAJcMv+806Xn9llsHEfvPcwXKQ56KlSFuEAhlDwtaNUss61FNz+Kw==}
+    peerDependencies:
+      react: '>=19.0.0'
+
+  '@hua-labs/i18n-core-zustand@2.0.1-alpha.1':
+    resolution: {integrity: sha512-1foxhAjonWlkOrPzPt9tiHSy/p7glpaFcMEdn0KmD1pJ3zwvDYccDV7IQiwFoUwth9Cd80JsGKAX5OhcMAPUCg==}
+    peerDependencies:
+      react: '>=19.0.0'
+      zustand: ^4.0.0 || ^5.0.0
+
+  '@hua-labs/i18n-core@1.1.0':
+    resolution: {integrity: sha512-seXKAKR3tzCvXT62jRfd8yqVfc4sIRSuUZYF9Z4IDokqUULo6eHDL5BJyGV+nlInxGTqUCyw0mimxRwRTfLV/A==}
+    peerDependencies:
+      react: '>=19.0.0'
+
+  '@hua-labs/i18n-formatters@1.1.1-alpha.0':
+    resolution: {integrity: sha512-5yJGHaTX+Wcw4HOLLsp9thBEqiYroe4fQx6c3HJC5SrpBDskCy8KkFf/RGyJyLqozaEVjePuP8q8VabW8lHVHg==}
+    peerDependencies:
+      react: '>=19.0.0'
+
+  '@hua-labs/i18n-loaders@1.1.1-alpha.0':
+    resolution: {integrity: sha512-3fj3+bWWFR72DCZbCMbUI8U+4542irqNwY6WCfuVe8pEseRl/1R7WQh55OQ59mgSj3OUTiwZ24jep24gUIsvqA==}
+    peerDependencies:
+      react: '>=19.0.0'
+
+  '@hua-labs/motion-core@2.1.0':
+    resolution: {integrity: sha512-T/IiUwIHulPagqrQZb66YUE+ldm/WIeWaNifjCw2OrZDH/78FsXZP+I1I21xW3Umz0sfu+jbGTwKK2oF5lgfVw==}
+    peerDependencies:
+      react: '>=19.0.0'
+      react-dom: '>=19.0.0'
+
+  '@hua-labs/state@1.0.0':
+    resolution: {integrity: sha512-LtCnbAoiNmsT4GwIjL+3BXqYsgOwApbaauPDDvoYk+Xu7KLoz1+1FEbLsPbJ2QWdAr+Un4BWQYRAuVSb877GRg==}
+    peerDependencies:
+      react: '>=19.0.0'
+      react-dom: '>=19.0.0'
+      zustand: '>=5.0.0'
+
+  '@hua-labs/ui@2.0.0':
+    resolution: {integrity: sha512-DPwL9y0YW8IVt2wmuEa/XyBFr/Tg2jFsLIkwEGxIreN70zz3cn6pHc+5dPYvyiMJxoUUGrQH3Pmkey2U/cjrPg==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.1
+      '@dnd-kit/sortable': ^10.0.0
+      '@dnd-kit/utilities': ^3.2.2
+      react: '>=19.0.0'
+      react-dom: '>=19.0.0'
+    peerDependenciesMeta:
+      '@dnd-kit/core':
+        optional: true
+      '@dnd-kit/sortable':
+        optional: true
+      '@dnd-kit/utilities':
+        optional: true
+
+  '@hua-labs/utils@1.1.0':
+    resolution: {integrity: sha512-9FkUFMO3J+IVIj+dxyAAVfKXsHZnK3TfozCuQH1VTTikGML95oNsxs3bYYKe6jxLILIIynHaDSP7u+C2O9kq0A==}
+    peerDependencies:
+      react: '>=19.0.0'
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -5663,6 +5796,64 @@ snapshots:
 
   '@exodus/bytes@1.7.0': {}
 
+  '@hua-labs/hooks@1.1.0(react@19.2.4)':
+    dependencies:
+      react: 19.2.4
+
+  '@hua-labs/i18n-core-zustand@2.0.1-alpha.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))':
+    dependencies:
+      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
+      '@hua-labs/state': 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))
+      react: 19.2.4
+      zustand: 5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
+    transitivePeerDependencies:
+      - react-dom
+
+  '@hua-labs/i18n-core@1.1.0(react@19.2.4)':
+    dependencies:
+      react: 19.2.4
+
+  '@hua-labs/i18n-formatters@1.1.1-alpha.0(react@19.2.4)':
+    dependencies:
+      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
+      react: 19.2.4
+
+  '@hua-labs/i18n-loaders@1.1.1-alpha.0(react@19.2.4)':
+    dependencies:
+      '@hua-labs/i18n-core': 1.1.0(react@19.2.4)
+      react: 19.2.4
+
+  '@hua-labs/motion-core@2.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
+  '@hua-labs/state@1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)))':
+    dependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      zustand: 5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
+
+  '@hua-labs/ui@2.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(@dnd-kit/utilities@3.2.2(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@phosphor-icons/react': 2.1.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      class-variance-authority: 0.7.1
+      clsx: 2.1.1
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      sugar-high: 0.9.5
+      tailwind-merge: 2.6.0
+    optionalDependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      '@dnd-kit/utilities': 3.2.2(react@19.2.4)
+
+  '@hua-labs/utils@1.1.0(react@19.2.4)':
+    dependencies:
+      clsx: 2.1.1
+      react: 19.2.4
+      tailwind-merge: 2.6.0
+
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -5852,6 +6043,13 @@ snapshots:
       iconv-lite: 0.7.1
     optionalDependencies:
       '@types/node': 25.0.3
+
+  '@inquirer/external-editor@1.0.3(@types/node@25.2.1)':
+    dependencies:
+      chardet: 2.1.1
+      iconv-lite: 0.7.1
+    optionalDependencies:
+      '@types/node': 25.2.1
 
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
@@ -6320,7 +6518,7 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 25.0.3
+      '@types/node': 25.2.1
 
   '@types/graceful-fs@4.1.9':
     dependencies:
@@ -8103,6 +8301,26 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  inquirer@8.2.7(@types/node@25.2.1):
+    dependencies:
+      '@inquirer/external-editor': 1.0.3(@types/node@25.2.1)
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      cli-cursor: 3.1.0
+      cli-width: 3.0.0
+      figures: 3.2.0
+      lodash: 4.17.21
+      mute-stream: 0.0.8
+      ora: 5.4.1
+      run-async: 2.4.1
+      rxjs: 7.8.2
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      through: 2.3.8
+      wrap-ansi: 6.2.0
+    transitivePeerDependencies:
+      - '@types/node'
+
   internal-slot@1.1.0:
     dependencies:
       es-errors: 1.3.0
@@ -8911,6 +9129,29 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  next@16.0.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      '@next/env': 16.0.10
+      '@swc/helpers': 0.5.15
+      caniuse-lite: 1.0.30001757
+      postcss: 8.4.31
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      styled-jsx: 5.1.6(react@19.2.4)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 16.0.10
+      '@next/swc-darwin-x64': 16.0.10
+      '@next/swc-linux-arm64-gnu': 16.0.10
+      '@next/swc-linux-arm64-musl': 16.0.10
+      '@next/swc-linux-x64-gnu': 16.0.10
+      '@next/swc-linux-x64-musl': 16.0.10
+      '@next/swc-win32-arm64-msvc': 16.0.10
+      '@next/swc-win32-x64-msvc': 16.0.10
+      sharp: 0.34.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
   node-int64@0.4.0: {}
 
   node-releases@2.0.19: {}
@@ -9677,6 +9918,11 @@ snapshots:
       client-only: 0.0.1
       react: 19.2.3
 
+  styled-jsx@5.1.6(react@19.2.4):
+    dependencies:
+      client-only: 0.0.1
+      react: 19.2.4
+
   sucrase@3.35.1:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
@@ -10271,6 +10517,12 @@ snapshots:
       '@types/react': 19.2.13
       react: 19.2.3
       use-sync-external-store: 1.6.0(react@19.2.3)
+
+  zustand@5.0.9(@types/react@19.2.13)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4)):
+    optionalDependencies:
+      '@types/react': 19.2.13
+      react: 19.2.4
+      use-sync-external-store: 1.6.0(react@19.2.4)
 
   zustand@5.0.9(@types/react@19.2.7)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0)):
     optionalDependencies:

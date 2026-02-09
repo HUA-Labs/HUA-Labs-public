@@ -1,0 +1,2 @@
+# Override root .gitignore — dist is pre-built from private repo
+!dist/

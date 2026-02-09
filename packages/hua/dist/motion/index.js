@@ -1,0 +1,2 @@
+'use strict';var motionCore=require('@hua-labs/motion-core');Object.keys(motionCore).forEach(function(k){if(k!=='default'&&!Object.prototype.hasOwnProperty.call(exports,k))Object.defineProperty(exports,k,{enumerable:true,get:function(){return motionCore[k]}})});//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.js.map
