@@ -60,7 +60,7 @@ async function checkDeploymentReadiness(): Promise<void> {
   console.log('🚀 알파 배포 준비 상태 확인\n');
   console.log('='.repeat(60));
 
-  const packagesToCheck = ['create-hua-ux', 'hua-ux'];
+  const packagesToCheck = ['create-hua', 'hua'];
   const results: PackageStatus[] = [];
 
   for (const pkg of packagesToCheck) {
@@ -105,9 +105,9 @@ async function checkDeploymentReadiness(): Promise<void> {
     console.log('\n✅ 알파 배포 준비 완료!');
     console.log('\n다음 단계:');
     console.log('  1. npm login');
-    console.log('  2. packages/hua-ux: npm publish --access public');
-    console.log('  3. packages/create-hua-ux: pnpm run build');
-    console.log('  4. packages/create-hua-ux: npm publish --access public');
+    console.log('  2. packages/hua: npm publish --access public');
+    console.log('  3. packages/create-hua: pnpm run build');
+    console.log('  4. packages/create-hua: npm publish --access public');
   } else {
     console.log('\n⚠️ 배포 준비 미완료');
     console.log('\n필요한 작업:');

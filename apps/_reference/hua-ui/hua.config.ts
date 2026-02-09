@@ -1,7 +1,7 @@
 /**
- * HUA UI Demo Site - hua-ux Configuration
+ * HUA UI Demo Site - hua Configuration
  *
- * @see https://github.com/HUA-Labs/hua-platform/packages/hua-ux
+ * @see https://github.com/HUA-Labs/hua-platform/packages/hua
  */
 import { defineConfig } from '@hua-labs/hua/framework/config';
 

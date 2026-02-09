@@ -324,7 +324,7 @@ interface SDUINode {
 
 - lodash/get: 깊은 경로 접근 (예: `user.profile.settings.theme`)
 - `@hua-labs/motion-core`: 노드 표시/숨김 애니메이션 (자체 모션 라이브러리)
-- `@hua-labs/hua-ux`: UX 프레임워크 (모션 + 인터랙션)
+- `@hua-labs/hua`: UX 프레임워크 (모션 + 인터랙션)
 - Zustand subscribeWithSelector: 세밀한 상태 구독
 
 ---

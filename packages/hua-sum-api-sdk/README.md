@@ -75,7 +75,7 @@ console.log(response.data.message);
 
 ## Related Packages | 관련 패키지
 
-- [`@hua-labs/hua-ux`](https://www.npmjs.com/package/@hua-labs/hua-ux) — UX framework
+- [`@hua-labs/hua`](https://www.npmjs.com/package/@hua-labs/hua) — UX framework
 
 ## Requirements | 요구사항
 

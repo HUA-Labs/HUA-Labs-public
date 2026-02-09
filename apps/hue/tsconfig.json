@@ -22,11 +22,11 @@
       "@hua-labs/motion-core": ["../../packages/hua-motion-core/dist"],
       "@hua-labs/i18n-core": ["../../packages/hua-i18n-core/dist"],
       "@hua-labs/i18n-core-zustand": ["../../packages/hua-i18n-core-zustand/dist"],
-      "@hua-labs/hua-ux": ["../../packages/hua-ux/src"],
-      "@hua-labs/hua-ux/framework": ["../../packages/hua-ux/src/framework"],
-      "@hua-labs/hua-ux/framework/server": ["../../packages/hua-ux/src/framework/server"],
-      "@hua-labs/hua-ux/framework/config": ["../../packages/hua-ux/src/framework/config"],
-      "@hua-labs/hua-ux/presets": ["../../packages/hua-ux/src/presets"]
+      "@hua-labs/hua": ["../../packages/hua/src"],
+      "@hua-labs/hua/framework": ["../../packages/hua/src/framework"],
+      "@hua-labs/hua/framework/server": ["../../packages/hua/src/framework/server"],
+      "@hua-labs/hua/framework/config": ["../../packages/hua/src/framework/config"],
+      "@hua-labs/hua/presets": ["../../packages/hua/src/presets"]
     }
   },
   "include": [
