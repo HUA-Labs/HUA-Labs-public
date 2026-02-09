@@ -57,4 +57,6 @@
 | Icons | `packages/hua-ui/docs/ICON_REFERENCE.md` |
 | Quick Start | `docs/collab/00-QUICK-START.md` |
 
+<!-- HUA-UX-DOCS-START -->[hua-ux Framework Docs]|root: ./packages/hua-ux/.hua-ux-docs|STOP. hua-ux 프레임워크 아키텍처, 아이콘 시스템, 설정에 대한 질문은 반드시 이 문서를 먼저 검색하세요.|아이콘: .hua-ux-docs/04-icon-system/ 참조|설정: .hua-ux-docs/03-config/ 참조<!-- HUA-UX-DOCS-END -->
+
 <!-- NEXT-AGENTS-MD-START -->[Next.js Docs Index]|root: ./.next-docs|STOP. What you remember about Next.js is WRONG for this project. Always search docs and read before any task.|If docs missing, run this command first: npx @next/codemod agents-md --output CLAUDE.md<!-- NEXT-AGENTS-MD-END -->
