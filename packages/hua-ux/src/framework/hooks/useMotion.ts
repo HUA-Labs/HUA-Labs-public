@@ -42,7 +42,7 @@ export type UseMotionOptions = UseUnifiedMotionOptions;
  * const motion = useMotion({
  *   type: 'fadeIn',
  *   duration: 600,
- *   autoStart: false,
+ *   autoStart: true,
  * });
  * 
  * return <div ref={motion.ref} style={motion.style}>Content</div>;
