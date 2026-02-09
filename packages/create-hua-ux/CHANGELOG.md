@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.0
+
+### Patch Changes
+
+- 47a6d18: fix: resolve React Context duplication causing i18n translation failures
+
+  Removed direct `@hua-labs/i18n-core`, `i18n-core-zustand`, `motion-core`, `state` from generated `package.json`. These caused npm to install separate module copies, creating multiple React Context instances that prevented `useTranslation()` from finding the i18n provider. Now only `@hua-labs/hua-ux` is listed as the single HUA dependency, with all sub-packages provided transitively.
+
+- 10a9b0b: fix: resolve blank page, broken i18n, and Tailwind v4 in generated projects
+
+  - Remove broken useMotion wrapper from page.tsx and LanguageToggle (opacity:0 fix)
+  - Pass hua-ux.config to HuaUxLayout in layout.tsx (enables i18n provider)
+  - Add @source directives to globals.css for Tailwind v4 node_modules scanning
+  - Replace placeholder logo with real HUA Labs logo
+  - Use t() translation keys instead of ternary language branching
+  - Simplify layout.tsx (remove unused headers() import)
+  - Clean up page.tsx with Next.js-inspired design
+
 ## 1.0.0-alpha.25
 
 ### Patch Changes

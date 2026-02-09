@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.0
+
+### Patch Changes
+
+- 0bd2230: fix: use pnpm publish to properly resolve workspace: protocol in npm packages
+
+  Previously `changeset publish` used `npm publish` internally which didn't convert
+  `workspace:` protocol to actual version ranges, causing `npm install` failures
+  in consumer projects. Switched release script to `pnpm -r publish` which
+  automatically replaces `workspace:^` with real semver ranges during publish.
+
+- Updated dependencies [0bd2230]
+  - @hua-labs/i18n-loaders@1.1.1
+  - @hua-labs/i18n-formatters@1.1.1
+  - @hua-labs/i18n-core-zustand@2.0.1
+  - @hua-labs/ui@2.0.1
+
 ## 0.1.0-alpha.24
 
 ### Patch Changes
