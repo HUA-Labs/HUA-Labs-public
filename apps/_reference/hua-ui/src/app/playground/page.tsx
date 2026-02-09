@@ -4,7 +4,7 @@ import React from 'react'
 import { Sparkle, Play, Check, ShareNetwork, Info, Warning } from '@phosphor-icons/react'
 
 export default function PlaygroundPage() {
-  const [code, setCode] = React.useState(`import { Card, CardContent, CardHeader, CardTitle } from '@hua-labs/hua-ux'
+  const [code, setCode] = React.useState(`import { Card, CardContent, CardHeader, CardTitle } from '@hua-labs/hua'
 
 function BasicCard() {
   return (
@@ -32,7 +32,7 @@ function BasicCard() {
       id: 'basic-card',
       name: '기본 카드',
       description: '간단한 카드 컴포넌트 예제',
-      code: `import { Card, CardContent, CardHeader, CardTitle } from '@hua-labs/hua-ux'
+      code: `import { Card, CardContent, CardHeader, CardTitle } from '@hua-labs/hua'
 
 function BasicCard() {
   return (
@@ -51,7 +51,7 @@ function BasicCard() {
       id: 'button-gallery',
       name: '버튼 갤러리',
       description: '다양한 버튼 스타일 예제',
-      code: `import { Button } from '@hua-labs/hua-ux'
+      code: `import { Button } from '@hua-labs/hua'
 
 function ButtonGallery() {
   return (
@@ -69,7 +69,7 @@ function ButtonGallery() {
       id: 'form-example',
       name: '폼 예제',
       description: '간단한 폼 컴포넌트 조합',
-      code: `import { Input, Button, Label, Form, FormField } from '@hua-labs/hua-ux'
+      code: `import { Input, Button, Label, Form, FormField } from '@hua-labs/hua'
 
 function FormExample() {
   return (
@@ -91,7 +91,7 @@ function FormExample() {
       id: 'icon-example',
       name: '아이콘 예제',
       description: '아이콘과 버튼 조합',
-      code: `import { Button, Icon } from '@hua-labs/hua-ux'
+      code: `import { Button, Icon } from '@hua-labs/hua'
 
 function IconExample() {
   return (
@@ -119,7 +119,7 @@ function IconExample() {
       id: 'emotion-selector',
       name: '감정 선택기',
       description: '감정 표현 컴포넌트',
-      code: `import { EmotionSelector } from '@hua-labs/hua-ux'
+      code: `import { EmotionSelector } from '@hua-labs/hua'
 
 function EmotionExample() {
   const [selectedEmotion, setSelectedEmotion] = React.useState('')
@@ -141,7 +141,7 @@ function EmotionExample() {
       id: 'accordion-example',
       name: '아코디언',
       description: '접을 수 있는 콘텐츠 영역',
-      code: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@hua-labs/hua-ux'
+      code: `import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@hua-labs/hua'
 
 function AccordionExample() {
   return (

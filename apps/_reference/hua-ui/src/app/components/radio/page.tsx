@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { Radio } from '@hua-labs/hua-ux'
-import { Label } from '@hua-labs/hua-ux'
-import { ComponentLayout } from '@hua-labs/hua-ux'
+import { Radio } from '@hua-labs/hua'
+import { Label } from '@hua-labs/hua'
+import { ComponentLayout } from '@hua-labs/hua'
 
 export default function RadioPage() {
   const [selectedOption, setSelectedOption] = useState("option1")
@@ -73,7 +73,7 @@ export default function RadioPage() {
             </div>
             <div className="mt-4">
               <pre className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 p-4 rounded-lg overflow-x-auto border border-slate-200 dark:border-slate-700">
-                <code>{`import { Radio, Label } from '@hua-labs/hua-ux'
+                <code>{`import { Radio, Label } from '@hua-labs/hua'
 
 <div>
   <Label className="text-lg font-semibold mb-3 block">기본 라디오 그룹</Label>
@@ -370,7 +370,7 @@ export default function RadioPage() {
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
                 <code>{`import { useState } from "react"
-import { Radio, Label } from '@hua-labs/hua-ux'
+import { Radio, Label } from '@hua-labs/hua'
 
 const [selectedOption, setSelectedOption] = useState("option1")
 
@@ -467,7 +467,7 @@ const [selectedOption, setSelectedOption] = useState("option1")
             </div>
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                <code>{`import { Radio, Label } from '@hua-labs/hua-ux'
+                <code>{`import { Radio, Label } from '@hua-labs/hua'
 
 <div>
   <Label className="text-lg font-semibold mb-3 block">배송 방법 선택</Label>

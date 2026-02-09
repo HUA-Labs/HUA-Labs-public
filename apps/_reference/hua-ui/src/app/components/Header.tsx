@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ThemeToggle, LanguageToggle } from '@hua-labs/hua-ux'
+import { ThemeToggle, LanguageToggle } from '@hua-labs/hua'
 import { Sparkle } from '@phosphor-icons/react'
 
 export default function Header() {

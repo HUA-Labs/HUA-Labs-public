@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Input, Label, ComponentLayout } from '@hua-labs/hua-ux'
+import { Input, Label, ComponentLayout } from '@hua-labs/hua'
 import { MagnifyingGlass, Envelope, Lock, Eye } from '@phosphor-icons/react'
 
 export default function InputPage() {
@@ -67,7 +67,7 @@ export default function InputPage() {
             </div>
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                <code>{`import { Input, Label } from '@hua-labs/hua-ux'
+                <code>{`import { Input, Label } from '@hua-labs/hua'
 
 <div>
   <Label htmlFor="name">이름</Label>

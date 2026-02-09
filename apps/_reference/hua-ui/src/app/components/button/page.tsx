@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import { Button, CodeBlock, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@hua-labs/hua-ux"
+import { Button, CodeBlock, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@hua-labs/hua"
 import { ArrowLeft, ArrowRight, DownloadSimple, Heart, ShareNetwork } from "@phosphor-icons/react"
 
 export default function ButtonPage() {
@@ -26,7 +26,7 @@ export default function ButtonPage() {
           </p>
           <CodeBlock
             language="tsx"
-            code={`import { Button } from "@hua-labs/hua-ux"`}
+            code={`import { Button } from "@hua-labs/hua"`}
           />
         </div>
 

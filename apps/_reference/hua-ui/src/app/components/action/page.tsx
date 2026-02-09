@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Action, ComponentLayout } from '@hua-labs/hua-ux'
+import { Action, ComponentLayout } from '@hua-labs/hua'
 import { DownloadSimple, Heart, ShareNetwork } from '@phosphor-icons/react'
 
 // API 문서용 타입 정의
@@ -43,7 +43,7 @@ export default function ActionPage() {
             </div>
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                <code>{`import { Action } from '@hua-labs/hua-ux'
+                <code>{`import { Action } from '@hua-labs/hua'
 
 <Action>기본 액션</Action>
 <Action variant="outline">아웃라인</Action>
@@ -201,7 +201,7 @@ export default function ActionPage() {
                     HUA UI의 스마트 클래스 병합 유틸리티로 중복 클래스를 자동으로 해결합니다.
                   </p>
                   <pre className="bg-slate-800 text-slate-100 p-3 rounded text-sm">
-                    <code>{`import { merge } from '@hua-labs/hua-ux'
+                    <code>{`import { merge } from '@hua-labs/hua'
 
 // 중복 클래스 자동 해결
 merge("px-2 py-1", "px-4") // "py-1 px-4"
@@ -215,7 +215,7 @@ merge("text-red-500", "text-blue-500") // "text-blue-500"`}</code>
                     조건부 클래스 병합으로 더 깔끔한 코드를 작성할 수 있습니다.
                   </p>
                   <pre className="bg-slate-800 text-slate-100 p-3 rounded text-sm">
-                    <code>{`import { mergeIf } from '@hua-labs/hua-ux'
+                    <code>{`import { mergeIf } from '@hua-labs/hua'
 
 // 조건부 클래스 적용
 mergeIf(isActive, "bg-blue-500", "bg-gray-200")
@@ -229,7 +229,7 @@ mergeIf(isLoading, "opacity-50 cursor-not-allowed")`}</code>
                     객체 기반 클래스 병합으로 복잡한 조건을 쉽게 관리할 수 있습니다.
                   </p>
                   <pre className="bg-slate-800 text-slate-100 p-3 rounded text-sm">
-                    <code>{`import { mergeMap } from '@hua-labs/hua-ux'
+                    <code>{`import { mergeMap } from '@hua-labs/hua'
 
 // 객체 기반 조건부 클래스
 mergeMap({

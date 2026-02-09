@@ -4,7 +4,7 @@ import React from 'react'
 import { MagnifyingGlass, Palette, Check } from '@phosphor-icons/react'
 
 // SDK의 Icon 컴포넌트와 아이콘 카테고리 import
-import { Icon, iconCategories } from '@hua-labs/hua-ux'
+import { Icon, iconCategories } from '@hua-labs/hua'
 
 export default function IconsPage() {
   const [searchTerm, setSearchTerm] = React.useState('')

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Modal, Button, Card, CardContent } from '@hua-labs/hua-ux'
+import { Modal, Button, Card, CardContent } from '@hua-labs/hua'
 import { Check } from '@phosphor-icons/react'
 
 export default function ModalPage() {
@@ -300,7 +300,7 @@ export default function ModalPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Modal, Button } from '@hua-labs/hua-ux'
+{`import { Modal, Button } from '@hua-labs/hua'
 import { useState } from 'react'
 
 function MyComponent() {

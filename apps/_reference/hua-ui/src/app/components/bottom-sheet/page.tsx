@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { BottomSheet, Button, Card, CardContent, ComponentLayout } from '@hua-labs/hua-ux'
+import { BottomSheet, Button, Card, CardContent, ComponentLayout } from '@hua-labs/hua'
 import { X, Gear } from '@phosphor-icons/react'
 
 export default function BottomSheetPage() {
@@ -354,7 +354,7 @@ export default function BottomSheetPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { BottomSheet, Button } from '@hua-labs/hua-ux'
+{`import { BottomSheet, Button } from '@hua-labs/hua'
 import { useState } from 'react'
 
 function MyComponent() {

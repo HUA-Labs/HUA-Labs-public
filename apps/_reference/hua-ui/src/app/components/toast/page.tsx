@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useToast, Button, Card, CardContent, ToastProvider } from '@hua-labs/hua-ux'
+import { useToast, Button, Card, CardContent, ToastProvider } from '@hua-labs/hua'
 import { Check, X, Warning, Info } from '@phosphor-icons/react'
 
 function ToastContent() {
@@ -211,7 +211,7 @@ function ToastContent() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { useToast, ToastProvider } from '@hua-labs/hua-ux'
+{`import { useToast, ToastProvider } from '@hua-labs/hua'
 
 function MyComponent() {
   const { addToast } = useToast()

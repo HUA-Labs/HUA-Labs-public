@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Menu, MenuItem, MenuSeparator, MenuLabel, Button, Card, CardContent, ComponentLayout } from '@hua-labs/hua-ux'
+import { Menu, MenuItem, MenuSeparator, MenuLabel, Button, Card, CardContent, ComponentLayout } from '@hua-labs/hua'
 import { User, Gear, Question, Plus, Trash, X, House, Star, Envelope, Users, ChartBar, DownloadSimple, Heart, Lock, Bell, Upload } from '@phosphor-icons/react'
 
 export default function MenuPage() {
@@ -269,7 +269,7 @@ export default function MenuPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Menu, MenuItem, MenuSeparator, MenuLabel, Icon } from '@hua-labs/hua-ux'
+{`import { Menu, MenuItem, MenuSeparator, MenuLabel, Icon } from '@hua-labs/hua'
 
 // 기본 세로 메뉴
 <Menu>

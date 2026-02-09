@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Drawer, Button, Card, CardContent } from '@hua-labs/hua-ux'
+import { Drawer, Button, Card, CardContent } from '@hua-labs/hua'
 import { X } from '@phosphor-icons/react'
 
 export default function DrawerPage() {
@@ -312,7 +312,7 @@ export default function DrawerPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Drawer, Button } from '@hua-labs/hua-ux'
+{`import { Drawer, Button } from '@hua-labs/hua'
 import { useState } from 'react'
 
 function MyComponent() {

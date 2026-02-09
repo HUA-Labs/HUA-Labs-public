@@ -1,9 +1,9 @@
 "use client"
 
 import React from "react"
-import { Scrollbar } from '@hua-labs/hua-ux'
-import { Card, CardContent, CardHeader, CardTitle, Badge } from '@hua-labs/hua-ux'
-import { ComponentLayout } from '@hua-labs/hua-ux'
+import { Scrollbar } from '@hua-labs/hua'
+import { Card, CardContent, CardHeader, CardTitle, Badge } from '@hua-labs/hua'
+import { ComponentLayout } from '@hua-labs/hua'
 
 export default function ScrollbarPage() {
   const longContent = Array.from({ length: 50 }, (_, i) => (
@@ -57,7 +57,7 @@ export default function ScrollbarPage() {
             </div>
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                <code>{`import { Scrollbar } from '@hua-labs/hua-ux'
+                <code>{`import { Scrollbar } from '@hua-labs/hua'
 
 // 세로 스크롤
 <Scrollbar className="h-64">

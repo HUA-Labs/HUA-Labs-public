@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Button, Panel, CodeBlock } from '@hua-labs/hua-ux'
+import { Button, Panel, CodeBlock } from '@hua-labs/hua'
 import {
   Lightning,
   Palette,
@@ -134,7 +134,7 @@ export default function HomePage() {
           </div>
           <div className="max-w-2xl mx-auto">
             <CodeBlock
-              code="pnpm add @hua-labs/hua-ux"
+              code="pnpm add @hua-labs/hua"
               language="bash"
             />
           </div>

@@ -35,7 +35,7 @@ export default function DocsPage() {
             문서
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            @hua-labs/hua-ux SDK의 완전한 사용법 가이드
+            @hua-labs/hua SDK의 완전한 사용법 가이드
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default function DocsPage() {
                   빠른 시작
                 </h2>
                 <p className="text-slate-600 dark:text-slate-400 mb-6">
-                  @hua-labs/hua-ux를 프로젝트에 추가하고 첫 번째 컴포넌트를 만들어보세요
+                  @hua-labs/hua를 프로젝트에 추가하고 첫 번째 컴포넌트를 만들어보세요
                 </p>
               </section>
 
@@ -85,10 +85,10 @@ export default function DocsPage() {
                 </p>
                 <div className="relative">
                   <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                    <code>npm install @hua-labs/hua-ux</code>
+                    <code>npm install @hua-labs/hua</code>
                   </pre>
                   <button
-                    onClick={() => copyToClipboard('npm install @hua-labs/hua-ux', 'install')}
+                    onClick={() => copyToClipboard('npm install @hua-labs/hua', 'install')}
                     className="absolute top-2 right-2 p-2 text-slate-400 hover:text-white transition-colors"
                   >
                     {copied === 'install' ? (
@@ -110,7 +110,7 @@ export default function DocsPage() {
                 </p>
                 <div className="relative">
                   <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
-                    <code>{`import { Button, Card } from '@hua-labs/hua-ux'
+                    <code>{`import { Button, Card } from '@hua-labs/hua'
 
 function App() {
   return (
@@ -122,7 +122,7 @@ function App() {
 }`}</code>
                   </pre>
                   <button
-                    onClick={() => copyToClipboard(`import { Button, Card } from '@hua-labs/hua-ux'
+                    onClick={() => copyToClipboard(`import { Button, Card } from '@hua-labs/hua'
 
 function App() {
   return (

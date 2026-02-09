@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Breadcrumb, Card, CardContent, Icon } from '@hua-labs/hua-ux'
+import { Breadcrumb, Card, CardContent, Icon } from '@hua-labs/hua'
 
 export default function BreadcrumbPage() {
   const basicItems = [
@@ -268,7 +268,7 @@ export default function BreadcrumbPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Breadcrumb } from '@hua-labs/hua-ux'
+{`import { Breadcrumb } from '@hua-labs/hua'
 
 // 기본 브레드크럼
 const items = [

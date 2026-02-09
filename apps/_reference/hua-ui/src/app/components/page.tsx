@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Panel, Badge, Button, Input } from '@hua-labs/hua-ux'
+import { Panel, Badge, Button, Input } from '@hua-labs/hua'
 import { Stack, Star } from '@phosphor-icons/react'
 
 export default function ComponentsPage() {

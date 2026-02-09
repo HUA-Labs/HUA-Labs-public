@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     "@hua-labs/motion-core",
     "@hua-labs/i18n-core",
     "@hua-labs/i18n-core-zustand",
-    "@hua-labs/hua-ux",
+    "@hua-labs/hua",
   ],
 };
 

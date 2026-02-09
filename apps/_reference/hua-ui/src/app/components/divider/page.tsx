@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Divider, Card, CardContent } from '@hua-labs/hua-ux'
+import { Divider, Card, CardContent } from '@hua-labs/hua'
 
 export default function DividerPage() {
   return (

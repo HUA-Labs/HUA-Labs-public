@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Pagination, Card, CardContent, Button } from '@hua-labs/hua-ux'
+import { Pagination, Card, CardContent, Button } from '@hua-labs/hua'
 
 export default function PaginationPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -276,7 +276,7 @@ export default function PaginationPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Pagination } from '@hua-labs/hua-ux'
+{`import { Pagination } from '@hua-labs/hua'
 import { useState } from 'react'
 
 function MyComponent() {

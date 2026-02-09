@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Select, SelectOption, Label, ComponentLayout } from '@hua-labs/hua-ux'
+import { Select, SelectOption, Label, ComponentLayout } from '@hua-labs/hua'
 import { Globe, User } from '@phosphor-icons/react'
 
 export default function SelectPage() {
@@ -45,7 +45,7 @@ export default function SelectPage() {
             </div>
             <div className="mt-4">
               <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                <code>{`import { Select, SelectOption, Label } from '@hua-labs/hua-ux'
+                <code>{`import { Select, SelectOption, Label } from '@hua-labs/hua'
 
 <div>
   <Label htmlFor="basic-select">국가 선택</Label>

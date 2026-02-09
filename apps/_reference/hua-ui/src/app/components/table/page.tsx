@@ -14,8 +14,8 @@ import {
   Card, 
   CardContent, 
   Badge 
-} from '@hua-labs/hua-ux'
-import { ComponentLayout } from '@hua-labs/hua-ux'
+} from '@hua-labs/hua'
+import { ComponentLayout } from '@hua-labs/hua'
 
 // API 문서용 타입 정의
 const TABLE_TYPES = {
@@ -444,7 +444,7 @@ export default function TablePage() {
   TableHead, 
   TableRow, 
   TableCell 
-} from '@hua-labs/hua-ux'
+} from '@hua-labs/hua'
 
 function MyComponent() {
   return (

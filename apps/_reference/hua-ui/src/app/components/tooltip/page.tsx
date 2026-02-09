@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Tooltip, Button, Card, CardContent } from '@hua-labs/hua-ux'
+import { Tooltip, Button, Card, CardContent } from '@hua-labs/hua'
 import { Gear, Question, Bell, User, MagnifyingGlass, Upload, FloppyDisk, ArrowCounterClockwise } from '@phosphor-icons/react'
 
 export default function TooltipPage() {
@@ -217,7 +217,7 @@ export default function TooltipPage() {
                 기본 사용법
               </h3>
               <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-x-auto">
-{`import { Tooltip, Button } from '@hua-labs/hua-ux'
+{`import { Tooltip, Button } from '@hua-labs/hua'
 
 // 기본 툴팁
 <Tooltip content="툴팁 내용">

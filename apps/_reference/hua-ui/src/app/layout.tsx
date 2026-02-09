@@ -1,15 +1,15 @@
 import type { Metadata, Viewport } from 'next';
-import { ThemeProvider, ScrollToTop } from '@hua-labs/hua-ux';
-import { HuaUxLayout, SkipToContent } from '@hua-labs/hua-ux/framework';
-import { setConfig } from '@hua-labs/hua-ux/framework/config';
-import { getSSRTranslations } from '@hua-labs/hua-ux/framework/server';
+import { ThemeProvider, ScrollToTop } from '@hua-labs/hua';
+import { HuaProvider, SkipToContent } from '@hua-labs/hua/framework';
+import { setConfig } from '@hua-labs/hua/framework/config';
+import { getSSRTranslations } from '@hua-labs/hua/framework/server';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import huaUxConfig from '../../hua-ux.config';
+import HuaConfig from '../../hua.config';
 import './globals.css';
 
 // 설정 초기화 (서버 사이드)
-setConfig(huaUxConfig);
+setConfig(HuaConfig);
 
 export const metadata: Metadata = {
   title: {
@@ -37,14 +37,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   // SSR 번역 데이터 로드
-  const initialTranslations = await getSSRTranslations(huaUxConfig, 'public/translations');
+  const initialTranslations = await getSSRTranslations(HuaConfig, 'public/translations');
 
   // config에 initialTranslations 추가
-  const configWithSSR: Partial<typeof huaUxConfig> = {
-    ...huaUxConfig,
-    i18n: huaUxConfig.i18n
+  const configWithSSR: Partial<typeof HuaConfig> = {
+    ...HuaConfig,
+    i18n: HuaConfig.i18n
       ? {
-          ...huaUxConfig.i18n,
+          ...HuaConfig.i18n,
           initialTranslations,
         }
       : undefined,
@@ -68,7 +68,7 @@ export default async function RootLayout({
           enableSystem
           enableTransition
         >
-          <HuaUxLayout config={configWithSSR}>
+          <HuaProvider config={configWithSSR}>
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 dark:from-slate-900 dark:via-blue-900/20 dark:to-purple-900/20 relative overflow-hidden">
               {/* 배경 장식 */}
               <div className="absolute inset-0 opacity-50" style={{
@@ -91,7 +91,7 @@ export default async function RootLayout({
                 threshold={300}
               />
             </div>
-          </HuaUxLayout>
+          </HuaProvider>
         </ThemeProvider>
       </body>
     </html>

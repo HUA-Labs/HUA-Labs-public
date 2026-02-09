@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { Navigation, NavigationList, NavigationItem, NavigationContent, Panel, ComponentLayout } from '@hua-labs/hua-ux'
+import { Navigation, NavigationList, NavigationItem, NavigationContent, Panel, ComponentLayout } from '@hua-labs/hua'
 import { User, Gear, Bell } from '@phosphor-icons/react'
 
 // API 문서용 타입 정의
@@ -59,7 +59,7 @@ export default function NavigationPage() {
           </Panel>
           <Panel padding="lg">
             <pre className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 p-4 rounded-lg overflow-x-auto text-sm border border-slate-200 dark:border-slate-700">
-              <code>{`import { Navigation, NavigationList, NavigationItem, NavigationContent } from '@hua-labs/hua-ux'
+              <code>{`import { Navigation, NavigationList, NavigationItem, NavigationContent } from '@hua-labs/hua'
 
 <Navigation value={value} onValueChange={setValue}>
   <NavigationList>
