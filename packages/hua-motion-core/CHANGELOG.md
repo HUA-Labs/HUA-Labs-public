@@ -1,5 +1,14 @@
 # @hua-labs/motion-core
 
+## 2.2.0
+
+### Minor Changes
+
+- dbeb6fd: Change useUnifiedMotion autoStart default from false to true
+
+  Animations now start automatically when the element enters the viewport by default.
+  Pass `autoStart: false` to opt out of the previous behavior.
+
 ## 2.1.0
 
 ### Patch Changes
