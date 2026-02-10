@@ -11,8 +11,6 @@ hua-ux 프로젝트 생성을 위한 스캐폴딩 도구 — 몇 초 만에 프�
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
 
-> **Alpha**: APIs may change before stable release. | **알파**: 안정 릴리스 전 API가 변경될 수 있습니다.
-
 ## Overview | 개요
 
 The fastest way to bootstrap a production-ready Next.js project with the hua-ux framework. Automatically configures UI components, animation hooks, internationalization, state management, and AI-optimized context files.
@@ -100,8 +98,8 @@ pnpm dev
 
 ## Related Packages | 관련 패키지
 
-- [`create-hua`](https://www.npmjs.com/package/create-hua) — Convenience alias for this package
-- [`@hua-labs/hua-ux`](https://www.npmjs.com/package/@hua-labs/hua-ux) — The UX framework installed by this CLI
+- [`create-hua`](https://www.npmjs.com/package/create-hua) — Successor to this package (use this instead)
+- [`@hua-labs/hua`](https://www.npmjs.com/package/@hua-labs/hua) — The hua framework (successor to @hua-labs/hua-ux)
 
 ## Requirements | 요구사항
 

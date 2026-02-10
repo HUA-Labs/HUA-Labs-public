@@ -37,11 +37,10 @@ import { createApiTranslationLoader, preloadNamespaces } from '@hua-labs/i18n-lo
 const loadTranslations = createApiTranslationLoader({
   translationApiPath: '/api/translations',
   cacheTtlMs: 60_000,
-  enableGlobalCache: true,
 });
 
 // Preload at startup
-preloadNamespaces('ko', ['common', 'dashboard'], loadTranslations);
+await preloadNamespaces('ko', ['common', 'dashboard'], loadTranslations);
 
 // Use with i18n-core
 const I18nProvider = createCoreI18n({
@@ -67,7 +66,7 @@ const I18nProvider = createCoreI18n({
 |--------|------|---------|-------------|
 | `translationApiPath` | `string` | — | API endpoint path |
 | `cacheTtlMs` | `number` | `300000` | Cache TTL in ms |
-| `enableGlobalCache` | `boolean` | `true` | Enable global cache |
+| `retryCount` | `number` | `2` | Number of retries on failure |
 
 ## Documentation
 

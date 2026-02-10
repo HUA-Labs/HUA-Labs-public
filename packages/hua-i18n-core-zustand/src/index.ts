@@ -263,9 +263,10 @@ export function createZustandI18n<L extends string = SupportedLanguage | string>
             if (process.env.NODE_ENV !== 'production') console.log(`🔄 [ZUSTAND-I18N] Syncing language after rehydration: ${state.currentI18nLanguage} -> ${storeLanguage}`);
           }
           state.isSyncing = true;
-          setI18nLanguage(storeLanguage);
           state.previousStoreLanguage = storeLanguage;
-          state.isSyncing = false;
+          setI18nLanguage(storeLanguage);
+          // Clear isSyncing after React processes the state update
+          queueMicrotask(() => { state.isSyncing = false; });
         } else {
           if (debug) {
             if (process.env.NODE_ENV !== 'production') console.log(`⏭️ [ZUSTAND-I18N] No sync needed (store: ${storeLanguage}, current: ${state.currentI18nLanguage})`);
@@ -325,7 +326,7 @@ export function createZustandI18n<L extends string = SupportedLanguage | string>
             }
             state.isSyncing = true;
             setI18nLanguage(newLanguage);
-            state.isSyncing = false;
+            queueMicrotask(() => { state.isSyncing = false; });
           }
         }
       });
@@ -338,9 +339,9 @@ export function createZustandI18n<L extends string = SupportedLanguage | string>
             if (process.env.NODE_ENV !== 'production') console.log(`🔄 [ZUSTAND-I18N] Already hydrated, syncing language: ${state.currentI18nLanguage} -> ${storeLanguage}`);
           }
           state.isSyncing = true;
-          setI18nLanguage(storeLanguage);
           state.previousStoreLanguage = storeLanguage;
-          state.isSyncing = false;
+          setI18nLanguage(storeLanguage);
+          queueMicrotask(() => { state.isSyncing = false; });
         }
       }
 

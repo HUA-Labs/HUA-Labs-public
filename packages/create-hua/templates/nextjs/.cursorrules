@@ -287,7 +287,7 @@ import { useData } from '@hua-labs/hua/framework';
 export function MyComponent() {
   const { data, isLoading, error } = useData<MyDataType>('/api/data');
   if (isLoading) return <LoadingSpinner />;
-  if (error) return <AlertError>{error.message}</AlertError>;
+  if (error) return <Alert variant="error">{error.message}</Alert>;
   return <div>{/* display data */}</div>;
 }
 ```
