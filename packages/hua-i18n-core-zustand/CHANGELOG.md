@@ -1,5 +1,16 @@
 # @hua-labs/i18n-core-zustand
 
+## 2.0.2
+
+### Patch Changes
+
+- dbeb6fd: Fix isSyncing guard for async setLanguage calls
+
+  The isSyncing flag was cleared synchronously before the async language change completed, potentially allowing re-entrant sync calls. Now uses `.finally()` to properly clear the flag after the async operation.
+
+- Updated dependencies [dbeb6fd]
+  - @hua-labs/i18n-core@1.2.0
+
 ## 2.0.1
 
 ### Patch Changes

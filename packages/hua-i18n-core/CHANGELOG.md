@@ -1,5 +1,14 @@
 # @hua-labs/i18n-core
 
+## 1.2.0
+
+### Minor Changes
+
+- dbeb6fd: Add server-only entry point (`@hua-labs/i18n-core/server`)
+
+  New export path for use in Next.js Server Components, API routes, and middleware.
+  No React hooks or "use client" directives — safe for server-side usage.
+
 ## 1.1.0
 
 ### Patch Changes
