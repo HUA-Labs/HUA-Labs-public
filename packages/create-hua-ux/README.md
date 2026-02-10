@@ -1,5 +1,7 @@
 # create-hua-ux
 
+> **DEPRECATED**: This package has been renamed to [`create-hua`](https://www.npmjs.com/package/create-hua). Please migrate to the new package. This package will no longer receive updates.
+
 Scaffolding tool for creating hua-ux projects — production-ready in seconds.
 hua-ux 프로젝트 생성을 위한 스캐폴딩 도구 — 몇 초 만에 프로덕션 레디.
 

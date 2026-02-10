@@ -1,5 +1,7 @@
 # @hua-labs/hua-ux
 
+> **DEPRECATED**: This package has been renamed to [`@hua-labs/hua`](https://www.npmjs.com/package/@hua-labs/hua). Please migrate to the new package. This package will no longer receive updates.
+
 Ship UX faster: UI + Motion + i18n, pre-wired.
 더 빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크.
 
