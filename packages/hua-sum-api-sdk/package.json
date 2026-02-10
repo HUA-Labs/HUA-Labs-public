@@ -2,8 +2,22 @@
   "name": "@hua-labs/api-lite",
   "version": "2.1.2",
   "description": "HUA Lite API SDK - Emotional AI Chatbot Integration",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/HUA-Labs/HUA-Labs-public.git"
@@ -28,9 +42,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "node ../../node_modules/typescript/lib/tsc.js",
-    "dev": "node ../../node_modules/typescript/lib/tsc.js --watch",
-    "clean": "rimraf dist",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
     "test": "jest",
     "lint": "echo 'Skipping lint for hua-sum-api-sdk (ESLint 8, needs separate config)'",
     "type-check": "tsc --noEmit"
@@ -40,6 +54,7 @@
     "@types/node": "^25.2.0",
     "jest": "^30.0.4",
     "ts-jest": "^29.4.6",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.3"
   },
   "engines": {
