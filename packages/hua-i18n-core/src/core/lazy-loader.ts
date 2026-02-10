@@ -181,8 +181,8 @@ export class LazyLoader {
    */
   analyzeUsagePatterns(): Record<string, number> {
     const usage: Record<string, number> = {};
-    
-    for (const [key, timestamp] of this.loadHistory.entries()) {
+
+    for (const [key] of this.loadHistory.entries()) {
       const namespace = key.split(':')[1];
       usage[namespace] = (usage[namespace] || 0) + 1;
     }

@@ -1,18 +1,8 @@
 name: E2E Test (Fresh Install)
 
+# Disabled: create-hua-ux is deprecated, tests target old package.
+# TODO: Rewrite for create-hua when CLI stabilizes.
 on:
-  pull_request:
-    paths:
-      - 'packages/create-hua-ux/src/**'
-      - 'packages/create-hua-ux/templates/**'
-      - 'packages/create-hua-ux/package.json'
-      - '.github/workflows/e2e-test.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'packages/create-hua-ux/src/**'
-      - 'packages/create-hua-ux/templates/**'
-      - 'packages/create-hua-ux/package.json'
   workflow_dispatch:
 
 jobs:

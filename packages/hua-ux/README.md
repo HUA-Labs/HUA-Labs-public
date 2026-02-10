@@ -1,5 +1,7 @@
 # @hua-labs/hua-ux
 
+> **DEPRECATED**: This package has been renamed to [`@hua-labs/hua`](https://www.npmjs.com/package/@hua-labs/hua). Please migrate to the new package. This package will no longer receive updates.
+
 Ship UX faster: UI + Motion + i18n, pre-wired.
 더 빠른 UX 개발을 위한 UI, Motion, i18n 통합 프레임워크.
 
@@ -8,8 +10,6 @@ Ship UX faster: UI + Motion + i18n, pre-wired.
 [![license](https://img.shields.io/npm/l/@hua-labs/hua-ux.svg)](https://github.com/HUA-Labs/HUA-Labs-public/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
-
-> **Alpha**: APIs may change before stable release. | **알파**: 안정 릴리스 전 API가 변경될 수 있습니다.
 
 ## Overview | 개요
 
@@ -124,7 +124,7 @@ export default function RootLayout({ children }) {
 - [`@hua-labs/i18n-core`](https://www.npmjs.com/package/@hua-labs/i18n-core) — i18n engine
 - [`@hua-labs/state`](https://www.npmjs.com/package/@hua-labs/state) — State management
 - [`@hua-labs/pro`](https://www.npmjs.com/package/@hua-labs/pro) — Advanced motion hooks
-- [`create-hua-ux`](https://www.npmjs.com/package/create-hua-ux) — Project scaffolding CLI
+- [`create-hua`](https://www.npmjs.com/package/create-hua) — Project scaffolding CLI
 
 ## Requirements | 요구사항
 
