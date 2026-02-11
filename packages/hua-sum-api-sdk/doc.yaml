@@ -1,0 +1,33 @@
+overview: "TypeScript SDK for integrating with the HUA Lite emotional AI chatbot API. Supports guest and authenticated API keys, smart retry logic, emotion-based responses, credit management, and event-driven architecture."
+
+features:
+  - "Smart retry — Auto-retry on 502/503/504 with exponential backoff"
+  - "API key validation — Guest (64-char) and authenticated (hua_ prefix) keys"
+  - "Emotion-based responses — Configurable tone, mode, and tier"
+  - "Credit management — Track usage and remaining credits"
+  - "Event system — Request/response/error lifecycle events"
+  - "TypeScript — Full type safety with comprehensive interfaces"
+
+quickStart: |
+  import { HUALite } from '@hua-labs/api-lite';
+
+  const hua = new HUALite('hua_your_api_key');
+
+  const response = await hua.chat({
+    message: '오늘 하루 힘들었어, 위로해줘!',
+    tone: 'gentle',
+    mode: 'empathy',
+    tier: 1.0,
+    provider: 'openai',
+  });
+
+  console.log(response.data.message);
+
+codeBlockLang: typescript
+
+related:
+  - "hua"
+
+apiNotes:
+  HUALite:
+    description: "Main SDK class — initialize with API key"
