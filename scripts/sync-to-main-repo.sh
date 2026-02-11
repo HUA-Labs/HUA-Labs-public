@@ -55,6 +55,14 @@ PACKAGES=(
     "hua-i18n-core"
     "hua-i18n-core-zustand"
     "hua-i18n-loaders"
+    "hua-i18n-formatters"
+    "hua-hooks"
+    "hua-utils"
+    "hua-state"
+    "hua-motion-core"
+    "hua-ui"
+    "hua"
+    "create-hua"
 )
 
 echo -e "${YELLOW}📦 동기화할 패키지:${NC}"
@@ -136,6 +144,7 @@ for pkg in "${PACKAGES[@]}"; do
         "package.json"
         "tsconfig.json"
         "README.md"
+        "DETAILED_GUIDE.md"
         "CHANGELOG.md"
         ".gitignore"
     )

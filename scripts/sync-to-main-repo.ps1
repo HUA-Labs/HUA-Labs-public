@@ -47,7 +47,15 @@ if (-not (Test-Path $MainRepoPath)) {
 $Packages = @(
     "hua-i18n-core",
     "hua-i18n-core-zustand",
-    "hua-i18n-loaders"
+    "hua-i18n-loaders",
+    "hua-i18n-formatters",
+    "hua-hooks",
+    "hua-utils",
+    "hua-state",
+    "hua-motion-core",
+    "hua-ui",
+    "hua",
+    "create-hua"
 )
 
 Write-ColorOutput "Yellow" "📦 동기화할 패키지:"
@@ -139,6 +147,7 @@ foreach ($pkg in $Packages) {
         "package.json",
         "tsconfig.json",
         "README.md",
+        "DETAILED_GUIDE.md",
         "CHANGELOG.md",
         ".gitignore"
     )
