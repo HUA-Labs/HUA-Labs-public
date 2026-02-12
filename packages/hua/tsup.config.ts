@@ -13,7 +13,6 @@ const entry = {
   'i18n/index': 'src/i18n/index.ts',
   'motion/index': 'src/motion/index.ts',
   'state/index': 'src/state/index.ts',
-  'pro/index': 'src/pro/index.ts',
   'formatters/index': 'src/formatters/index.ts',
   'utils/index': 'src/utils/index.ts',
   'hooks/index': 'src/hooks/index.ts',
@@ -47,8 +46,6 @@ const shared = {
     // Icon libraries
     '@phosphor-icons/react',
   ],
-  // Force bundle @hua-labs/pro into hua dist (source-private strategy)
-  noExternal: ['@hua-labs/pro'],
   esbuildOptions(options: { jsx?: string }) {
     options.jsx = 'automatic';
   },

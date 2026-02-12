@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@hua-labs/api-lite": "workspace:*"
+    "@hua-labs/api-lite": "latest"
   },
   "name": "hua-demo"
 }
