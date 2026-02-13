@@ -172,8 +172,3 @@ export * from '@hua-labs/i18n-core-zustand'
 
 // Re-export state management
 export * from '@hua-labs/state'
-
-// Re-export Pro features (advanced motion hooks)
-// Note: Pro package is dist-only (source not included in npm)
-// Framework users get Pro features included, individual package users need Pro license
-export * from '@hua-labs/pro'
