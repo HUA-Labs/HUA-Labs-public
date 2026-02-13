@@ -1,5 +1,12 @@
 # @hua-labs/i18n-loaders
 
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [b5921f2]
+  - @hua-labs/i18n-core@2.0.4
+
 ## 2.0.2
 
 ### Patch Changes
