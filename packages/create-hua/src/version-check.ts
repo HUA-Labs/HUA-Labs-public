@@ -8,7 +8,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import chalk from 'chalk';
-import { compareVersions } from './shared';
+import { compareVersions, t } from './shared';
 
 const execAsync = promisify(exec);
 
@@ -28,7 +28,7 @@ async function getLatestVersion(): Promise<string | null> {
       timeout: 5000,
     });
     return stdout.trim();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -38,9 +38,9 @@ async function getLatestVersion(): Promise<string | null> {
  */
 function getCurrentVersion(): string {
   try {
-    const packageJson = require('../package.json');
+    const packageJson = require('../package.json') as { version: string };
     return packageJson.version;
-  } catch (error) {
+  } catch {
     return 'unknown';
   }
 }
@@ -62,20 +62,20 @@ function isVersionOutdated(current: string, latest: string): boolean {
 function displayCacheClearInstructions() {
   const platform = process.platform;
 
-  console.log(chalk.cyan('\n   To clear npx cache:\n'));
+  console.log(chalk.cyan(`\n   ${t('version:clearCacheTitle')}\n`));
 
   if (platform === 'win32') {
-    console.log(chalk.cyan('   Windows:'));
+    console.log(chalk.cyan(`   ${t('version:clearCacheWindows')}`));
     console.log(chalk.white('   npm cache clean --force'));
     console.log(chalk.white('   del /s /q "%LOCALAPPDATA%\\npm-cache"'));
     console.log(chalk.white('   rmdir /s /q "%APPDATA%\\npm-cache"'));
   } else {
-    console.log(chalk.cyan('   macOS/Linux:'));
+    console.log(chalk.cyan(`   ${t('version:clearCacheMacLinux')}`));
     console.log(chalk.white('   npm cache clean --force'));
     console.log(chalk.white('   rm -rf ~/.npm/_npx'));
   }
 
-  console.log(chalk.cyan('\n   Then create your project with:'));
+  console.log(chalk.cyan(`\n   ${t('version:createWithLatest')}`));
   console.log(chalk.white('   npm create hua@latest my-app'));
   console.log();
 }
@@ -121,16 +121,15 @@ export async function checkVersion(): Promise<VersionCheckResult> {
   const isOutdated = isVersionOutdated(currentVersion, latestVersion);
 
   if (isOutdated) {
-    console.log(chalk.yellow('\nWarning: You are using an outdated version of create-hua'));
+    console.log(chalk.yellow(`\n${t('version:outdatedWarning')}`));
     console.log(chalk.yellow(`   Current:  ${currentVersion}`));
     console.log(chalk.yellow(`   Latest:   ${latestVersion}`));
     console.log();
-    console.log(chalk.yellow('   This may result in receiving old templates with known issues.'));
+    console.log(chalk.yellow(`   ${t('version:outdatedTemplate')}`));
 
     displayCacheClearInstructions();
-    // No more 5-second forced wait - just continue
   } else {
-    console.log(chalk.green(`Using latest version: ${currentVersion}\n`));
+    console.log(chalk.green(`${t('version:usingLatest', { version: currentVersion })}\n`));
   }
 
   return {

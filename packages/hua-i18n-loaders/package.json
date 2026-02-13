@@ -30,7 +30,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@hua-labs/i18n-core": "latest"
+    "@hua-labs/i18n-core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19.0.0"

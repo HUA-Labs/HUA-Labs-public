@@ -39,7 +39,6 @@ const shared = {
     '@hua-labs/i18n-core-zustand',
     '@hua-labs/i18n-formatters',
     '@hua-labs/state',
-    // '@hua-labs/pro' — intentionally NOT external: bundled into hua dist (source-private strategy)
     '@hua-labs/utils',
     '@hua-labs/hooks',
     '@hua-labs/i18n-loaders',

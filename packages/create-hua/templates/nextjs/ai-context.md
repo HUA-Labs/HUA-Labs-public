@@ -325,6 +325,7 @@ export function DataComponent() {
 - Add all translation keys to both Korean and English
 - Namespace should match page name
 - Use `common` namespace for shared translations
+- **Namespace separator is `:` (colon)**, NOT `.` (dot) — e.g., `t('common:error')`, `t('landing:hero_title')`
 
 ## Understanding Configuration Files
 

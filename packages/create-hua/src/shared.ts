@@ -5,6 +5,10 @@
  * Single source of truth for version checks, i18n, and validation.
  */
 
+import { type MessageKey, MESSAGES_EN, MESSAGES_BI } from './messages';
+
+export type { MessageKey };
+
 /**
  * Minimum required Node.js version
  */
@@ -89,46 +93,22 @@ export function isEnglishOnly(): boolean {
   );
 }
 
-type MessageKey =
-  | 'projectNamePrompt'
-  | 'projectNameRequired'
-  | 'selectAiContext'
-  | 'documentationLanguage'
-  | 'projectNameInvalidUppercase'
-  | 'projectNameInvalidSpaces'
-  | 'projectNameInvalidStartChar'
-  | 'projectNameInvalidChars';
-
-const MESSAGES_EN: Record<MessageKey, string> = {
-  projectNamePrompt: 'What is your project name?',
-  projectNameRequired: 'Project name is required',
-  selectAiContext: 'Select AI context files to generate:',
-  documentationLanguage: 'Documentation language:',
-  projectNameInvalidUppercase: 'No uppercase letters allowed',
-  projectNameInvalidSpaces: 'No spaces allowed',
-  projectNameInvalidStartChar: 'Cannot start with . or _',
-  projectNameInvalidChars: 'Only lowercase letters, numbers, hyphens, dots, and @ are allowed',
-};
-
-const MESSAGES_BI: Record<MessageKey, string> = {
-  projectNamePrompt: 'What is your project name? / 프로젝트 이름을 입력하세요:',
-  projectNameRequired: 'Project name is required / 프로젝트 이름이 필요합니다',
-  selectAiContext: 'Select AI context files to generate / 생성할 AI 컨텍스트 파일을 선택하세요:',
-  documentationLanguage: 'Documentation language / 문서 언어:',
-  projectNameInvalidUppercase: 'No uppercase letters / 대문자는 사용할 수 없습니다',
-  projectNameInvalidSpaces: 'No spaces allowed / 공백은 사용할 수 없습니다',
-  projectNameInvalidStartChar: 'Cannot start with . or _ / .이나 _로 시작할 수 없습니다',
-  projectNameInvalidChars: 'Only lowercase, numbers, hyphens allowed / 소문자, 숫자, 하이픈만 사용 가능합니다',
-};
-
 /**
- * Get localized message (bilingual by default, English-only when configured)
+ * Get localized message with optional interpolation.
+ *
+ * @example
+ *   t('doctor:dirNotFound', { path: '/foo' })
+ *   // → "Project directory not found: /foo"
  */
-export function t(key: MessageKey): string {
-  if (isEnglishOnly()) {
-    return MESSAGES_EN[key] ?? key;
+export function t(key: MessageKey, params?: Record<string, string | number>): string {
+  const table = isEnglishOnly() ? MESSAGES_EN : MESSAGES_BI;
+  let msg = table[key] ?? key;
+  if (params) {
+    for (const [k, v] of Object.entries(params)) {
+      msg = msg.replaceAll(`{${k}}`, String(v));
+    }
   }
-  return MESSAGES_BI[key] ?? key;
+  return msg;
 }
 
 // ---------------------------------------------------------------------------
@@ -173,19 +153,19 @@ export function isInteractive(): boolean {
  */
 export function validateProjectName(name: string): { valid: boolean; message?: string } {
   if (!name || !name.trim()) {
-    return { valid: false, message: t('projectNameRequired') };
+    return { valid: false, message: t('prompt:projectNameRequired') };
   }
   if (/[A-Z]/.test(name)) {
-    return { valid: false, message: t('projectNameInvalidUppercase') };
+    return { valid: false, message: t('validate:invalidUppercase') };
   }
   if (/\s/.test(name)) {
-    return { valid: false, message: t('projectNameInvalidSpaces') };
+    return { valid: false, message: t('validate:invalidSpaces') };
   }
   if (/^[._]/.test(name)) {
-    return { valid: false, message: t('projectNameInvalidStartChar') };
+    return { valid: false, message: t('validate:invalidStartChar') };
   }
   if (!/^[a-z0-9@][a-z0-9._\/-]*$/.test(name)) {
-    return { valid: false, message: t('projectNameInvalidChars') };
+    return { valid: false, message: t('validate:invalidChars') };
   }
   return { valid: true };
 }

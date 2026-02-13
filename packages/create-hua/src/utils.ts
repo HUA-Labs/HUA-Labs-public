@@ -13,7 +13,6 @@ import { HUA_VERSION } from './version';
 import {
   MIN_NODE_VERSION,
   AI_CONTEXT_FILES,
-  isEnglishOnly,
   isInteractive,
   t,
   compareVersions,
@@ -83,7 +82,7 @@ export async function promptProjectName(): Promise<string> {
     {
       type: 'input',
       name: 'projectName',
-      message: t('projectNamePrompt'),
+      message: t('prompt:projectName'),
       validate: (input: string) => {
         const result = validateProjectName(input);
         if (!result.valid) return result.message!;
@@ -124,53 +123,28 @@ export async function promptAiContextOptions(): Promise<AiContextOptions> {
   }
 
   try {
-    const isEn = isEnglishOnly();
     const answers = await inquirer.prompt([
       {
         type: 'checkbox',
         name: 'options',
-        message: t('selectAiContext'),
+        message: t('prompt:selectAiContext'),
         choices: [
-          {
-            name: isEn ? '.cursor/rules/ (Cursor IDE rules)' : '.cursor/rules/ (Cursor IDE rules) / Cursor IDE 규칙',
-            value: 'cursorRules',
-            checked: true,
-          },
-          {
-            name: isEn ? 'ai-context.md (General AI context)' : 'ai-context.md (General AI context) / 범용 AI 컨텍스트',
-            value: 'aiContext',
-            checked: true,
-          },
-          {
-            name: isEn ? 'AGENTS.md (OpenAI Codex)' : 'AGENTS.md (OpenAI Codex) / Codex 컨텍스트',
-            value: 'agentsMd',
-            checked: true,
-          },
-          {
-            name: isEn ? 'skills.md (Antigravity)' : 'skills.md (Antigravity) / Antigravity 스킬',
-            value: 'skillsMd',
-            checked: true,
-          },
-          {
-            name: isEn ? '.claude/project-context.md (Claude context)' : '.claude/project-context.md (Claude context) / Claude 컨텍스트',
-            value: 'claudeContext',
-            checked: true,
-          },
-          {
-            name: isEn ? '.claude/skills/ (Claude skills)' : '.claude/skills/ (Claude skills) / Claude 스킬',
-            value: 'claudeSkills',
-            checked: false,
-          },
+          { name: t('prompt:cursorRules'), value: 'cursorRules', checked: true },
+          { name: t('prompt:aiContext'), value: 'aiContext', checked: true },
+          { name: t('prompt:agentsMd'), value: 'agentsMd', checked: true },
+          { name: t('prompt:skillsMd'), value: 'skillsMd', checked: true },
+          { name: t('prompt:claudeContext'), value: 'claudeContext', checked: true },
+          { name: t('prompt:claudeSkills'), value: 'claudeSkills', checked: false },
         ],
       },
       {
         type: 'list',
         name: 'language',
-        message: t('documentationLanguage'),
+        message: t('prompt:documentationLanguage'),
         choices: [
-          { name: isEn ? 'Korean only' : 'Korean only / 한국어만', value: 'ko' },
-          { name: isEn ? 'English only' : 'English only / 영어만', value: 'en' },
-          { name: isEn ? 'Both Korean and English' : 'Both Korean and English / 한국어와 영어 모두', value: 'both' },
+          { name: t('prompt:langKo'), value: 'ko' },
+          { name: t('prompt:langEn'), value: 'en' },
+          { name: t('prompt:langBoth'), value: 'both' },
         ],
         default: 'both',
       },
@@ -185,7 +159,7 @@ export async function promptAiContextOptions(): Promise<AiContextOptions> {
       claudeSkills: answers.options.includes('claudeSkills'),
       language: answers.language || 'both',
     };
-  } catch (error) {
+  } catch {
     console.warn('Failed to get interactive input, using default options...');
     return {
       cursorRules: true,
@@ -271,6 +245,40 @@ function getHuaVersion(): string {
 
   // 3. Build-time constant (npm publish)
   return HUA_VERSION;
+}
+
+/**
+ * Get @hua-labs/ui version — mirrors getHuaVersion() logic
+ */
+function getHuaUiVersion(): string {
+  if (process.env.HUA_WORKSPACE_VERSION === 'workspace') {
+    return 'workspace:*';
+  }
+
+  try {
+    const createHuaRoot = path.resolve(__dirname, '..');
+    const uiPackageJson = path.join(createHuaRoot, '../hua-ui/package.json');
+
+    if (fs.pathExistsSync(uiPackageJson)) {
+      const uiPackage = fs.readJSONSync(uiPackageJson);
+      if (uiPackage.version) {
+        let currentDir = process.cwd();
+        for (let i = 0; i < 10; i++) {
+          if (fs.pathExistsSync(path.join(currentDir, 'pnpm-workspace.yaml'))) {
+            return 'workspace:*';
+          }
+          const parentDir = path.dirname(currentDir);
+          if (parentDir === currentDir) break;
+          currentDir = parentDir;
+        }
+        return `^${uiPackage.version}`;
+      }
+    }
+  } catch {
+    // fallback
+  }
+
+  return '^2.0.0';
 }
 
 /**
@@ -375,6 +383,7 @@ export async function generatePackageJson(
     },
     dependencies: {
       '@hua-labs/hua': getHuaVersion(),
+      '@hua-labs/ui': getHuaUiVersion(),
       '@phosphor-icons/react': PHOSPHOR_ICONS_VERSION,
       next: NEXTJS_VERSION,
       react: REACT_VERSION,
@@ -711,40 +720,27 @@ ${Object.entries(devDependencies)
  * Check prerequisites before project creation
  */
 export async function checkPrerequisites(): Promise<void> {
-  const isEn = isEnglishOnly();
   const errors: string[] = [];
   const warnings: string[] = [];
 
   // 1. Node.js version check
   const nodeVersion = process.version;
   if (compareVersions(nodeVersion, MIN_NODE_VERSION) < 0) {
-    errors.push(
-      isEn
-        ? `Node.js ${MIN_NODE_VERSION}+ required. Current: ${nodeVersion}`
-        : `Node.js ${MIN_NODE_VERSION}+ 필요합니다. 현재: ${nodeVersion}`
-    );
+    errors.push(t('prereq:nodeRequired', { min: MIN_NODE_VERSION, current: nodeVersion }));
   }
 
   // 2. pnpm installation check
   try {
     execSync('pnpm --version', { stdio: 'ignore' });
   } catch {
-    errors.push(
-      isEn
-        ? 'pnpm is required. Install: npm install -g pnpm'
-        : 'pnpm이 필요합니다. 설치: npm install -g pnpm'
-    );
+    errors.push(t('prereq:pnpmRequired'));
   }
 
   // 3. Template validation
   try {
     await validateTemplate();
   } catch (error) {
-    errors.push(
-      isEn
-        ? `Template validation failed: ${error instanceof Error ? error.message : String(error)}`
-        : `템플릿 검증 실패: ${error instanceof Error ? error.message : String(error)}`
-    );
+    errors.push(t('prereq:templateValidationFailed', { error: error instanceof Error ? error.message : String(error) }));
   }
 
   if (warnings.length > 0) {
@@ -753,10 +749,8 @@ export async function checkPrerequisites(): Promise<void> {
   }
 
   if (errors.length > 0) {
-    const errorMessage = isEn
-      ? `Prerequisites check failed:\n${errors.map(e => `  - ${e}`).join('\n')}\n\nTips:\n  - Update Node.js: https://nodejs.org/\n  - Install pnpm: npm install -g pnpm`
-      : `사전 검증 실패:\n${errors.map(e => `  - ${e}`).join('\n')}\n\n팁:\n  - Node.js 업데이트: https://nodejs.org/\n  - pnpm 설치: npm install -g pnpm`;
-
+    const errorList = errors.map(e => `  - ${e}`).join('\n');
+    const errorMessage = `${t('prereq:checkFailed', { errors: errorList })}\n${t('prereq:tips')}`;
     throw new Error(errorMessage);
   }
 }
@@ -766,18 +760,14 @@ export async function checkPrerequisites(): Promise<void> {
  */
 export async function validateTemplate(): Promise<void> {
   if (!(await fs.pathExists(TEMPLATE_DIR))) {
-    const isEn = isEnglishOnly();
-    throw new Error(
-      isEn
-        ? `Template directory not found: ${TEMPLATE_DIR}`
-        : `템플릿 디렉토리를 찾을 수 없습니다: ${TEMPLATE_DIR}`
-    );
+    throw new Error(t('validate:templateDirNotFound', { path: TEMPLATE_DIR }));
   }
 
   const requiredFiles = [
     'tsconfig.json',
     'next.config.ts',
     'tailwind.config.js',
+    '.eslintrc.json',
     'app/layout.tsx',
     'app/page.tsx',
     'app/globals.css',
@@ -802,12 +792,7 @@ export async function validateTemplate(): Promise<void> {
   }
 
   if (missingFiles.length > 0) {
-    const isEn = isEnglishOnly();
-    throw new Error(
-      isEn
-        ? `Template files missing: ${missingFiles.join(', ')}`
-        : `템플릿 파일 누락: ${missingFiles.join(', ')}`
-    );
+    throw new Error(t('validate:templateFilesMissing', { files: missingFiles.join(', ') }));
   }
 }
 
@@ -815,48 +800,35 @@ export async function validateTemplate(): Promise<void> {
  * Validate generated project
  */
 export async function validateGeneratedProject(projectPath: string): Promise<void> {
-  const isEn = isEnglishOnly();
   const errors: string[] = [];
 
   // 1. package.json
   const packageJsonPath = path.join(projectPath, 'package.json');
   if (!(await fs.pathExists(packageJsonPath))) {
-    errors.push(isEn ? 'package.json file was not created' : 'package.json 파일이 생성되지 않았습니다.');
+    errors.push(t('validate:packageJsonNotCreated'));
   } else {
     try {
       const packageJson = await fs.readJSON(packageJsonPath);
 
       if (packageJson.scripts?.lint !== 'next lint') {
-        errors.push(
-          isEn
-            ? `package.json lint script is incorrect. Expected: "next lint", Got: "${packageJson.scripts?.lint}"`
-            : `package.json의 lint 스크립트가 올바르지 않습니다. 예상: "next lint", 실제: "${packageJson.scripts?.lint}"`
-        );
+        errors.push(t('validate:lintScriptIncorrect', { actual: packageJson.scripts?.lint ?? '' }));
       }
 
       const requiredDeps = ['@hua-labs/hua', 'next', 'react', 'react-dom'];
       for (const dep of requiredDeps) {
         if (!packageJson.dependencies?.[dep]) {
-          errors.push(
-            isEn
-              ? `Required dependency ${dep} is missing from package.json`
-              : `필수 의존성 ${dep}이 package.json에 없습니다.`
-          );
+          errors.push(t('validate:depMissing', { dep }));
         }
       }
     } catch (error) {
-      errors.push(
-        isEn
-          ? `Failed to parse package.json: ${error}`
-          : `package.json 파싱 실패: ${error}`
-      );
+      errors.push(t('validate:packageJsonParseFailed', { error: String(error) }));
     }
   }
 
   // 2. hua.config.ts
   const configPath = path.join(projectPath, 'hua.config.ts');
   if (!(await fs.pathExists(configPath))) {
-    errors.push(isEn ? 'hua.config.ts file was not created' : 'hua.config.ts 파일이 생성되지 않았습니다.');
+    errors.push(t('validate:configNotCreated'));
   }
 
   // 3. Required directories
@@ -864,7 +836,7 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   for (const dir of requiredDirs) {
     const dirPath = path.join(projectPath, dir);
     if (!(await fs.pathExists(dirPath))) {
-      errors.push(isEn ? `Required directory ${dir} was not created` : `필수 디렉토리 ${dir}가 생성되지 않았습니다.`);
+      errors.push(t('validate:dirNotCreated', { dir }));
     }
   }
 
@@ -878,14 +850,13 @@ export async function validateGeneratedProject(projectPath: string): Promise<voi
   for (const file of requiredFiles) {
     const filePath = path.join(projectPath, file);
     if (!(await fs.pathExists(filePath))) {
-      errors.push(isEn ? `Required file ${file} was not created` : `필수 파일 ${file}이 생성되지 않았습니다.`);
+      errors.push(t('validate:fileNotCreated', { file }));
     }
   }
 
   if (errors.length > 0) {
-    throw new Error(isEn
-      ? `Project validation failed:\n${errors.map(e => `  - ${e}`).join('\n')}\n\nTips:\n  - Check file permissions\n  - Ensure disk space is available\n  - Try running again`
-      : `프로젝트 검증 실패:\n${errors.map(e => `  - ${e}`).join('\n')}\n\n팁:\n  - 파일 권한 확인\n  - 디스크 공간 확인\n  - 다시 실행해보세요`);
+    const errorList = errors.map(e => `  - ${e}`).join('\n');
+    throw new Error(t('validate:projectFailed', { errors: errorList }) + t('validate:projectTips'));
   }
 }
 
@@ -899,7 +870,6 @@ export async function validateTranslationFiles(projectPath: string): Promise<voi
   ];
 
   const errors: string[] = [];
-  const isEn = isEnglishOnly();
 
   for (const file of translationFiles) {
     const filePath = path.join(projectPath, file);
@@ -909,28 +879,17 @@ export async function validateTranslationFiles(projectPath: string): Promise<voi
         JSON.parse(content);
       } catch (error) {
         if (error instanceof SyntaxError) {
-          errors.push(
-            isEn
-              ? `Invalid JSON in ${file}: ${error.message}`
-              : `${file}의 JSON 문법 오류: ${error.message}`
-          );
+          errors.push(t('validate:invalidJson', { file, error: error.message }));
         } else {
-          errors.push(
-            isEn
-              ? `Failed to read ${file}: ${error instanceof Error ? error.message : String(error)}`
-              : `${file} 읽기 실패: ${error instanceof Error ? error.message : String(error)}`
-          );
+          errors.push(t('validate:readFailed', { file, error: error instanceof Error ? error.message : String(error) }));
         }
       }
     }
   }
 
   if (errors.length > 0) {
-    throw new Error(
-      isEn
-        ? `Translation files validation failed:\n${errors.map(e => `  - ${e}`).join('\n')}`
-        : `번역 파일 검증 실패:\n${errors.map(e => `  - ${e}`).join('\n')}`
-    );
+    const errorList = errors.map(e => `  - ${e}`).join('\n');
+    throw new Error(t('validate:translationFailed', { errors: errorList }));
   }
 }
 
@@ -968,7 +927,7 @@ export async function generateSummary(
           files++;
         }
       }
-    } catch (error) {
+    } catch {
       // Ignore permission errors
     }
   };
@@ -1026,7 +985,6 @@ export function displayNextSteps(
   projectPath: string,
   aiContextOptions?: AiContextOptions
 ): void {
-  const isEn = isEnglishOnly();
   const relativePath = path.relative(process.cwd(), projectPath);
   const displayPath = relativePath || path.basename(projectPath);
 
@@ -1038,20 +996,12 @@ export function displayNextSteps(
   console.log(chalk.white(`  ${devCommand}`));
 
   if (aiContextOptions?.claudeSkills) {
-    console.log(chalk.cyan(`\nClaude Skills enabled:`));
-    console.log(chalk.white(
-      isEn
-        ? '  Check .claude/skills/ for framework usage guide'
-        : '  .claude/skills/에서 프레임워크 사용 가이드를 확인하세요'
-    ));
+    console.log(chalk.cyan(`\n${t('display:claudeSkillsEnabled')}`));
+    console.log(chalk.white(t('display:claudeSkillsHint')));
   }
 
   if (aiContextOptions?.language === 'both') {
-    console.log(chalk.cyan(`\nBilingual mode:`));
-    console.log(chalk.white(
-      isEn
-        ? '  Edit translations/ko/ and translations/en/ for your content'
-        : '  translations/ko/와 translations/en/에서 번역을 수정하세요'
-    ));
+    console.log(chalk.cyan(`\n${t('display:bilingualMode')}`));
+    console.log(chalk.white(t('display:bilingualHint')));
   }
 }

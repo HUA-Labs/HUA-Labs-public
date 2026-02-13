@@ -1,41 +1,30 @@
 'use client';
 
 import { useTranslation, useLanguageChange } from '@hua-labs/hua/i18n';
-import { Button } from '@hua-labs/hua/ui';
-import { Globe } from '@phosphor-icons/react';
 
-/**
- * LanguageToggle Component
- *
- * Allows users to switch between available languages
- */
 export function LanguageToggle() {
   const { currentLanguage } = useTranslation();
   const { changeLanguage, supportedLanguages } = useLanguageChange();
 
-  const handleToggle = () => {
-    // Toggle between available languages
-    const codes = supportedLanguages.map(lang => lang.code);
-    const currentIndex = codes.indexOf(currentLanguage);
-    const nextIndex = (currentIndex + 1) % codes.length;
-    changeLanguage(codes[nextIndex]);
-  };
-
-  const languageLabels: Record<string, string> = {
-    ko: '한국어',
-    en: 'English',
-  };
+  const codes = supportedLanguages.map(lang => lang.code);
 
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={handleToggle}
-      className="gap-2"
-      aria-label="Toggle language"
-    >
-      <Globe size={16} weight="duotone" />
-      <span>{languageLabels[currentLanguage] || currentLanguage}</span>
-    </Button>
+    <div className="flex items-center gap-0.5 text-sm font-mono">
+      {codes.map((code, i) => (
+        <span key={code} className="flex items-center">
+          {i > 0 && <span className="text-border mx-1">/</span>}
+          <button
+            onClick={() => changeLanguage(code)}
+            className={`px-1.5 py-0.5 rounded transition-colors ${
+              currentLanguage === code
+                ? 'text-primary font-semibold'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {code.toUpperCase()}
+          </button>
+        </span>
+      ))}
+    </div>
   );
 }
