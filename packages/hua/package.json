@@ -72,12 +72,6 @@
       "require": "./dist/state/index.js",
       "default": "./dist/state/index.mjs"
     },
-    "./pro": {
-      "types": "./dist/pro/index.d.mts",
-      "import": "./dist/pro/index.mjs",
-      "require": "./dist/pro/index.js",
-      "default": "./dist/pro/index.mjs"
-    },
     "./formatters": {
       "types": "./dist/formatters/index.d.mts",
       "import": "./dist/formatters/index.mjs",
@@ -126,7 +120,6 @@
     "@hua-labs/i18n-formatters": "workspace:*",
     "@hua-labs/i18n-loaders": "workspace:*",
     "@hua-labs/motion-core": "workspace:*",
-    "@hua-labs/pro": "workspace:*",
     "@hua-labs/state": "workspace:*",
     "@hua-labs/ui": "workspace:*",
     "@hua-labs/utils": "workspace:*",
