@@ -61,7 +61,8 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={merge(
           cardVariants({ variant, shadow, padding }),
-          hoverable && "transition-shadow hover:shadow-lg cursor-pointer",
+          "transition-[transform,box-shadow,border-color] duration-200 ease-out",
+          hoverable && "hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/30 cursor-pointer active:translate-y-0 active:shadow-md",
           className
         )}
         {...props}

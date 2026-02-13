@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import { createProject } from './create-project';
 import { promptProjectName, promptAiContextOptions, type AiContextOptions } from './utils';
 import { checkVersion } from './version-check';
-import { isEnglishOnly, validateProjectName } from './shared';
+import { validateProjectName, t } from './shared';
 
 /**
  * Parse CLI arguments for AI context options and other flags
@@ -17,6 +17,7 @@ function parseAiContextOptions(): {
   options?: AiContextOptions;
   dryRun?: boolean;
   install?: boolean;
+  nonInteractive?: boolean;
 } {
   const args = process.argv.slice(2);
   const flags = {
@@ -75,6 +76,25 @@ function parseAiContextOptions(): {
   return result;
 }
 
+/**
+ * Run auto-install after project creation
+ */
+async function runInstall(projectPath: string): Promise<void> {
+  const { execSync } = await import('child_process');
+
+  console.log(chalk.blue('\nInstalling dependencies...'));
+  try {
+    execSync('pnpm install', {
+      cwd: projectPath,
+      stdio: 'inherit',
+    });
+    console.log(chalk.green('Dependencies installed'));
+  } catch {
+    console.error(chalk.red('Failed to install dependencies'));
+    throw new Error('Failed to install dependencies');
+  }
+}
+
 export async function main(): Promise<void> {
   // Check version (skip in CI/test environments or --skip-version-check)
   if (!process.env.CI && !process.env.NON_INTERACTIVE) {
@@ -94,41 +114,44 @@ export async function main(): Promise<void> {
 
   // Get project name from args (first non-flag argument)
   const projectName = args.find(arg => !arg.startsWith('--'));
+  const parsed = parseAiContextOptions();
 
   // Validate project name if provided via CLI
   if (projectName) {
     const validation = validateProjectName(projectName);
     if (!validation.valid) {
-      const isEn = isEnglishOnly();
       console.error(chalk.red(validation.message!));
-      console.error(
-        isEn
-          ? 'Usage: npx create-hua <project-name> [options]'
-          : 'Usage: npx create-hua <project-name> [options]'
-      );
+      console.error(t('cli:usage'));
       process.exit(1);
     }
   }
 
   if (!projectName) {
+    // H1: If --non-interactive, skip prompts and error
+    if (parsed.nonInteractive) {
+      console.error(chalk.red(t('cli:projectNameRequired')));
+      console.error(t('cli:usage'));
+      process.exit(1);
+    }
+
     try {
       const name = await promptProjectName();
       if (!name) {
-        const isEn = isEnglishOnly();
-        console.error(
-          isEn
-            ? 'Project name is required'
-            : 'Project name is required / 프로젝트 이름이 필요합니다'
-        );
+        console.error(chalk.red(t('cli:projectNameRequired')));
         console.error('Usage: npx create-hua <project-name> [--no-cursor-rules] [--no-agents-md] [--no-skills-md] [--claude-skills] [--lang ko|en|both] [--dry-run] [--install] [--non-interactive] [--english-only] [--skip-version-check]');
         process.exit(1);
       }
       const aiContextOptions = await promptAiContextOptions();
-      const parsed = parseAiContextOptions();
       await createProject(name, aiContextOptions, {
         dryRun: parsed.dryRun,
         skipPrerequisites: parsed.dryRun,
       });
+
+      // H2: auto-install in interactive path too
+      if (parsed.install && !parsed.dryRun) {
+        const { resolveProjectPath } = await import('./create-project');
+        await runInstall(resolveProjectPath(name));
+      }
       return;
     } catch (error) {
       if (error instanceof Error && error.message.includes('User force closed')) {
@@ -139,16 +162,13 @@ export async function main(): Promise<void> {
   }
 
   // Parse CLI options or prompt
-  const parsed = parseAiContextOptions();
   let aiContextOptions: AiContextOptions;
 
   if (parsed.options) {
     aiContextOptions = parsed.options;
   } else {
-    try {
-      aiContextOptions = await promptAiContextOptions();
-    } catch (error) {
-      console.warn('Failed to get interactive options, using defaults');
+    // H1: nonInteractive → use defaults without prompting
+    if (parsed.nonInteractive) {
       aiContextOptions = {
         cursorRules: true,
         aiContext: true,
@@ -158,6 +178,21 @@ export async function main(): Promise<void> {
         claudeSkills: false,
         language: 'both',
       };
+    } else {
+      try {
+        aiContextOptions = await promptAiContextOptions();
+      } catch {
+        console.warn(t('cli:failedInteractiveOptions'));
+        aiContextOptions = {
+          cursorRules: true,
+          aiContext: true,
+          agentsMd: true,
+          skillsMd: true,
+          claudeContext: true,
+          claudeSkills: false,
+          language: 'both',
+        };
+      }
     }
   }
 
@@ -168,21 +203,8 @@ export async function main(): Promise<void> {
 
   // Auto-install if --install flag is set
   if (parsed.install && !parsed.dryRun) {
-    const { execSync } = await import('child_process');
     const { resolveProjectPath } = await import('./create-project');
-    const projectPath = resolveProjectPath(projectName);
-
-    console.log(chalk.blue('\nInstalling dependencies...'));
-    try {
-      execSync('pnpm install', {
-        cwd: projectPath,
-        stdio: 'inherit',
-      });
-      console.log(chalk.green('Dependencies installed'));
-    } catch (error) {
-      console.error(chalk.red('Failed to install dependencies'));
-      throw error;
-    }
+    await runInstall(resolveProjectPath(projectName));
   }
 }
 // Export for use in bin file

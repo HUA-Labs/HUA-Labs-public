@@ -1,6 +1,6 @@
 {
   "name": "@hua-labs/i18n-core-zustand",
-  "version": "2.0.3",
+  "version": "2.0.1",
   "description": "Zustand adapter for @hua-labs/i18n-core - Type-safe state management integration",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -30,8 +30,8 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@hua-labs/i18n-core": "latest",
-    "@hua-labs/state": "latest"
+    "@hua-labs/i18n-core": "workspace:*",
+    "@hua-labs/state": "workspace:*"
   },
   "peerDependencies": {
     "zustand": "^4.0.0 || ^5.0.0",

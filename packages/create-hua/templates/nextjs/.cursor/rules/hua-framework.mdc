@@ -167,10 +167,11 @@ export default defineConfig({
 
 1. **Always use framework components** before writing custom UI
 2. **Always generate i18n files** (ko + en) when creating pages/components
-3. **Prefer Server Components** — only add `'use client'` when hooks/interactivity needed
-4. **Use `cn()` for class merging** — never raw string concatenation
-5. **Wrap pages with `HuaPage`** — SEO, motion, i18n applied automatically
-6. **Only modify `hua.config.ts`** for framework-level changes
-7. **Use Preset** over manual configuration when possible
-8. **Consider accessibility** — aria-label, keyboard nav, focus management
-9. **TypeScript strict** — no `any`, explicit types
+3. **i18n separator is `:` (colon)** — `t('namespace:key')`, NOT `t('namespace.key')`
+4. **Prefer Server Components** — only add `'use client'` when hooks/interactivity needed
+5. **Use `cn()` for class merging** — never raw string concatenation
+6. **Wrap pages with `HuaPage`** — SEO, motion, i18n applied automatically
+7. **Only modify `hua.config.ts`** for framework-level changes
+8. **Use Preset** over manual configuration when possible
+9. **Consider accessibility** — aria-label, keyboard nav, focus management
+10. **TypeScript strict** — no `any`, explicit types

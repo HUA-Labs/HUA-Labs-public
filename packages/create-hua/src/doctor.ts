@@ -12,8 +12,8 @@ import { checkPrerequisites, validateTranslationFiles } from './utils';
 import {
   MIN_NODE_VERSION,
   AI_CONTEXT_FILES,
-  isEnglishOnly,
   compareVersions,
+  t,
 } from './shared';
 
 /**
@@ -23,7 +23,6 @@ export async function diagnoseProject(projectPath: string): Promise<{
   healthy: boolean;
   issues: Array<{ type: 'error' | 'warning' | 'info'; message: string; solution?: string }>;
 }> {
-  const isEn = isEnglishOnly();
   const issues: Array<{ type: 'error' | 'warning' | 'info'; message: string; solution?: string }> = [];
 
   // Check if project directory exists
@@ -32,12 +31,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
       healthy: false,
       issues: [{
         type: 'error',
-        message: isEn
-          ? `Project directory not found: ${projectPath}`
-          : `프로젝트 디렉토리를 찾을 수 없습니다: ${projectPath}`,
-        solution: isEn
-          ? 'Make sure you are in the correct directory or provide the correct path'
-          : '올바른 디렉토리에 있는지 확인하거나 올바른 경로를 제공하세요',
+        message: t('doctor:dirNotFound', { path: projectPath }),
+        solution: t('doctor:dirNotFoundSolution'),
       }],
     };
   }
@@ -47,10 +42,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   if (!(await fs.pathExists(packageJsonPath))) {
     issues.push({
       type: 'error',
-      message: isEn ? 'package.json not found' : 'package.json을 찾을 수 없습니다',
-      solution: isEn
-        ? 'This might not be a valid hua project. Run create-hua to initialize.'
-        : '유효한 hua 프로젝트가 아닐 수 있습니다. create-hua를 실행하여 초기화하세요.',
+      message: t('doctor:packageJsonNotFound'),
+      solution: t('doctor:packageJsonNotFoundSolution'),
     });
   } else {
     try {
@@ -59,18 +52,14 @@ export async function diagnoseProject(projectPath: string): Promise<{
       if (!packageJson.dependencies?.['@hua-labs/hua']) {
         issues.push({
           type: 'error',
-          message: isEn ? '@hua-labs/hua not found in dependencies' : '의존성에 @hua-labs/hua가 없습니다',
-          solution: isEn
-            ? 'Run: pnpm install @hua-labs/hua'
-            : '실행: pnpm install @hua-labs/hua',
+          message: t('doctor:huaDepMissing'),
+          solution: t('doctor:huaDepMissingSolution'),
         });
       }
     } catch (error) {
       issues.push({
         type: 'error',
-        message: isEn
-          ? `Failed to parse package.json: ${error instanceof Error ? error.message : String(error)}`
-          : `package.json 파싱 실패: ${error instanceof Error ? error.message : String(error)}`,
+        message: t('doctor:packageJsonParseFailed', { error: error instanceof Error ? error.message : String(error) }),
       });
     }
   }
@@ -80,10 +69,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   if (!(await fs.pathExists(configPath))) {
     issues.push({
       type: 'error',
-      message: isEn ? 'hua.config.ts not found' : 'hua.config.ts를 찾을 수 없습니다',
-      solution: isEn
-        ? 'This file is required for hua framework. Re-run create-hua.'
-        : '이 파일은 hua 프레임워크에 필요합니다. create-hua를 다시 실행하세요.',
+      message: t('doctor:configNotFound'),
+      solution: t('doctor:configNotFoundSolution'),
     });
   }
 
@@ -94,10 +81,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
     if (!(await fs.pathExists(dirPath))) {
       issues.push({
         type: 'warning',
-        message: isEn ? `Required directory missing: ${dir}` : `필수 디렉토리 누락: ${dir}`,
-        solution: isEn
-          ? 'Re-run create-hua to restore project structure'
-          : '프로젝트 구조를 복원하려면 create-hua를 다시 실행하세요',
+        message: t('doctor:dirMissing', { dir }),
+        solution: t('doctor:dirMissingSolution'),
       });
     }
   }
@@ -107,10 +92,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   if (!(await fs.pathExists(layoutPath))) {
     issues.push({
       type: 'error',
-      message: isEn ? 'app/layout.tsx not found' : 'app/layout.tsx를 찾을 수 없습니다',
-      solution: isEn
-        ? 'This is required by Next.js. Re-run create-hua to restore.'
-        : 'Next.js에 필수 파일입니다. create-hua를 다시 실행하세요.',
+      message: t('doctor:layoutNotFound'),
+      solution: t('doctor:layoutNotFoundSolution'),
     });
   } else {
     // Check HuaProvider usage in layout
@@ -119,12 +102,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
       if (!layoutContent.includes('HuaProvider')) {
         issues.push({
           type: 'warning',
-          message: isEn
-            ? 'HuaProvider not found in app/layout.tsx'
-            : 'app/layout.tsx에 HuaProvider가 없습니다',
-          solution: isEn
-            ? 'Wrap your app with <HuaProvider> from @hua-labs/hua'
-            : '@hua-labs/hua에서 <HuaProvider>로 앱을 감싸세요',
+          message: t('doctor:huaProviderMissing'),
+          solution: t('doctor:huaProviderMissingSolution'),
         });
       }
     } catch {
@@ -137,10 +116,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   if (!(await fs.pathExists(pagePath))) {
     issues.push({
       type: 'warning',
-      message: isEn ? 'app/page.tsx not found' : 'app/page.tsx를 찾을 수 없습니다',
-      solution: isEn
-        ? 'Create app/page.tsx for your home page'
-        : '홈 페이지를 위해 app/page.tsx를 생성하세요',
+      message: t('doctor:pageNotFound'),
+      solution: t('doctor:pageNotFoundSolution'),
     });
   }
 
@@ -152,12 +129,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
       if (!cssContent.includes('recommended-theme') && !cssContent.includes('@hua-labs/hua')) {
         issues.push({
           type: 'warning',
-          message: isEn
-            ? 'globals.css does not import hua theme'
-            : 'globals.css에 hua 테마 import가 없습니다',
-          solution: isEn
-            ? 'Add @import "@hua-labs/hua/recommended-theme.css" to globals.css'
-            : 'globals.css에 @import "@hua-labs/hua/recommended-theme.css"를 추가하세요',
+          message: t('doctor:cssNoTheme'),
+          solution: t('doctor:cssNoThemeSolution'),
         });
       }
     } catch {
@@ -171,12 +144,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   } catch (error) {
     issues.push({
       type: 'error',
-      message: isEn
-        ? `Translation files validation failed: ${error instanceof Error ? error.message : String(error)}`
-        : `번역 파일 검증 실패: ${error instanceof Error ? error.message : String(error)}`,
-      solution: isEn
-        ? 'Check translations/ko/common.json and translations/en/common.json for JSON syntax errors'
-        : 'translations/ko/common.json과 translations/en/common.json의 JSON 문법 오류를 확인하세요',
+      message: t('doctor:translationFailed', { error: error instanceof Error ? error.message : String(error) }),
+      solution: t('doctor:translationFailedSolution'),
     });
   }
 
@@ -186,12 +155,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
     if (compareVersions(nodeVersion, MIN_NODE_VERSION) < 0) {
       issues.push({
         type: 'warning',
-        message: isEn
-          ? `Node.js ${MIN_NODE_VERSION}+ recommended. Current: ${nodeVersion}`
-          : `Node.js ${MIN_NODE_VERSION}+ 권장. 현재: ${nodeVersion}`,
-        solution: isEn
-          ? 'Update Node.js: https://nodejs.org/'
-          : 'Node.js 업데이트: https://nodejs.org/',
+        message: t('doctor:nodeVersionWarning', { min: MIN_NODE_VERSION, current: nodeVersion }),
+        solution: t('doctor:nodeVersionWarningSolution'),
       });
     }
   } catch {
@@ -203,10 +168,8 @@ export async function diagnoseProject(projectPath: string): Promise<{
   } catch {
     issues.push({
       type: 'warning',
-      message: isEn ? 'pnpm not found' : 'pnpm을 찾을 수 없습니다',
-      solution: isEn
-        ? 'Install pnpm: npm install -g pnpm'
-        : 'pnpm 설치: npm install -g pnpm',
+      message: t('doctor:pnpmNotFound'),
+      solution: t('doctor:pnpmNotFoundSolution'),
     });
   }
 
@@ -223,16 +186,12 @@ export async function diagnoseProject(projectPath: string): Promise<{
   if (aiFileStatus.length > 0) {
     issues.push({
       type: 'info',
-      message: isEn
-        ? `AI context files present: ${aiFileStatus.join(', ')}`
-        : `AI 컨텍스트 파일 감지: ${aiFileStatus.join(', ')}`,
+      message: t('doctor:aiFilesPresent', { files: aiFileStatus.join(', ') }),
     });
   } else {
     issues.push({
       type: 'info',
-      message: isEn
-        ? 'No AI context files found. Run create-hua to generate them.'
-        : 'AI 컨텍스트 파일이 없습니다. create-hua를 실행하여 생성하세요.',
+      message: t('doctor:aiFilesNone'),
     });
   }
 
@@ -246,8 +205,6 @@ export async function diagnoseProject(projectPath: string): Promise<{
  * Run doctor command
  */
 export async function runDoctor(projectPath: string): Promise<void> {
-  const isEn = isEnglishOnly();
-
   console.log(chalk.blue(`\nDiagnosing project: ${projectPath}\n`));
 
   try {
@@ -256,7 +213,7 @@ export async function runDoctor(projectPath: string): Promise<void> {
     try {
       await checkPrerequisites();
       console.log(chalk.green('  Prerequisites OK'));
-    } catch (error) {
+    } catch {
       console.log(chalk.yellow('  Prerequisites check failed (non-critical)'));
     }
 

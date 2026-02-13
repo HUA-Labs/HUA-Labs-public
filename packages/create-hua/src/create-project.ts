@@ -8,7 +8,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import chalk from 'chalk';
 import { copyTemplate, generatePackageJson, generateConfig, generateAiContextFiles, validateGeneratedProject, isEmptyDir, type AiContextOptions } from './utils';
-import { isEnglishOnly, listEnabledAiFiles } from './shared';
+import { listEnabledAiFiles, t } from './shared';
 
 /**
  * Resolve project path
@@ -44,25 +44,14 @@ export async function createProject(
 ): Promise<void> {
   const projectPath = resolveProjectPath(projectName);
   const isDryRun = options?.dryRun ?? false;
-  const isEn = isEnglishOnly();
 
   if (process.env.NODE_ENV !== 'production' && !isDryRun) {
     console.log(chalk.gray(`Project will be created at: ${projectPath}`));
   }
 
-  // Check if directory already exists and is not empty
+  // C1: throw instead of process.exit(1)
   if (!isDryRun && await fs.pathExists(projectPath) && !(await isEmptyDir(projectPath))) {
-    console.error(chalk.red(
-      isEn
-        ? `Directory "${projectPath}" already exists and is not empty`
-        : `디렉토리 "${projectPath}"가 이미 존재하며 비어있지 않습니다`
-    ));
-    console.error(chalk.yellow(
-      isEn
-        ? 'Try a different project name or remove the existing directory'
-        : '다른 프로젝트 이름을 사용하거나 기존 디렉토리를 삭제하세요'
-    ));
-    process.exit(1);
+    throw new Error(t('project:dirAlreadyExists', { path: projectPath }));
   }
 
   // Prerequisites check (skip in dry-run mode)
@@ -170,7 +159,7 @@ export async function createProject(
     displayNextSteps(projectPath, aiContextOptions);
 
   } catch (error) {
-    console.error(chalk.red(`\n${isEn ? 'Error creating project' : '프로젝트 생성 중 오류 발생'}:`));
+    console.error(chalk.red(`\n${t('project:errorCreating')}:`));
 
     if (error instanceof Error) {
       console.error(chalk.red(error.message));

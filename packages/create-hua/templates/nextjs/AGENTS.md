@@ -138,6 +138,8 @@ Always create translation files alongside:
 - `translations/ko/my-page.json` — `{ "title": "제목", "description": "설명" }`
 - `translations/en/my-page.json` — `{ "title": "Title", "description": "Description" }`
 
+**i18n Convention**: Namespace separator is `:` (colon), NOT `.` (dot). Example: `t('common:error')`.
+
 ### Client Component
 
 ```tsx

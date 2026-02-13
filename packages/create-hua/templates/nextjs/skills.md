@@ -121,6 +121,7 @@ export function DataView() {
 - Use flat key structure: `{ "title": "...", "description": "..." }`
 - Use `common` namespace for shared translations
 - Namespace must match the page/component file name
+- **Namespace separator is `:` (colon)**, NOT `.` (dot) — e.g., `t('common:error')`
 
 ---
 

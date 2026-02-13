@@ -1,13 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { HuaProvider } from "@hua-labs/hua/framework";
 import { getSSRTranslations } from "@hua-labs/hua/framework/server";
 import config from "../hua.config";
 
 export const metadata: Metadata = {
-  title: "HUA UX App",
-  description: "Created with @hua-labs/hua",
-  icons: { icon: '/favicon.ico' },
+  title: {
+    default: "My HUA App",
+    template: "%s | My HUA App",
+  },
+  description: "Built with HUA Framework — the developer toolkit for building products with soul.",
+  keywords: ["HUA", "React", "Next.js", "TypeScript"],
+  authors: [{ name: "HUA Labs" }],
+  icons: { icon: "/favicon.ico" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({
@@ -23,7 +33,15 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko" className="dark" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="antialiased">
         <HuaProvider config={configWithSSR}>{children}</HuaProvider>
       </body>
