@@ -176,7 +176,7 @@
     "@types/node": "^25.2.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@vitejs/plugin-react": "^5.1.4",
     "jsdom": "^27.4.0",
     "server-only": "^0.0.1",
     "tsup": "^8.5.0",
