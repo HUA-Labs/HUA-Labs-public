@@ -36,7 +36,7 @@ jobs:
 
       - name: Type check
         run: |
-          pnpm --filter=sum-diary \
+          pnpm \
                --filter=@hua-labs/ui \
                --filter=@hua-labs/utils \
                --filter=@hua-labs/i18n-core \
@@ -75,7 +75,7 @@ jobs:
 
       - name: Lint
         run: |
-          pnpm --filter=sum-diary \
+          pnpm \
                --filter=@hua-labs/ui \
                --filter=@hua-labs/utils \
                --filter=@hua-labs/i18n-core \

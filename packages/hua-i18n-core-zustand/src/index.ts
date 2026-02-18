@@ -139,9 +139,9 @@ export interface ZustandI18nConfig {
    *
    * @example
    * ```ts
-   * // useAppStore가 'sum-diary-app-storage' 키를 사용하는 경우
+   * // useAppStore가 'my-app-app-storage' 키를 사용하는 경우
    * const I18nProvider = createZustandI18n(useAppStore, {
-   *   storageKey: 'sum-diary-app-storage',
+   *   storageKey: 'my-app-app-storage',
    *   // ...
    * });
    * ```

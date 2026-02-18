@@ -6,8 +6,8 @@
  *
  * Usage:
  *   pnpm tsx scripts/generate-i18n-types.ts \
- *     --translations-dir apps/sum-diary/app/lib/translations/ko \
- *     --output apps/sum-diary/types/i18n-types.generated.ts
+ *     --translations-dir apps/my-app/app/lib/translations/ko \
+ *     --output apps/my-app/types/i18n-types.generated.ts
  */
 
 import * as fs from 'fs';

@@ -6,7 +6,7 @@
  *
  * Usage:
  *   pnpm tsx scripts/validate-translations.ts \
- *     --translations-dir apps/sum-diary/app/lib/translations \
+ *     --translations-dir apps/my-app/app/lib/translations \
  *     --base ko \
  *     --strict ko,en,ja \
  *     --warn zh:0.9 \

@@ -254,11 +254,11 @@ export interface HuaConfig {
      *
      * @example
      * ```ts
-     * // useAppStore의 persist 키가 'sum-diary-app-storage'인 경우
+     * // useAppStore의 persist 키가 'my-app-app-storage'인 경우
      * export default defineConfig({
      *   i18n: {
      *     languageStore: useAppStore,
-     *     storageKey: 'sum-diary-app-storage',  // useAppStore의 persist name과 일치
+     *     storageKey: 'my-app-app-storage',  // useAppStore의 persist name과 일치
      *   },
      * });
      * ```
