@@ -16,7 +16,6 @@
 ├── state               # Zustand 기반 상태관리
 ├── pro                 # 프리미엄 기능
 ├── encryption          # GCP KMS 암호화
-├── docs-engine         # 문서 컴포넌트
 └── create-hua       # CLI 스캐폴딩
 ```
 

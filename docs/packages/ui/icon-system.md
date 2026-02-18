@@ -275,7 +275,6 @@ import { LoadingIcon, SuccessIcon, ErrorIcon, EmotionIcon, StatusIcon } from '@h
 - **패턴**: lazy resolver (`registerIconsaxResolver()` / `getIconsaxResolver()`)
 - **코어 번들**: 포함되지 않음 (iconsax entry import 시에만 로드)
 - **변형**: `line` (기본) | `bold` 지원
-- **주 사용처**: hua-docs 아이콘 갤러리
 
 **Iconsax 사용법:**
 ```tsx

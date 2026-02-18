@@ -253,7 +253,6 @@ packages/
 |-- hua-ui              -> UI components
 |-- hua-motion-core     -> Motion hooks
 |-- hua-state           -> State management
-|-- hua-pro             -> Pro features (private)
 |-- hua-i18n-core       -> i18n core
 |-- hua-i18n-core-zustand
 |-- hua-i18n-formatters
